@@ -1,0 +1,64 @@
+
+<div>
+	<table class="table table-bordered">
+		<tr>
+			<th>번호</th>
+			<td>{{info.index + 1}}</td>
+		</tr>
+		<tr>
+			<th>이름</th>
+			<td><img src="{{info.picture}}" alt="{{info.name}}" /> {{info.name}}</td>
+		</tr>
+		<tr>
+			<th>성별</th>
+			<td>{{info.gender}}</td>
+		</tr>
+		<tr>
+			<th>회사</th>
+			<td>{{info.company}}</td>
+		</tr>
+		<tr>
+			<th>이메일</th>
+			<td>{{info.email}}</td>			
+		</tr>
+		<tr>
+			<th>전화번호</th>
+			<td>{{info.phone}}</td>			
+		</tr>
+		<tr>
+			<th>활동상태</th>
+			<td>{{info.isActive}}</td>
+		</tr>
+		<tr>
+			<th>잔고</th>
+			<td>{{info.balance}}</td>
+		</tr>						
+		<tr>
+			<th>태그</th>
+			<td>
+				<li ng-repeat="tag in info.tags track by $index">{{tag}}</li>
+			</td>
+		</tr>						
+		<tr>
+			<th>친구</th>
+			<td>
+				<li ng-repeat="friend in info.friends track by $index">{{friend}}</li>			
+			</td>
+		</tr>
+		<tr>
+			<th>주소</th>
+			<td>{{info.address}}</td>
+		</tr>
+		<tr>
+			<th>인사</th>
+			<td>
+				<b>{{info.geeting}}</b>
+				<hr/>
+				{{info.about}}
+			</td>
+		</tr>
+	</table>
+	
+	<button class="btn btn-default" ui-sref="board({page:pageInfo.page})" >목록으로</button>
+	
+</div>

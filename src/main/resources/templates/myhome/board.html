@@ -1,0 +1,32 @@
+
+<div ng-controller="dataListCtrl">
+	<table class="table table-bordered">
+		<tr>
+			<th>번호</th>
+			<th>이름</th>
+			<th>성별</th>
+			<th>회사</th>
+			<th>이메일</th>
+			<th>전화번호</th>
+			<th>활동상태</th>
+			<th>잔고</th>
+			<th>태그</th>
+		</tr>
+		<tr ng-repeat='d in data | offset: pagingInfo.offset | limitTo : pagingInfo.pagePerCnt'>
+			<td>{{d.index + 1}}</td> 
+			<td><a ui-sref="board.detail({id : d._id})"><img src="{{d.picture}}" alt="{{d.name}}" /> {{d.name}}</a></td>
+			<td>{{d.gender}}</td>
+			<td>{{d.company}}</td>
+			<td>{{d.email}}</td>
+			<td>{{d.phone}}</td>
+			<td>{{d.isActive}}</td>
+			<td>{{d.balance}}</td>
+			<td><li ng-repeat='tag in d.tags track by $index'>{{tag}}</li></td>
+		</tr>
+	</table>
+
+</div>
+
+<div ng-controller="PaginationDemoCtrl">
+    <uib-pagination total-items="pagingInfo.totalCnt" ng-change="pageChanged()" ng-model="pagingInfo.page" max-size="pagingInfo.pagePerSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></uib-pagination>
+</div>
