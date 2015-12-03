@@ -5,6 +5,11 @@ myApp
   $locationProvider.html5Mode(true).hashPrefix('!');
   $urlRouterProvider.otherwise("/");
   
+  /*
+  $urlRouterProvider.otherwise(function ($injector, $location) {
+	    return '/';
+  });
+  */
   $stateProvider
 	// index 라는 애는 url이 없고 view template 영역 중 2개를 변경한다..
     .state('home', {
@@ -12,7 +17,6 @@ myApp
 					  	templateUrl : '/myhome/home.html',
 						controller: 'homeDemoCtrl'
     				}
-
       )
 	// template 는 HTML String 
 	// templateUrl 은 file Url      
@@ -22,22 +26,13 @@ myApp
 					    url : "/board",
 						templateUrl : '/myhome/board.html',
 					    controller : 'dataListCtrl'	
-	    			
-	           
+		
     })
     // 상세보기
-    .state('board.detail',{
+    .state('boardDetail',{
 				    	url : "^/board/:id",
-				    	views : {
-				    		'@' : {
-				    			templateUrl : '/myhome/board.detail.html',
-				    			controller : 'dataDetailCtrl'
-				    			
-				    		}
-				    	}
-						
-	
+		    			templateUrl : '/myhome/board.detail.html',
+		    			controller : 'dataDetailCtrl'				    	
     })      
-
+    
 });
-
