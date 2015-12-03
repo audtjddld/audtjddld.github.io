@@ -34,31 +34,16 @@
 			<td>{{info.balance}}</td>
 		</tr>						
 		<tr>
-			<th>태그</th>
-			<td>
-				<li ng-repeat="tag in info.tags track by $index">{{tag}}</li>
-			</td>
-		</tr>						
-		<tr>
-			<th>친구</th>
-			<td>
-				<li ng-repeat="friend in info.friends track by $index">{{friend}}</li>			
-			</td>
-		</tr>
-		<tr>
 			<th>주소</th>
 			<td>{{info.address}}</td>
 		</tr>
 		<tr>
 			<th>인사</th>
-			<td>
-				<b>{{info.geeting}}</b>
-				<hr/>
-				{{info.about}}
+			<td style="word-break:break-all;">
+				<b>{{info.greeting}}</b>
 			</td>
 		</tr>
 	</table>
-	
-	<button class="btn btn-default" ui-sref="board({page:pageInfo.page})" >목록으로</button>
+	<button class="btn btn-default" ui-sref="board({page:page,offset:offset,query:query})" >목록으로</button>
 	
 </div>
