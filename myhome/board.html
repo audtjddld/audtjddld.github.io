@@ -1,0 +1,36 @@
+
+<div ng-controller="dataListCtrl">
+	<p> 이름 검색  <input ng-model="query" placeHolder="검색어를 입력하세요" class="input"/></p>
+	<table class="table table-bordered">
+		<tr>
+			<th>번호</th>
+			<th>이름</th>
+			<th>성별</th>
+			<th>회사</th>
+			<th>이메일</th>
+			<th>전화번호</th>
+			<th>활동상태</th>
+			<th>잔고</th>
+		</tr>
+		<tr ng-repeat='d in data | offset: offset | limitTo : pagingInfo.pagePerCnt | filter:query'>
+			<td>{{d.index + 1}}</td> 
+			<td><a ui-sref="boardDetail({id : d._id, page : pagingInfo.page, offset : pagingInfo.offset , query:query})">{{d.name}}</a></td>
+			<td>{{d.gender}}</td>
+			<td>{{d.company}}</td>
+			<td>{{d.email}}</td>
+			<td>{{d.phone}}</td>
+			<td>{{d.isActive}}</td>
+			<td>{{d.balance}}</td>
+		</tr>
+	</table>
+</div>
+
+
+    <uib-pagination total-items="totalCnt"
+    	 ng-change="pageChanged()"
+    	 ng-model="currentPage" 
+    	 max-size="pagePerCnt" class="pagination-sm" 
+    	 boundary-links="true" 
+    	 rotate="false" 
+    	 num-pages="numPages">
+  	</uib-pagination>
