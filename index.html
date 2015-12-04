@@ -9,6 +9,7 @@
         .navbar { border-radius:0; }
     </style>
     <base href="/" />
+    <title>springboot,angularjs,ui-router example 예제~</title>
 </head>
 
 <!-- apply our angular app to our site -->
@@ -26,15 +27,20 @@
 
 <!-- MAIN CONTENT -->
 <!-- THIS IS WHERE WE WILL INJECT OUR CONTENT ============================== -->
+<div class="text-center">
+    <p>UI Router 예제 spring-boot를 이용해서 봐야 잘나옵니다. 새로고침시 페이지 유지 되도록 하는 건 git에선 안됌 ㅠㅠ</p>
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/audtjddld" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>    
+</div>
+
 <div class="container">
     <div ui-view="">
 
     </div>
 </div>
 
-<div class="text-center">
-    <p>UI Router 예제</p>
-</div>
+
 
 </body>
     <!-- JS (load angular, ui-router, and our custom js file) -->
