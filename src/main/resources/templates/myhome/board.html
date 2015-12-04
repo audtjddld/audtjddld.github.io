@@ -25,6 +25,12 @@
 	</table>
 </div>
 
-<div ng-controller="PaginationDemoCtrl">
-    <uib-pagination total-items="totalCnt" ng-change="pageChanged()" ng-model="pagingInfo.page" max-size="pagingInfo.pagePerSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages" ></uib-pagination>
-</div>
+
+    <uib-pagination total-items="totalCnt"
+    	 ng-change="pageChanged()"
+    	 ng-model="currentPage" 
+    	 max-size="pagePerCnt" class="pagination-sm" 
+    	 boundary-links="true" 
+    	 rotate="false" 
+    	 num-pages="numPages">
+  	</uib-pagination>
