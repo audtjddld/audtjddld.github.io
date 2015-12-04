@@ -1,0 +1,49 @@
+
+<div>
+	<table class="table table-bordered">
+		<tr>
+			<th>번호</th>
+			<td>{{info.index + 1}}</td>
+		</tr>
+		<tr>
+			<th>이름</th>
+			<td><img src="{{info.picture}}" alt="{{info.name}}" /> {{info.name}}</td>
+		</tr>
+		<tr>
+			<th>성별</th>
+			<td>{{info.gender}}</td>
+		</tr>
+		<tr>
+			<th>회사</th>
+			<td>{{info.company}}</td>
+		</tr>
+		<tr>
+			<th>이메일</th>
+			<td>{{info.email}}</td>			
+		</tr>
+		<tr>
+			<th>전화번호</th>
+			<td>{{info.phone}}</td>			
+		</tr>
+		<tr>
+			<th>활동상태</th>
+			<td>{{info.isActive}}</td>
+		</tr>
+		<tr>
+			<th>잔고</th>
+			<td>{{info.balance}}</td>
+		</tr>						
+		<tr>
+			<th>주소</th>
+			<td>{{info.address}}</td>
+		</tr>
+		<tr>
+			<th>인사</th>
+			<td style="word-break:break-all;">
+				<b>{{info.greeting}}</b>
+			</td>
+		</tr>
+	</table>
+	<button class="btn btn-default" ui-sref="board({page:page,offset:offset,query:query})" >목록으로</button>
+	
+</div>
