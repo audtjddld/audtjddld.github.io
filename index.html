@@ -28,7 +28,20 @@
 <!-- MAIN CONTENT -->
 <!-- THIS IS WHERE WE WILL INJECT OUR CONTENT ============================== -->
 <div class="text-center">
-    <p>UI Router 예제 spring-boot를 이용해서 봐야 잘나옵니다. 새로고침시 페이지 유지 되도록 하는 건 git에선 안됌 ㅠㅠ</p>
+    <p>
+    	UI Router 예제 spring-boot를 이용해서 봐야 잘나옵니다. <br />
+    	새로고침시 페이지 유지 되도록 하는 건 git에선 안됌 ㅠㅠ<br />
+    	
+    	<hr />
+    	
+    	Angularjs를 이용하여 서버간 paging 구현시 uib-pagination에 model로 등록된 변수와<br />
+    	파라미터로 사용할 변수가 겹치면 안됨. <br />
+    	angular를 잘 모르고 있었기 떄문에 url에 넘어온 파라미터를 그대로 변수에 셋팅하여 페이지가 갱신되는 현상이 발생되었음<br />
+    	
+    	하고자했던 기능은 url 옆에 파라미터를 달고다닌 뒤 새로고침시 해당 페이지로 다시 조회되도록 하는 것이 목적<br />
+    	spring boot 에서 controller 단에 error controller를 작성 후  <br />
+    	새로고침시 404일때 index페이지로 이동 angular router를 통하여 다시 이동 되도록 하는 구조.
+    </p>
         <section id="downloads" class="clearfix">
           <a href="https://github.com/audtjddld" id="view-on-github" class="button"><span>View on GitHub</span></a>
         </section>    
