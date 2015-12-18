@@ -25,11 +25,13 @@
 <!-- MAIN CONTENT -->
 <!-- THIS IS WHERE WE WILL INJECT OUR CONTENT ============================== -->
 <div class="text-center">
-<h1>AngularJS + Springboot + JPA 개발</h1>
-작성자 : 정명성
+<h1>AngularJS + Springboot + JPA 개발 <small>작성자 : 정명성</small></h1>
 
- Front를 MVVM 방식인 AngularJS로 개발하고, 서버단을 Spring Boot 그리고 ORM을 JPA로 개발하는 방식으로 간단한 예제 및 개념으로 정리를 시작.
-
+<p class="lead">
+	Front를 MVVM 방식인 AngularJS로 개발하고, 서버단을 Spring Boot 그리고 ORM을 JPA로 개발하는 방식으로 간단한 예제 및 개념으로 정리를 시작.
+</p>
+ 
+<code>
 우선 Angularjs에 대하여 간략하게 소개.
 
 HTML은 정적문서를 선언하기에 좋지만, 웹 어플리케이션을 개발할때 동적 뷰를 선언하기 위해서는 기존 javascript나 jquery로는 많은 코딩라인을 소비하게 됩니다. 그리고 각 개발자마다 개발 방식이나 방법이 다르기 때문에 서로 연관없는 부분에서 꼬여버릴 수도 있습니다.
@@ -137,6 +139,9 @@ ui-sref=”userDetail({id : d._id})” 를 보자면 ui-sref 로 이동되는 st
 방식이고 위에 userDetail state에 url에 패턴형식으로 id값이 넘어간다는 것이다.
 
 그리고 AngularJS controller쪽에서 받을때는 $stateParams 객체에 담겨옴으로 $stateParams.변수이름 으로 해서 받을 수 있다.
+
+</code>
+
 
 
         <section id="downloads" class="clearfix">
