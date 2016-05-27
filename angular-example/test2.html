@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+<meta charset="UTF-8">
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+<script type="text/javascript">
+	var app = angular.module('myApp', []);
+
+	app.controller('myCtrl', function($scope) {
+		$scope.names = [ "Emil", "Tobias", "Linus" ];
+		
+		$scope.addName = function() {
+			$scope.names.push($scope.name);
+		}
+	});
+</script>
+</head>
+<body ng-app="myApp">
+
+	<ul>
+		<li ng-repeat="name in names">
+			{{name}}
+		</li>
+	</ul>
+	<input type="text" ng-model="name" />
+	<button ng-click="addFiled()" />
+</body>
+</html>
