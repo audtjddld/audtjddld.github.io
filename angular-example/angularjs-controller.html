@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+<meta charset="UTF-8">
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script type="text/javascript">
+	var app = angular.module('myApp', []);
+	app.controller('myController', function($scope) {
+
+		$scope.hi = function() {
+			alert('hi~');
+		}
+
+		$scope.name = "홍길동";
+		$scope.age = "18";
+	})
+</script>
+</head>
+<body ng-app="myApp">
+	<p>
+		controller 는 해당 영역의 ViewModel에 접근 할 수 있으며, 추가적으로 펑션도 선언할 수 있다. <br />
+		큰 Application일 수록 js로 각 컨트롤러를 분리해서 관리할 수 있다.<br />
+	</p>
+	<div ng-controller="myController">
+		<table>
+			<tr>
+				<td><input type="text" ng-model="name" /></td>
+			</tr>
+			<tr>
+				<td><input type="text" ng-model="age" /></td>
+			</tr>
+		</table>
+
+		<button ng-click="hi()">클릭</button>
+
+	</div>
+
+</body>
+</html>
