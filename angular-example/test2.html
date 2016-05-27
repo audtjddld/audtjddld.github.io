@@ -12,6 +12,10 @@
 		$scope.names = [ "Emil", "Tobias", "Linus" ];
 
 		$scope.addName = function() {
+			if($scope.name == '') {
+				alert('이름을 입력해주세요.');
+				return;
+			}
 			$scope.names.push($scope.name);
 			$scope.name = "";
 		}
