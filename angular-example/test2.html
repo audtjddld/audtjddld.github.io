@@ -10,7 +10,7 @@
 
 	app.controller('myCtrl', function($scope) {
 		$scope.names = [ "Emil", "Tobias", "Linus" ];
-		
+
 		$scope.addName = function() {
 			$scope.names.push($scope.name);
 		}
@@ -19,12 +19,13 @@
 </head>
 <body ng-app="myApp">
 
-	<ul>
-		<li ng-repeat="name in names">
-			{{name}}
-		</li>
-	</ul>
-	<input type="text" ng-model="name" />
-	<button ng-click="addFiled()" />
+	<div ng-controller="myCtrl">
+		<ul>
+			<li ng-repeat="name in names">{{name}}</li>
+		</ul>
+		<input type="text" ng-model="name" />
+		<button ng-click="addFiled()">이름 추가</button>
+	</div>
+
 </body>
 </html>
