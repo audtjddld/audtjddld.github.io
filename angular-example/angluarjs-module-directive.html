@@ -20,7 +20,7 @@
 		
 		app.directive('myDirectives', function() {
 			return {
-				restirct: 'E',	// E = Element 형태, A 는 Attribute 형태
+				restirct: 'E',	// E = Element 형태, A 는 Attribute 형태, C는 클래스에 의한. M은 코멘트
 				scope : {
 					name : '='	// = 는 데이터 형태 그대로, @는 string 형태로, &는 펑션을 파라미터로 넘길때.
 					, directiveEditor : '@'	// 전달되는 Attribute나 directive 이름의 대문자는 - 으로 연결 되는 부분이 그렇게 된다.
@@ -29,6 +29,12 @@
 				controller :  function($scope) {	// directive로 불러온 화면에서 사용될 로직들을 정의해서 사용할 수 있다.
 				
 				}
+			}
+		})
+		
+		app.directive('mDirective', function() {
+			link :  function() {
+				alert('M is working..');
 			}
 		})
 	</script>
@@ -49,6 +55,7 @@
 	
 	<my-directives name='mydirectives' directive-editor="ms"></my-directives>
 	
+	<!-- directive:mDirective -->
 </div>
 
 </body>
