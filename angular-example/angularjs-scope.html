@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+<meta charset="UTF-8">
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script type="text/javascript">
+	var app = angular.module('myApp', []);
+
+	app.controller('myCtrl', function($scope) {
+		$scope.names = [ "Emil", "Tobias", "Linus" ];
+	});
+</script>
+</head>
+<body ng-app="myApp">
+
+	'$scope' 란 무엇인가.
+	<ul>
+		<li>HTML</li>
+		<li>영역내에 존재하는 Model (ViewModel = Data)</li>
+		<li>영역내에 펑션들이다.</li>
+	</ul>
+
+	<ul>
+		<li ng-repeat="x in names">{{x}}</li>
+	</ul>
+
+	<p>
+		$rootScope 라고 컨트롤러에서 접근하는 범위보다 상위범위를 접근할 수 있는 접근자가 있다.<br /> html 구조를
+		본다면 html 밑에 여러 element들의 구조? 들과 비슷하다고 보면된다.<br /> jquery에서는 .parent()
+		객체를 타다보면 상위로 넘어가는 구조를 확인 할 수 있다.<br />
+	</p>
+
+</body>
+</html>
