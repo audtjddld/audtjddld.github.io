@@ -1,64 +1,71 @@
 <!DOCTYPE html>
 <html lang="utf-8">
 <head>
-	<meta charset="UTF-8">
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-	<script type="text/javascript">
-		var app = angular.module("myApp", []);
-		app.controller('myCtrl', function($scope) {
-			// myCtrl 제어할 위치, 
-			// callback 에 넘어오는 $scope는 해당 영역의 ViewModel이나 element로 접근할 수 있는 접근자(selecor).
-			
-			$scope.name="jms";
-		})
-		
-		app.directive('myDirective', function() {
-			return {
-				template : '지시자(Directive) 라고 하고, angular에서만들어 놓은 기능 및 화면을 나눠놓은 단위로 이해하면 좋다.'
+<meta charset="UTF-8">
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script type="text/javascript">
+	var app = angular.module("myApp", []);
+	app.controller('myCtrl', function($scope) {
+		// myCtrl 제어할 위치, 
+		// callback 에 넘어오는 $scope는 해당 영역의 ViewModel이나 element로 접근할 수 있는 접근자(selecor).
+
+		$scope.name = "jms";
+	})
+
+	app
+			.directive(
+					'myDirective',
+					function() {
+						return {
+							template : '지시자(Directive) 라고 하고, angular에서만들어 놓은 기능 및 화면을 나눠놓은 단위로 이해하면 좋다.'
+						}
+					})
+
+	app.directive('myDirectives', function() {
+		return {
+			restirct : 'E', // E = Element 형태, A 는 Attribute 형태, C는 클래스에 의한. M은 코멘트
+			scope : {
+				name : '=' // = 는 데이터 형태 그대로, @는 string 형태로, &는 펑션을 파라미터로 넘길때.
+				,
+				directiveEditor : '@' // 전달되는 Attribute나 directive 이름의 대문자는 - 으로 연결 되는 부분이 그렇게 된다.
+			},
+			templateUrl : '/angular-example/directives.html', // templateUrl과, template 등으로 나눈다. template는 직접 DOM을 작성하면 된다.
+			controller : function($scope) { // directive로 불러온 화면에서 사용될 로직들을 정의해서 사용할 수 있다.
+
 			}
-		})
-		
-		app.directive('myDirectives', function() {
-			return {
-				restirct: 'E',	// E = Element 형태, A 는 Attribute 형태, C는 클래스에 의한. M은 코멘트
-				scope : {
-					name : '='	// = 는 데이터 형태 그대로, @는 string 형태로, &는 펑션을 파라미터로 넘길때.
-					, directiveEditor : '@'	// 전달되는 Attribute나 directive 이름의 대문자는 - 으로 연결 되는 부분이 그렇게 된다.
-				},
-				templateUrl : '/angular-example/directives.html',	// templateUrl과, template 등으로 나눈다. template는 직접 DOM을 작성하면 된다.
-				controller :  function($scope) {	// directive로 불러온 화면에서 사용될 로직들을 정의해서 사용할 수 있다.
-				
-				}
+		}
+	})
+
+	myApp.directive('mDirective', function() {
+		return {
+			restrict : 'M',
+			link : function() {
+				alert('M is working..');
 			}
-		})
-		
-		app.directive('mDirective', function() {
-			return {
-				link :  function() {
-					alert('M is working..');
-				}
-			}
-		})
-	</script>
+		}
+	})
+</script>
 </head>
 <body ng-app="myApp">
 
-<p>
-	AngularJS에서 module은 응용프로그램을 정의한다.<br />
-	Angularjs 에서는 module과 controller, directive, filter등을 추가 할 수 있다.<br />
-</p>
+	<p>
+		AngularJS에서 module은 응용프로그램을 정의한다.<br /> Angularjs 에서는 module과
+		controller, directive, filter등을 추가 할 수 있다.<br />
+	</p>
 
-<p>
-	AngularJS 에서 스크립트 위치는 header 쪽에 선언하는 것이 좋다. 각 라이브러리들을 로딩하는데 기존 javascript 보단 오래 걸릴 수 있기 때문이다.<br />
-</p>
-<div >
+	<p>
+		AngularJS 에서 스크립트 위치는 header 쪽에 선언하는 것이 좋다. 각 라이브러리들을 로딩하는데 기존
+		javascript 보단 오래 걸릴 수 있기 때문이다.<br />
+	</p>
+	<div>
 
-	<p my-directive></p>
-	
-	<my-directives name='mydirectives' directive-editor="ms"></my-directives>
-	
-	<!-- directive:mDirective -->
-</div>
+		<p my-directive></p>
+
+		<my-directives name='mydirectives' directive-editor="ms"></my-directives>
+
+		<!-- directive:mDirective -->
+	</div>
 
 </body>
 </html>
