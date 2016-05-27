@@ -25,7 +25,7 @@
 					name : '='	// = 는 데이터 형태 그대로, @는 string 형태로, &는 펑션을 파라미터로 넘길때.
 					, directiveEditor : '@'	// 전달되는 Attribute나 directive 이름의 대문자는 - 으로 연결 되는 부분이 그렇게 된다.
 				},
-				templateUrl : 'directives.html',	// templateUrl과, template 등으로 나눈다. template는 직접 DOM을 작성하면 된다.
+				templateUrl : '/angular-example/directives.html',	// templateUrl과, template 등으로 나눈다. template는 직접 DOM을 작성하면 된다.
 				controller :  function($scope) {	// directive로 불러온 화면에서 사용될 로직들을 정의해서 사용할 수 있다.
 				
 				}
@@ -33,8 +33,10 @@
 		})
 		
 		app.directive('mDirective', function() {
-			link :  function() {
-				alert('M is working..');
+			return {
+				link :  function() {
+					alert('M is working..');
+				}
 			}
 		})
 	</script>
