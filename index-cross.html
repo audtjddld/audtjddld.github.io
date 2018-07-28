@@ -1,0 +1,37 @@
+<html>
+<head>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+  <script type="text/javascript" src="jquery.ajax-cross-origin.min.js"></script>
+</head>
+
+<body>
+
+<input type="text" id="url" style="width: 400px" value ="http://display.cjmall.com/p/item/40030509">
+<input type="button" id="btn" value="Get JSON">
+<br/><br/>
+<div id="test" />
+
+<script type="text/javascript">
+$(function() {
+  $( '#service' ).on( 'change', function(){
+    $( '#url' ).val( $( this ).val() );
+  });
+  
+  $( '#url' ).val( $( '#service' ).val() );
+  
+  $( '#btn' ).click(function(){
+    var url = $( '#url' ).val()
+    
+    $.ajax({
+      crossOrigin: true,
+      url: url,
+      success: function(data) {
+        alert(data);
+      }
+    });
+  });
+}); 
+</script>
+
+</body>
+</html>
