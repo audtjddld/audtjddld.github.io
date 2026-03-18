@@ -1,0 +1,19 @@
+---
+title: "use case diagram tool"
+date: 2016-01-02 20:57:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220585712755"
+---
+
+무료이고 다운로드 링크
+
+<http://sourceforge.net/projects/staruml/files/staruml/5.0/>
+
+[StarUML -  Browse /staruml/5.0 at SourceForge.netsourceforge.net](http://sourceforge.net/projects/staruml/files/staruml/5.0/)
+
+매뉴얼은
+
+<http://staruml.sourceforge.net/docs/user-guide(ko>)/toc.html
+
+[StarUML 5.0 사용자 가이드staruml.sourceforge.net](http://staruml.sourceforge.net/docs/user-guide(ko)/toc.html)
+

@@ -1,0 +1,7 @@
+---
+title: "angularjs broadcast, on 활용"
+date: 2016-06-13 14:02:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220734984565"
+---
+

@@ -1,0 +1,253 @@
+---
+title: "java ojdbc 연결하기"
+date: 2013-02-15 14:47:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60183677884"
+---
+
+출처 : <http://ictconnect.tistory.com/65>
+
+
+
+**자바에  연결하기 위한 Oracle DB 드라이버
+
+[ ojdbc14.jar](http://ictconnect.tistory.com/attachment/cfile9.uf@127835484F75468534E3A7.jar)
+
+자바에서 오라클 DB 연결 및 데이터 가져오기
+
+
+
+
+1**2
+import java.sql.Connection;
+
+import java.sql.DriverManager;
+
+import java.sql.ResultSet;
+
+import java.sql.Statement;
+
+public class DbTest1 {
+
+  Connection conn; //DB 와 연결을 담당
+
+  Statement stmt; //sql문 실행
+
+  ResultSet rs;  //select 의 결과에 접근
+
+
+
+  public DbTest1() {
+
+   try {
+
+    //1. Driver 로딩
+
+    Class.forName("oracle.jdbc.driver.OracleDriver");
+
+   } catch (Exception e) {
+
+    System.out.println("로딩 실패 :" + e);
+
+    return;
+
+   }
+
+
+
+   //System.out.println("로딩 성공");
+
+   connect();
+
+  }
+
+
+
+  private void connect(){
+
+   try {
+
+    //2. DB 연결
+
+    conn = DriverManager.getConnection("odbc:oracle:thin:@localhost:1521:xe", "scott", "tiger");
+
+   } catch (Exception e) {
+
+    System.out.println("DB 연결 실패:" + e);
+
+    return;
+
+   }
+
+
+
+   try {
+
+    //3. sql 실행
+
+    stmt = conn.createStatement();
+
+
+
+    //select
+
+    rs = stmt.executeQuery("select * from sawon");
+
+    if(rs.next() == false){
+
+     System.out.println("자료가 없어요");
+
+     return;
+
+    }
+
+    String sawon_no = rs.getString("sawon_no");
+
+    String sawon_name = rs.getString("sawon_name");
+
+    String sawon_jik = rs.getString("sawon_jik");
+
+    int sawon_pay = rs.getInt("sawon_pay");
+
+
+
+    System.out.println(sawon_no + " " + sawon_name + " " +
+
+      sawon_jik + " " + sawon_pay);
+
+
+
+   } catch (Exception e) {
+
+    System.out.println("처리 오류 :" + e);
+
+   }
+
+  }
+
+
+
+  public static void main(String[] args) {
+
+   new DbTest1();
+
+  }
+
+}
+
+
+
+
+
+두번째 샘플**
+
+package JDBC;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class DbTest2 {
+  private Connection conn;
+  private Statement stmt;
+  private ResultSet rs;
+  public DbTest2(){
+
+   try {
+
+    Class.forName("oracle.jdbc.driver.OracleDriver");
+
+   } catch (Exception e) {
+
+    System.out.println("로딩 실패 :" + e);
+
+    return;
+
+   }
+
+
+
+   try {
+
+    conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "scott", "tiger");
+
+   } catch (Exception e) {
+
+    System.out.println("DB 연결 실패: " + e);
+
+    return;
+
+   }
+
+
+
+   try {
+
+    stmt = conn.createStatement();
+
+
+
+    //목록보기
+
+    String sql = "select code,sang,su,dan from sangdata";
+
+    rs = stmt.executeQuery(sql);
+
+    while (rs.next()) {
+
+     String code = rs.getString("code");
+
+     String sang = rs.getString("sang");
+
+     String su = rs.getString("su");
+
+     int dan = rs.getInt("dan");
+
+     String str = code + " " + sang + " " + su + " " + dan;
+
+     System.out.println(str);
+
+    }
+
+   } catch (Exception e) {
+
+    System.out.println("sql 처리 오류 : " + e);
+
+   } finally{
+
+    //자원 반환
+
+    try {
+
+     if(rs != null) rs.close();
+
+     if(stmt != null) stmt.close();
+
+     if(conn != null) conn.close();
+
+
+
+    } catch (Exception e2) {
+
+     // TODO: handle exception
+
+    }
+
+   }
+
+
+
+  }
+
+
+
+
+
+  public static void main(String[] args) {
+
+   new DbTest2();
+
+  }
+
+}

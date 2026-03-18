@@ -1,0 +1,81 @@
+---
+title: "The bean 'requestMappingHandlerAdapter', defined in class path resource"
+date: 2019-11-07 16:56:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221700926896"
+---
+
+2019-11-07:16:50:03.562 WARN 1900 --- [main] org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext.refresh(AbstractApplicationContext.java:558) : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'requestMappingHandlerAdapter' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Cannot register bean definition [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration$EnableWebMvcConfiguration; factoryMethodName=requestMappingHandlerAdapter; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]] for bean 'requestMappingHandlerAdapter': There is already [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.web.reactive.config.DelegatingWebFluxConfiguration; factoryMethodName=requestMappingHandlerAdapter; initMethodName=null; destroyMethodName=(inferred); defined in org.springframework.web.reactive.config.DelegatingWebFluxConfiguration] bound.
+
+2019-11-07:16:50:03.569 INFO 1907 --- [main] org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage(ConditionEvaluationReportLoggingListener.java:136) :
+
+​
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+
+2019-11-07:16:50:03.578 ERROR 1916 --- [main] org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter.report(LoggingFailureAnalysisReporter.java:40) :
+
+​
+
+***************************
+
+APPLICATION FAILED TO START
+
+***************************
+
+​
+
+Description:
+
+​
+
+The bean 'requestMappingHandlerAdapter', defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class], could not be registered. A bean with that name has already been defined in org.springframework.web.reactive.config.DelegatingWebFluxConfiguration and overriding is disabled.
+
+​
+
+Action:
+
+​
+
+Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
+
+​
+
+spring boot 2.0 -> 2.2로 업그래이드 하니 발생된 문제
+
+​
+
+auto configuration에서 WebMvcAutoConfiguration 를 제거 하니 정상적으로 동작한다.
+
+​
+
+
+
+
+
+
+
+```
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

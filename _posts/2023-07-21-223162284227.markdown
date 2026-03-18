@@ -1,0 +1,30 @@
+---
+title: "The Architect’s Blueprint: Understanding Software Styles and Patterns with Cheatsheet"
+date: 2023-07-21 11:43:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223162284227"
+---
+
+<https://medium.com/bytebytego-system-design-alliance/the-architects-blueprint-understanding-software-styles-and-patterns-with-cheatsheet-5c1f5fd55bbd>
+> [**The Architect’s Blueprint: Understanding Software Styles and Patterns with Cheatsheet**](https://medium.com/bytebytego-system-design-alliance/the-architects-blueprint-understanding-software-styles-and-patterns-with-cheatsheet-5c1f5fd55bbd)
+>
+> In software development, architecture plays a crucial role in shaping the structure and behavior of software systems. It provides a…
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

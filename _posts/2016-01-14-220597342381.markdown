@@ -1,0 +1,8 @@
+---
+title: "spring boot 한글 번역"
+date: 2016-01-14 14:59:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220597342381"
+---
+
+출처 : <https://github.com/ihoneymon/translate-spring-boot-reference>

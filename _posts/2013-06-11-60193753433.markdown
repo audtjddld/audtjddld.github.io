@@ -1,0 +1,16 @@
+---
+title: "솔라리스 압축 방법"
+date: 2013-06-11 11:29:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60193753433"
+---
+
+* gzip
+   gzip easy_container1 easy_container1.gz
+
+
+
+
+* tar
+
+   tar cvf easy_container.tar easy_container1

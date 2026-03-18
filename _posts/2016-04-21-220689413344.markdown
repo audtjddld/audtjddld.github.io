@@ -1,0 +1,95 @@
+---
+title: "@Temporal annotation"
+date: 2016-04-21 13:39:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220689413344"
+---
+
+The annotation @Temporal in official javadoc is described like below:
+**This annotation must be specified for persistent fields or properties of type java.util.Date and java.util.Calendar.
+So when the field variable is a java.util.Date or java.util.Calendar, it MUST **be annotated by @Temporal.
+
+There are 3 values for @Temporal
+
+- TemporalType.DATE
+- TemporalType.TIME
+- TemporalType.TIMESTAMP
+
+Here is a demo to show the usage of there 3 values. The Entity 'MyEntity' has a field called 'lastUpdateTime' which is a defined as a java.util.Date variable. let's update it in java like this:
+
+1
+
+2
+
+3
+
+4
+
+5
+
+`import` `java.util.Date;`
+
+`//...`
+
+`// MyEntity is the JPA entity, em is EntityManager context`
+
+`MyEntity e = em.find(MyEntity.``class``, 1L); ``//get the row with id=1`
+
+`e.setLastUpdateTime(``new` `Date());`
+
+### TemporalType.DATE
+
+If the column annotated with @Temporal(TemporalType.DATE**) like this:
+
+1
+
+2
+
+3
+
+`@Temporal``(TemporalType.DATE)`
+
+`@Column``(name=``"LAST_UPDATE_TIME"``)`
+
+`private` `Date lastUpdateTime;`
+
+The record in database after update will look like:<http://lh5.ggpht.com/-tNn4eS2EXLM/VJeqg2m6NAI/AAAAAAAAAWs/AXXo0my0VIw/s1600-h/Snap_2014.12.22%25252012.49.51_001%25255B4%25255D.png>
+
+### TemporalType.TIME
+
+If the column annotatedwith @Temporal(TemporalType.TIME**) like this:
+
+1
+
+2
+
+3
+
+`@Temporal``(TemporalType.TIME)`
+
+`@Column``(name=``"LAST_UPDATE_TIME"``)`
+
+`private` `Date lastUpdateTime;`
+
+The record in database after update will look like:<http://lh5.ggpht.com/-0kri9yz7dtQ/VJeqiHd5ApI/AAAAAAAAAW8/PIjIJlYxEt4/s1600-h/Snap_2014.12.22%25252013.06.58_002%25255B4%25255D.png>
+
+### TemporalType.TIMESTAMP
+
+If the column annotated with @Temporal(TemporalType.TIMESTAMP**) like this:
+
+1
+
+2
+
+3
+
+`@Temporal``(TemporalType.TIMESTAMP)`
+
+`@Column``(name=``"LAST_UPDATE_TIME"``)`
+
+`private` `Date lastUpdateTime;`
+
+The record in database after update will look like:<http://lh3.ggpht.com/-YzJmjlGWoWQ/VJequqrVJ1I/AAAAAAAAAXM/IYQ_MhHgKwg/s1600-h/Snap_2014.12.22%25252013.10.14_003%25255B4%25255D.png>
+
+
+출처 : <http://shengwangi.blogspot.kr/2014/12/the-value-of-annotation-temporal-for-date-column.html>

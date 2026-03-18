@@ -1,0 +1,35 @@
+---
+title: "HTTP Status Codes For Invalid Data: 400 vs. 422"
+date: 2016-02-18 17:17:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220631043776"
+---
+
+HTTP Status Codes For Invalid Data: 400 vs. 422
+
+By [Ben Nadel](https://plus.google.com/108976367067760160494?rel=author) on October 17, 2012
+
+Tags: [ColdFusion](http://www.bennadel.com/blog/tags/1-coldfusion-blog-entries.htm)
+
+Let's say that someone makes a request to your server with data that is in the correct format, but is simply not "good" data. So for example, imagine that someone posted a String value to an API endpoint that expected a String value; but, the value of the string contained data that was blacklisted (ex. preventing people from using "password" as their password). What HTTP status code would you return?
+
+Until now, [I would have returned a "400 Bad Request"](http://www.bennadel.com/blog/1990-Building-A-Twitter-Inspired-RESTful-API-Architecture-In-ColdFusion.htm), which, according to the w3.org, means:
+
+The request could not be understood by the server due to malformed syntax. The client SHOULD NOT repeat the request without modifications.
+
+This description doesn't quite fit the circumstance; but, if you go by [the list of core HTTP status codes defined in the HTTP/1.1 protocol](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html), it's probably your best bet.
+
+Recently, however, [Jamie Krug](http://jamiekrug.com/blog/) pointed out [to me] that popular APIs are starting to use HTTP extensions to get more granular with their error reporting. Specifically, many APIs, like Twitter and Recurly, are using the status code "422 Unprocessable Entity" as defined in [the HTTP extension for WebDAV](http://tools.ietf.org/html/rfc4918#section-11.2). HTTP status code 422 states:
+
+The 422 (Unprocessable Entity) status code means the server understands the content type of the request entity (hence a 415 (Unsupported Media Type) status code is inappropriate), and the syntax of the request entity is correct (thus a 400 (Bad Request) status code is inappropriate) but was unable to process the contained instructions. For example, this error condition may occur if an XML request body contains well-formed (i.e., syntactically correct), but semantically erroneous, XML instructions.
+
+Going back to our password example from above, this 422 status code feels much more appropriate. The server understands what you're trying to do; and it understands the data that you're submitting; it simply won't let that data be processed.
+
+HTTP status code 422 feels like a much more appropriate response for situations where the data is understood, but is still not valid. I think I'll start using this going forward. *Thanks Jamie*!
+
+출처 : <http://www.bennadel.com/blog/2434-http-status-codes-for-invalid-data-400-vs-422.htm>
+
+<http://www.bennadel.com/blog/2434-http-status-codes-for-invalid-data-400-vs-422.htm>
+
+[HTTP Status Codes For Invalid Data: 400 vs. 422www.bennadel.com](http://www.bennadel.com/blog/2434-http-status-codes-for-invalid-data-400-vs-422.htm)
+

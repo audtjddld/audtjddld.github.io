@@ -1,0 +1,155 @@
+---
+title: "redis value compression"
+date: 2022-01-19 11:36:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222625648273"
+---
+
+redis 설정할 때, value에 json으로 넣게 되면 많은 용량을 차지 할 것 같아서 변경하려 한다.
+
+<https://blog.naver.com/kkforgg/221695024408>
+> [**java Object Compression**](https://blog.naver.com/kkforgg/221695024408)
+>
+> Class binary를 압축하는 방법에 대해서 고민 하던 도중 위와 같은 방법이 있는걸 확인. 하지만 몇가지 -_...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+객체 압축 방법은 위와 같이 진행했었는데, 최근에 redis template 작성할 때, key, value Serializer를 사용할 수 있다는것을 알게되었다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+/**
+ * 레디스 설정.
+ */
+@Configuration
+public class RedisConfig {
+
+  @Value("${redis.host}")
+  private String host;
+
+  @Value("${redis.port}")
+  private int port;
+
+  /**
+   * redis connection factory bean을 등록합니다.
+   */
+  @Bean
+  public RedisConnectionFactory redisConnectionFactory() {
+    return new LettuceConnectionFactory(host, port);
+  }
+
+  /**
+   * redis connection ban을 등록합니다.
+   *
+   * @param factory redis connection factory bean
+   * @return redis connection
+   */
+  @Bean
+  public RedisTemplate redisTemplate(final RedisConnectionFactory factory) {
+    final RedisTemplate redisTemplate = new RedisTemplate<>();
+    redisTemplate.setConnectionFactory(factory);
+    redisTemplate.setKeySerializer(new StringRedisSerializer());
+    redisTemplate.setValueSerializer(new RedisSerializerGzip());
+    return redisTemplate;
+  }
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+```
+/**
+ * redis value compressiong Gzip 클래스.
+ */
+public class RedisSerializerGzip extends JdkSerializationRedisSerializer {
+
+  @Override
+  public Object deserialize(final byte[] bytes) {
+    return super.deserialize(decompress(bytes));
+  }
+
+  @Override
+  public byte[] serialize(final Object object) {
+    return compress(super.serialize(object));
+  }
+
+  ////////////////////////
+  // Helpers
+  ////////////////////////
+  private byte[] compress(final byte[] content) {
+    final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    try (final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream)) {
+      gzipOutputStream.write(content);
+    } catch (final IOException e) {
+      throw new SerializationException("Unable to compress data", e);
+    }
+    return byteArrayOutputStream.toByteArray();
+  }
+
+  private byte[] decompress(final byte[] contentBytes) {
+    final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    try {
+      IOUtils.copy(new GZIPInputStream(new ByteArrayInputStream(contentBytes)), out);
+    } catch (final IOException e) {
+      throw new SerializationException("Unable to decompress data", e);
+    }
+    return out.toByteArray();
+  }
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+출처 : <https://cache.one/read/15568742>
+
+​

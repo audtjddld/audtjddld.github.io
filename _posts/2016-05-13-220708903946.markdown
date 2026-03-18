@@ -1,0 +1,13 @@
+---
+title: "2016년 5월 13일 오후 6시 12분에 저장한 글입니다."
+date: 2016-05-13 18:12:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220708903946"
+---
+
+<http://stackoverflow.com/questions/15250928/how-to-change-springs-scheduled-fixeddelay-at-runtime>
+
+<http://stackoverflow.com/questions/15250928/how-to-change-springs-scheduled-fixeddelay-at-runtime>
+
+[How to change Spring's @Scheduled fixedDelay at runtimeI have a requirement to run a batch job at a fixed interval and have the ability to change the time of this batch job at runtime. For t...stackoverflow.com](http://stackoverflow.com/questions/15250928/how-to-change-springs-scheduled-fixeddelay-at-runtime)
+

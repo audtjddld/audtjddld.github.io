@@ -1,0 +1,39 @@
+---
+title: "자바 메일 [펌]"
+date: 2013-02-18 11:32:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60183935944"
+---
+
+출처 : <http://byulbada.egloos.com/2322532>
+
+
+
+[우선 SMTP 서버가 있어야 함. SMTP 서버는 OS들 중 서버 계열에서 설장 가능.**제어판 - 관리도구 - 인터넷 정보 서비스(IIS) - 기본 SMTP 가상 서버 - 속성 - 릴레이 - 추가(지정한 도메인으로만 보낼 수 있게 하거나, 반대로 지정한 도메인을 제외한 곳으로만 보낼 수 있게 설정할 수 있다.)](http://byulbada.egloos.com/2322532)[http://java.sun.com/products/javamail/downloads/index.html">JavaMail](http://java.sun.com/products/javamail/downloads/index.html)http://byulbada.egloos.com/2322532[JAF](http://java.sun.com/javase/technologies/desktop/javabeans/jaf/downloads/index.html)[2가지를 다운받아 각각 필요한 곳과 연결시켜준다.](http://byulbada.egloos.com/2322532)
+<http://byulbada.egloos.com/2322532>
+[package testSpace;import java.util.Date;import java.util.Properties;import javax.mail.Session;import javax.mail.internet.AddressException;import javax.mail.internet.InternetAddress;import javax.mail.internet.MimeMessage;import javax.mail.Message;import javax.mail.MessagingException;import javax.mail.Transport;public class JavaMail { public static void main(String[] args) {  Properties properties = new Properties();  properties.put("mail.transport.protocol", "smtp");  properties.put("mail.smtp.host", "127.0.0.1");  properties.put("mail.smtp.port", "25");    Session mailSession = Session.getInstance(properties);  Message message = new MimeMessage(mailSession);    try {   message.setFrom(new InternetAddress("보내는 사람 주소"));   message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("받는 사람 주소"));   message.setSentDate(new Date());   message.setSubject("메일 제목이 들어갈 부분");      message.setText("메일 내용이 들어갈 부분");      Transport.send(message);   System.out.println("E-mail successfully sent!");  } catch (AddressException e) {   e.printStackTrace();   System.out.println("AddressException : " + e);  } catch (MessagingException e) {   e.printStackTrace();   System.out.println("MessagingException : " + e);  } }} ](http://byulbada.egloos.com/2322532)
+
+
+
+소스 출처 :
+
+[자바메일**](http://blog.daum.net/pikisvill/8928977)http://byulbada.egloos.com/2322532
+<http://byulbada.egloos.com/2322532>
+[ ](http://byulbada.egloos.com/2322532)
+
+출처:
+
+[[ Java ] 메일 보내기](http://byulbada.egloos.com/2322532)http://byulbada.egloos.com/2322532
+<http://byulbada.egloos.com/2322532>
+[ ](http://byulbada.egloos.com/2322532)
+
+
+
+
+
+지식인 : <http://kin.naver.com/qna/detail.nhn?d1id=1&dirId=1040201&docId=69485976>
+
+
+
+자바 메일 2번째 출처 :  <http://ukzzang.tistory.com/61>

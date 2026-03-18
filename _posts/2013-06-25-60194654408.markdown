@@ -1,0 +1,141 @@
+---
+title: "Spring Excel View를 이용해서 Excel 생성 후 다운로드 시키기"
+date: 2013-06-25 09:50:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60194654408"
+---
+
+------------ excel view 시작 -------------------
+
+@Component
+public class UserListExcelView extends AbstractExcelView{
+
+ @Override
+ protected void buildExcelDocument(Map<String, Object> model,
+   HSSFWorkbook wb, HttpServletRequest request,
+   HttpServletResponse response) throws Exception {
+  // TODO Auto-generated method stub
+
+  HSSFSheet sheet = wb.createSheet();
+  int rowIdx = 0;
+
+  HSSFCellStyle titleStyle = wb.createCellStyle();
+  titleStyle.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
+  titleStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+  titleStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+  titleStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+  titleStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
+  titleStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+  titleStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
+
+  // 타이틀 설정
+  String[] titleList = { "아이디", "이름", "EMAIL","연락처","등록일","최종접속"};
+
+  HSSFRow titleRow = sheet.createRow(rowIdx++);
+  for (int i = 0; i < titleList.length; i++) {
+   HSSFCell cell = titleRow.createCell(i);
+   cell.setCellValue(new HSSFRichTextString(titleList[i]));
+   cell.setCellStyle(titleStyle);
+  }
+
+  // 엑셀 서식 설정
+  HSSFCellStyle numStyle = wb.createCellStyle();
+
+  numStyle.setDataFormat(wb.createDataFormat().getFormat("#,##0"));
+
+  HSSFCellStyle percentStyle = wb.createCellStyle();
+  percentStyle.setDataFormat(wb.createDataFormat().getFormat("0%"));
+
+  HSSFCellStyle dateStyle = wb.createCellStyle();
+  dateStyle.setDataFormat(wb.createDataFormat().getFormat("yyyy/mm/dd"));
+
+  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
+  // 데이터 추가
+  List<AdminVO> list = (List)model.get("list");
+
+  for (AdminVO vo : list) {
+   HSSFRow dataRow = sheet.createRow(rowIdx++);
+
+    HSSFCell idxCell = dataRow.createCell(0);
+    idxCell.setCellValue(new HSSFRichTextString(vo.getAm_id()));
+
+    HSSFCell nameCell = dataRow.createCell(1);
+
+    nameCell.setCellValue(new HSSFRichTextString(vo.getAm_name()));
+
+    HSSFCell statusCell = dataRow.createCell(2);
+    statusCell.setCellValue(new HSSFRichTextString(vo.getAm_status()));
+
+    HSSFCell emailCell = dataRow.createCell(3);
+    emailCell.setCellValue(new HSSFRichTextString(vo.getAm_email()));
+
+    HSSFCell phoneCell = dataRow.createCell(4);
+    phoneCell.setCellValue(new HSSFRichTextString(vo.getAm_phone()));
+
+    HSSFCell curdateCell = dataRow.createCell(5);
+    curdateCell.setCellValue(new HSSFRichTextString(vo.getCurdate()));
+
+
+  }
+
+  for (int i = 0; i < titleList.length; i++) {
+   sheet.autoSizeColumn((short)i);
+  }
+
+  // 파일 다운로드 시작
+  String fileInfo = String.format("attachment; filename=\"" + createFileName() + "\"");
+  response.setHeader("Content-Disposition", fileInfo);
+
+ }
+
+ private String createFileName() {
+  SimpleDateFormat fileFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+  return new StringBuilder("User")
+    .append("-").append(fileFormat.format(new Date())).append(".xls").toString();
+ }
+
+}
+------------ excel view 끝 -------------------
+
+------------ controller ----------------------
+
+public ModelAndView excelDownLoad (HttpServletRequest request, HttpServletResponse response ,
+     ModelMap modelMap,
+      @ModelAttribute AdminVO vo,
+      UserListExcelView excelView)
+
+....
+
+    resultMap = adminMemeberService.selAdminMemberList(vo);
+    list = (List<AdminVO>)resultMap.get("list");
+
+    mav.addObject("list",list);
+    mav.setView(excelView);
+
+------------ controller 끝----------------------
+
+ModelAndView 에 addObject 한 객체 값은
+
+setView에서 excelView 로 경로를 잡아주면
+
+ protected void buildExcelDocument(Map<String, Object> model,
+ HSSFWorkbook wb, HttpServletRequest request,
+ HttpServletResponse response) throws Exception
+
+에서 Map<String, Object> model 에서 get으로 해당 객체 변수명해서 받아올 수 있다.
+
+대신 poi를 사용하기 때문에 Maven에서는
+
+  <!--  Poi  -->
+  <dependency>
+   <groupId>org.apache.poi</groupId>
+   <artifactId>poi</artifactId>
+   <version>3.9</version>
+  </dependency>
+
+
+선언해 주시고, 그외에서는
+
+jar파일을 받아서 셋팅해주면 된다.

@@ -1,0 +1,124 @@
+---
+title: "java 현재 호출한 클래스, 메서드명 알아내기"
+date: 2015-12-29 14:39:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220581816192"
+---
+
+출처 :
+
+<http://utoi.tistory.com/entry/%ED%98%84%EC%9E%AC-%EB%A9%94%EC%86%8C%EB%93%9C%EB%AA%85%ED%95%A8%EC%88%98%EB%AA%85-%EC%95%8C%EC%95%84%EB%82%B4%EA%B8%B0>
+
+[현재 메소드명/함수명 알아내기Get the current method name <http://www.rgagnon.com/javadetails/java-0420.html> 개발하다 보면 현재 함수나 메소드명을 출력하고 싶은 경우가 ...utoi.tistory.com](http://utoi.tistory.com/entry/현재-메소드명함수명-알아내기)
+
+Get the current method name
+<http://www.rgagnon.com/javadetails/java-0420.html>
+
+개발하다 보면 현재 함수나 메소드명을 출력하고 싶은 경우가 있다. 물론 함수 안에서 일일이 함수명을 적어서 출력하거나 할 수도 있지만, 그렇게 하는 방법은 그리 좋은 방법이 못된다.
+
+Java 같은 경우에는 주로 StackTrace의 정보를 이용해서 구한다. 1.4에서는 다음과 같은 코드로 현재 메소드명을 구한다.
+
+new Exception().getStackTrace()[0].getMethodName()
+
+Java 1.5 버전에서는 현재 메소드의 정보가 담긴 StackTrace 정보가 약간 바뀌었는지 현재 메소드명 구하는 방법도 바뀌었다. 하지만 이 방법은 new Exception()을 했을 때 Exception 객체 생성비용이 매번 발생하기 때문에 효율성이 떨어진다. 대신 1.5에서는 다음과 같은 방법으로도 현재 메서드명을 구할 수 있다.
+
+StackTraceElement e[] = Thread.currentThread().getStackTrace();
+
+for (StackTraceElement s : e) {
+  if (doNext) {
+     System.out.println(s.getMethodName());
+     return;
+  }
+  doNext = s.getMethodName().equals("getStackTrace");
+}
+
+<http://dev.kanngard.net/Permalinks/ID_20030114224837.html>
+이런 방법도 있다.
+/**
+ * Return the name of the routine that called getCurrentMethodName
+ *
+ * @author Johan K?ng?d, <http://dev.kanngard.net> (found on the net in 2000,
+ *  don큧 remember where...)
+ */
+public String getCurrentMethodName() {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintWriter pw = new PrintWriter(baos);
+    (new Throwable()).printStackTrace(pw);
+    pw.flush();
+    String stackTrace = baos.toString();
+    pw.close();
+
+    StringTokenizer tok = new StringTokenizer(stackTrace, "\n");
+    String l = tok.nextToken(); // 'java.lang.Throwable'
+    l = tok.nextToken(); // 'at ...getCurrentMethodName'
+    l = tok.nextToken(); // 'at ...<caller to getCurrentRoutine>'
+    // Parse line 3
+    tok = new StringTokenizer(l.trim(), " <(");
+    String t = tok.nextToken(); // 'at'
+    t = tok.nextToken(); // '...<caller to getCurrentRoutine>'
+    return t;
+}
+
+어찌됐건 모두 StackTrace 정보를 이용해서 현재 메소드를 구한다. 그리 바람직한 방식은 아니라고 할 수 있다.
+
+참고로 C# 같은 경우에는 아예 프레임워크 차원에서 제공한다.
+<http://msdn.microsoft.com/ko-kr/library/system.reflection.methodbase.getcurrentmethod.aspx>
+
+string methodName = System.Reflection.MethodBase.GetCurrentMethod().Name;
+
+C/C++ 이라면 __func__이나 __FUNCTION__를 사용한다.
+<http://yesarang.tistory.com/74>
+
+주의할점은 C/C++이라면 이식성을 고려해야 하기 때문에 컴파일러에서 이것들을 지원하는지 확인해야 한다는 것이다. 링크의 설명을 인용해 본다.> <font size="2">주의할 점은 __FUNCTION__ 은 비표준으로 컴파일러 벤더들이 자체적으로 제공하는 확장 매크로로 preprocessing 중에 문자열 리터럴로 치환되는 반면 __func__ 는 C99 표준에 포함된 것으로 컴파일러에 의해 자동적으로 정의되는 const char * 형의 변수라는 점입니다.일 단 GCC는 __FUNCTION__ 과 __func__ 둘 다를 지원하는 반면 Microsoft Visual C++ 2005의 cl은 __FUNCTION__ 만 지원하는 군요. 또 신기한 점은 GCC, G++은 __FUNCTION__ 을 __func__ 와 동일하게 처리한다는 점입니다.</font>
+ ---------- update at 그 다음날 아침 ----------루비라면 이렇게.http://www.ruby-forum.com/topic/75258
+module Kernel    private        def this_method_name            caller[0]=~/`(.*?)'/ and $1        end endclass Foo    def test_method        this_method_name    end endputs Foo.new.test_method
+
+루비라면 좀 C#이랑 비슷할 줄 알았다.... ;
+---------- update at 그 다음날 아침 ----------
+
+참고사이트>
+
+<http://decoder.tistory.com/596>
+
+***********************************************************************************
+
+==현재 메소드와 현재 클래스를 출력하는 소스**
+
+StackTraceElement[] stacks = new Throwable().getStackTrace();**StackTraceElement currentStack = stacks[ 0 ];
+System.out.println( "my class : " + currentStack.getClassName() );
+System.out.println( "my method : " + currentStack.getMethodName() );
+
+
+==이전 메소드와 이전 클래스를 출력하는 소스**
+
+StackTraceElement[] stacks = new Throwable().getStackTrace();**StackTraceElement beforeStack = stacks[ 1 ];
+System.out.println( "my before class : " + beforeStack.getClassName() );
+System.out.println( "my before method : " + beforeStack.getMethodName() );
+
+
+
+==현재 호출 stack의 갯수는**
+
+StackTraceElement[] stacks = new Throwable().getStackTrace();
+
+System.out.println("stacks.length:"+stacks.length);
+
+
+
+자바에서 호출한 메소드를 알고 싶을때 이용할 수 있는 소스들이다
+
+호출 stack만큼 배열로 저장되므로 그 값이 넘지 않도록 사용해야 한다
+
+또한 1.4부터 추가된 클래스이므로 이전은 사용불가능 하다
+
+**[출처]** [자바에서 현재메소드와 호출한 메소드를 출력하는 소스](http://blog.naver.com/clean820818/10086133151)|**작성자** [몽상가](http://blog.naver.com/clean820818)
+
+<http://blog.naver.com/PostListByTagName.nhn?blogId=clean820818&logType=mylog&tagName=%C0%CF%BB%F3%A1%A4%BB%FD%B0%A2>
+
+<http://blog.naver.com/PostView.nhn?blogId=clean820818&logNo=10086133151>
+
+<http://blog.naver.com/clean820818/10086133151>
+
+[자바에서 현재메소드와 호출한 메소드를 출력하는 소스==현재 메소드와 현재 클래스를 출력하는 소스 StackTraceElement[] stacks = new Throwable().getSta...blog.naver.com](http://blog.naver.com/clean820818/10086133151)
+
+<http://blog.naver.com/PostView.nhn?blogId=clean820818&logNo=10086133151>

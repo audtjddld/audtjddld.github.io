@@ -1,0 +1,14 @@
+---
+title: "아마존 웹서비스 인증서 putty 사용"
+date: 2015-11-19 14:55:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220543943429"
+---
+
+<http://hyeonstorage.tistory.com/271>
+
+<http://hyeonstorage.tistory.com/271>
+
+[아마존 웹서비스(AWS) EC2 접속 Putty아마존 웹서비스(AWS) EC2 접속 Putty AWS의 EC2를 Ubuntu와 같은 리눅스로 설치햇다면, putty와 같은 프로그램으로 SSH 접속을 해...hyeonstorage.tistory.com](http://hyeonstorage.tistory.com/271)
+
+US West 로 만들었다가 Japan으로 변경 중 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ

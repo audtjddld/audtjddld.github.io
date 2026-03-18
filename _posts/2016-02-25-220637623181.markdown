@@ -1,0 +1,313 @@
+---
+title: "Mysql 튜닝"
+date: 2016-02-25 11:03:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220637623181"
+---
+
+출처  :
+
+<http://egloos.zum.com/mcchae/v/11063919>
+
+[지훈현서egloos.zum.com](http://egloos.zum.com/mcchae/v/11063919)
+
+일단 MySQL에서는
+
+MyISAM, InnoDB, Archive, BerkeleyDB 등등을
+
+테이블 엔진으로 사용할 수 있습니다.
+
+즉 테이블 코어 API 가 존재하고 거기에 Pluggable 하게
+
+어답터 엔진을 적용 시킬 수 있는 구조이지요.
+
+가장 많이 사용하는 엔진이 InnoDB, 그 다음이 MyISAM 일 것 같군요.
+
+우선 위 두 테이블 엔진의 차이를 제 나름대로 비교해 보았습니다.
+
+InnoDB : Transaction 존재, Record 단위 Lock
+
+MyISAM : Transaction 불가, Table 단위 Lock
+
+위의 특성을 가지고 다음과 같은 데이터의 시나리오를 유추해 보겠습니다.
+
+Read-Only 데이터 성의 로그 파일 입력인 경우:
+
+보통 로그는 단일 Append-Only인 경우가 대부분이고,
+
+Single-Append, Multipl-Read 인 경우가 많습니다.
+
+이런 형식에서는 InnoDB 보다는 MyISAM이 조금 더 유리했습니다.
+
+또한 myisampack 이라는 유틸리티로 나중에 Read-Only용 압축
+
+테이블을 유지할 수도 있어 디스크 용량 등의 관점에서도 훨씬 유리합니다.
+
+빈번하게 입력및 읽는 식의 Event 정보:
+
+여러 다양한 이벤트가 발생하고 Multiple-Insert 및 Multiple-Read 인 경우에는
+
+InnoDB를 사용하는 것이 훨씬 유리하다고 할 수 있습니다.
+
+그 이유는 이벤트를 입력하기 Write-Lock을 거는 단위가 MyISAM 엔진인 경우
+
+테이블 단위기 때문에 테이블의 끝에 레코드를 입력하더라도,
+
+다른 곳의 모든 레코드를 읽을 수 없는 것을 의미하기 때문입니다.
+
+위의 예는 극히 일 부분의 차이를 기술해 본 것으로서,
+
+엔진의 특성을 잘 파악하고 적용하는 것이 꼭 필요하다는 것을 나타냅니다.
+
+다음은 MySQL의 설정에 따른 튜닝을 살펴보겠습니다.
+
+최근에 MyISAM 테이블이 있었는데
+
+SELECT COUNT(*) FROM T WHERE F1 >= 'A' AND F1 < 'Z';
+
+라는 레코드 개수를 세는 SQL문을 돌렸습니다.
+
+테이블 결과가 100만 이하인 경우에는 그런데로 속도가 괜찮았는데,
+
+위의 결과가 800만 정도 나올 경우, 수분이 지나도 결과가 나오지 않는
+
+경우가 발생했습니다.
+
+물론 F1 필드는 색인이 걸려 있었고,
+
+EXPLAIN SELECT COUNT(*) FROM T WHERE F1 >= 'A' AND F1 < 'Z';
+
+으로 살펴보아도 F1 색인을 탄다고 나왔습니다.
+
+그런데 의아한 생각이 들었습니다.
+
+800만이라는 수 만큼의 색인(B-TREE) Traverse 하는 속도는 수초 혹은 십초 안으로
+
+결과가 나와야 하는 안 나오니 말입니다.
+
+여러가지 원인이 있을 수 있으나,
+
+my.ini 파일에 mysqld 카테고리에 다음과 같은 속성을
+
+조종하면...
+
+# max_connections (> 100) : Connection pool 등이 연결할 연결 개수 입니다
+
+max_connections=128
+
+# wait_timeout (< 28800) : 연결을 맺은 상태에서 아무 동작을 않을 시 끊길 Timeout 입니다
+
+wait_timeout=28800
+
+# interactive_timeout (< 28800) : 연결을 맺은 상태에서 마지막 SQL 동작 후 Timeout 입니다 (확인요..T.T)
+
+interactive_timeout=28800
+
+# key_buffer_size (> 7.8G) : MyISAM 테이블이 모든 쓰레드에서 공유할 색인 블락 크기
+
+# 결국 위의 Count() 결과는 이 변수와 관계가 깊군요 (실제 메모리의 25% 정도가 적당하다고도 합니다)
+
+key_buffer_size=7.8G
+
+#join_buffer_size (> 128.0K, or always > use indexes with joins)
+
+# 색인을 사용하지 않아 전체 테이블 검색을 요하는 경우에서의 join, 색인 검색, 범위 검색 등의 경우에
+
+# 사용할 버퍼 크기 (이것도 Full Table 검색 시 속도와 관계가 있겠네요)
+
+join_buffer_size=256K
+
+# tmp_table_size (> 16M) : 검색 결과 등을 담기 위한 메모리 임시 테이블 크기
+
+# 만약 이 임시 결과를 넘게 되면 일반 MyISAM 엔진에 임시 결과를 담게 됩니다.
+
+# Count()와 같은 집계 함수가 아니고 일반 SELECT 인 경우에는,
+
+# SELECT * FROM T LIMIT 10, 30 등으로 결과를 제한하시기 바랍니다.
+
+tmp_table_size=64M
+
+# max_heap_table_size (> 16M)
+
+# 사용자가 생성한 메모리 테이블의 최대 크기 (보통 tmp_table_size와 관계 있으며 유사 크기로 지정)
+
+max_heap_table_size=64M
+
+# table_cache (> 1024) : 모든 쓰레드에서 읽힐 open 시켜 놓을 테이블의 개수
+
+table_cache=1024
+
+위와 같은 정도로 튜닝의 시작점을 잡으면 될 것 같습니다.
+
+헌데 문제는 어떻게 최적 값을 잡을 수 있는가 입니다.
+
+이렇게 하기 위해서 다음과 같은 튜너 프로그램이 존재합니다.
+
+[MySQLTuner-perl](https://github.com/major/MySQLTuner-perl)
+
+<http://pds26.egloos.com/pds/201310/28/18/a0105618_526e020ab4993.png>
+
+위에서와 같은 mysqltuner.pl 스크립트를 저장한 후,
+
+실행시켜 봅니다.
+
+(우분투에서 윈도우에 설치된 MySQL 서버에 돌려보아도 되었습니다.
+
+ 윈도우에서는 돌려보지 않았습니다)
+
+이 스크립트는 필요한 정보만 읽어보고 쓰는 정보는 없으므로
+
+오류 발생에 대한 걱정을 안하셔도 됩니다. (라고 되어 있네요)
+
+그런데 다음과 같은 조건에 하라고 되어 있네요.
+
+- 적어도 MySQL 서버를 만 하루 이상 작동하고 있는 상태에서 실행시키십시오. 그렇지 않으면 너무 적은 시각에 따라 부정확한 프로파일링 결과가 나올 수 있습니다.
+- 만약 tmp_table_size 혹은 max_heap_table_size 변수를 변경하려고 한다면 두 변수 모두 동일한 값으로 설정하십시오. 서버에 충분한 메모리가 있다면 충분한 크기로 늘려도 상관없습니다.
+- 만약 join_buffer_size 변수를 수정하라고 결과가 나오면 max_connections 변수 값의 몇 배수로 설정값을 조종하시기 바랍니다.
+- 만약 innodb_buffer_pool_size 값을 늘리라고 나오면 충분히 큰 값을 지정하십시오. 왜냐하면 DBMS 안에서 모든 InnoDB와 관계되어 있기 때문입니다. (만약 RAM이 적다면 구입하셔요~ 헐...)
+
+위와 같은 결과를 간과하지 마십시오. 퍼포먼스에 심각한 영향을 끼칠 수 있습니다.
+
+또한 다음과 같은 Perfomance Metrics 결과 리포트에 주목하십시오.
+
+[--] Total buffers: 2.6G global + 130.6M per thread (100 max threads)
+
+[OK] Maximum possible memory usage: 15.3G (48% of installed RAM)
+
+[OK] Highest usage of available connections: 81% (81/100)
+
+위와 같은 결과에서Maximum possible memory usage 의 결과가 50% 이하로 나오도록 해야 합니다.
+
+그 아래의 결과는 max_connections 에 비하여 얼마나 연결을 사용하는가 하는 것입니다.
+
+만약 값이 충분히 작다면 (예, 70% 이하)  max_connections 값을 더 낮추십시오.
+
+위의 join_buffer_size 하고도 관계있습니다.
+
+단 주의할 점은 MySQL 서버를 적어도 24시간 이상 정상 동작 시켜야만
+
+보다 정확한 결과를 얻을 수 있습니다.
+
+다음은 실제 돌려본 결과의 예, 입니다.
+
+$ ./mysqltuner.pl --host 1.2.3.4 --user root --pass password --forcemem 8192
+
+ >>  MySQLTuner 1.2.0 - Major Hayden <major@mhtx.net>
+
+ >>  Bug reports, feature requests, and downloads at <http://mysqltuner.com/>
+
+ >>  Run with '--help' for additional options and output filtering
+
+[--] Performing tests on 1.2.3.4:3306
+
+[OK] Logged in using credentials passed on the command line
+
+[--] Assuming 1024 MB of physical memory
+
+[!!] Assuming 0 MB of swap space (use --forceswap to specify)
+
+-------- General Statistics --------------------------------------------------
+
+[--] Skipped version check for MySQLTuner script
+
+[OK] Currently running supported MySQL version 5.5.16
+
+-------- Storage Engine Statistics -------------------------------------------
+
+[--] Status: +Archive -BDB -Federated +InnoDB -ISAM -NDBCluster
+
+[--] Data in MyISAM tables: 26G (Tables: 12)
+
+[--] Data in InnoDB tables: 976K (Tables: 18)
+
+[--] Data in PERFORMANCE_SCHEMA tables: 0B (Tables: 17)
+
+[!!] Total fragmented tables: 18
+
+-------- Security Recommendations  -------------------------------------------
+
+[OK] All database users have passwords assigned
+
+-------- Performance Metrics -------------------------------------------------
+
+[--] Up for: 14h 45m 43s (3K q [0.059 qps], 61 conn, TX: 3M, RX: 634K)
+
+[--] Reads / Writes: 98% / 2%
+
+[--] Total buffers: 41.0M global + 896.0K per thread (100 max threads)
+
+[OK] Maximum possible memory usage: 128.5M (12% of installed RAM)
+
+[OK] Slow queries: 0% (2/3K)
+
+[OK] Highest usage of available connections: 10% (10/100)
+
+[!!] Key buffer size / total MyISAM indexes: 11.0M/8.8G
+
+[!!] Key buffer hit rate: 0.0% (10M cached / 10M reads)
+
+[!!] Query cache is disabled
+
+[OK] Sorts requiring temporary tables: 0% (0 temp sorts / 20 sorts)
+
+[OK] Temporary tables created on disk: 0% (1 on disk / 181 total)
+
+[OK] Thread cache hit rate: 83% (10 created / 61 connections)
+
+[OK] Table cache hit rate: 34% (71 open / 206 opened)
+
+[OK] Open file limit used: 2% (72/2K)
+
+[OK] Table locks acquired immediately: 100% (1K immediate / 1K locks)
+
+[OK] InnoDB data size / buffer pool: 976.0K/18.0M
+
+-------- Recommendations -----------------------------------------------------
+
+General recommendations:
+
+    Run OPTIMIZE TABLE to defragment tables for better performance
+
+    MySQL started within last 24 hours - recommendations may be inaccurate
+
+    Enable the slow query log to troubleshoot bad queries
+
+Variables to adjust:
+
+    key_buffer_size (> 8.8G)
+
+    query_cache_size (>= 8M)
+
+차분하게 마지막 결과만 잘 반영해도
+
+많은 차이가 날 것입니다.
+
+결국 검색 결과가 너무 많을 경우에는,
+
+SELECT COUNT(1) FROM T WHERE F1 >= 'A' AND F1 < 'Z';
+
+에서 제한을 걸기 위하여
+
+SELECT COUNT(1) FROM T WHERE F1 >= 'A' AND F1 < 'Z' LIMIT 100000;
+
+이라고 10만으로 제한을 걸어도 결국 COUNT() 집계 함수는 모든 Traverse를 다 하게 됨으로
+
+결과가 느렸습니다. (실제 결과가 천만, 억 등이 넘는 경우)
+
+이런 경우, 다음과 같이 질의를 하면 빠른 결과를 찾을 수 있습니다...
+
+SELECT 1 FROM T WHERE F1 >= 'A' AND F1 < 'Z' LIMIT 100000,1;
+
+위의 결과가 '1' 이라고 나오면 100000만번째 결과가 있는 것이고,
+
+이 결과가 없으면 100000개 이하의 결과가 있는 것입니다.
+
+아주 큰 데이터인 경우, COUNT() 대신 이런 식으로 제한을 걸어,
+
+첫 페이지를
+
+SELECT * FROM T WHERE F1 >= 'A' AND F1 < 'Z' LIMIT 0, 100;
+
+와 같이 구하면 비교적 빠른 검색 결과를 얻을 수 있을 것입니다.
+
+어느분께는 도움이 되셨기를...

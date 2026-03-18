@@ -1,0 +1,85 @@
+---
+title: "Maven의 default directory layout 변경하기 [펌]"
+date: 2013-05-20 14:59:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60192311366"
+---
+
+출처 : <http://toby.epril.com/?p=414>
+
+
+
+
+
+ Maven은 Maven Way라고 불리는 자신만의 스타일을 강요한다. 순서가 정해진 build lifecycle도 그렇고, 독특한 default directory layout도 Maven으로 만들어진 프로젝트임을 한눈에 알아볼 수 있게 만드는 Maven에서만 주로 찾아볼 수 있는 독특한 폴더구조를 가지고 있다.
+
+Maven이 이렇게 Maven Way를 강제하는 이유는 프로젝트 관리, 빌드의 best practice를 CoC형태로 제공함으로 빌드 스크립트나 설정의 많은 부분을 간략하게 만들어 주고, 한번 그 스타일에 익숙해지면 어떤 Maven을 사용하는 프로젝트를 접해도 일관된 방법으로 접근할 수 있는 common interface를 제공할 수 있기 때문이다.
+
+Artifact 패키징 전에 항상 모든 test를 먼저 수행하게 한다거나(실패하면 빌드 중단), 복잡한 프로젝트를 sub-modules로 분화해서 프로젝트 설정을 상속해서 사용할 수 있게 하는 것 또 라이브러리 파일은 프로젝트와 분리해서 local repository에 저장해두고 여러프로젝트가 공유해서 사용할 수 있게 하고, Maven coordinates(groupid, artifactid, version..)로 ID를 부여해서 인터넷상의 공용 repository에서 필요하면 다운로드 받아서 사용할 수 있게 하는 것등은 Maven을 사용하면서 자연스럽게 적용하게 되는 좋은 best practice임이 분명하다.
+
+하지만 Maven을 처음 접하면서 상당히 당황스럽고 불편한 Maven Way도 있다. 거의 대부분의 Maven 초보자들이 부담스러워 하는 것이 바로 default layout이다.
+
+Maven은 src/main/java에 자바 코드를 src/main/resources에 메인 설정파일들이나 리소스등을 넣게 한다. Test와 관련된 것도 src/test/java와 src/test/resources를 사용하게 한다.
+
+하지만 Maven을 사용하지 않는 대부분의 프로젝트에서는 기존의 자바프로젝트 관례대로 src에 애플리케이션 자바 소스와 리소스를 , test에 테스트 코드와 리소스를 넣는다. Ant를 이용하는 프로젝트의 관례로 거의 비슷한 스타일이고, Eclipse도 기본 구조로 프로젝트 베이스 폴더 아래 src를 사용한다.
+
+그러다가 Maven의 새로운 폴더 레이아웃을 쓰면 두가지 면에서 불편을 느끼게 된다. 첫째는 directory depth가 2단계나 더 깊어진다는 것이다. 이클립스 같은 IDE를 써도 프로젝트 트리를 펼치는 것은 매우 귀찮은 일이다. 커맨드 라인에서 다른 툴을 사용하는 경우도 마찬가지이다. 패키지 depth마저 길게 되면 편집할 파일이나 패키지, 폴더를 찾아가고 이동하는데 시간이 많이 소모된다.
+
+더 짜증스러운 것은 java와 resource의 분리이다. 개념적으로 분리하는 것이 깔끔해보이는 것은 사실이다. 하지만 그로 인해 depth가 늘어나는 것은 물로이고, 많은 경우 패키지나 폴더 생성의 작업이 두배로 늘어나고 코딩시 폴더 이동으로 인해 많은 불편이 뒤따르게 된다.
+
+사실 Java소스와 resource를 구지 폴더 상단에서 구분하는 것은 아무런 장점이 없다. 기본 방식대로 같이 두어도 아무런 문제가 없기 때문이다. 간단히 확장자로 구분하면 그만이다. Eclipse의 자동빌드 기능은 아무런 문제 없이 .java로 끝나는 파일은 컴파일 해주고 그 외의 파일은 target(bin)폴더로 복사해준다.
+
+리소스와 자바파일이 워낙 많아서 혼란을 주니 구분하자고도 생각해볼 수 있지만, 사실 대부분의 애플리케이션에서 사용하는 main resource라고는 설정파일 정도인데 대부분 패키지 루트에 위치한다. 반대로 자바소스는 default package를 안쓰는 것이 바람직하다. 따라서 자바소스와 리소스를 한 폴더 트리아래 둔다고 혼란을 줄 것도 없다.
+
+반대로 테스트 쪽은 코드와 설정파일을 같은 패키지에 두는 것이 유리하다. 대표적으로 Spring의 @ContextConfiguration을 사용하는 경우를 보자. XXX-context.xml 파일은 테스트 자바 소스와 같은 폴더에 위치하는 것이 매우 편하다. 그 외에 fixture로 사용할 xml, xls, dat, txt 파일도 마찬가지이다.
+
+이클립스를 사용하는 경우에 test와 test resource를 폴더를 구분해 버리면 매우 불편하다. 만약 src/test/java/com/mycompany/myproject/module/submodule/component/XXXTest.java 라는 위치에 테스트 코드를 만들었다고 치자. 테스트 코드를 만들고 테스트에서 사용할 스프링 context파일을 만들려고 하니, 그 패키지에 만들면 간단할 텐데 Maven의 layout을 따르기 위해서는 다시 src/test/resources로 가서 com/mycompany/myproject/module/submodule/component라는 패키지를 생성하고 그리고 그 아래 XXXText-context.xml이라는 설정파일을 만들어야 한다. 매 패키지마다 그 작업을 반복해야 하고, Test 소스 파일 위치가 달라지면 resource 패키지도 같이 움직여야 하는데 6-7줄로 길게 늘어진 폴더 두군데를 쫒아다니면서 그 작업을 하자니 여간 불편한게 아니다. 종종 resource쪽 패키지를 만들다 패키지 명이 틀려서 테스트가 오작동 하거나, 패키지를 혼동해서 다른 위치에 설정파일을 만들어서 문제를 일으키는 경우가 발생한다. 정말이지 이 강제하는 Maven의 default directory layout은 Maven을 사용하는데 가장 큰 장애물 중의 하나라고 생각된다.
+
+Sub modules로 세분화 되어있는 프로젝트를 보면 더욱 가관이다. sub module에 갔더니 또 src/main/java/…/…/…/…/에 소스 하나.. 또 src/main/resources에 하나 src/test/java, src/test/resources에 하나.. 등등 찾다보면 눈이 다 어지럽기까지 하다. 어떤 Maven으로 만든 프로젝트를 보면 sub modules마저 세분화 하다보니 이 layout 구조 때문에 소스의 파일 갯수보다 폴더 갯수가 더 많은게 아닌가 하는 생각이들기도 한다.
+
+처음 Maven을 사용하면서 이 불편함 때문에 당장 Maven의 default layout을 변경할 수 없는가 알아보았다. 당시 Maven 사이트의 문서를 찾아보니 "default layout을 (복잡한 방법을 써서) 변경할 수는 있지만, 그러면 그 CoC를 따르는 수많은 플러그인과 기타 툴들과의 충돌이 발생할 수 있고, 그래서 오히려 더 큰 불편이 뒤 따를테니 손 안대는 것이 좋다"라는 경고가 떡하니 나와있었다.
+
+그래서 바로 포기하고 Maven을 쓴다면 당연히 그 폴더 구조를 따라야 한다라고 생각하면서 지금까지 사용해왔다.
+
+그러던 중에 얼마전에 Maven의 default directory layout을 변경하는 것은 매우 간단하다는 것을 알게 되었다. 그리고 얼마동안 여러가지 테스트를 해보면서 그 방법을 적용한 결과 문제를 일으킬만한 소지는 거의 없다라는 결론을 내렸다. 이럴수가!
+
+내가 원하는 directory layout은 Eclipse나 Spring 소스가 사용하는 그대로이다. 모든 소스의 root 패키지는 project base 폴더 바로 아래 둔다는 것이다. 그리고 자바 소스와 리소스, 그리고 혹시 나중에 aspect나 script가 함께 등장해도 구지 구분하지 말고 하나의 소스트리에 둔다는 것이다. 다만 배포될 소스와 테스트는 반드시 구분한다는 점.
+
+/src와 /test가 기본 소스와 리소스 폴더가 되는 것이다.
+
+설정방법은 다음과 같다. Maven의 POM 안에 build 항목에 다음을 넣으면 된다.
+
+```
+
+ ${project.basedir}/src
+ ${project.basedir}/scripts
+ ${project.basedir}/test
+
+
+   ${project.basedir}/src
+
+    **/*.java
+
+
+
+
+
+   ${project.basedir}/test
+
+    **/*.java
+
+
+
+...
+
+```
+
+먼저 build 항목의 sourceDirectory, testSourceDirectory를 변경해주고, resource와 testResource도 같은 방법으로 변경한다. Resource 설정을 할 때 주의할 점은 자바소스코드가 같이 있기 때문에 .java 파일은 복사되지 않도록 exclude 해주는 것이다. 이 설정은 Maven의 Super POM에 있는 설정을 override해주는 것이다.
+
+이렇게 작성하고 컴파일, 테스트, 리소스, 패키징등에 적용해봤을 때 아무런 문제가 발생하지 않는다. Sub modules를 이용한 멀티 프로젝트 구조에서도 역시 설정을 상속 받아서 sub modules에 까지 잘 적용된다.
+
+실제로 Maven 소스를 분석해보면 바로 이 build 설정에 나와있는 디렉토리 설정을 compiler나 resource 플러그인에 제공해서 동작하게 한다. 따라서 Maven의 이 메타정보를 가져다가 적용하는 플러그인이라면 새로운 디렉토리 구조에 아무런 문제가 없을 것이다.
+
+최근에 Maven에 대한 호감이 많이 늘었는데 바로 이 directory layout 변경이 가능하다는 것과 매우 안정적이고 뛰어난 기능을 가진 [m2eclipse](http://m2eclipse.sonatype.org/) 플러그인 때문인 듯 하다. m2clipse는 언젠가 다시 소개하겠지만, 바로 실전 프로젝트에 적용해도 문제없을 만큼 충분히 잘 만들어진 Eclipse용 Maven 플러그인이다. 특히 Eclipse에서 가장 고민이었던 sub-modules구조의 Multi-module project를 아주 편리하게 사용할 수 있게 해주는 것은 정말 감동적이기까지 하다. Maven 개발에 있어서 IDEA가 더 이상 안부럽다.  모든게 Maven의 핵심 개발자들이 포진하고 있는 Sonatype 덕분인듯 하다. 최근에 private repository도 Artifactory에서 Sonatype의 [Nexus](http://nexus.sonatype.org/)로 바꿨는데 이것도 매우 만족스럽다.
+
+이제 남은 것은 프로젝트의 webapp 폴더를 변경하는 것과 이를 wtp와 깔끔하게 접목시키는 것이다. 이 역시 어렵지 않게 되지 않을까 생각된다. 그 외에는 Main이나 Test를 하나 이상으로 가져가는 것인데, Spring 소스처럼 Tiger(jdk1.5+)와 그 이하 소스를 구분하는 경우 등에 유용할 듯 싶다. 문제는 <build> 설정에는 resource와 달리 sourceDirectory는 하나만 지정할 수 있게 되어있다. 하지만 maven-compiler-plugin에서는 여러개의 source directory를 받아서 사용할 수 있다. 이를 직접 이용하면 되지 않을까.

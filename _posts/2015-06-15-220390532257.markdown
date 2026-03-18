@@ -1,0 +1,25 @@
+---
+title: "fork(), getpid(), pipe(), kill(), fcntl() 명령어"
+date: 2015-06-15 12:01:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220390532257"
+---
+
+출처  : <http://leanu.tistory.com/133>
+
+<http://blog.finsternis.me/133>
+
+[Linux & Unix 에서 fork(), getpid(), pipe(), kill(), fcntl() 사용방법<개념 한가지> Blocking : 어떤 대상이 이용가능할때까지 대기하는 상태 NoneBlocking : 어떤 대상이 이용가능하지 않으면 리턴값을 발생시키고...blog.finsternis.me](http://blog.finsternis.me/133)
+
+﻿
+
+<개념 한가지>**Blocking** : 어떤 대상이 이용가능할때까지 대기하는 상태**NoneBlocking** : 어떤 대상이 이용가능하지 않으면 리턴값을 발생시키고 다음으로 넘어가는 상태**fork()** 를 통해 받는 pid 는**명령어에서 ps 를 쳐서 확인할 수 있는 프로세스 id 가 아니라 구분하기위해 임의로 발급한 아이디다.
+
+[재생하기 바로보기가 지원되지 않는 파일입니다. 클릭하여 팝업창으로 플레이 해보세요.](http://blog.naver.com/EmbedHttpView.naver?blogId=kkforgg&logNo=220390532257&hashKey=ffa79f623ae889663a943fcf719c0880)
+발급받은 값이 0 이면 자식 프로세스이고, 0 이 아니면 부모 프로세스이다.수행중인 녀석의 실제 프로세스 id 를 확인하려면 getpid() 를 사용하면 된다.pipe()** 함수를 이용하면 프로세스간 값을 주고 받을수 있으며**일반적으로 자식 프로세스가 자신의 프로세스 아이디를 getpid()를 통해 얻은후pipe 통신으로 부모에게 전달한다.여기서 구현한 파이프는 일방통행이므로 한개만 생성해도 문제가 없지만,일반적으로 2개의 프로세스가 통신할 때에는 2개의 파이프를 설정하여 통신한다.왜냐하면 파이프는 (First In First Out) 으로 집어넣고 가저가므로멀티프로세스나 멀티쓰레드 프로그램을 하는경우 누가 가져가는지 보장을 할 수 없기 때문이다.만약 데이터가 없는데 파이프를 통해 read를 수행한 경우값이 들어올때까지 block 이 되기 때문에 파이프의 0번째 녀석을 nonblocking mode로 set 해주어야 한다. 이때 사용하는 녀석이 fcntl()** 함수이다.**파이프에 대한 개념을 잘 설명한 문서들을 첨부한다.
+
+[ 09-Pipe.pdf](http://leanu.tistory.com/attachment/ek160000000001.pdf)
+
+kill()**은 프로세스에 메시지를 전달해 주는 함수로해당 프로세스 아이디와 보낼 메시지를 넣으면 그 프로세스가 해당 동작을 수행한다.
+
+[ process.c](http://leanu.tistory.com/attachment/fk160000000000.c)

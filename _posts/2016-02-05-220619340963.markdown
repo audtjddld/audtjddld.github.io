@@ -1,0 +1,48 @@
+---
+title: "ubuntu ssh 설정하기"
+date: 2016-02-05 14:40:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220619340963"
+---
+
+출처 : <http://solarixer.blogspot.kr/2013/06/ubuntu-ssh.html>
+
+설치된 패키지 목록 확인
+
+$ dpkg -l | grep ssh
+
+설치되어 있지 않다면 설치한다.
+
+$ sudo apt-get install openssh-server
+
+에러메시지가 나오면서 설치되지 않을 경우 우분투 미러 사이트에 접속할 수 없다면 소스 레파지토리를 변경한다.
+
+$ sudo vi /etc/apt/sources.list
+
+전체 내용 중에서 kr.archive.ubuntu.com 의 내용을 daum 미러로 치환한다.
+
+:1,$ s/kr.archive.ubuntu.com/ftp.daum.net/g
+
+wq로 저장하고 나간다음, 다시 업데이트 해 본다.
+
+$ sudo apt-get update
+
+이제 ssh 서버를 설치한다.
+
+$ sudo apt-get install openssh-server
+
+설치가 완료되면 ssh이 동작하는지 확인한다. 기본 포트는 22
+
+$netstat -ntl
+
+아래와 같이 나오면 잘 동작하는 것이다.
+
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN
+
+tcp6       0      0 :::22                   :::*                    LISTEN
+
+필요할 경우 ssh 서버를 재시작한다.
+
+$sudo /etc/init.d/ssh restart
+
+포트를 변경하고자 한다면 /etc/ssh/sshd_config 에서 변경한다.

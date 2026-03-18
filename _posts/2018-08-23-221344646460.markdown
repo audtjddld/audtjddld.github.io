@@ -1,0 +1,76 @@
+---
+title: "7-ways-java-heap-dump"
+date: 2018-08-23 18:52:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221344646460"
+---
+
+죽겠다 아주 -_-;
+
+​
+
+​
+
+<https://jaxenter.com/7-ways-capture-java-heap-dumps-143693.html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                [**7 ways to capture Java heap dumps - JAXenter**
+
+
+                                        jaxenter.com](https://jaxenter.com/7-ways-capture-java-heap-dumps-143693.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+-- 2019.08.12 ---
+
+추가적으로 아래 링크
+
+<https://kwonnam.pe.kr/wiki/java/memory>
+> [**java:memory [권남]**](https://kwonnam.pe.kr/wiki/java/memory)
+>
+> Java Memory Analysis Java Debug Java Garbage Collection Java Memory Analyzer(MAT) HeapHero JXRay Java Heap 영역 설명 기본 Heap 메모리 설정 <https://www.elastic.co/guide/en/elasticsearch/guide/current/heap-sizing.html> 참조. 장비 메모리에서 OS와 다른 애플리케이션이 사용하는 것을 제외하고 설정할 수 있다.(보통 2GB정도 남겨두고 나머지를 설정하면 될듯) 하지만 Lucene의 경우 o...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

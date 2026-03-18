@@ -1,0 +1,39 @@
+---
+title: "tomcat configuration"
+date: 2019-03-29 17:08:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221500582678"
+---
+
+removeAbandoned, remoceAbandonedTimeout, logAbandoned
+
+​
+
+할당 받아 사용한 Connection을 반납하지 않은 코드를 반복 수행하면 Connection 누수에 의해 가용한 Connection이 줄어들고 결국 더 이상 DB 연결을 할 수 없게 된다. removeAbandoned는 반납하지 않은
+
+Connection, 즉 Connection.close()이 누락된 Connection을 식별해 강제로 close 하는 속성이다.
+
+​
+
+<https://d2.naver.com/helloworld/5102792>
+> [**Commons DBCP 이해하기**](https://d2.naver.com/helloworld/5102792)
+>
+> 데이터베이스와 애플리케이션을 효율적으로 연결하는 커넥션 풀(connection pool) 라이브러리는 웹 애플리케이션에서 필수 요소입니다. 웹 애플리케이션 서버로 상용 제품을 사용..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

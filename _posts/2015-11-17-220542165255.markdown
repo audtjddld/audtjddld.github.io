@@ -1,0 +1,35 @@
+---
+title: "레거시 시스템, 레거시 코드"
+date: 2015-11-17 21:40:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220542165255"
+---
+
+레거시 코드**
+
+<http://okjsp.tistory.com/1165643189>
+
+- 누군가 나에게 맡겨놓은 코드**
+- 자기가 직접 짜지 않은 누군가가 만들어 놓은 코드
+
+- 많은 의문의 그림자와 중압감을 내포한 코드
+- 얽히고 설킨, 아둔하게 짜놓은 갈아엎고 싶지만 그럴 자신이 없는 코드
+- 기능이라도 하나 추가하려면 몇 일을 밤새야 하는 코드
+
+- 도저히 손댈 수 없어서 팀에서 누구라도 나서지 않는 코드
+
+- 손대면 손댈 수록 나락으로 빠져버리는 코드
+- 차라리 날 죽여줘 라고 절규하게 만드는 코드
+-  개선한다는 생각 자체에 몸서리 치게 만드는 코드
+
+레거시 시스템**
+
+**https://ko.wikipedia.org/wiki/%EB%A0%88%EA%B1%B0%EC%8B%9C_%EC%8B%9C%EC%8A%A4%ED%85%9C**
+
+**레거시 시스템**(legacy system)은 낡은 기술이나 방법론, [컴퓨터 시스템](https://ko.wikipedia.org/wiki/%EC%BB%B4%ED%93%A8%ED%84%B0_%EC%8B%9C%EC%8A%A4%ED%85%9C), [소프트웨어](https://ko.wikipedia.org/wiki/%EC%86%8C%ED%94%84%ED%8A%B8%EC%9B%A8%EC%96%B4) 등을 말한다. 이는 현대까지도 남아 쓰이는 기술을 부르는 말일 수도 있지만, 더이상 쓰이지 않더라도 현대의 기술에 영향을 주는 경우도 포함한다.
+
+예를 들어 [미국 항공우주국](https://ko.wikipedia.org/wiki/%EB%AF%B8%EA%B5%AD_%ED%95%AD%EA%B3%B5%EC%9A%B0%EC%A3%BC%EA%B5%AD)의 [스페이스 셔틀](https://ko.wikipedia.org/wiki/%EC%8A%A4%ED%8E%98%EC%9D%B4%EC%8A%A4_%EC%85%94%ED%8B%80)은 처음 만들어졌을 때의 기술을 쓴 부품을 계속 써왔다. 안정성 등의 조건을 충족시키면서 부품을 새로 개발하는 것은 너무 비용이 많이 들었기 때문에, 대부분의 부품을 1970년대 기술로 계속 만들어 써온 것이다.
+
+많은 소프트웨어 개발자들이 레거시 시스템을 사용하는 것에 잠재적 문제가 있다고 생각한다.[[1]](https://ko.wikipedia.org/wiki/%EB%A0%88%EA%B1%B0%EC%8B%9C_%EC%8B%9C%EC%8A%A4%ED%85%9C#cite_note-1) 예를 들어 오래된 하드웨어를 위해 설계된 소프트웨어의 경우, 새로운 하드웨어에서 실행되도록 하기 위해서 [에뮬레이션](https://ko.wikipedia.org/wiki/%EC%97%90%EB%AE%AC%EB%A0%88%EC%9D%B4%EC%85%98)이나 [하위 호환성](https://ko.wikipedia.org/wiki/%ED%95%98%EC%9C%84_%ED%98%B8%ED%99%98%EC%84%B1)을 구현해줘야 할 수 있다.
+
+okjsp 토론 내용을 보던 중 java web programing 에 사용되는 view template 이야기 중 jsp 코드는 레거시 다. 그래서 다른 템플레이트로 교체된다 이런 내용들로 이야기가 나오길래 뜻을 찾아봄.

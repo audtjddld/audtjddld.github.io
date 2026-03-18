@@ -1,0 +1,7 @@
+---
+title: "[공유] MVP기반의 플랫폼 설계(Model, View, Presenter)"
+date: 2013-05-14 13:11:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60191924771"
+---
+

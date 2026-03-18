@@ -1,0 +1,42 @@
+---
+title: "Going Native: Fast and Lightweight Spring Boot Applications with GraalVM by Alina Yurenko"
+date: 2023-08-18 17:19:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223187176348"
+---
+
+<https://www.youtube.com/watch?v=8umoZWj6UcU>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

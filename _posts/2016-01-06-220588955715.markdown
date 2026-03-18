@@ -1,0 +1,122 @@
+---
+title: "디자인 패턴 - 전략 패턴"
+date: 2016-01-06 08:13:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220588955715"
+---
+
+# 디자인 패턴 - 전략 패턴
+
+전략 패턴에서, 클래스 행동 또는 알고리즘은 실행 시간에 변경 될 수 있습니다. 디자인 패턴이 유형의 행동 패턴에 따라 온다.
+
+전략 패턴에서, 우리는 다양한 전략과 그 동작이 전략의 목적에 따라 변화하는 상황에 맞는 개체를 나타내는 개체를 만듭니다. 전략 객체는 컨텍스트 객체의 실행 알고리즘을 변경합니다.
+
+## 이행
+
+우리는 만들려고하고 *전략* 액션과 구현 구체적인 전략 클래스를 정의하는 인터페이스 *전략* 인터페이스를 제공합니다. *상황에 맞는 것은* 전략을 사용하는 클래스입니다.
+
+*StrategyPatternDemo* , 우리의 데모 클래스는 사용 *문맥* 이 배포 또는 사용하는 전략을 기반으로 상황에 맞는 행동의 변화를 설명하고 전략 개체를.
+*
+## 1 단계
+
+인터페이스를 만듭니다.
+
+Strategy.java*
+
+```
+public interface Strategy {
+   public int doOperation(int num1, int num2);
+}
+```
+
+## 2 단계
+
+같은 인터페이스를 구현하는 구체적인 클래스를 만듭니다.
+
+*OperationAdd.java*
+
+```
+public class OperationAdd implements Strategy{
+   @Override
+   public int doOperation(int num1, int num2) {
+      return num1 + num2;
+   }
+}
+```
+
+*OperationSubstract.java*
+
+```
+public class OperationSubstract implements Strategy{
+   @Override
+   public int doOperation(int num1, int num2) {
+      return num1 - num2;
+   }
+}
+```
+
+*OperationMultiply.java*
+
+```
+public class OperationMultiply implements Strategy{
+   @Override
+   public int doOperation(int num1, int num2) {
+      return num1 * num2;
+   }
+}
+```
+
+## 3 단계
+
+작성 *컨텍스트* 클래스.
+
+*Context.java*
+
+```
+public class Context {
+   private Strategy strategy;
+
+   public Context(Strategy strategy){
+      this.strategy = strategy;
+   }
+
+   public int executeStrategy(int num1, int num2){
+      return strategy.doOperation(num1, num2);
+   }
+}
+```
+
+## 4 단계
+
+사용 *상황을* 그것의 변경하면 행동의 변화를 볼 수 *전략* .
+
+*StrategyPatternDemo.java*
+
+```
+public class StrategyPatternDemo {
+   public static void main(String[] args) {
+      Context context = new Context(new OperationAdd());
+      System.out.println("10 + 5 = " + context.executeStrategy(10, 5));
+
+      context = new Context(new OperationSubstract());
+      System.out.println("10 - 5 = " + context.executeStrategy(10, 5));
+
+      context = new Context(new OperationMultiply());
+      System.out.println("10 * 5 = " + context.executeStrategy(10, 5));
+   }
+}
+```
+
+## 5 단계
+
+출력을 확인합니다.
+
+```
+10 + 5 = 15
+10 - 5 = 5
+10 * 5 = 50
+```
+
+```
+출처 : <http://www.tutorialspoint.com/design_pattern/strategy_pattern.htm>
+```

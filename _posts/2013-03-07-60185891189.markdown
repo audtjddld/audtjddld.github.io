@@ -1,0 +1,18 @@
+---
+title: "java 숫자 자릿수 표현하기 (소수점 자리 원하는 자리수만 나타내기)"
+date: 2013-03-07 09:05:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60185891189"
+---
+
+String pattern = "#####.##";
+                    DecimalFormat dformat = new DecimalFormat(pattern);
+
+
+
+요런 방식으로 하면
+
+
+
+1234.5667 => 1234.56 으로 된다.

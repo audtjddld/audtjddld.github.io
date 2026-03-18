@@ -1,0 +1,21 @@
+---
+title: "ibatis insert 후 nullPoint 에러는 반환값이 없기 때문 ㅡㅡ"
+date: 2013-06-04 19:30:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60193326875"
+---
+
+출처 : <http://blog.naver.com/PostView.nhn?blogId=byacj&logNo=120167314925&redirect=Dlog&widgetTypeCall=true>
+
+
+
+진짜 오늘 이놈 때문에 아오.. myBatis에서는 반환값이 존재하지만
+
+iBatis에는 존재하지 않아서 에러가 났다
+
+
+
+insert 대신
+
+update 로 해서 반환값을 받아 제대로 해줬는지 처리해주란다.

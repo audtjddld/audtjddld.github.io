@@ -1,0 +1,12 @@
+---
+title: "Spring interceptor locale 가져오기"
+date: 2016-02-16 14:05:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220628639484"
+---
+
+간단간단
+
+```
+Locale locale = LocaleContextHolder.getLocale();
+```

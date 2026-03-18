@@ -1,0 +1,155 @@
+---
+title: "Spring boot queryDSL 셋팅 방법 및 CustomRepository 설정 방법"
+date: 2018-04-25 14:22:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221261138319"
+---
+
+우선 -_-; Spring Data JPA + queryDSL 부분 설정하는 방법을 먼저 정리해본다.
+
+build 환경은 gradle이다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+dependencies {
+    def querydslVersion = "4.1.4"
+	/**
+	 * querydsl dependency
+	 */
+        implementation "com.querydsl:querydsl-core:${querydslVersion}"
+        implementation "com.querydsl:querydsl-apt:${querydslVersion}"
+        implementation "com.querydsl:querydsl-jpa:${querydslVersion}"
+        implementation "com.querydsl:querydsl-sql:${querydslVersion}"
+   }
+
+/**** QueryDSL Class Generate Script ****/
+def queryDslOutput = file("src/main/generated")
+sourceSets {
+	main {
+		java {
+			srcDir queryDslOutput
+		}
+	}
+}
+
+task generateQueryDSL(type: JavaCompile, group: 'build') {
+	source = sourceSets.main.java
+	classpath = configurations.compile
+	destinationDir = queryDslOutput
+	options.compilerArgs = [
+			"-proc:only",
+			/********************* 핵심 포인트! *********************/
+			"-processor", 'com.querydsl.apt.jpa.JPAAnnotationProcessor,lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
+	]
+}
+compileJava.dependsOn(generateQueryDSL)
+
+clean {
+	delete queryDslOutput
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+위와 같이 gradle에 추가 시킨 뒤 build를 한번 돌려주면 src/main/generated 폴더에 QTable이 생성된 것을 확인할 수 있다. QTable을 사용하는 것은 type safe 하게 작성하기 위한 클래스라 보면 된다.
+
+​
+
+- CustomRepository 추가 하기.
+
+​
+
+API 작성할 때 다중 질의가 넘어오는 부분을 JPA로 처리하기 위해서는 JPQL을 사용했다.
+
+기본 CRUD 작업은 Spring Data JPA 에 들어 있는 Repository들을 이용하면 손쉽게 작업이 가능하다.
+
+거기에 추가되는 개념 (Extension) 으로 보고 작성하면 된다.
+
+​
+
+기본적으로 java에서 interface는 다중 상속이 가능함으로 기본 Repository interface에 custom interface를 상속시킨다.
+
+​
+
+이후 구현 클래스를 작성하는데 이 때 규칙이 있다. 구현 클래스 뒤에는 Impl 이라는 문자열을 인식하도록 기본 설정이 되어 있다. 이것이 무슨 말이냐면 아래와 같다고 보면 된다.
+
+
+
+
+
+
+
+
+
+```
+interface UserRepository extends JpaRepository, UserRepositoryCustom {
+}
+
+interface UserRepositoryCustom {
+  // 추가 확장 되는 메소드 명 작성.
+}
+
+interface UserRepositoryImpl extends QueryDslRepositorySupport implements UserRepositoryCustom {
+  public UserRepositoryImpl() {
+    super(엔티티.class);
+  }
+  // 추가 확장 되는 메소드 명 작성.
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+별것은 아닌데 -_- 예전에 MongoDB Repository 확장할 때도 삽질을 했었는데, 간단한 거였는데 남이 작성한 코드를 받고 새로운 IDE를 사용하니 완죤 시간만 낭비하고 삽질하고 과언이 아니였다 -_-;;
+
+​
+
+나처럼 삽푸지 마시길
+
+​
+
+추가적으로 lombok 설정 부터 꼬였는데 그건 아래를 참고해서 해보자 -_-;
+
+​
+
+참고 사이트 :
+
+<http://blog.devenjoy.com/?p=383>

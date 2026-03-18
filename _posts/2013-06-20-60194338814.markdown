@@ -1,0 +1,47 @@
+---
+title: "오라클 시퀀스 생성"
+date: 2013-06-20 09:38:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60194338814"
+---
+
+출처 : <http://uple.net/135>
+
+
+
+ORACLE SEQUENCE : 오라클에서 자동 증가값 만들기
+
+---------------------------------------------
+
+CREATE SEQUENCE  시퀀스명
+        INCREMENT BY 증가값
+        START WITH 시작값
+        MAXVALUE 최대값 또는 NOMAXVALUE
+        MINVALUE 최소값 또는 NOMINVALUE
+        CYCLE 또는 NOCYCLE
+        CACHE 또는 NOCACHE;
+
+---------------------------------------------
+
+AUTO_SEQ_NUMBER 시퀀스를 생성, 초기값을 1부터 1씩 증가하며 최대값은 1000000으로 생성.
+---------------------------------------------
+
+CREATE SEQUENCE AUTO_SEQ_NUMBER
+        INCREMENT BY 1
+        START WITH 1
+        MAXVALUE   1000000
+        NOCACHE
+        NOCYCLE;
+
+---------------------------------------------
+입력과 조회: 입력시는 NEXTVAL , 조회시는 CURRVAL 사용
+---------------------------------------------
+
+INSERT INTO 테이블명(자동증가컬럼명) VALUES(AUTO_SEQ_NUMBER.NEXTVAL);
+
+SELECT 시퀀스명.currval FROM DUAL;
+
+---------------------------------------------
+시퀀스 삭제
+---------------------------------------------
+DROP SEQUENCE 시퀀스명

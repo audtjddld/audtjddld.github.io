@@ -1,0 +1,74 @@
+---
+title: "검수 관리 사이트 초창기 모델링"
+date: 2016-05-18 11:13:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220712746451"
+---
+
+2015.06.02
+
+1.1 업데이트
+
+ - 검수 모듈 validation 체크 모듈 진행중 프로젝트와 겹치지 않도록 클래스명 변경.
+
+ - 프로젝트 전체 리스트 게시판 추가
+
+![](http://easymedia.matty.works/_easymedia/File/Details/X2rYU) 개념 및 구현 부분 관련 설명은 아래를 참조하시면 됩니다.
+
+
+
+<http://kkforgg.blog.me/220358259789>
+
+
+
+---
+
+ 2015.05.22
+
+ 이번 프로젝트 요구사항에서 '현재 보고 있는 브라우져 화면 캡쳐하여 수정사항을 관리하자'라는 내용이 있어
+
+브라우저 화면을 script 캡쳐하는 기술이 있는 것을 확인하였습니다. 그에 따라 프로젝트 진행시 검수 사항을 정리할 수 있는 모듈로 좋을 것 같다고 생각되어 구현하였습니다.
+
+(script 모듈은 : [html2canvas.js](http://html2canvas.hertzen.com/) 를 사용하였습니다.)
+
+plugin 형태로 구현할려고 노력하였고, 부족한 기능이 있을 수 있습니다.
+
+부족한 부분들은 의견 수렴하여 반영하도록 하겠습니다.
+
+이번 모듈 개발에 힘써주신 표숙희 과장님, 김은영 사원, 김필기 대리님, 허진영 사원, 한아름주임, 오애나사원
+
+감사합니다.
+
+모바일은.. 아직..![](http://easymedia.matty.works/Common/images/ChatIcon/POPO.adiumemoticonset/too_sad.png) Crying" title="ㅠㅠ -> Crying" style="box-sizing: border-box; margin: 0px; padding: 0px; border: none; vertical-align: top; border-radius: 0px !important;">
+
+에러마크는 복수개 설정 가능합니다.
+
+idea by 허진영
+
+모듈설명 드리겠습니다.
+
+기능설명
+
+![](http://easymedia.matty.works/_easymedia/File/Details/saVvS)
+
+프로젝트 기능 삽입 방법
+
+![](http://easymedia.matty.works/_easymedia/File/Details/9fgua)
+
+관리자 화면설명
+
+![](http://easymedia.matty.works/_easymedia/File/Details/zTkS9)
+
+관리자 상세화면 설명
+
+![](http://easymedia.matty.works/_easymedia/File/Details/LxhiM)
+
+ 현재 관리자 사이트는 사내 개발서버에 올라와져 있는 상태입니다.
+
+사용자 테스트 URL : <http://hyundai-ihl.easymedia.co.kr/_html/manage/volunteer_list.html>
+
+관리자 URL : <http://java.easymedia.co.kr:9010/com/%ED%8C%8C%EB%A3%A8/modify/list.do>
+
+(IE 9 이상부터 정상적으로 됩니다.)
+
+이상입니다.

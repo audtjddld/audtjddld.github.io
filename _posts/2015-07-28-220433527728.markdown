@@ -1,0 +1,12 @@
+---
+title: "항목별 통계 자료 뽑기"
+date: 2015-07-28 08:38:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220433527728"
+---
+
+<http://hansinjava.blogspot.kr/2013/02/blog-post_7.html?m=1>
+
+해당 분류 코드마다 갯수를 전광판처럼 뽑는 방법를 찾던 중 머리가 뽀개질 것 같았는데 의외로 간단하게 해결 되었다.
+
+역시 안될땐 퇴근하고 담날하면 잘된다니까 ㅋㅋㅋ

@@ -1,0 +1,168 @@
+---
+title: "Kotlin lint (klint) 적용"
+date: 2022-12-27 20:48:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222967584432"
+---
+
+<https://pinterest.github.io/ktlint/>
+
+​
+
+kotlin lint를 적용하는 방법중에 klint라는 것이 있어서 정리해보려고 한다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+plugins {
+ ...
+ id("org.jlleitschuh.gradle.ktlint") version "10.2.1" // 추가
+}
+
+// project.gradle
+apply(plugin = "org.jlleitschuh.gradle.ktlint")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+gradle.properties
+
+
+
+
+
+
+
+
+
+```
+kotlin.code.style=official
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.editconfig
+
+
+
+
+
+
+
+
+
+```
+disabled_rules=no-wildcard-imports
+```
+
+
+
+
+
+
+
+
+
+
+```
+## Coding conventions
+
+### Kotlin Coding convention
+
+The Kotlin camp provides a coding convention officially provided by Jetbrain. The project is based on the [Kotlin Coding Convention](https://kotlinlang.org/docs/coding-conventions.html).
+
+If you set the `gradle.properties` file as shown below, the code style is automatically set to the Kotlin official convention.
+```properties
+kotlin.code.style=official
+```
+
+### Editorconfig
+
+EditorConfig provides the ability to define and manage code styles at the directory level
+
+- ktlint recognizes and uses `.editorconfig` files
+- As the default value may change as the ktlint version increases, it is recommended to explicitly define the default value in `.editorconfig`
+- You can even define rules not specified in the official Kotlin coding conventions
+
+> If you are curious about the details, please go to the [link](https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties)
+## Gradle Tasks
+
+### Ktlint
+
+You can easily use tasks through [jlleitschuh/ktlint-gradle](https://github.com/JLLeitschuh/ktlint-gradle) plugin.
+
+#### Code style check
+
+Check the code style
+
+```shell
+./gradlew ktlintCheck
+```
+
+#### Code formatting
+
+You can batch convert code styles
+
+```shell
+./gradlew ktlintFormat
+```
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

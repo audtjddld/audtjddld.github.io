@@ -1,0 +1,324 @@
+---
+title: "아해(Ahea) java개발자를 위한 공개세미나"
+date: 2019-06-01 19:54:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221552082729"
+---
+
+<https://www.onoffmix.com/event/178671>
+> [**아해(Ahea) java개발자를 위한 공개세미나**](https://www.onoffmix.com/event/178671)
+>
+> 모임이 모이는 세상
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    ![]()
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+**Java8말고 java9를 써볼까**
+
+​
+
+- 김형진
+
+​
+
+java 9
+
+http2 client 추가.
+
+blocking, non-blocking 모드 둘다 지원 됨.
+
+​
+
+​
+
+**266: More Concurrency Updates (reactive stream)**
+
+​
+
+publisher - subscriber 형태 모듈 추가.
+
+​
+
+gson 에서도 있는 event 형태 모듈이 내부로 들어온 것인가?
+
+한번 확인이 필요할 것 같음.
+
+​
+
+reactive pub/sub형태란 iterator와 observer 패턴이 접목된 구조로 이해하면 좋다.
+
+interator = push
+
+observer = pop?
+
+​
+
+processor
+
+게시자와 구독자 사이에 일부 데이터를 필터링 하거나 데이터를 가공하는 역할을 함.
+
+​
+
+**269: Convenience Factory Methods for Collections**
+
+불변객체 생성을 편리하게 생성할 수 있도록 기능이 추가 됨.
+
+​
+
+​
+
+**Project Jigsaw**
+
+자바에서 모듈러 프로그래밍을 할 수 있도록 추가된 기능.
+
+​
+
+필요한 라이브러리만 추가해서 사용할 수 있도록 도와준다.
+
+​
+
+reflection을 이용해도 외부의 라이브러리로 접근이 불가하다.
+
+compile, runtime 물다 검사한다고 함.
+
+​
+
+**자바 9 private interface method 추가**
+
+**​**
+
+추상화 및 캡슐화 할 때 기존 인터페이스는 private 메서드만 생성 할 수 있어 캡슐화에 좀더 용이하게 작성될 것 같다.
+
+한번 이 부분에 대해서 예제로 코드를 작성해보는게 좋을 것 같다.
+
+​
+
+**Stream 개선**
+
+​
+
+takewhile
+
+dropwhile
+
+iterate
+
+ofNullable
+
+​
+
+Optional class 개선사항
+
+​
+
+ifPresentOrElse 추가 등
+
+​
+
+**Java 10**
+
+**​**
+
+var 구분 추가
+
+로컬 변수에서 타입 추론이 적용되어 변수선언에 용이함.
+
+​
+
+멤버 변수 및 매개변수로는 사용이 불가능 함.
+
+남발해서 사용하지 않고 적절한 부분에만 작성해야 될 것 같다.
+
+​
+
+​
+
+**if(Spring AOP == AspectJ) → { Spring AOP에 대해 }**
+
+​
+
+Spring AOP 발표랑 대용량 처리 방식과 무관하지만 아해 스터디에서는 항상 1개의 스프링 관련 세션을 진행한다고 함.
+
+​
+
+그래서 듣는다.
+
+​
+
+AOP는 관점지향 프로그래밍이라고 하면서 실제 proxy 형태로 동작을 진행하여 실제 코드에 추가적인 요청 없이 진행이 가능함.
+
+​
+
+Java Dynamic Proxy를 이용하면 동적으로 프록시 객체를 생성할 수 있다.
+
+​
+
+전통적인 프록시 패턴에서는 invoke 메서드를 구현 부분을 target과 proxy객체에 둘다 상속을 받아 작성해야 했었는데, JavaDynamicProxy는 실제 객체의 class 정보를 전달 받아 원하는 method를 가리킬 수 있다.
+
+하지만 1개의 proxy handler를 1개 이상을 지정하지 못하는 문제가 있었는데, spring proxy factoryBean 을 확인하여 구성 요소를 확인해보면 기존에 proxy handler를 1개 이상 관리할 수 없던 부분을 해결 할 수 있도록 제공 advisor 해줌.
+
+​
+
+Auto Proxy
+
+자동으로 타깃 객체를 판별하여 ProxyBean으로 생성.
+
+​
+
+**MQ와 AMQP 프로토콜 원리**
+
+​
+
+rabbit mq
+
+​
+
+pivotal에서 개발한 오픈소스로 얼랭으로 구현되어 있음
+
+​
+
+amqp 기반의 오픈소스 메시지 브로커
+
+<https://m.blog.naver.com/kkforgg/220965669146>
+> [**Rabbit MQ 정리?**](https://m.blog.naver.com/kkforgg/220965669146)
+>
+> Producer Queue Consumer 로 구성되어있다. P --> Queue --> C 형태로 보면 된다. 프로듀서는 ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<https://drive.google.com/file/d/1cjWEqRc_T4hFc0J8SxZG9qFnArzfW-se/view?usp=sharing>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <https://drive.google.com/file/d/1cjWEqRc_T4hFc0J8SxZG9qFnArzfW-se/view?usp=sharing>
+                                [**amqp 공유용.pdf**
+
+
+                                        drive.google.com](https://drive.google.com/file/d/1cjWEqRc_T4hFc0J8SxZG9qFnArzfW-se/view?usp=sharing)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+**Spring WebFlux는어-떻-게 적은 리소스로 많은 트래픽을 감당할까?**
+
+**​**
+
+<https://drive.google.com/file/d/1GXWrD14-NNuPFgjADJOjG35R9awv2kiL/view?usp=sharing>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <https://drive.google.com/file/d/1GXWrD14-NNuPFgjADJOjG35R9awv2kiL/view?usp=sharing>
+                                [**Spring WebFlux는 어떻게 적은 리소스로 많은 트래픽을 감당할까?.pdf**
+
+
+                                        drive.google.com](https://drive.google.com/file/d/1GXWrD14-NNuPFgjADJOjG35R9awv2kiL/view?usp=sharing)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

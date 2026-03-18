@@ -1,0 +1,236 @@
+---
+title: "feign client, feign configuration"
+date: 2021-12-09 17:28:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222591182440"
+---
+
+**목적**
+
+연동된 구간별 API http 응답 코드 별로 예외 메시지 처리를 하기 위함.
+
+ex) 주문 접수 할 때, 연동하는 API가 5가지 일 때, 5가지 마다 각각 다른 예외 처리르 하기 위함 (화면에 메시지 안내 포함)
+
+주말에 한번 Feign Client로 예외 처리 하는 방식을 고민해보았는데요,
+
+(오픈 Feign 뉴비라서 제가 잘 몰라요)
+
+http status 코드 파싱해서 각 구간별 예외 메시지를 처리할까 고민중입니다.
+
+예상 되는 조합 FallbackFactory + ControllerAdvice 조합
+
+혹시 이 방법 보다 더 나은 방법이 있으시면 공유 부탁드립니다.
+
+​
+
+예제코드
+
+​
+
+
+
+
+
+
+
+
+
+
+```
+public class CouponErrorDecoder implements ErrorDecoder {
+
+  private final ObjectMapper om = new ObjectMapper();
+
+  /**
+   * 발생된 예외를 catch 해서 custom하게 예외를 처리합니다.
+   *
+   * @param methodKey 호출 메서드
+   * @param response  응답 데이터
+   * @return custom Exception
+   */
+  @SneakyThrows
+  @Override
+  public Exception decode(
+      final String methodKey,
+      final Response response) {
+    final Request request = response.request();
+
+    log.info("{} 요청이 성공하지 못했습니다. status : {}, body : {}", methodKey, response.status(),
+        response.body());
+
+    FileBeatLogger.info(new HashMap<>() {
+      {
+        put("action", "coupon-request-fail");
+        put("url", request.url());
+        put("http status code", response.status());
+        put("error message", response.body()
+            .toString());
+      }
+    });
+
+    if (Request.HttpMethod.GET == request.httpMethod() && request.url()
+        .contains("restore")) {
+      cancelError(response);
+    }
+
+    final var error = om.readValue(response.body()
+        .toString(), CouponErrorMessage.class);
+
+    log.info("{}", error);
+    switch (response.status()) {
+      case 400:
+        return new CouponUseException(5250, error.getMessage());
+      case 422:
+      case 404:
+        return new CouponUseException(5251, error.getMessage());
+      default:
+        return new CouponUseException(5252, "쿠폰 API 호출 중 오류가 발생되었습니다.");
+    }
+  }
+
+  /**
+   * 오류 메시지 파싱 Class.
+   */
+  @ToString
+  @Data
+  static class CouponErrorMessage {
+
+    private String message;
+    private boolean success;
+
+  }
+
+  /**
+   * 쿠폰 사용취소 exception을 핸들링합니다.
+   */
+  private Exception cancelError(@NonNull final Response response) {
+    final Request request = response.request();
+    final int status = response.status();
+
+    if (status == 404) {
+      final String message =
+          String.format(":alert: :alert: :alert: 사용되지 않은 쿠폰은 복원할 수 없습니다. url: [%s]",
+              request.url());
+      log.error(message);
+      SlackNotifier.notify(message);
+      return new CouponCancelException(5253, "사용되지 않은 쿠폰은 취소 할 수 없습니다.");
+    }
+
+    final String message =
+        String.format(":alert: :alert: :alert: 쿠폰취소 요청 feign 요청이 실패하였습니다. url: [%s]",
+            request.url());
+    log.error(message);
+    SlackNotifier.notify(message);
+
+    return FeignException.errorStatus(request.httpMethod()
+        .name(), response);
+  }
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+```
+/**
+ * 쿠폰 Feign Configuration.
+ */
+public class CouponFeignConfiguration {
+
+  /**
+   * 쿠폰 ErrorDecoder Bean을 등록합니다.
+   *
+   * @return ErrorDecoder
+   */
+  @Bean
+  public ErrorDecoder decoder() {
+    return new CouponErrorDecoder();
+  }
+
+  /**
+   * 재시도 횟수 설정.
+   *
+
+   * 최소 기간 0.1초, 최대 0.5초, 재시도 횟수 3회
+   *
+
+   */
+  @Bean
+  Retryer retryer() {
+    return new Retryer.Default(100, 500, 3);
+  }
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+```
+/**
+ * 쿠폰 feign Client.
+ */
+@FeignClient(name = "coupon-api-service", fallback = CouponFeignClientFallback.class,
+    qualifier = "CouponFeignClient", configuration = CouponFeignConfiguration.class)
+public interface CouponFeignClient {
+
+  /**
+   * 쿠폰 사용 처리 요청입니다.
+   *
+   * @param memberNo   회원번호
+   * @param couponCode 쿠폰코드
+   * @param orderNo    주문번호
+   * @return 쿠폰 사용 처리 응답
+   */
+  @GetMapping(path = "/v2/order/coupon/{memberNo}/use/{couponCode}/to/{orderNo}")
+  ApiResponseModel use(
+      @PathVariable("memberNo") Long memberNo,
+      @PathVariable("couponCode") Long couponCode,
+      @PathVariable("orderNo") Long orderNo);
+
+  /**
+   * 쿠폰 사용을 취소 합니다.
+   *
+   * @param memberNo   회원번호
+   * @param couponCode 쿠폰번호
+   * @return 쿠폰 사용 취소 응답
+   */
+  @GetMapping("/v1/crm/{memberNo}/restore/{couponCode}")
+  ApiResponseModel cancel(
+      @PathVariable("memberNo") Long memberNo,
+      @PathVariable("couponCode") Long couponCode);
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

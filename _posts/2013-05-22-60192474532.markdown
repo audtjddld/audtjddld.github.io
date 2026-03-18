@@ -1,0 +1,49 @@
+---
+title: "javascript Ajax 코드임."
+date: 2013-05-22 19:08:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60192474532"
+---
+
+2013.05.22
+
+
+
+var addr_url = "/Share/menuInfoTestAjax.asp?fact=detail&menuPkId="+value;
+
+    var xmlHttp = createXMLHttpRequest();
+    xmlHttp.open("GET", addr_url, true);
+    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=euc-kr");
+    xmlHttp.setRequestHeader("Pragma", "no-cache");
+    xmlHttp.send(null);
+
+    xmlHttp.onreadystatechange = function() {
+     if(xmlHttp.readyState == 4 ) {
+      if(xmlHttp.status == 200) {
+      var json = xmlHttp.responseText;
+      var obj = JSON && JSON.parse(json) || $.parseJSON(json);
+
+ //       alert(obj.menupkid); 성공함.
+       setInputForm(obj,document.MenuInfoTestForm);
+      }
+     }
+
+
+
+방법은 위와 같고
+
+asp에서 했을 때 사용함.
+
+
+
+JSON.parse 가 IE 9 에서는 에러가 발생되어
+
+json2.js 추가 후
+
+
+
+var obj = JSON && JSON.parse(json) || $.parseJSON(json);
+
+
+
+사용하여 적용하였다.

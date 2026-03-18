@@ -1,0 +1,102 @@
+---
+title: "커스텀 펑션?"
+date: 2013-03-26 09:28:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60188206473"
+---
+
+<!DOCTYPE html PUBLIC "-//W3C//DTDHTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+
+<metahttp-equiv="Content-Type" content="text/html;charset=EUC-KR">
+
+<title>Insert titlehere</title>
+
+<style type="text/css">
+
+
+
+
+
+</style>
+
+<scriptsrc="./js/jquery-1.6.2.min.js"></script> </script>
+
+<scriptlanguage="javascript">
+
+
+
+
+
+function param(){
+
+           $('input[name=radioValue]').objectCheck('asp');
+
+           $('input[name=chk1]').objectCheck('orange');
+
+
+
+}
+
+
+
+
+
+                     jQuery.fn.objectCheck= function (value){
+
+                                $(this+'[value='+value+']').attr('checked',true);
+
+                     }
+
+
+
+                     /*
+
+                                radio및 checkbox 넘어온 값 체크.
+
+                     */
+
+
+
+</script>
+
+</head>
+
+<body>
+
+           <formid="form1" name="form1">
+
+                     <inputtype="radio" id="language" name="radioValue"value="asp"> asp
+
+                     <inputtype="radio" id="language" name="radioValue"value="java"> java
+
+                     <inputtype="radio" id="language" name="radioValue"value="asp.net"> asp.net
+
+                     <inputtype="radio" id="language" name="radioValue"value="php"> php
+
+
+
+                     <inputtype="button" value="확인"onclick="param()">
+
+
+
+                     <br/>
+
+
+
+                     <inputtype="checkbox" id="chk" name="chk1"value="apple"> 사과
+
+                     <inputtype="checkbox" id="chk" name="chk1"value="banana"> 바나나
+
+                     <inputtype="checkbox" id="chk" name="chk1"value="orange"> 오렌지
+
+                     <inputtype="checkbox" id="chk" name="chk1"value="kiwi"> 키위
+
+           </form>
+
+</body>
+
+</html>

@@ -1,0 +1,150 @@
+---
+title: "spring boot 정상 종료"
+date: 2022-08-18 11:11:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222851479303"
+---
+
+**1. 개요**
+
+Spring의 TaskExecutor의 기본적인 종료 방법은 실행 중인 task가 모두 종료될 때까지 기다리는 것보다, 모든 실행중인 task에 interupt를 거는 것이다.
+
+각 task를 확실하게 안전하게 종료되는지 측정할 수 있다.
+
+아래 내용을 통해, 우리는 어떻게 스프링 부트 애플리케이션이 task를 thread pool을 이용하여 수행 중일 때 보다 우아하게 종료할 수 있는 방법을 배울 것이다.
+
+​
+
+**2. 단순 예제**
+
+​
+
+spring boot 설정에서 properties에 적용하는 방법도 있다.
+
+application.yml
+
+
+
+
+
+
+
+
+
+```
+server:
+  shutdown: graceful
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+application 구동 thread pool에서도 graceful 하게 설정을 걸어두는 것이 좋을 것 같다.
+
+
+
+
+
+
+
+
+
+```
+@Bean
+public TaskExecutor taskExecutor() {
+    ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+    taskExecutor.setCorePoolSize(2);
+    taskExecutor.setMaxPoolSize(2);
+    taskExecutor.setWaitForTasksToCompleteOnShutdown(true);
+    taskExecutor.initialize();
+    return taskExecutor;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+그 밖의 설정들은 아래 링크를 통해 확인할 수 있다.
+
+​
+
+출처 :
+
+<https://www.baeldung.com/spring-boot-graceful-shutdown>
+> [**Graceful Shutdown of a Spring Boot Application | Baeldung**](https://www.baeldung.com/spring-boot-graceful-shutdown)
+>
+> Shut down a Spring Boot application gracefully.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<https://www.baeldung.com/spring-boot-web-server-shutdown>
+> [**Web Server Graceful Shutdown in Spring Boot | Baeldung**](https://www.baeldung.com/spring-boot-web-server-shutdown)
+>
+> Learn how to take advantage of the new graceful shutdown feature in Spring Boot 2.3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

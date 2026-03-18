@@ -1,0 +1,51 @@
+---
+title: "NTFS 파티션을 CentOS 리눅스로 마운트 하기 [펌]"
+date: 2012-09-28 11:17:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60172311913"
+---
+
+< NTFS 파티션을 CentOS 리눅스로 마운트 하기 >
+1. 밑에 3번 설치를 위해 yum-priorities 을 먼저 설치
+[root@localhost ~]# yum install yum-priorities -y
+2. priorities.conf 수정
+[root@localhost ~]# vi /etc/yum/pluginconf.d/priorities.conf
+[main]
+enabled = 1
+check_obsoletes = 1
+priority=2
+
+3. rpmforge 설치
+[root@localhost ~]# rpm -ivh [설치경로]
+설치경로 찾기
+- <http://apt.sw.be/redhat/el5/en/i386/dag/RPMS/> 접속
+- rpmforge 로 시작하는것중 가장 최근것의 파일명을 복사해서 앞의 주소와 붙인다.
+=> <http://apt.sw.be/redhat/el5/en/i386/dag/RPMS/rpmforge-release-0.5.1-1.el5.rf.i386.rpm>
+- 이 최종경로를 복사해서 위의 [설치경로] 에 붙여넣고 실행
+
+4. 설치된 rpm 으로 패키지 업데이트
+[root@localhost ~]# yum check-update
+5. “fuse”, “fuse-ntfs-3g”, “dkms”, “dkms-fuse” 설치
+[root@localhost ~]# yum install fuse fuse-ntfs-3g dkms dkms-fuse -y
+6. 마운트용 디렉토리 생성
+[root@localhost ~]# mkdir /mnt/window
+7. fdisk -l 로 마운트할 파티션정보 찾기
+[root@localhost ~]# fdisk -l
+=> HPFS/NTFS 으로 표시되는 /dev/sda[넘버] 를 찾는다.
+8. ntfs-3g 타입으로 마운트 실행
+[root@localhost ~]# mount -t ntfs-3g /dev/sdb1 /mnt/window
+9. 마운트한 파티션 사용
+[root@localhost ~]# cd /mnt/window
+[root@localhost window]# ls -al
+
+이후
+
+vi /etc/fstab 이동
+경로 입력 후
+예) /dev/hdb/home2 ext3 defaults 1 2
+    /dev/sdb1 /data/vod/ 파일 확장자명을 ntfs-3g default 0 0 으로 해주면 된다.
+
+hdd 포멧
+
+mke2fs -T ext3 /dev/sde
+y한다.

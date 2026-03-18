@@ -1,0 +1,83 @@
+---
+title: "이미지 비교 (image comparision)"
+date: 2019-03-06 17:19:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221481749676"
+---
+
+```
+public class ImageCompare {
+
+  private String originPath;
+  private String cdnPath;
+
+  private boolean same = true;
+
+  int b1 = 0, b2 = 0, pos = 1;
+
+  public ImageCompare(String originPath, String cdnPath) {
+    this.originPath = originPath;
+    this.cdnPath = cdnPath;
+  }
+
+  public boolean compare() throws IOException {
+
+    try (
+        BufferedInputStream compare1 = new BufferedInputStream(new URL(originPath).openStream());
+        BufferedInputStream compare2 = new BufferedInputStream(new URL(cdnPath).openStream());
+    ) {
+      while (b1 != -1 && b2 != -1) {
+        if (b1 != b2) {
+          log.info(" two file was different. : {}, {}", originPath, cdnPath);
+          same = false;
+          break;
+        }
+        pos++;
+        b1 = compare1.read();
+        b2 = compare2.read();
+      }
+    }
+
+    return same;
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+참고 : <https://dzone.com/articles/comparing-files-in-java>
+> [**Comparing Files in Java - DZone Java**](https://dzone.com/articles/comparing-files-in-java)
+>
+> This lesson in Java NIO and memory mapping involves creating a simple Java application to compare files while safeguarding performance.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

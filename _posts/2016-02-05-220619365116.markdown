@@ -1,0 +1,14 @@
+---
+title: "tar.gz 압축 풀기"
+date: 2016-02-05 15:01:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220619365116"
+---
+
+- 압축하기
+
+    tar zcvf test.tar.gz test
+
+ - 압축풀기
+
+    tar zxvf test.tar.gz

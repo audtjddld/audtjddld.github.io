@@ -1,0 +1,8 @@
+---
+title: "프로그래밍 함수 (function) 이란?"
+date: 2016-01-04 23:59:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220587730584"
+---
+
+**"함수란 문제 해결을 위해 필요한 일련의 절차를 모아둔 재사용 가능한 프로그래밍 단위다."**

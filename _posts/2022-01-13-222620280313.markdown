@@ -1,0 +1,82 @@
+---
+title: "fixture monkey"
+date: 2022-01-13 01:01:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222620280313"
+---
+
+예제 작성된 글
+
+<https://kevin-park.medium.com/junit-test-with-fixture-monkey-ca50f6533385>
+> [**Junit Test with Fixture Monkey**](https://kevin-park.medium.com/junit-test-with-fixture-monkey-ca50f6533385)
+>
+> 안녕하세요. Kevin 입니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+소개 페이지
+
+<https://naver.github.io/fixture-monkey/docs/v0.3.x/getting-started/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <https://naver.github.io/fixture-monkey/docs/v0.3.x/getting-started/>
+                                [**Getting Started**
+
+                                        naver.github.io](https://naver.github.io/fixture-monkey/docs/v0.3.x/getting-started/)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+테스트 코드 작성시 목데이터를 만들 필요가 있는데, 이 라이브러리에서 지원을 많이 해주는 것 같다.
+
+​
+
+여러 객체를 생성할 수 있으며, 롬복 애노테이션 내용에 맞춰서 데이터 생성도 해주는 것 같다.
+
+​
+
+예제를 한번 확인해보고 정리해보는 시간을 갖으면 좋을 것 같다

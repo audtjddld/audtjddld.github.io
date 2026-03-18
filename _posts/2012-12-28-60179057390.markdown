@@ -1,0 +1,28 @@
+---
+title: "파일 읽기 예제"
+date: 2012-12-28 16:55:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60179057390"
+---
+
+
+    public static String getMailHtmlFile(String fPath, String fName) throws Exception {
+        FileReader fileReader = null;
+        BufferedReader bufReader = null;
+        try {
+            fileReader = new FileReader(fPath + fName);
+            bufReader = new BufferedReader(fileReader);
+            StringBuffer str =  new StringBuffer();
+            String line = null;
+            while((line = bufReader.readLine()) != null ) {
+                str.append(line).append("\n");
+            }
+            bufReader.close();
+            fileReader.close();
+            return str.toString();
+        } finally {
+            if (bufReader != null) bufReader.close();
+            if (fileReader != null) fileReader.close();
+        }
+    }

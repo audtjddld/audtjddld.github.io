@@ -1,0 +1,122 @@
+---
+title: "Istio Fault Injection"
+date: 2023-12-28 17:21:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223305763746"
+---
+
+Istio는 클라우드 네이티브 환경에서 마이크로서비스 간의 통신을 관리하고 제어하는 서비스 메시(Service Mesh) 도구입니다. 서비스 메시를 사용하면 네트워크 통신의 복잡성을 애플리케이션 로직으로부터 분리하고, 보안, 관찰가능성, 그리고 트래픽 제어 기능을 향상할 수 있습니다.
+
+​
+
+Istio에서는 `VirtualService` 리소스를 사용하여 네트워크 트래픽에 대한 fault injection을 설정할 수 있습니다. Fault injection은 일부러 시스템에 장애를 주입함으로써, 시스템이 오류나 비정상 상황에서 어떻게 대처하는지를 평가하고, 이를 통해 시스템의 복원력을 견고하게 만드는 데 목적이 있습니다. Fault injection에는 주로 트래픽 지연(delay)과 오류 주입(inject fault) 두 가지 유형이 있습니다.
+
+​
+
+### 트래픽 지연(Delay) 설정 예시:
+
+​
+
+
+
+
+
+
+
+
+
+```
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+name: my-service
+spec:
+hosts:
+- my-service
+http:
+- route:
+- destination:
+host: my-service
+fault:
+delay:
+percentage:
+value: 10.0 # 전체 요청의 10%에 지연이 적용됩니다.
+fixedDelay: 500ms # 500 밀리초의 고정 지연 시간이 적용됩니다.
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+위 예시에서는 `my-service`에 가는 트래픽의 10%에 500ms의 지연을 추가하도록 설정되어 있습니다. 이러한 지연은 네트워크 지연, 서비스 응답 시간 증가 등의 시나리오를 모방하기 위해 사용됩니다.
+
+​
+
+### 오류 주입(Inject Fault) 설정 예시:
+
+
+
+
+
+
+
+
+
+```
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+name: my-service
+spec:
+hosts:
+- my-service
+http:
+- route:
+- destination:
+host: my-service
+fault:
+abort:
+percentage:
+value: 10.0 # 전체 요청의 10%에 오류 주입이 적용됩니다.
+httpStatus: 500 # HTTP 500 상태 코드로 오류 응답을 보냅니다.
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+위 설정은 `my-service`로 가는 요청 중 10%에 강제로 HTTP 500 오류를 응답으로 보냄으로써, 서비스가 다운되거나 예외를 발생시키는 상황을 시뮬레이션합니다.
+
+​
+
+Istio의 fault injection 기능을 사용하면 개발자는 시스템이 장애 상황을 어떻게 처리하는지를 미리 파악하고, 필요한 경우에 복원력을 향상시키기 위한 조치를 취할 수 있습니다. 단, 프로덕션 환경에서는 신중하게 사용하여 예기치 않은 영향을 방지해야 합니다.
+
+​
+
+​

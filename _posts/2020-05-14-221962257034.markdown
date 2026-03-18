@@ -1,0 +1,47 @@
+---
+title: "java code style"
+date: 2020-05-14 13:42:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221962257034"
+---
+
+Java code style 교정을 위해서 [google Java Style](https://github.com/google/google-java-format/releases) 에서 다운로드 후
+
+​
+
+아래 명령어를 작성하면 file 내 code style을 교정해주는 것 같다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+java -jar ~/Downloads/google-java-format-1.8-all-deps.jar \
+  --fix-imports-only \
+  -r `find . -name '*.java'`
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

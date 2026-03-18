@@ -1,0 +1,265 @@
+---
+title: "thymeleaf 변수 사용법"
+date: 2016-05-25 13:23:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220718858891"
+---
+
+# Thymeleaf Javascript Inline Example with Variable
+
+By Arvind Rai, October 30, 2015
+
+On this page we will provide Thymeleaf Javascript inline example with variable. Thymeleaf evaluates the expression and assigns the value to a variable. To facilitate it, we need to use th:inline="javascript" as an attribute in <script> tag. Thymeleaf syntax to evaluate expression is written using javascript comment, so that while running offline, Thymeleaf expression will not be displayed. Using Thymeleaf javascript inline, we evaluate expression, assigns a bean object to javascript variable. Thymeleaf makes code runnable written within commented area using and it can also remove code from runnable state. Here we will provide complete example step by step.
+
+### Thymeleaf Javascript Inline th:inline="javascript"
+
+Thymeleaf provides *javascript* mode using *th:inline="javascript"*. Find the syntax below. Here Thymeleaf fetches user name from Servlet session in our example.
+
+```
+
+      /**/
+
+```
+
+1. **/*[[...]]*/** syntax evaluates contained expression. **2. When page statically runs, the commented part does not run. So Thymeleaf expression is ignored and does not display when it runs statically and only code after inline expression is executed. 3. After execution, Thymeleaf removes all the code after inline expression. The output of the above code will be as follows.
+
+```
+
+    /**/
+
+
+```
+
+<ins id="aswift_0_expand" style="display: inline-table; border: none; height: 90px; margin: 0px; padding: 0px; position: relative; visibility: visible; width: 728px; background-color: transparent;">*<iframe width="728" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" id="aswift_0" name="aswift_0" style="left: 0px;   top: 0px;"></iframe></ins>
+
+### Evaluate Java Bean with Thymeleaf Javascript Inline Expression
+
+If we have a bean with some attributes and we want to assign it to javascript variable then we can do as follows.
+
+```
+var address = /*[[${session.address}]]*/ null;
+```
+
+null* will be assigned to those attributes of bean which has been set no value. Find the output of the above code snippet.
+
+```
+var address = {'district':'Varanasi','post':null,'state':'UP','villageName':'Dhananjaypur'};
+```
+
+### Use Javascript Commented Code using Thymeleaf
+
+With Thymeleaf we can add Javascript commented code in our running code using /*[+ ... +]*/ **syntax. Find the javascript template for a variable.
+
+```
+/*[+
+
+ var extraMsg  = 'Thymeleaf javascript example.';
+
+ +]*/
+```
+
+The output will be as follows.
+
+```
+var extraMsg  = 'Thymeleaf javascript example.';
+```
+
+If we want to concatenate some value with the result of javascript inline expression, we do as follows.
+
+```
+/*[+
+
+ var msg  = 'My village name, ' + [[${session.address.villageName}]];
+
+ +]*/
+```
+
+Find the output.
+
+```
+var msg  = 'My village name, ' + 'Dhananjaypur';
+```
+
+### Remove Javascript Code using Thymeleaf
+
+Without commenting javascript code, we can remove it from running code using Thymeleaf **/*[- */ ... /* -]*/**syntax. Find the sample example.
+
+```
+/*[- */
+
+var data  = 'This is a non-working data.';
+
+/* -]*/
+```
+
+In the output, above code will be removed.
+
+### Complete Code
+
+**ThymeleafAppUtil.java**
+
+```
+package com.concretepage;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+public class ThymeleafAppUtil {
+     private static TemplateEngine templateEngine;
+     static {
+         ServletContextTemplateResolver templateResolver =
+                 new ServletContextTemplateResolver();
+         templateResolver.setTemplateMode("XHTML");
+         templateResolver.setPrefix("/WEB-INF/templates/");
+         templateResolver.setSuffix(".html");
+         templateResolver.setCacheTTLMs(3600000L);
+         templateEngine = new TemplateEngine();
+         templateEngine.setTemplateResolver(templateResolver);
+     }
+     public static TemplateEngine getTemplateEngine() {
+  return templateEngine;
+     }
+}
+```
+
+**WelcomeApplication.java**
+
+```
+package com.concretepage;
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.thymeleaf.context.WebContext;
+public class WelcomeApplication {
+    public void process(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
+     WebContext ctx = new WebContext(request, response, request.getServletContext(),
+       request.getLocale());
+     ThymeleafAppUtil.getTemplateEngine().process("welcome", ctx, response.getWriter());
+    }
+}
+```
+
+**Address.java**
+
+```
+package com.concretepage;
+public class Address {
+ private String villageName;
+ private String post;
+ private String district;
+ private String state;
+ public String getVillageName() {
+  return villageName;
+ }
+ public void setVillageName(String villageName) {
+  this.villageName = villageName;
+ }
+ public String getPost() {
+  return post;
+ }
+ public void setPost(String post) {
+  this.post = post;
+ }
+ public String getDistrict() {
+  return district;
+ }
+ public void setDistrict(String district) {
+  this.district = district;
+ }
+ public String getState() {
+  return state;
+ }
+ public void setState(String state) {
+  this.state = state;
+ }
+}
+```
+
+**WelcomeServlet.java**
+
+```
+package com.concretepage;
+import java.io.IOException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+@WebServlet(urlPatterns = "/welcome", loadOnStartup = 1)
+public class WelcomeServlet extends HttpServlet {
+ private static final long serialVersionUID = 1L;
+ public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
+      doGet(request,response);
+ }
+ public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
+  response.setContentType("text/html;charset=UTF-8");
+  response.setHeader("Pragma", "no-cache");
+  response.setHeader("Cache-Control", "no-cache");
+  response.setDateHeader("Expires", 0);
+
+  Address address = new Address();
+  address.setVillageName("Dhananjaypur");
+  address.setDistrict("Varanasi");
+  address.setState("UP");
+
+  HttpSession session = request.getSession();
+  session.setAttribute("userName", "Mahesh Sharma");
+  session.setAttribute("address", address);
+
+  WelcomeApplication application = new WelcomeApplication();
+  application.process(request, response);
+ }
+}
+```
+
+**WEB-INF\templates\welcome.html**
+
+```
+
+
+    Thymeleaf Javascript Demo
+
+
+
+    /**/
+
+
+
+
+
+User Name
+
+
+
+```
+
+### Output
+
+Run the code using URL *http://localhost:8080/concretepage-1/welcome* and then check the *view source*. It will be as given below.
+
+```
+
+
+    Thymeleaf Javascript Demo
+
+
+
+    /**/
+
+
+
+
+
+Mahesh Sharma
+
+
+
+```
+
+### Download Source Code
+
+[thymeleaf-javascript-inline-example-with-variable.zip](http://www.concretepage.com/thymeleaf/download/thymeleaf-javascript-inline-example-with-variable.zip)
+
+출처 : <http://www.concretepage.com/thymeleaf/thymeleaf-javascript-inline-example-with-variable>
+
+[Thymeleaf Javascript Inline Example with Variablewww.concretepage.com](http://www.concretepage.com/thymeleaf/thymeleaf-javascript-inline-example-with-variable)
+

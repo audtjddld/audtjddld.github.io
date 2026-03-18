@@ -1,0 +1,160 @@
+---
+title: "디자인 패턴 - 옵저버 패턴"
+date: 2016-01-06 22:42:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220589805300"
+---
+
+# 옵저버패턴
+
+한 객체의 상태가 바뀌면 그 객체를 의존하는 다른 객체에도 자동으로 갱신되는 방식으로 일대다(one to many) 의존성을 지닌다.
+
+Watcher.java**
+
+```
+package observer.java.util.observer;
+
+import java.util.Observable;
+
+/**
+ * <https://examples.javacodegeeks.com/core-java/util/observer/java-util-observer-example/>
+ * <http://egloos.zum.com/iilii/v/3902774>
+ *
+ * 변화를 통보하는 중계기
+ *
+ * @author 정명성
+ * @create date : 2016. 5. 6.
+ * observer.java.util.observer.KoreaWeatherCenter.java
+ */
+public class Watcher extends Observable {
+
+    public void setWeather(String weather) {
+        setChanged();
+        notifyObservers(weather);
+    }
+}
+```
+
+koreanWeatherCenter.java**
+
+```
+package observer.java.util.observer;
+
+import java.util.Observable;
+import java.util.Observer;
+
+public class KoreaWeatherCenter implements Observer {
+    private String weather;
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o instanceof Watcher) {
+            this.weather = (String) arg;
+            System.out.println("오늘의 날씨는 " + weather + "입니다.");
+
+        }
+    }
+}
+```
+
+NewyorkWeatherCenter.java
+
+```
+package observer.java.util.observer;
+
+import java.util.Observable;
+import java.util.Observer;
+
+public class NewyorkWeatherCenter implements Observer {
+
+    private String weather;
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o instanceof Watcher) {
+            this.weather = (String) arg;
+            System.out.println("today is wheater " + weather);
+        }
+    }
+}
+```
+
+Demo.java
+
+```
+package observer.java.util.observer;
+
+public class Demo {
+    public static void main(String[] args) {
+        Watcher watcher = new Watcher();
+
+        KoreaWeatherCenter kwc = new KoreaWeatherCenter();
+        NewyorkWeatherCenter nwc = new NewyorkWeatherCenter();
+
+        watcher.addObserver(kwc);
+        watcher.addObserver(nwc);
+
+        System.out.println("날씨변함");
+        watcher.setWeather("windy");
+
+        System.out.println("날씨변함");
+        watcher.setWeather("맑음");
+    }
+}
+```
+
+![](https://lh5.googleusercontent.com/RUDA7okxuZfUMbyOby0zJtmNznzpQTtC60BI3TMMJu-SSryK9jZXef4taJWFq6q2A6D7D8KDUty9fIevebx7wNdJYAAytQGckrSP059FQepepIymN9fBSypKNHbmaGTLWiwo16QEf4I)
+
+<https://github.com/audtjddld/pattern/tree/master/pattern/src/observer>
+
+<https://github.com/audtjddld/pattern>
+
+[audtjddld/patternContribute to pattern development by creating an account on GitHub.github.com](https://github.com/audtjddld/pattern)
+
+----------------------------- 2016. 11. 11 ------------------
+
+java script로 해봤다.
+
+```
+var subject = {
+  arr : new Array(),
+  state : 1,
+  setState : function(value) {
+    this.state = value;
+    this.updateNotice();
+  },
+  attach : function (obj) {
+   this.arr.push(obj);
+  },
+  getState : function() {
+    return obj.state + this.state;
+  },
+  updateNotice: function() {
+    for(var i = 0; i < this.arr.length; i++) {
+      this.arr[i].update();
+    }
+  }
+}
+
+var observe =  {
+
+  add : function(subject) {
+    subject.attach(this);
+    subject.state = 3;
+  },
+  update : function () {
+    console.log('observe ' + subject.state);
+  }
+}
+
+var observe2 = {
+  add :function(subject) {
+   subject.attach(this);
+  },
+  update : function() {
+     console.log('observe2 ' + subject.state);
+  }
+}
+
+subject.setState(3);
+```

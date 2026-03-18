@@ -1,0 +1,213 @@
+---
+title: "Spring batch ItemReader @StepScope 사용중 에러"
+date: 2016-04-28 11:16:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220695595167"
+---
+
+spring batch 사용중에 jobLauncher 시 jobParameter를 ItemReader에서 받기 위해서 @StepScope를 사용하였습니다. 파라미터를 받기 전에 실행하던 코드에서 에러가 발생하게 되었습니다.
+
+```
+java.lang.NullPointerException: null
+ at org.springframework.batch.item.database.JpaPagingItemReader.doReadPage(JpaPagingItemReader.java:196) ~[spring-batch-infrastructure-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.item.database.AbstractPagingItemReader.doRead(AbstractPagingItemReader.java:108) ~[spring-batch-infrastructure-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.item.support.AbstractItemCountingItemStreamItemReader.read(AbstractItemCountingItemStreamItemReader.java:88) ~[spring-batch-infrastructure-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_65]
+ at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_65]
+ at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_65]
+ at java.lang.reflect.Method.invoke(Method.java:497) ~[na:1.8.0_65]
+ at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:302) [spring-aop-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190) [spring-aop-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157) [spring-aop-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.aop.support.DelegatingIntroductionInterceptor.doProceed(DelegatingIntroductionInterceptor.java:133) ~[spring-aop-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.aop.support.DelegatingIntroductionInterceptor.invoke(DelegatingIntroductionInterceptor.java:121) ~[spring-aop-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) [spring-aop-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:208) [spring-aop-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at com.sun.proxy.$Proxy168.read(Unknown Source) ~[na:na]
+ at org.springframework.batch.core.step.item.SimpleChunkProvider.doRead(SimpleChunkProvider.java:91) ~[spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.core.step.item.SimpleChunkProvider.read(SimpleChunkProvider.java:157) ~[spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.core.step.item.SimpleChunkProvider$1.doInIteration(SimpleChunkProvider.java:116) ~[spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:374) ~[spring-batch-infrastructure-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215) ~[spring-batch-infrastructure-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:144) ~[spring-batch-infrastructure-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.core.step.item.SimpleChunkProvider.provide(SimpleChunkProvider.java:110) ~[spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.core.step.item.ChunkOrientedTasklet.execute(ChunkOrientedTasklet.java:69) ~[spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:406) ~[spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.core.step.tasklet.TaskletStep$ChunkTransactionCallback.doInTransaction(TaskletStep.java:330) ~[spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.transaction.support.TransactionTemplate.execute(TransactionTemplate.java:133) ~[spring-tx-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.batch.core.step.tasklet.TaskletStep$2.doInChunkContext(TaskletStep.java:271) ~[spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.core.scope.context.StepContextRepeatCallback.doInIteration(StepContextRepeatCallback.java:81) ~[spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.repeat.support.RepeatTemplate.getNextResult(RepeatTemplate.java:374) ~[spring-batch-infrastructure-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.repeat.support.RepeatTemplate.executeInternal(RepeatTemplate.java:215) ~[spring-batch-infrastructure-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.repeat.support.RepeatTemplate.iterate(RepeatTemplate.java:144) ~[spring-batch-infrastructure-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.core.step.tasklet.TaskletStep.doExecute(TaskletStep.java:257) ~[spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.core.step.AbstractStep.execute(AbstractStep.java:200) ~[spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.core.job.SimpleStepHandler.handleStep(SimpleStepHandler.java:148) [spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.core.job.AbstractJob.handleStep(AbstractJob.java:392) [spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.core.job.SimpleJob.doExecute(SimpleJob.java:135) [spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.core.job.AbstractJob.execute(AbstractJob.java:306) [spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.batch.core.launch.support.SimpleJobLauncher$1.run(SimpleJobLauncher.java:135) [spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.core.task.SyncTaskExecutor.execute(SyncTaskExecutor.java:50) [spring-core-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.batch.core.launch.support.SimpleJobLauncher.run(SimpleJobLauncher.java:128) [spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_65]
+ at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_65]
+ at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_65]
+ at java.lang.reflect.Method.invoke(Method.java:497) ~[na:1.8.0_65]
+ at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:302) [spring-aop-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190) [spring-aop-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157) [spring-aop-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.batch.core.configuration.annotation.SimpleBatchConfiguration$PassthruAdvice.invoke(SimpleBatchConfiguration.java:127) [spring-batch-core-3.0.6.RELEASE.jar:3.0.6.RELEASE]
+ at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) [spring-aop-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:208) [spring-aop-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at com.sun.proxy.$Proxy113.run(Unknown Source) [na:na]
+ at com.daihan.batch.controller.ExecuteController.execute(ExecuteController.java:73) [classes/:na]
+ at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_65]
+ at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_65]
+ at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_65]
+ at java.lang.reflect.Method.invoke(Method.java:497) ~[na:1.8.0_65]
+ at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:221) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:136) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:110) [spring-webmvc-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:817) [spring-webmvc-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:731) [spring-webmvc-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:85) [spring-webmvc-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:959) [spring-webmvc-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:893) [spring-webmvc-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:968) [spring-webmvc-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:859) [spring-webmvc-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at javax.servlet.http.HttpServlet.service(HttpServlet.java:622) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:844) [spring-webmvc-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at javax.servlet.http.HttpServlet.service(HttpServlet.java:729) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:292) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52) [tomcat-embed-websocket-8.0.32.jar:8.0.32]
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:240) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:316) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:126) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:90) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:330) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:114) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:330) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:122) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:330) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:330) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:169) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:330) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:48) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:330) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:120) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:330) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:96) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:330) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:64) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:330) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:91) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:330) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:53) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:330) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:213) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:176) [spring-security-web-4.0.3.RELEASE.jar:4.0.3.RELEASE]
+ at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:346) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:262) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:240) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:240) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:87) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:240) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:77) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:240) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:121) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.5.RELEASE.jar:4.2.5.RELEASE]
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:240) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:212) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:106) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:141) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:79) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:88) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:522) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1095) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:672) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1500) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.run(NioEndpoint.java:1456) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [na:1.8.0_65]
+ at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [na:1.8.0_65]
+ at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.0.32.jar:8.0.32]
+ at java.lang.Thread.run(Thread.java:745) [na:1.8.0_65]
+```
+
+```
+@Override
+ @SuppressWarnings("unchecked")
+ protected void doReadPage() {
+
+  EntityTransaction tx = null;
+
+  if (transacted) {
+   tx = entityManager.getTransaction();
+   tx.begin();
+
+   entityManager.flush();
+   entityManager.clear();
+  }//end if
+
+  Query query = createQuery().setFirstResult(getPage() * getPageSize()).setMaxResults(getPageSize());
+
+  if (parameterValues != null) {
+   for (Map.Entry me : parameterValues.entrySet()) {
+    query.setParameter(me.getKey(), me.getValue());
+   }
+  }
+
+  if (results == null) {
+   results = new CopyOnWriteArrayList();
+  }
+  else {
+   results.clear();
+  }
+
+  if (!transacted) {
+   List queryResult = query.getResultList();
+   for (T entity : queryResult) {
+    entityManager.detach(entity);
+    results.add(entity);
+   }//end if
+  } else {
+   results.addAll(query.getResultList());
+   tx.commit();
+  }//end if
+ }
+```
+
+노란색으로 칠한 곳에서 문제가 발생되더라구요.
+
+디버깅으로 @StepScope를 제거한 상태에서 동작하게되면 EntityManager에 값이 들어 있습니다.
+
+그런데 @StepScope를 사용하면 EntityManager값이 null로 되어있기 때문에 발생되는 문제인데요.
+
+해결 방법을 찾다가 아래 링크를 보게되었고
+
+<http://stackoverflow.com/questions/30330879/could-not-autowired-object-in-itemstreamreader-open-method> <http://stackoverflow.com/questions/30330879/could-not-autowired-object-in-itemstreamreader-open-method>
+
+IteamReader 쪽 method에서 reader.open(new ExecutionContext());
+
+을 하게되니 정상적으로 동작.
+
+하지만 이유를 모르겠다 -_-;;
+
+stackoverflow 작성자도 자기는 spring 초보라서 이유를 설명해 달라고 적혀 있을 뿐..
+
+삽질에 삽질중이다

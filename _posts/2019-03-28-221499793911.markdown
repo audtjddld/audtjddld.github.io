@@ -1,0 +1,12 @@
+---
+title: "tomcat native"
+date: 2019-03-28 18:49:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221499793911"
+---
+
+Apache - Native
+
+​
+
+native는 Tomcat I/O 성능 향상을 위해 OS Native Resource를 사용하는 추가적인 모듈로 tcnative라고도 부른다. 처리량이 많거나 I/O가 많이 발생하거나 혹은 HTTPS 통신을 하는 시스템인 경우에 주로 사용한다. Tomcat Native를 사용하기 위해서는 APR(Apache Portable Runtime) 라이브러리가 필요한데, APR은 Apache 산하 프로젝트 중 하나로 플랫폼 비종속적인 API를 제공한다.

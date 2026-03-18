@@ -1,0 +1,76 @@
+---
+title: "jstl 커스텀 태그? 만들기"
+date: 2012-11-09 09:27:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60175281761"
+---
+
+상단에
+
+<%@ taglib prefix="m" uri="/WEB-INF/tlds/method.tld" %>
+
+
+
+
+
+tlds/method.tld 파일에
+
+
+
+1**2
+   <function>
+        <description>makeMoney</description>
+        <name>makeMoney</name>
+        <function-class>com.module.trans.NumberConv</function-class> <!--클래스경로까지써주세요-->
+        <function-signature>java.lang.String makeMoney(java.lang.String)</function-signature>
+        <example>${m:makeMoney(str)}</example>
+    </function>
+
+
+
+기술한다
+
+
+
+해당 내용은
+
+NumberConv 라는 class 파일안에
+
+
+
+makeMonery 라는 메소드를 호출 하는 것이다.
+
+
+
+
+  public static String makeMoney(String num) {
+    try {
+      num = divideComma(num.trim(), 3);
+    }
+    catch (Exception e) {
+    }
+    return num;
+  }
+
+
+
+jsp 페이지에서
+
+${m:makeMoney(online.svcCost)}
+
+이렇게 사용하면 된다.
+
+
+
+pom.xml
+
+```
+
+    taglibs
+    standard
+    1.1.2
+
+```
+
+참조 : <http://warmz.tistory.com/729>

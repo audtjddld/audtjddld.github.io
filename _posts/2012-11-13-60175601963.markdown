@@ -1,0 +1,74 @@
+---
+title: "asp 파일 다운로드"
+date: 2012-11-13 14:55:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터, asp파일다운로드]
+original_url: "https://blog.naver.com/kkforgg/60175601963"
+---
+
+<%
+' 파일 경로를 설정한다.
+FileName = request("fileName")
+FileType = request("type")
+
+IF FileType="s" Then
+FilePath="\sound\lecture\"
+End IF
+
+IF FileType="d" Then
+FilePath="\doc\"
+End IF
+
+strFilePath = Server.MapPath("../")&FilePath&FileName
+
+Response.Expires = 0
+Response.Buffer = True
+Response.Clear
+
+Set fs = Server.CreateObject("Scripting.FileSystemObject")
+
+if(fs.FileExists(strFilePath)) Then
+' 파일이 있을때
+ Response.ContentType ="application/octet-stream"
+ Response.CacheControl = "public"
+ Response.AddHeader "Content-Disposition","attachment;filename="&FileName
+
+ Set Stream = Server.CreateObject("ADODB.Stream")
+ Stream.Open
+ Stream.Type=1
+ Stream.LoadFromFile strFilePath
+ Response.BinaryWrite Stream.Read
+ Stream.close
+ Set Stream = nothing
+Else
+' 파일이 없을때
+ Response.Write strFilePath
+ Response.Write "<script type='text/javascript'> alert('파일을 찾을 수 없습니다.') </script>"
+End If
+ Response.End
+
+ Set fs = Nothing
+
+%>
+
+
+
+요기저기서 퍼와서 만들어봤습니다.
+
+window.open 이나 link 시에 fileName하고 뭐 타입은 생략해도 되고,
+
+받아서 찍어주는겁니다.
+
+대신 이렇게 하면 서버쪽 메모리 버퍼?에 담아서 하기때문에
+
+대용량을 다중 다운로드하게되면 서버가 죽는다고 합니다.
+
+
+
+///////// 2012.11.13 ///////////
+
+태요 사이트도 참조 하시면 좋을 것 같다.
+
+
+
+<http://www.taeyo.pe.kr/Lecture/20_TIps/Danny03.asp>

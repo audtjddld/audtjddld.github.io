@@ -1,0 +1,31 @@
+---
+title: "facebook news feed 연동"
+date: 2014-02-14 15:42:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60209222949"
+---
+
+**facebook 퍼가기**
+
+```
+unctionName(title){
+      var link =  document.location.href;
+      window.open("http://www.facebook.com/share.php?u="+encodeURIComponent(link)+"&t="+encodeURIComponent(title),'','');
+   }
+```
+
+twitter 퍼가기**
+
+```
+sendTwitter(title){
+     var link =  document.location.href;
+     window.open("http://twitter.com/share?url="+encodeURIComponent(link)+"&text="+encodeURIComponent(title),'','');
+   }
+```
+
+<https://developers.facebook.com/tools/debug/> <-- 디버깅 위치
+
+
+
+메타태그 종류
+og:urlhttp://www.keco.or.kr:8081/kr/open/communityid/1/view.do?idx=1192&f=1&q&p&og:typearticleog:title2014년도 제1차 해외 환경프로젝트 타당성조사 지원사업 시행계획 공고og:imagehttp://www.keco.or.kr:8081/common/images/icon/safe_image.pngog:description한국환경산업기술원 공고 제2014-13호 2014년도 제1차 해외 환경프로젝트 타당성...og:site_name공지사항og:updated_time1392359836

@@ -1,0 +1,454 @@
+---
+title: "java apns push 구현시 문제"
+date: 2016-01-11 19:07:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220594369429"
+---
+
+현재 회사에서 jdk 1.8로 java APNS 를 구축할려고 했는데, 계속 에러가 나는 것이였다.
+
+인증서부터 쭈욱 따라서해서 겨우 왔건만 안되는 상황.
+
+<https://code.google.com/p/javapns/>
+
+와
+
+<https://github.com/notnoop/java-apns>
+
+두 라이브러리를 이용했지만 둘다 같은 상황이였다.
+
+찾아보니 jdk 1.8에서는 아직 에러가 발생되어 작동을 안하는 것 같았다.
+
+<https://github.com/gocd/gocd/issues/1360>
+
+그에 따른 글
+
+jdk1.6 ~ jdk1.7 버전 까지 지원되는데 jdk 1.7 버전에서도 어느정도 버전을 타는 듯 해보였다.
+
+혹시나 나처럼 하루종일 삽을 푸는 개발자가 있다면 참고하시 길
+
+결국 키가 문제였음**
+
+**openssl 로 p12파일을 생성해야됨. macbook이나 ios에서 발급은 안되는 듯**
+
+-> <http://hippalus.tistory.com/111>
+
+JDK 1.8에서도 잘 된다.
+
+javax.net.ssl.SSLHandshakeException: Remote host closed connection during handshake
+
+ at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:992) ~[na:1.8.0_65]
+
+ at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1375) ~[na:1.8.0_65]
+
+ at sun.security.ssl.SSLSocketImpl.writeRecord(SSLSocketImpl.java:747) ~[na:1.8.0_65]
+
+ at sun.security.ssl.AppOutputStream.write(AppOutputStream.java:123) ~[na:1.8.0_65]
+
+ at java.io.OutputStream.write(OutputStream.java:75) ~[na:1.8.0_65]
+
+ at com.notnoop.apns.internal.ApnsConnectionImpl.sendMessage(ApnsConnectionImpl.java:328) [apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.ApnsConnectionImpl.sendMessage(ApnsConnectionImpl.java:312) [apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.ApnsServiceImpl.push(ApnsServiceImpl.java:46) [apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.AbstractApnsService.push(AbstractApnsService.java:56) [apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.ApnsServiceImpl.push(ApnsServiceImpl.java:36) [apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.AbstractApnsService.push(AbstractApnsService.java:45) [apns-1.0.0.Beta6.jar:na]
+
+ at com.example.PushController.pushTest(PushController.java:33) [classes/:na]
+
+ at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_65]
+
+ at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_65]
+
+ at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_65]
+
+ at java.lang.reflect.Method.invoke(Method.java:497) ~[na:1.8.0_65]
+
+ at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:222) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:137) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:110) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:814) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:737) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:85) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:959) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:893) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:969) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:860) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at javax.servlet.http.HttpServlet.service(HttpServlet.java:622) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:845) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at javax.servlet.http.HttpServlet.service(HttpServlet.java:729) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:291) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52) [tomcat-embed-websocket-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:87) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:77) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:121) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:212) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:106) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:141) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:79) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:88) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:521) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1096) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:674) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1500) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.run(NioEndpoint.java:1456) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [na:1.8.0_65]
+
+ at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [na:1.8.0_65]
+
+ at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at java.lang.Thread.run(Thread.java:745) [na:1.8.0_65]
+
+Caused by: java.io.EOFException: SSL peer shut down incorrectly
+
+ at sun.security.ssl.InputRecord.read(InputRecord.java:505) ~[na:1.8.0_65]
+
+ at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:973) ~[na:1.8.0_65]
+
+ ... 64 common frames omitted
+
+2016-01-11 18:54:26.063 ERROR 6552 --- [nio-8090-exec-3] c.n.apns.internal.ApnsConnectionImpl     : Couldn't send message after 3 retries.Message(Id=1; Token=3B022FD2226CE40C4290221D700D4ABD5877D2BEA60C1FDB77A42140D301A015; Payload={"aps":{"alert":"hello world"}})
+
+javax.net.ssl.SSLHandshakeException: Remote host closed connection during handshake
+
+ at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:992) ~[na:1.8.0_65]
+
+ at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1375) ~[na:1.8.0_65]
+
+ at sun.security.ssl.SSLSocketImpl.writeRecord(SSLSocketImpl.java:747) ~[na:1.8.0_65]
+
+ at sun.security.ssl.AppOutputStream.write(AppOutputStream.java:123) ~[na:1.8.0_65]
+
+ at java.io.OutputStream.write(OutputStream.java:75) ~[na:1.8.0_65]
+
+ at com.notnoop.apns.internal.ApnsConnectionImpl.sendMessage(ApnsConnectionImpl.java:328) [apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.ApnsConnectionImpl.sendMessage(ApnsConnectionImpl.java:312) [apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.ApnsServiceImpl.push(ApnsServiceImpl.java:46) [apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.AbstractApnsService.push(AbstractApnsService.java:56) [apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.ApnsServiceImpl.push(ApnsServiceImpl.java:36) [apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.AbstractApnsService.push(AbstractApnsService.java:45) [apns-1.0.0.Beta6.jar:na]
+
+ at com.example.PushController.pushTest(PushController.java:33) [classes/:na]
+
+ at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_65]
+
+ at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_65]
+
+ at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_65]
+
+ at java.lang.reflect.Method.invoke(Method.java:497) ~[na:1.8.0_65]
+
+ at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:222) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:137) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:110) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:814) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:737) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:85) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:959) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:893) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:969) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:860) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at javax.servlet.http.HttpServlet.service(HttpServlet.java:622) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:845) [spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at javax.servlet.http.HttpServlet.service(HttpServlet.java:729) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:291) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52) [tomcat-embed-websocket-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:87) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:77) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:121) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) [spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:212) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:106) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:141) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:79) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:88) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:521) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1096) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:674) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1500) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.run(NioEndpoint.java:1456) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [na:1.8.0_65]
+
+ at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [na:1.8.0_65]
+
+ at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at java.lang.Thread.run(Thread.java:745) [na:1.8.0_65]
+
+Caused by: java.io.EOFException: SSL peer shut down incorrectly
+
+ at sun.security.ssl.InputRecord.read(InputRecord.java:505) ~[na:1.8.0_65]
+
+ at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:973) ~[na:1.8.0_65]
+
+ ... 64 common frames omitted
+
+2016-01-11 18:54:26.064 ERROR 6552 --- [nio-8090-exec-3] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is com.notnoop.exceptions.NetworkIOException: javax.net.ssl.SSLHandshakeException: Remote host closed connection during handshake] with root cause
+
+java.io.EOFException: SSL peer shut down incorrectly
+
+ at sun.security.ssl.InputRecord.read(InputRecord.java:505) ~[na:1.8.0_65]
+
+ at sun.security.ssl.SSLSocketImpl.readRecord(SSLSocketImpl.java:973) ~[na:1.8.0_65]
+
+ at sun.security.ssl.SSLSocketImpl.performInitialHandshake(SSLSocketImpl.java:1375) ~[na:1.8.0_65]
+
+ at sun.security.ssl.SSLSocketImpl.writeRecord(SSLSocketImpl.java:747) ~[na:1.8.0_65]
+
+ at sun.security.ssl.AppOutputStream.write(AppOutputStream.java:123) ~[na:1.8.0_65]
+
+ at java.io.OutputStream.write(OutputStream.java:75) ~[na:1.8.0_65]
+
+ at com.notnoop.apns.internal.ApnsConnectionImpl.sendMessage(ApnsConnectionImpl.java:328) ~[apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.ApnsConnectionImpl.sendMessage(ApnsConnectionImpl.java:312) ~[apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.ApnsServiceImpl.push(ApnsServiceImpl.java:46) ~[apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.AbstractApnsService.push(AbstractApnsService.java:56) ~[apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.ApnsServiceImpl.push(ApnsServiceImpl.java:36) ~[apns-1.0.0.Beta6.jar:na]
+
+ at com.notnoop.apns.internal.AbstractApnsService.push(AbstractApnsService.java:45) ~[apns-1.0.0.Beta6.jar:na]
+
+ at com.example.PushController.pushTest(PushController.java:33) ~[classes/:na]
+
+ at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_65]
+
+ at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_65]
+
+ at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:1.8.0_65]
+
+ at java.lang.reflect.Method.invoke(Method.java:497) ~[na:1.8.0_65]
+
+ at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:222) ~[spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:137) ~[spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:110) ~[spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:814) ~[spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:737) ~[spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:85) ~[spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:959) ~[spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:893) ~[spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:969) ~[spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:860) ~[spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at javax.servlet.http.HttpServlet.service(HttpServlet.java:622) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:845) ~[spring-webmvc-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at javax.servlet.http.HttpServlet.service(HttpServlet.java:729) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:291) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52) ~[tomcat-embed-websocket-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:99) ~[spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.filter.HttpPutFormContentFilter.doFilterInternal(HttpPutFormContentFilter.java:87) ~[spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:77) ~[spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:121) ~[spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.2.4.RELEASE.jar:4.2.4.RELEASE]
+
+ at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:239) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:212) ~[tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:106) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:141) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:79) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:88) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:521) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1096) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:674) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1500) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.run(NioEndpoint.java:1456) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [na:1.8.0_65]
+
+ at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [na:1.8.0_65]
+
+ at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.0.30.jar:8.0.30]
+
+ at java.lang.Thread.run(Thread.java:745) [na:1.8.0_65]

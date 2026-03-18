@@ -1,0 +1,13 @@
+---
+title: "thymeleaf syntax"
+date: 2016-05-30 10:25:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220722782516"
+---
+
+<http://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf.html#standard-expression-syntax>
+
+<http://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf.html#standard-expression-syntax>
+
+[Tutorial: Using Thymeleafwww.thymeleaf.org](http://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf.html#standard-expression-syntax)
+

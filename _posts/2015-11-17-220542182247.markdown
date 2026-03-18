@@ -1,0 +1,16 @@
+---
+title: "github .ignore 설정 방법"
+date: 2015-11-17 21:56:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220542182247"
+---
+
+출처 : <http://emflant.tistory.com/127>
+
+<http://emflant.tistory.com/127>
+
+[.gitignore 파일 설정법Git 으로 프로젝트를 관리한다고 했을 때, 그 프로젝트안의 특정파일들은 Git 으로 관리할 필요없는 것들도 있다. 자동으로 생성되는 로그파일들...emflant.tistory.com](http://emflant.tistory.com/127)
+
+나의 시스템 셋팅 부분이 전부 git에 올라가는 것을 보고 뒤늦게 알아냈다 ㅡㅡ;;
+
+그래서 설정해보았다.

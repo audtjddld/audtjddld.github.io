@@ -1,0 +1,37 @@
+---
+title: "serialize 처럼 값 가져오기~"
+date: 2013-05-27 18:36:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60192800023"
+---
+
+function setAreaParamData(areaId){ //해당폼 파라미터값 셋팅
+ var $area;
+ var param = new Array();
+
+ if(areaId){
+  $area = $('#'+areaId);
+ }
+
+
+ $area.find("input[type=text]").each(function(i, findElement){
+  var $obj = $(findElement);
+  if($obj.val()!=null){
+   if($obj.attr("name")=="menuname"){
+    param.push($obj.attr("name")+ "="+escape(decodeURIComponent($obj.val())));
+   }else{
+    param.push($obj.attr("name") + "=" + $obj.val());
+   }
+  }
+ });
+
+ $area.find("input[type=radio]").each(function(i, findElement){
+  var $obj = $(findElement);
+  if($obj.is(":checked")){
+   param.push($obj.attr("name") + "=" + $obj.attr("value"));
+  }
+ });
+
+ return param;
+}

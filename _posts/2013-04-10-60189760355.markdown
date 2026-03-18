@@ -1,0 +1,101 @@
+---
+title: "코어 자바스크립트 1"
+date: 2013-04-10 14:07:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60189760355"
+---
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<script src="./js/jquery-1.6.2.min.js"></script> </script>
+<script type="text/javascript">
+
+ var Student = function(id, name) {
+  var id = id;
+  this.name = name;
+ }
+
+ var my = new Student("ms","myung sung");
+
+ alert(my.id + " , " + my.name);
+// 결과 값은 undefined, myung sung 이다. 자바 스크립트 클래스 선언시 var 변수는 private 성질을 가지고 있다.
+
+
+ var People = function (name, age) {
+  var name = name;
+  var age = age;
+
+//var isAdult = function() { <-- 해당 클래스 안에 펑션으로 인식 되기 위해서는 this를 적어줘야 한다.
+  this.isAdult = function() {
+   if(age > 19) return true;
+   else return false;
+  }
+
+  this.viewMyInfo = function(){
+   if(this.isAdult()){
+    return name + "님은 성인이 맞습니다.";
+   }else {
+    return name + "님은 성인이 아닙니다.";
+   }
+  }
+ }
+
+ var people = new People("myung-sung",28);
+ alert(people.isAdult());
+ alert(people.viewMyInfo());
+
+
+// 정석 클래스와 아닌 클래스의 차이점을 알아보자. new와 그렇지 않은 방법 확인.
+
+ var MyClass = function() {
+  this.show = function() {
+   return "MyClass";
+  }
+ }
+
+ var MyStaticClass = new function() {
+  this.show = function() {
+   return "MyStaticClass";
+  }
+ }
+
+ var cls = new MyClass();
+ alert(cls.show());
+
+ alert(MyStaticClass.show());
+
+// (1) 변수 (or 프로퍼티)
+//
+//private 변수는 앞서 설명한 것처럼 클래스 안에서 ‘var’ 키워드를 사용하여 선언되며, 오직 ‘private/privileged 함수’에서만 접근할 수 있다.
+//
+//public 프로퍼티는 클래스 안에서 ‘this.propertyName’ 형태로 선언되며 외부에서도 읽기/쓰기가 가능하다.
+//
+//prototype 프로퍼티는 클래스 외부에서 정의되며 ‘Classname.prototype.propertyName = someValue’ 형태로 사용하지만 동일한 이름의 public 프로퍼티가 존재하지 않을 경우에만 정의할 수 있다. (예제의 46라인의 주석을 해제하여 실행을 하여도 결과 값은 동일함)
+//
+//static 프로퍼티는 ‘Classname.propertyName’ 형태로 정의되며 인스턴스의 생성과는 별개의 영역에 존재한다. (예제의 3라인처럼 클래스 내부적으로 static 프로퍼티는 ‘this.constructor.prototyeName’ 형태로 접근할 수 있음)
+//
+//
+//(2) 함수 (or 메소드)
+//
+//private 함수는 클래스 내부적으로 ‘function functionName() {…} or var functionName = function() {…}’와 같은 형태로 선언되며 생성자와 privileged 메소드를 통해서만 호출될 수 있다.
+//
+//privileged 메소드는 ‘this.methodName = function() {…}’와 같은 형태로 선언되며 클래스 외부에서도 실행할 수 있다. 하지만 외부에서는 ‘prototype’을 이용한 재정의를 할 수가 없다.
+//
+//public 메소드는 클래스 외부에서 ‘Classname.prototype.methodName = function() {…}’와 같이 자유롭게 정의할 수 있지만 클래스 내부에 정의된 ‘private’ 요소들은 접근할 수 없다. 또한 prototype 프로퍼티와 마찬가지로 클래스 내부에 동일한 이름의 privileged 메소드가 존재하지 않을 경우에만 정의할 수 있다.
+//
+//static 메소드는 ‘Classname.methodName’ or ‘Functionname.methodName’ 형태로 정의되며 인스턴스 생성과는 별개의 영역에 존재한다. 자주 사용되는 static 메소드는 대표적으로 call/apply 메소드가 있다. (static 프로퍼티와 마찬가지로 클래스 내부적으로 ‘this.constructor.methodName’ 형태로 접근할 수 있음)
+//
+//
+//(3) 참고 사항
+//
+//변수와 프로퍼티(or 함수/메소드)는 비슷한 의미를 가지고 있지만 결정적인 차이가 있다. 먼저 변수와 함수는 클래스 내부에서만 존재하며 선언적 의미를 가지고 있다. 프로퍼티와 메소드는 정의되는 것이라 할 수 있는데, 여기서 말하는 정의란 클래스가 구체화되어 인스턴스가 생성되는 것을 말한다. 이때 프로퍼티와 메소드는 생성된 인스턴스를 통해 접근할 수 있다.
+// 출처 : <http://youngman.kr/?p=457>
+</script>
+</head>
+<body>
+
+</body>
+</html>

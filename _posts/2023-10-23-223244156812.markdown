@@ -1,0 +1,384 @@
+---
+title: "github action reusable workflow example | github action reusable workflow 예제"
+date: 2023-10-23 13:52:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223244156812"
+---
+{% raw %}
+
+공식 reference
+
+<https://docs.github.com/en/actions/using-workflows/reusing-workflows>
+> [**Reusing workflows - GitHub Docs**](https://docs.github.com/en/actions/using-workflows/reusing-workflows)
+>
+> Reusing workflows Learn how to avoid duplication when creating a workflow by reusing existing workflows. Overview Rather than copying and pasting from one workflow to another, you can make workflows reusable. You and anyone with access to the reusable workflow can then call the reusable workflow fro...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+github actions을 작성할 때 반복되는 작업들을 재사용 가능하게 만드는 방법이 있어서 알아보았다.
+
+​
+
+reusable workflow는 Job 단위로만 작성이 가능하며, step 단위로는 작성하는 것이 아님
+
+​
+
+reusable workflow는 아래와 같이 명세서를 작성함.
+
+notification.yml
+
+
+
+
+
+
+
+
+
+```
+name: Send slack message
+on:
+  workflow_call:
+    inputs:
+      message:
+        type: string
+        required: true
+      username:
+        type: string
+        required: true
+      icon:
+        type: string
+        required: false
+        default: ':github:'
+      channel:
+        type: string
+        required: true
+jobs:
+  send-slack-message:
+    runs-on: self-hosted
+    steps:
+      - name: send
+        run: |-
+          curl --data "channel=${{inputs.channel}}" \
+          --data "username=${{inputs.username}}" \
+          --data "icon_emoji=${{inputs.icon}}" \
+          --data "text=${{inputs.message}}" \
+          <https://slack.com/api/chat.postMessage>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+inputs 절은 호출지에서 입력받는 파라미터라고 보면 된다.
+
+호출 부
+
+
+
+
+
+
+
+
+
+
+```
+...
+  env:
+   GITHUB_WORKFLOW_URL: ${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}}
+  build:
+    runs-on: self-hosted
+    ...
+
+  send-deploy-success-slack:
+    needs: build
+    if: ${{ success() }}
+    uses: ./.github/workflows/notification.yml
+    with:
+      icon: input_icon
+      message: input message
+      username: input_username
+      channel: input_channel
+...
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+단순하게 구조화해서 작성이 가능했고, 좀더 심화하는 방법도 있는 것 같았다.
+
+composite action
+
+<https://docs.github.com/en/actions/creating-actions/creating-a-composite-action>
+
+​
+
+환경 변수 전달 부분에 있어서 workflow를 호출할 때 문제가 있을 수 있는데, 이럴경우 임의적으로 보낼 수 있는 방법이 있었다.
+
+​
+
+환경변수를 workflow의 input으로 보낼려고 하는경우 이런 오류를 발견할 수도 있음.
+
+
+
+
+
+
+
+
+
+```
+Reusable workflow cannot find 'action.yml', 'action.yaml' or 'Dockerfile'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+관련 link
+
+<https://github.com/orgs/community/discussions/27362>
+
+​
+
+이럴경우 job에서 needs 로 선행 조건을 거는 곳에서 outputs 값으로 설정해서 전달해줄 수 있다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+...
+  env:
+   GITHUB_WORKFLOW_URL: ${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}}
+  build:
+    runs-on: self-hosted
+    outputs:
+      workflow_url: ${{env.GITHUB_WORKFLOW_URL}}
+    ...
+
+  send-deploy-success-slack:
+    needs: build
+    if: ${{ success() }}
+    uses: ./.github/workflows/notification.yml
+    with:
+      icon: input_icon
+      message: input message
+      username: input_username ${{needs.outputs.workflow_url}} //
+나름 코드가 줄어들기는 하지만, 그럼에도 불구하고 번거로운 작업이 많이 있다.
+
+​
+
+// 2023.11.01
+
+**secrets를 workflow_call로 넘기는 방법**
+
+**​**
+
+[**https://docs.github.com/en/actions/using-workflows/reusing-workflows#passing-inputs-and-secrets-to-a-reusable-workflow**](https://docs.github.com/en/actions/using-workflows/reusing-workflows#passing-inputs-and-secrets-to-a-reusable-workflow)
+
+**​**
+
+**job 안에서는 여러 설정 정보들을 기존에 EL로는 받을 수 없다.**
+
+**앞 step에 outputs으로 하고 이후 step에서 outputs로 전달받는 등 해야 되는데 (위에서 설명함)**
+
+**​**
+
+**이렇게 실행될 경우 하위 workflow_call에서 받으려면 호출지역에서 secrets 값을 설정해서 내려줘야 하는데, (secrets는 github settings> actions 에 설정되어 있는 변수들이다)  위 링크에 있는 것과 같이 설정해주면 하위 workflow에서 전달받을 수 있다.**
+
+**현재 workflow_call과 event 시점을 혼용해서 사용하고 있다.**
+
+**​**
+
+**workflow_caller.yml**
+
+
+
+
+
+
+
+
+
+```
+name: manual build and deploy
+on:
+  workflow_dispatch:
+    inputs:
+      module-name:
+        description: 'Module name to deploy'
+        required: true
+        type: choice
+        options:
+          -
+          -
+env:
+  BRANCH: ${{github.ref}} // workflow에서 선택된 branch 경로
+  GITHUB_WORKFLOW_URL: ${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}}
+jobs:
+  initialize:
+    runs-on: self-hosted
+    outputs:
+      BRANCH: ${{ env.BRANCH }} // 다음 step에 전달하기 위한 output setting
+    steps:
+      - run: echo "${{ env.BRANCH }}"
+
+  -build-and-deploy:
+    needs: initialize
+    if: ${{inputs.module-name == ''}}
+    uses: ./.github/workflows/option1.yml
+    with:
+      branch: ${{ needs.initialize.outputs.BRANCH }}
+    secrets: inherit // secrets 상속
+
+  -build-and-deploy:
+    needs: initialize
+    if: ${{inputs.module-name == ''}}
+    uses: ./.github/workflows/option2.yml
+    with:
+      branch: ${{ needs.initialize.outputs.BRANCH }}
+    secrets: inherit // secrets 상속
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**​**
+
+**workflow_call.yml**
+
+
+
+
+
+
+
+
+
+```
+name:
+on: // event시
+  push:
+    paths:
+      -
+    branches:
+      - main
+  workflow_call: // reusable workflow시
+    inputs:
+      branch:
+        description: 'target branch name' // workflow_caller에서 입력받은 checkout branch 경로
+        type: string
+        required: true
+    secrets:
+      :
+        required: true
+
+....
+
+jobs:
+  build:
+    runs-on: self-hosted
+    outputs:
+      workflow-url: ${{env.GITHUB_WORKFLOW_URL}}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{inputs.branch || github.ref}} // workflow_call 일때와 event 일때 맞춰서 동작할 수 있도록
+...
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**​**{% endraw %}

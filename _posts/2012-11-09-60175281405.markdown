@@ -1,0 +1,34 @@
+---
+title: "jstl split 사용하기."
+date: 2012-11-09 09:18:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60175281405"
+---
+
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
+
+
+<c:forEach items="${fn:split(value,',')}" var="icon">
+         <c:if test="${icon=='1'}">
+             <img src="이미지" width="28" height="11" alt="new" />
+         </c:if>
+          <c:if test="${icon=='2'}">
+              <img src="이미지" width="48" height="11" alt="upgrade" />
+          </c:if>
+         <c:if test="${icon=='4'}">
+          </c:if>
+         <c:if test="${icon=='8'}">
+           </c:if>
+         <c:if test="${icon=='16'}">
+              <img src="이미지" width="31" height="11" alt="best" />
+          </c:if>
+</c:forEach>
+
+
+
+db에 저장되는 1,2,4,8,16 값에 대해 받아서 스플릿후 forEach를 돌면서 해당 되는 값이 있으면
+
+이미지를 나타내주도록 하기 위한 코드다.

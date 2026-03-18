@@ -1,0 +1,546 @@
+---
+title: "Spring + jxl + MultipartRequest excel 읽어서 DB 저장"
+date: 2014-12-24 18:23:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220219550827"
+---
+
+1
+
+2
+
+3
+
+4
+
+5
+
+        <dependency>
+
+            <groupId>net.sourceforge.jexcelapi</groupId>
+
+            <artifactId>jxl</artifactId>
+
+            <version>2.6.12</version>
+
+        </dependency>
+
+pom.xml에 위의 lib를 등록
+
+Class 내용
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+55
+
+56
+
+57
+
+58
+
+59
+
+60
+
+61
+
+62
+
+63
+
+          XSSFWorkbook wb = null;
+
+          //Workbook wb = null; //xls일때
+
+          MultipartFile file;
+
+          ComMemberVO memberVO = null;
+
+          try {
+
+                final Map<String, MultipartFile> files = multi.getFileMap();
+
+                if(!files.isEmpty())
+
+                {
+
+                    LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+                    Iterator<Entry<String, MultipartFile>> itr = files.entrySet().iterator();
+
+                    Workbook workbook = null;
+
+                    Sheet sheet = null;
+
+                    Cell cell = null;
+
+                    String cellName = "";
+
+                    while (itr.hasNext())
+
+                    {
+
+                        Entry<String, MultipartFile> entry = itr.next();
+
+                        file = entry.getValue();
+
+                        workbook = Workbook.getWorkbook(file.getInputStream());
+
+                        if(workbook != null){
+
+                            sheet = workbook.getSheet(0);         // 엑셀파일에서 첫번째 Sheet를 인식
+
+                            int rows = sheet.getRows();       // 세로항목
+
+                            int cols = sheet.getColumns();    // 가로항목
+
+                            System.out.println("rows : " + rows);
+
+                            System.out.println("cols : " + cols);
+
+
+
+
+
+                            // 2중 ㅍ문
+
+                                if(rows> 1){
+
+                                    for(int j = 1; j<rows ; j++){
+
+
+
+                                          memberVO = new ComMemberVO();
+
+                                          memberVO.setUSER_ID(sheet.getCell(0,j).getContents().trim());
+
+                                          memberVO.setPASSWORD(sheet.getCell(1,j ).getContents().trim());
+
+                                          memberVO.setFAMILYNAME(sheet.getCell(2,j).getContents().trim());
+
+                                          memberVO.setFIRSTNAME(sheet.getCell(3,j).getContents().trim());
+
+                                          memberVO.setNATIONALITY(sheet.getCell(4,j).getContents().trim());
+
+                                          memberVO.setORGANIZATION(sheet.getCell(5,j).getContents().trim());
+
+                                          memberVO.setPRESENT_OFFICAL_TITLE(sheet.getCell(6, j).getContents().trim());
+
+                                          memberVO.setMAILING_ADDRESS(sheet.getCell(7, j).getContents().trim());
+
+                                          memberVO.setEMAIL(sheet.getCell(8, j).getContents().trim());
+
+                                          memberVO.setTELNUMBER(sheet.getCell(9, j).getContents().trim());
+
+                                          memberVO.setFAXNUMBER(sheet.getCell(10,j).getContents().trim());
+
+
+
+                                          memberVO.setREGIP("1234");
+
+                                          memberVO.setREGNAME(loginVO.getName());
+
+                                          memberVO.setREGID(loginVO.getId());
+
+
+
+                                          service.insert(memberVO);
+
+                                    }
+
+
+
+                                }
+
+
+
+                        }
+
+
+
+                    }
+
+                }
+
+
+
+      } catch (Exception e) {
+
+          e.printStackTrace();
+
+          throw new Exception();
+
+
+
+      }
+
+MultipartRequest 를 이용해서 excel upload를 할 수 있다.
+
+----------------------------------------- 2014.12.26 --------------------------------
+
+jdk 1.5 버전은 위 라이브러리 버전이 안됨.
+
+따라서 낮춰서 진행해야됩니다.
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+<dependency>
+
+    <groupId>net.sourceforge.jexcelapi</groupId>
+
+    <artifactId>jxl</artifactId>
+
+    <version>2.5.7</version>
+
+</dependency>
+
+
+
+아래는 검색 도중 나왔던 내용으로 퍼왔음**
+
+출처 : <http://www.nextree.co.kr/p5229/#comment-27478>
+
+주로 다양한 수치 Data를 다루는 통계Site에서 Data를 Excel File로 내려 받을 수 있도록 제공하는 경우가 많습니다. 보통은 화면에 보이는 내용을 그대로 Excel(xlsx, xls 확장자) 또는 CSV(Comma Separated Values)형식으로 내려 받을 수 있는데,  Java에서 Excel을 처리하기 위한 많은 기술들이 있습니다. 실제로 통계관련 프로젝트를 진행하면서 통계자료들을 사용자에게 Excel형식으로 Download 할 수 있도록 구현한 화면이 많았습니다. 이 때 사용헀던 기술들은 순수 CSV 형식으로 내려받는 방법과 JXL 이라는 기술을 사용해서 Download 방법을 사용했습니다. 그 중에서 이번에는  JXL에 대해 소개하겠습니다.
+
+JXL에 대한 기본 정의는 Java Excel Api라고 하며, Java에서 Excel처리를 위해 도움을 주는 API 입니다. 크게 두 가지 기능인 Download기능과 Upload 기능이 있습니다. Web에서 Excel File을 Upload 또는, Download를 할 때 비교적 간단하면서도 무난하게 사용 할 수 있어서 매우 실용적입니다.
+
+- JXL Download
+
+우선 JXL을 이용해서 Data를 Excel File로 Download 할 수 있는 기능에 대해서 알아보겠습니다. Data를 Excel File형식으로 Download 하기위해 JXL에서 제공하는 WriteableWorkbook이라는 Class가 있는데, 이는 Excel에서  File에 해당합니다. 마찬가지로 WriteableSheet Class는 Excel에서 Sheet를 의미합니다. 원리는 Data를 WriteableSheet Class의 addCell 함수를 통해 다양한 Cell Option을 적용해서 Excel File로 출력합니다. 이때 Cell의 Option적용은 Number와 String형을 구분해서 공통적으로 Cell의 Alignment와 Border등을 설정하며, Number형일 경우에는 해당 Number의 Format을 설정할 수 있습니다. JXL의 Download에 대한 전체적인 흐름은 다음과 같습니다.
+
+<http://www.nextree.co.kr/wp-content/uploads/2014/01/jhkim-140127-JXL-08.png>
+JXL Download
+
+- JXL Upload
+
+다음으로는 JXL을 이용해서 Excel File을 Upload 하는 기능을 살펴보겠습니다. 이 때 주의할 점은 Download에서 사용하는 WriteableWorkbook Class 대신 Workbook을 사용하고 WriteableSheet 대신 Sheet Class를 사용합니다. 사용자가 선택한 Excel File을 Sheet단위로 나누고 다시 Cell단위로 각각 조회를 해서 String형식으로 값을 읽을 수 있습니다. Excel File을 Upload하는 전체적인 흐름은 다음과 같습니다.
+
+<http://www.nextree.co.kr/wp-content/uploads/2014/02/jhkim-140127-JXL-16.png>
+JXL Upload
+
+- JXL을 선택한 이유
+
+이번에 진행했던 프로젝트에서는 대규모 Data를 처리하는 특성상 주로 CSV형식으로 변환하고 필요에 따라 JXL을 사용해서 Excel처리를 했습니다. CSV형식을 사용하면 Data 크기에 제약이 적으며, 속도도 빠르고 구현하기도 간단하긴 하지만, 단순히 표현하는 기능 외에는 설정할 수 없어서 아쉬운 점이 많습니다. 하지만 JXL을 사용하게 되면 CSV보다는 느리지만 속도를 어느 정도 유지하면서 기본적인 정렬이나 Data의 Format형식을 지정할 수 있기 때문에 무난하게 사용할 수 있습니다. 하지만, Excel 2003 이후 버전부터는 지원이 되지 않는 단점이 있습니다. 이를 감안 하더라도 JXL은 충분한 매력이 있는 기술입니다.
+
+- JXL 사용방법
+
+JXL을 사용하기 위해 필요한 Library는 jxl.jar파일 입니다. jar 파일을 추가하고, Upload(Download)일 때 Workbook(writeableWorkbook)과 Sheet(WriteableSheet)를 생성합니다. 이 때 Download일 경우에는 Cell 서식을 설정하고, Excel에 표현할 Data를 Cell에 담아서 표현을 하면 됩니다.
+
+<textarea class="crayon-plain print-no" style='background: rgb(255, 255, 255); margin: 0px; padding: 0px 5px; border-radius: 0px; border: 0px currentColor; border-image: none; width: 603px; height: 150px; color: rgb(0, 0, 0); line-height: 15px !important; overflow: hidden; font-family: Monaco, MonacoRegular, "Courier New", monospace !important; font-size: 12px !important; white-space: pre; z-index: 0; -ms-word-wrap: normal; box-sizing: border-box; opacity: 0; box-shadow: none; resize: none; -webkit-box-shadow: none; tab-size: 4;' wrap="soft" readonly="" data-settings="dblclick"></textarea>
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+// 출력용 workbook을 생성합니다.
+
+WritableWorkbook workbook;
+
+// 출력용 sheet을 생성해서, Sheet 이름과, Sheet 번호를 설정합니다.
+
+// Sheet Index는 0번부터 차례대로 부여합니다.
+
+WriteableSheet sheet = workbook.createSheet(SheetName,SheetIndex);
+
+// Cell마다 넓이를 지정합니다.
+
+sheet.setColumnView(열위치, 넓이);
+
+// 병합할 Cell을 설정합니다.
+
+// Cell번호는 행과열 모두 0번부터 시작됩니다.
+
+sheet.mergeCells(시작열,시작행,종료열,종료행);
+
+
+
+ 실제로 프로젝트에서 JXL을 사용해서 구현한 모습이며, 화면상의 Data를 그대로 Excel File로 Download 할 수 있도록 구현했습니다.
+
+<http://www.nextree.co.kr/wp-content/uploads/2014/02/jhkim-140127-JXL-131.png>
+
+Download 버튼을 누르면 자동으로 Excel File형식으로 저장할 수 있습니다. 보통 Cell 병합은 Header(주로 컬럼명을 표현할 때 사용)에서 자주 사용합니다. Cell 병합을 사용할 때 행과 열의 Index 번호를 정확하게 입력하지 않으면 Sheet내부의 전체 Data가 뒤틀립니다. 미리 Cell 병합한 모습을 예상해서 Index를 설정해서 입력하면 오차를 줄일 수 있습니다. 앞에서 설정한 Option에 대해서 간단히 살펴보면 다음과 같습니다.
+
+<http://www.nextree.co.kr/wp-content/uploads/2014/02/jhkim-140127-JXL-121.png>
+
+[ ](http://www.nextree.co.kr/wp-content/uploads/2014/02/jhkim-140127-JXL-19.png)
+
+Excel File과 Sheet를 생성했으면, Cell 내부에 관한 Option을 설정할 수 있습니다. 기본적인 Cell 속성에 대해 살펴보면 다음과 같습니다.
+
+<textarea class="crayon-plain print-no" style='background: rgb(255, 255, 255); margin: 0px; padding: 0px 5px; border-radius: 0px; border: 0px currentColor; border-image: none; width: 603px; height: 270px; color: rgb(0, 0, 0); line-height: 15px !important; overflow: hidden; font-family: Monaco, MonacoRegular, "Courier New", monospace !important; font-size: 12px !important; white-space: pre; z-index: 0; -ms-word-wrap: normal; box-sizing: border-box; opacity: 0; box-shadow: none; resize: none; -webkit-box-shadow: none; tab-size: 4;' wrap="soft" readonly="" data-settings="dblclick"></textarea>
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+// Cell 서식을 설정하기 위해서 WritableCellFormat 객체를 선언합니다.
+
+WritableCellFormat textFormat = new WritableCellFormat();
+
+// Number형식인 경우에는 소숫점 등 숫자표현을 위한 NumberFormat 객체를 선언하고 적용합니다.
+
+jxl.write.NumberFormat numberFormat = new NumberFormat("###,##0");
+
+// 적용한 Number 패턴을 Cell서식에 적용합니다.
+
+WritableCellFormat integerFormat = new WritableCellFormat(numberFormat);
+
+// 셀의 좌우 정렬형식을 지정할 수 있습니다.
+
+// (CENTRE : 가운데, LEFT : 왼쪽, RIGHT : 오른쪽, GENERAL : 기본)
+
+textFormat.setAlignment(Alignmet.CENTRE);
+
+// 셀의 상하 정렬형식을 지정할 수 있습니다.
+
+// (CENTRE : 가운데, LEFT : 왼쪽, RIGHT : 오른쪽, GENERAL : 기본)
+
+textFormat.setVerticalAlignment(Alignmet.CENTRE);
+
+// Sell내의 Data의 Border를 설정합니다.
+
+textFormat.setBorder(Border.ALL, BorderLineStyle.THIN);
+
+// Sell안에 들어갈 Data를 Label을 선언하여 넣습니다.
+
+Label label = new jxl.write.Label(Index,내용,CellFormat);
+
+// Sheet에 label을 넣습니다.
+
+sheet.addCell(label);
+
+Cell 내에서 공통적인 Data Option은 Border 와 Alignment가 있습니다. Data의 형식에 따라 Number와 String으로 나눌 수 있으며, Number인 경우에는 형식(소수점표현,  ‘,’단위로 구분 등)을 지정할 수 있습니다.
+
+
+
+<http://www.nextree.co.kr/wp-content/uploads/2014/02/jhkim-140127-JXL-152.png>
+
+두 번째 기능으로 Excel File을 Upload 할 때에는 Workbook에 Excel File을 담아서 생성한 Sheet 단위로 분리합니다. 또한 이 Sheet를 Cell단위로 분리해서 String 형태로 변환한 다음 읽어서 DB에 적재하거나 다양한 용도로 활용할 수 있습니다.
+
+<textarea class="crayon-plain print-no" style='background: rgb(255, 255, 255); margin: 0px; padding: 0px 5px; border-radius: 0px; border: 0px currentColor; border-image: none; width: 603px; height: 150px; color: rgb(0, 0, 0); line-height: 15px !important; overflow: hidden; font-family: Monaco, MonacoRegular, "Courier New", monospace !important; font-size: 12px !important; white-space: pre; z-index: 0; -ms-word-wrap: normal; box-sizing: border-box; opacity: 0; box-shadow: none; resize: none; -webkit-box-shadow: none; tab-size: 4;' wrap="soft" readonly="" data-settings="dblclick"></textarea>
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+// Workbook을 생성해서 읽을 Excel File을 넣습니다.
+
+Workbook workbook = Workbook.getWorkbook(new File(엑셀파일));
+
+// Sheet를 생성해서 workbook에 넣은 Excel File을 Sheet단위로 분리합니다.
+
+Sheet sheet = workbook.getSheet();
+
+// cell을 생성해서 Sheet의 내용을 cell단위로 분리해서 읽습니다.
+
+Cell cell = sheet.getCell(행번호,열번호);
+
+// cell내용을 String형태로 담고, DB에 적재하거나 적절히 사용합니다.
+
+String excelData = cell.getContents();
+
+// 작업이 끝나면 workbook을 종료합니다.
+
+workbook.close();
+
+실제 프로젝트에서는 Excel Upload를 JXL을 사용하지 않고 다른 방법으로 구현해서 실제 구현한 모습은 없습니다. 그래서 임의로 구현한 Excel File을 통해 사용 방법에 대해 간단하게 살펴보겠습니다.
+
+<http://www.nextree.co.kr/wp-content/uploads/2014/02/jhkim-140127-JXL-173.png>
+
+- 글을 마치며
+
+JXL을 직접 사용해보니 기본적인 틀만 사용할 수 있으면, 생각보다 Java에서 Excel을 처리하는 방법은 어렵지 않았습니다. JXL은 Data양이 너무 많지도 적지도 않은 적당한 경우, 너무 Simple하지도 않고 너무 복잡하지 않은 적당한 Option처리를 할 수 있는 Normal한 기술입니다. JXL기술 외에도 Java에서 Excel을 다루기 위해서는 여러 가지가 있습니다. 물론 JXL이 가장 뛰어난 기술은 아니지만, 때에 따라서는 최선의 선택이 될 수 있습니다. 그러므로 상황에 따라 적절한 기술을 선택할 수 있도록 다양한 기술을 가지고 있어야 할 것입니다.
+
+<http://www.nextree.co.kr/wp-content/uploads/2014/02/jhkim-140127-JXL-20.png>
+
+- 참조 Site
+
+Java Excel API Tutorial : <http://www.andykhan.com/jexcelapi/tutorial.html>
+
+java control excel (jexcel) : <http://blog.naver.com/PostView.nhn?blogId=naji22&logNo=140072360975>
+
+Java Excel API : <http://jexcelapi.sourceforge.net/>
+
+<http://blog.daum.net/question0921/351>

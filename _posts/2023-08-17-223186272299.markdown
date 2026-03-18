@@ -1,0 +1,94 @@
+---
+title: "Project Loom (virtual thread) in jdk 21"
+date: 2023-08-17 18:11:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223186272299"
+---
+
+<https://findstar.pe.kr/2023/04/17/java-virtual-threads-1/>
+> [**Virtual Thread란 무엇일까? (1)**](https://findstar.pe.kr/2023/04/17/java-virtual-threads-1/)
+>
+> Software Developer, I love code.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+java의 thread가 os 기반으로 동작하던 방식을 virtual thread 방식으로 동작하도록 만들었다.
+
+​
+
+non-blocking 방식으로 동작하는 library를 이용하여 작성시 학습, 디버깅등이 어려웠는데, 이런 가상 thread를 도입해서 성능을 높여서 기존의 코드 작성 방식으로 동작할 수 있도록 한다는 것.
+
+​
+
+아마 도입되고나면 Spring framework의 성능도 대폭 향상되지 않을까 생각된다.
+
+​
+
+이미 지표가 있었다
+
+<https://www.baeldung.com/spring-6-virtual-threads>
+> [**Working with Virtual Threads in Spring 6 | Baeldung**](https://www.baeldung.com/spring-6-virtual-threads)
+>
+> Learn how to use virtual threads in a Spring 6-based application.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[**Spring 프레임워크 6.1, 이제 Virtual Threads 및 JDK 21과 호환  | GeekNews**](https://news.hada.io/topic?id=10389&utm_source=slack&utm_medium=bot&utm_campaign=T02NGV77Z43)
+
+​
+
+​
+
+<https://spring.io/blog/2022/10/11/embracing-virtual-threads>
+> [**Embracing Virtual Threads**](https://spring.io/blog/2022/10/11/embracing-virtual-threads)
+>
+> Level up your Java code and explore what Spring can do for you.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

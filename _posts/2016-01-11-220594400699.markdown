@@ -1,0 +1,44 @@
+---
+title: "node.js apple push service (APNS) 이용하기~"
+date: 2016-01-11 19:43:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220594400699"
+---
+
+설정 방법 : <http://blog.saltfactory.net/node/implementing-push-notification-service-for-ios.html>
+
+참고 사이트 : <http://canapio.tistory.com/34>
+
+APNS 인증키 발급부분부터 매우 짜증난다. 인증서 발급하랴 변환하랴 openssl로 변환을 또하랴
+
+java 쪽 APNS 에서는 jdk 버전 문제로 인하여 에러가 나는데
+
+node js 이용하니 설치부터 push 까지 10분 걸렸다 -_-;;
+
+```
+var apn = require('apn');
+
+// 개발용
+var options = {
+        gateway : "gateway.sandbox.push.apple.com",
+        cert: './keys/cert.pem',
+        key: './keys/key.pem'
+    };
+
+var apnConnection = new apn.Connection(options);
+
+var token = '토큰 값 입력'
+var myDevice = new apn.Device(token);
+
+var note = new apn.Notification();
+
+note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
+note.badge = 3;
+note.sound = "ping.aiff";
+note.alert = "\uD83D\uDCE7 \u2709 You have a new message";
+note.payload = {'messageFrom': 'Caroline'};
+
+apnConnection.pushNotification(note, myDevice);
+
+apnConnection.pushNotification(note, myDevice);
+```

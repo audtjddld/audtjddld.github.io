@@ -1,0 +1,93 @@
+---
+title: "jsp 개발 환경 설정"
+date: 2010-02-09 12:36:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터, java설치, java설정]
+original_url: "https://blog.naver.com/kkforgg/60101459738"
+---
+
+JDK 다운 로드하기 (JAVA SE 5.0 다운로드)
+
+<http://java.sun.com/javase/index.jsp> 사이트로 이동하여
+
+J2SE를 다운 받을 수 있는 페이지로
+
+이동
+
+다운로드탭을 클릭~
+
+다운 받아 설치
+
+
+
+그 이후 환경변수 설정
+
+내컴퓨터 우클릭 -> 등록정보 -> 고급 -> 환경 변수 클릭
+
+
+
+거기에 path에 C:\Program Files\Java\jdk1.5.0_13\bin;
+
+classpath에 .;C:\Program Files\Java\jdk1.5.0_13\lib\tools.jar;"
+
+JAVA_HOME 에 C:\Program Files\Java\jdk1.5.0_13 입력
+
+ㅇㅋㅇㅋ?
+
+
+
+실행 -> CMD
+
+
+
+도스창에서 javac 실행
+
+
+
+만약
+
+
+
+![]()
+
+뜨시면
+
+제대로 설치 완료!
+
+
+
+아파치 톰캣 설치
+
+<http://jakarta.apache.org> 입력하신뒤에
+
+Apache Jakarta Project 사이트로  이동 왼쪽의 다운로드 메뉴 클릭
+
+스크롤바를 내려서 Ex - Jakarta 항목에서 Tomcat항목을 클릭한다.
+
+여기서는 TomCat 5.x 항목을 선택
+
+다운 후 압축 풀기
+
+
+
+환경변수에 CATALINA_HOME 항목을 추가 한뒤
+
+아파치 톰캣이 있는 주소를 변수 값에 넣어주시면 된다.
+
+
+
+추가 후 제대로 설치 됬는지 아파치 톰켓 폴더에 bin 폴더 안에
+
+startup.bat를 누르시면
+
+
+
+![](/assets/images/posts/60101459738/67596ac5c44f.jpg?type=w3)
+
+
+
+이렇게 뜨시면 설치 완료
+
+
+
+개발툴은 이클립스

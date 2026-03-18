@@ -1,0 +1,21 @@
+---
+title: "Spring 3.0 사용중 Controller 에서 @ModelAttribute 일때 이유 없이 진행 안될 때."
+date: 2013-06-21 11:38:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60194412019"
+---
+
+@ModelAttribute 로 쓰면
+
+VO 객체 변수 타입에 따라서
+
+맞지 않는 값이 들어오면 에러가 발생된다.
+
+하지만 로그엔 찍히지 않고 tiles 썻으면
+
+tiles 에러라고 막토해낸다.
+
+
+
+잘 생각 할 수 있도록~!

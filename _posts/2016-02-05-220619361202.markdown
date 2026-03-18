@@ -1,0 +1,40 @@
+---
+title: "ubuntu Tomcat 설치"
+date: 2016-02-05 14:58:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220619361202"
+---
+
+출처 :  <http://vivalasiesta.tistory.com/13>
+
+1. Tomcat 설치하기**
+
+$ sudo apt-get install tomcat6
+
+
+
+**2. Tomcat 제거하기**
+
+$ sudo apt-get remove tomcat6
+
+
+
+**3. Tomcat 확인**
+
+$ ps -ef | grep tomcat
+
+
+
+**4. Tomcat 시작**
+
+$ sudo service tomcat6 start
+
+5. Tomcat 정지**
+
+$ sudo service tomcat6 stop
+
+6. Tomcat 설치경로**
+
+/usr/share/tomcat6 (executable&libraries)
+
+/var/lib/tomcat6 (conf&webapps)

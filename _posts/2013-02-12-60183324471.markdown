@@ -1,0 +1,111 @@
+---
+title: "[공유] ~ 2. 14까지 ) 7. 객체 지향 프로그래밍 1"
+date: 2013-02-12 10:44:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60183324471"
+---
+
+1. Student 클래스를 정의하시오.
+
+public class Student {
+
+ String name;  // 이름
+ int ban;  // 반
+ int no;   // 번호
+ int kor;  // 국어점수
+ int eng;  // 영어점수
+ int math;  // 수학점수
+
+ Student(){ //생성자
+  this.name="";
+  this.ban=0;
+  this.no=0;
+  this.kor=0;
+  this.eng=0;
+  this.math=0;
+ }
+
+}
+
+
+
+2. isNumber 메서드
+
+ public static boolean isNumber(String str){
+  boolean result = true;
+  int changeNumber=0;
+
+  try{
+   changeNumber=Integer.parseInt(str);
+  }catch(Exception e){
+   result=false;
+  }
+  return result;
+ }
+
+ public static void main(String arg[]){
+  String str ="123";
+  System.out.println(str + "은 숫자 입니까? " + isNumber(str));
+
+     str="1234a";
+
+     System.out.println(str + "은 숫자 입니까? " + isNumber(str));
+ }
+
+
+
+전 try catch 문을 이용해서 해버렸네요; 아무레도 다른 방법이 있을 것 같아요 ㅎㅎ;
+
+
+
+3.  getTotal() 과 getAverage()를 추가하시오.
+
+조건 1. getTotal() int형
+
+조건 2. getAverage() float형 소숫점 둘째 자리에서 반올림.
+
+
+
+public class TestStudent {
+
+ public static void main (String [] args){
+  Student s = new Student();
+  s.name="홍길동";
+  s.ban=1;
+  s.no=1;
+  s.kor=100;
+  s.eng=60;
+  s.math=76;
+
+  System.out.println("이름 : " + s.name);
+  System.out.println("총점 : " + s.getTotal());
+  System.out.println("평균 : " + s.getAverage());
+
+ }
+}
+
+class Student{
+ String name;  // 이름
+ int ban;  // 반
+ int no;   // 번호
+ int kor;  // 국어점수
+ int eng;  // 영어점수
+ int math;  // 수학점수
+
+ public int getTotal(){
+  return kor+eng+math;
+ }
+
+ public float getAverage(){
+  float f = Float.parseFloat(String.format("%.2f", (float)(kor+eng+math)/3));
+  return f;
+ }
+}
+
+
+
+검색도 해보고 해서 겨우 완성 시켰네요 ㅋㅋ
+
+2번에 true, false 는 그냥 머릿속에 생각나는데로 바로 한건데 저 방법이 효율적인지는 잘 모르겠습니다.
+
+다른 방법이 있을 것 같은데 따로 시간날 때 해보겠습니다.

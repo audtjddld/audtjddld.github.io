@@ -1,0 +1,257 @@
+---
+title: "쿠버네티스 로컬 환경 셋팅"
+date: 2022-04-01 00:04:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222688429617"
+---
+
+인터넷을 검색하는 동안 두 가지 방법을 찾았다.
+
+​
+
+1번 docker Desktop을 이용하여 쿠버네티스를 설정하는 방법
+
+2번 minikube를 이용해서 설정하는 방법
+
+​
+
+<https://adibsaikali.com/2020/07/25/minikube-vs-docker-desktop-for-local-development/>
+
+​
+
+위 링크를 읽어보자
+
+​
+
+docker desktop 은 2020년 당시 쿠버네티스 버전이 하드코딩 되어 있었다고 한다
+
+mini kube는 최신 버전의 쿠버네티스를 돌릴 수 있다고 하는 것 같다.
+
+​
+
+minikube는 컨테이너 레지스트리에 올릴 필요가 없다고 한다. 기본적으로 컨테이너 이미지를 도커 허브나 다른 레지스트리에서 가져올려고 한다고 한다. 노트북에 만약 컨테이너 빌드가 필요하거나, mini kube로 이미지를 pull 하기를 원할 때에도 docker desktop을 이용하는 것보다 이점이 있다고 한다.
+
+​
+
+minikube는 서드파티 의존성이 있는 것도 사용할 수 있다.
+
+​
+
+(아래 -_- 결론을 써놧네)
+
+​
+
+결론
+
+​
+
+Docker Desktop을 이용할 경우
+
+​
+
+* DockerFile을 이용해서 컨테이너 이미지 빌드가 필요한 경우
+
+* 로컬 컨테이너 Registry가 필요한 경우
+
+* Docker Compose를 이용해서 로컬 개발 환경을 관리하는 경우
+
+* junit을 이용한 테스트 컨테이너를 사용하는 경우
+
+* 원하는 쿠버네티스 버전이 Docker Desktop에 포함되어 있는 경우
+
+* MacOS와 Window로만 개발하는 경우
+
+​
+
+minikube를 이용할 경우
+
+​
+
+* 특별한 버전의 쿠버네티스 버전을 선택해서 동작해야 하는 경우
+
+* 로컬 컨테이너 registry가 필요 하지 않는 경우
+
+* junit을 이용한 테스트 컨테이너를 사용하지 않는 경우
+
+* Linux, MacOS, Window를 사용하여 개발하는 경우
+
+​
+
+​
+
+음..
+
+​
+
+어느게 나에게 좋은 것인지 모르지만, 라이센스 문제가 있으니 mini kube로 해보기로 한다.
+
+​
+
+​
+
+home brew가 설치되어 있다면 간단한 명령어로 설치가 가능하다.
+
+
+
+
+
+
+
+
+
+```
+brew install minikube
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+설치가 완료 된 뒤, 대쉬보드 켜기
+
+
+
+
+
+
+
+
+
+```
+minikube dashboard
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+상태 확인
+
+
+
+
+
+
+
+
+
+```
+minikube status
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+중지
+
+
+
+
+
+
+
+
+
+```
+minikube stop
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+삭제
+
+
+
+
+
+
+
+
+
+```
+minikube delete
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+자료: <https://medium.com/@javatechie/kubernetes-tutorial-install-run-minikube-in-mac-os-k8s-cluster-369b25b0c3f0>
+
+​
+
+​
+
+<https://kubernetes.io/ko/docs/tutorials/hello-minikube/>
+
+​

@@ -1,0 +1,122 @@
+---
+title: "이클립스 성능 최적화."
+date: 2016-01-29 13:32:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220612330517"
+---
+
+출처 : <https://slipp.net/wiki/pages/viewpage.action?pageId=5177633>
+
+# Eclipse 성능개선 최적화
+
+프로젝트가 하나둘씩 쌓여갈 때 마다 이클립스가 느려짐이 심각해집니다.
+
+다양한 기능을 지원하는 만큼 무거운 느낌을 감출 수 없네요. 이클립스의 성능개선을 위해 불필요한 설정을 해제하는 것에 대해 알아보겠습니다.
+
+이클립스 Juno 버젼으로 설정
+
+
+
+
+
+- [Eclipse 성능개선 최적화](https://slipp.net/wiki/pages/viewpage.action?pageId=5177633#Eclipse성능개선최적화-Eclipse성능개선최적화)
+[eclipse.ini 설정](https://slipp.net/wiki/pages/viewpage.action?pageId=5177633#Eclipse성능개선최적화-eclipse.ini설정)
+- [소스 자동 폴딩 해제](https://slipp.net/wiki/pages/viewpage.action?pageId=5177633#Eclipse성능개선최적화-소스자동폴딩해제)
+- [자동 동작하는 코드 자동완성기능 해제](https://slipp.net/wiki/pages/viewpage.action?pageId=5177633#Eclipse성능개선최적화-자동동작하는코드자동완성기능해제)
+- [Spelling 체크 설정 해제](https://slipp.net/wiki/pages/viewpage.action?pageId=5177633#Eclipse성능개선최적화-Spelling체크설정해제)
+- [Validation (유효성체크) 설정 해제](https://slipp.net/wiki/pages/viewpage.action?pageId=5177633#Eclipse성능개선최적화-Validation(유효성체크)설정해제)
+- [작업중이지 않는 프로젝트 닫기](https://slipp.net/wiki/pages/viewpage.action?pageId=5177633#Eclipse성능개선최적화-작업중이지않는프로젝트닫기)
+- [불필요한 플러그인 삭제](https://slipp.net/wiki/pages/viewpage.action?pageId=5177633#Eclipse성능개선최적화-불필요한플러그인삭제)
+- [이클립스의 실행속도 개선](https://slipp.net/wiki/pages/viewpage.action?pageId=5177633#Eclipse성능개선최적화-이클립스의실행속도개선)
+- [Autometic Update Off](https://slipp.net/wiki/pages/viewpage.action?pageId=5177633#Eclipse성능개선최적화-AutometicUpdateOff)
+
+
+
+
+
+## eclipse.ini 설정
+
+이클립스 실행 파일안에 같이 존재하는 설정 파일 입니다. 잘못 건들면 실행이 안될 수 있으니 주의 하셔야 해요.
+
+![](https://slipp.net/wiki/download/attachments/5177633/ini.gif?version=1&modificationDate=1353474125000&api=v2)
+
+
+
+메모리 수치는 무조건 높은 게 좋은 것은 아니구요. 본인의 PC에 맞게 적당하게 설정 합니다.
+
+항상 Xms, Xmx 값만 설정하다가 자세히 알아보니 더 옵션이 많네요.
+
+-Xverify:none ****-XX:+UseParallelGC
+-XX:-UseConcMarkSweepGC
+-XX:PermSize=64M
+-XX:MaxPermSize=512M
+-XX:MaxNewSize=512M
+-XX:NewSize=128M
+-Xms1024m
+-Xmx1024m**
+
+
+
+![](https://slipp.net/wiki/download/attachments/5177633/ini_3.gif?version=1&modificationDate=1353476145000&api=v2)
+
+## 소스 자동 폴딩 해제
+
+블록단위로 접혀지는 자동 폴딩을 해제 합니다.
+
+![](https://slipp.net/wiki/download/attachments/5177633/folding_2.gif?version=1&modificationDate=1353474380000&api=v2)
+
+
+
+## 자동 동작하는 코드 자동완성기능 해제
+
+클래스의 변수, 메소드 등을 접근할 때 유용한 기능이지만 자동 동작으로 인해 버벅거리는 원인을 발생하곤 하죠?
+
+이걸 해제한다고 해도 CTRL + SPACE 를 사용해서 동작 시킬 수 있습니다.
+
+![](https://slipp.net/wiki/download/attachments/5177633/assit.gif?version=1&modificationDate=1353474528000&api=v2)
+
+
+
+## Spelling 체크 설정 해제
+
+철자체크 기능을 해제 합니다. 좋은 기능이지만 별로 불필요 한 것 같네요.
+
+![](https://slipp.net/wiki/download/attachments/5177633/spelling.gif?version=1&modificationDate=1353474913000&api=v2)
+
+
+
+## Validation (유효성체크) 설정 해제
+
+Window > Preferences > Validation
+
+저는 웹 관련된 Validator 만 체크 해놓습니다.
+
+![](https://slipp.net/wiki/download/attachments/5177633/va.gif?version=1&modificationDate=1353474979000&api=v2)
+
+
+
+## 작업중이지 않는 프로젝트 닫기
+
+현재 작업 중인 프로젝트외엔 닫아두는 것이 좋습니다.
+
+![](https://slipp.net/wiki/download/attachments/5177633/close.gif?version=1&modificationDate=1353475168000&api=v2)
+
+## 불필요한 플러그인 삭제
+
+컴퓨터를 사용하더라도 많은 프로그램들이 깔려 있으면 컴퓨터가 느린것처럼 이클립스 또한 사용하지 않는 플러그인들은 제거하는 것이 좋습니다.
+
+Window > Preferences > Install/Update
+
+![](https://slipp.net/wiki/download/attachments/5177633/plugin_1.gif?version=1&modificationDate=1353475409000&api=v2)
+
+![](https://slipp.net/wiki/download/attachments/5177633/plugin_2.gif?version=1&modificationDate=1353475398000&api=v2)
+
+## 이클립스의 실행속도 개선
+
+이클립스를 실행 하였을 때 로딩되는 플러그인에 대해 제외 시킵니다.
+
+![](https://slipp.net/wiki/download/attachments/5177633/start.gif?version=1&modificationDate=1353475514000&api=v2)
+
+## Autometic Update Off
+
+![](https://slipp.net/wiki/download/attachments/5177633/autoupdate.GIF?version=1&modificationDate=1357539545000&api=v2)

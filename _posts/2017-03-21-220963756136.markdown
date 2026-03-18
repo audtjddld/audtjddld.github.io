@@ -1,0 +1,7 @@
+---
+title: "jackson을 활용해 json 변환시 추상 클래스 맵핑 방법."
+date: 2017-03-21 20:23:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220963756136"
+---
+

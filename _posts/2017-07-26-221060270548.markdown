@@ -1,0 +1,7 @@
+---
+title: "android 영수증 검증"
+date: 2017-07-26 16:43:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221060270548"
+---
+

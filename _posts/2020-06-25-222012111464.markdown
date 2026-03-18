@@ -1,0 +1,36 @@
+---
+title: "SLF4J MDC"
+date: 2020-06-25 18:05:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222012111464"
+---
+
+이벤트 아이디나 로깅에 추가 정보를 입력하고, 이것을 로그상에 노출시키기 위해 사용한다는 것을 처음 알았다.
+
+나중에 나도 활용해봐야겠다.
+
+​
+
+<https://jehuipark.github.io/java/java-logging-mdc>
+> [**Java 로깅전략 with MDC**](https://jehuipark.github.io/java/java-logging-mdc)
+>
+> developer JH website.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

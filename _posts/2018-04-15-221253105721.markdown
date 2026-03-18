@@ -1,0 +1,7 @@
+---
+title: "scala night"
+date: 2018-04-15 01:48:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221253105721"
+---
+

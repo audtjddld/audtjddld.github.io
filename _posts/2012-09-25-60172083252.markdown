@@ -1,0 +1,310 @@
+---
+title: "jQuery $.ajax 을 이용한 JSON 형식 사용하기 ( Spring, Servlet )"
+date: 2012-09-25 10:50:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60172083252"
+---
+
+jQuery Ajax를 이용하고, JSON을 이용하는 방법.
+
+
+
+2가지 방법이 있습니다. jsonView를 이용하는 방법과 PrintWriter를 이용하는 방법
+
+
+
+이렇게 2가지를 설명하겠습니다.
+
+
+
+일단 첨부된 압축 파일을 다운 받아 lib 폴더에 추가 시킨다.
+
+
+
+![]()
+
+
+
+을 프로젝트 내에 lib 등록하는 곳에 등록 시킨다.
+
+
+
+나는 이클립스를 안쓰고 IntelliJ를 쓰기 때문에 스샷은 생략하겠음.
+
+
+
+![]()﻿![]()﻿![](https://blogfiles.pstatic.net/20120925_264/kkforgg_1348532494589oQxDB_PNG/3.png?type=w3)
+
+
+
+lib를 추가시키면
+
+이제 소스 차례.
+
+일단 servlet-context.xml에서 아래와 같이 문구를 삽입한다.
+
+
+
+![](https://blogfiles.pstatic.net/20120925_180/kkforgg_1348532717488cGRgO_PNG/xml.png?type=w3)
+
+
+
+
+
+ <bean id="beanNameResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+  <property name="order" value="1"/>
+ </bean>
+ <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
+
+
+
+
+
+
+
+------------------------------ html 소스 --------------------------------------------------
+
+jQuery  부분
+
+
+
+            $.ajax({
+                type : "post" ,  //post , get
+                url : "/company/CompanySearch", // url
+                data : "selectCondition="+selectCondition + "&selectText="+searchText, //파라메터값
+                dataType : "json", //data 형식 text, html, json
+                //contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+                success : function(data){ // 성공시 data값.
+                  for(var i=0; i<data.list.length; i++){
+                      alert(data.list[i].searchText); // 성공한 data.이름[i].JsonKey
+                  }
+
+                },
+                error : function(request, status, error) {
+
+                    //통신 에러 발생시 처리
+
+                    alert("code : " + request.status + "\r\nmessage : " + request.reponseText +" \r\n error : " + error);
+
+                }
+
+            })
+
+-------------------------------------------------------------------------------------------
+
+
+
+이렇게 선언해 준다.
+
+
+
+printWriter 방법. 일단 여기서 가장 중요한건 Json.jar를 파일을 추가한뒤
+
+JsonObejct와 JsonArray를 사용 할 수 있습니다.
+
+여기에선 JsonObject를 사용하겠습니다.
+
+일단 준비해야되는건 list객체에 Map형식으로 Data를 담아둬야 합니다.
+
+ibatis에서 했기 때문에
+
+쿼리 부분에서
+
+
+
+    <resultMap id="SearchValue" type="java.util.HashMap">
+        <result property="searchText" column="searchText" javaType="java.lang.String" />
+    </resultMap>
+
+
+
+    <select id="SelCompanyValue" parameterType="company" resultMap="SearchValue">
+             <if test="selectCondition=='companyName'">
+                SELECT c_name as searchText
+            </if>
+            <if test="selectCondition=='code'">
+                SELECT c_code as searchText
+            </if>
+              FROM main_company_tb
+        <if test="selectCondition=='companyName'">
+            WHERE c_name like '%' ||#{searchText} ||'%'
+        </if>
+        <if test="selectCondition=='code'">
+            WHERE c_code like '%' || #{searchText} || '%'
+        </if>
+    </select>
+
+이렇게 하면 맵형식으로 담아지게 됩니다.
+
+-----------------------------  DAO 부분 ---------------------------------------
+
+List list = getSqlSession().selectList("xxx",jjj); // 요렇게하면 맵형식으로 들어가 집니다.
+
+-------------------------------------------------------------------------------
+
+
+
+-------------------------------service 영역 ------------------------------------
+
+받은걸
+
+      List list = dao.메소드명(param);
+        JSONObject obj = new JSONObject();
+
+  obj.put("list",list);
+
+
+
+return obj;
+
+하여 컨트롤러 쪽으로 보냅니다
+
+JSONObject를 찍어보면 알수 있습니다. obj.toJSONString() 이런 함수가 있으니 찍어보세요.
+
+
+
+
+
+--------------------------------- Controller --------------------------------
+
+    @RequestMapping("/주소")
+ public String 메소드명(HttpServletRequest request, HttpServletResponse res)throws Exception{
+
+ JSONObject obj =  service.메소드명(req);
+
+받은 obj를
+
+        res.setCharacterEncoding("UTF-8");
+
+        PrintWriter pout = res.getWriter();
+
+        pout.println(obj);
+
+        pout.flush();
+        pout.close();
+
+
+
+       return "company/CompanyL.tl";
+
+
+
+/*************************** 12.09.27 추가 *****************************************/
+
+서블릿에서 위와 같이 실행하면
+
+
+
+java.lang.IllegalStateException: Cannot forward after response has been committed
+
+﻿
+
+﻿이런 에러가 콘솔에 찍히는데 제대로 실행된다. 하지만 없에는 방법은 간단하다.
+
+﻿
+
+        pout.flush();
+        pout.close();
+
+이후
+
+return; 만 써주면 된다 ㅋㅋ
+
+/********************************************************************************/
+찍고
+
+저흰 경로를 보내야되서 경로로 보내면
+
+
+
+obj안에 list란 키로 되어있는 searchText란 값을 찍어주게 됩니다.
+
+
+
+요 방법이 있고 그 다음은 JSONView 차례 입니다.
+
+------------------------------------------------------------------------------------
+
+jsonView 사용 법
+
+
+
+위에 jsonObject를 이용하여 하는 방법과 좀 다르다.
+
+jsonView는 JSONObject를 사용하지 않는다.
+
+
+
+사용방법은 java스크립트는 위와 동일하며, 서비스단에서 리턴 형식을 list로 그냥 넘겨주면 된다. 아까는 JsonObject에 담 았었다.
+
+
+
+DAO (list Map) -> Service (List) -> Controller (jsonView) 이렇게 된다.
+
+
+
+    @RequestMapping("/주소")
+ public ModelAndView 메소드명(HttpServletRequest request, HttpServletResponse res)throws Exception{
+
+
+
+         List list =  service.selCompanySearchValue(req);
+        ModelAndView mav = new ModelAndView("jsonView","list",list);
+
+
+
+
+
+       return mav;
+
+
+
+이러면 아까와 같은 자바스크립트로 제이슨형식으로 들어있는 데이터를 다시 한번 확인해 볼 수 있다.
+
+
+
+//12.09.27
+
+
+
+추가적으로 예제 소스도 같이 올림
+
+
+
+정확하진 않지만
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+모드에서는 오류납니다.
+
+
+
+overflow 부분 찾으셔서 auto로 되어있는 것을 scroll로 바꿔주시면 됩니다.
+
+
+
+---------------------------------------- 2013.02.01 ----------------------------------------
+
+spring 3.0 tiles를 사용하시는 분들에게 팁.
+
+
+
+  <bean id="beanNameViewReslver"
+          class="org.springframework.web.servlet.view.BeanNameViewResolver">
+        <property name="order" value="1" />
+    </bean>
+
+    <bean id="tilesViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
+        <property name="order" value="2" />
+    </bean>
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+        <property name="order" value="3" />
+    </bean>
+
+
+
+이렇게 해주셔야 정상 작동 합니다.

@@ -1,0 +1,112 @@
+---
+title: "jquery Ajax 예제"
+date: 2012-09-12 08:40:00 +0900
+categories: [경험 및 정보 공유]
+tags: [jQueryajax, IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60171080840"
+---
+
+보다 자세하고 정확한 내용은 <http://api.jquery.com/jQuery.ajax/> 를 참조
+
+
+$.ajax({
+
+    type : "POST" //"POST", "GET"
+
+    , async : true //true, false
+
+    , url : "Inquiry.jsp" //Request URL
+
+    , dataType : "html" //전송받을 데이터의 타입
+
+                               //"xml", "html", "script", "json" 등 지정 가능
+
+                               //미지정시 자동 판단
+
+    , timeout : 30000 //제한시간 지정
+
+    , cache : false  //true, false
+
+    , data : $("#inputForm").serialize() //서버에 보낼 파라메터
+
+                     //form에 serialize() 실행시 a=b&c=d 형태로 생성되며 한글은 UTF-8 방식으로 인코딩
+
+                     //"a=b&c=d" 문자열로 직접 입력 가능
+
+    , contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+
+    , error : function(request, status, error) {
+
+     //통신 에러 발생시 처리
+
+     alert("code : " + request.status + "\r\nmessage : " + request.reponseText);
+
+    }
+
+    , success : function(response, status, request) {
+
+     //통신 성공시 처리
+
+     $('#resultDIV').append(response);
+
+    }
+
+    , beforeSend: function() {
+
+     //통신을 시작할때 처리
+
+     $('#ajax_indicator').show().fadeIn('fast');
+
+    }
+
+    , complete: function() {
+
+     //통신이 완료된 후 처리
+
+     $('#ajax_indicator').fadeOut();
+
+    }
+
+});
+
+
+
+---
+
+< !-- 결과를 저장할 영역 -->
+
+<div id="resultDIV">
+
+  <!-- Ajax 로딩시 이미지 출력 영역 -->
+
+  <div id="ajax_indicator" style="display:none">
+
+   <p style="text-align:center; padding:16px 0 0 0; left:50%; top:50%; position:absolute;"><img src="/Report/images/ajax-loader.gif" /></p>
+
+  </div>﻿
+
+< /div>
+
+
+
+---
+
+* Ajax 호출시 참고
+
+
+
+$(document).ready(function(){       //도큐먼트 로딩 완료시
+
+$("#inputForm").submit(function(){ //form에서 submit시
+
+$("#searchBtn").click(function(){   //button 클릭시
+
+function search(){                        //일반 함수로 정의하여 버튼 등에 onclick="search()"로 연결
+
+$(function(){                                //스크립트 로드시
+
+
+
+출처 :
+
+<http://devx.tistory.com/entry/%EA%B0%84%EB%8B%A8%ED%95%9C-jQuery-Ajax-%EC%98%88%EC%A0%9C%EA%B0%84%EB%8B%A8%ED%95%9C-jQuery-Ajax-%EC%98%88%EC%A0%9C-%EC%B6%9C%EC%B2%98-%EA%B0%84%EB%8B%A8%ED%95%9C-jQuery-Ajax-%EC%98%88%EC%A0%9C%EC%9E%91%EC%84%B1%EC%9E%90-my1over>

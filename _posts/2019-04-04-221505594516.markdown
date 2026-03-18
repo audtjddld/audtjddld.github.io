@@ -1,0 +1,52 @@
+---
+title: "gradle 초기 셋팅"
+date: 2019-04-04 18:39:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221505594516"
+---
+
+gradle init --type java-application
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+잘 설명되어 있다.
+
+​
+
+<http://kwonnam.pe.kr/wiki/gradle>
+> [**gradle [권남]**](http://kwonnam.pe.kr/wiki/gradle)
+>
+> Gradle <http://www.gradle.org/> <https://plugins.gradle.org/> Maven 을 대체할 수 있는 프로젝트 구성/관리 및 Build tool. Maven을 넘어 Gradle로 가자 - Maven 대신 Gradle을 써야하는 이유 사실은 Maven + Ant + 스크립트 언어라고 보는 것이 맞다. 프로젝트 구성 뿐만아니라 AntBuilder 와 그루비 스크립트를 통해 Ant의 역할, 배포 스크립트의 역할까지도 가능하다. Gradle Cookbook Building and testing with gr...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

@@ -1,0 +1,10 @@
+---
+title: "facebook 및 twitter 등"
+date: 2013-10-22 11:20:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60202143623"
+---
+
+<https://[www.addthis.com/>](http://www.addthis.com/)
+
+연동하는 모듈 만들어주는 사이트

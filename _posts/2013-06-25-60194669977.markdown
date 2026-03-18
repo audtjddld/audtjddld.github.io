@@ -1,0 +1,70 @@
+---
+title: "솔라리스 계정 생성 [펌]"
+date: 2013-06-25 14:29:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60194669977"
+---
+
+출처 : <http://holiclove.tistory.com/entry/%EB%A6%AC%EB%88%85%EC%8A%A4%EC%86%94%EB%9D%BC%EB%A6%AC%EC%8A%A4-%EA%B7%B8%EB%A3%B9%EA%B3%84%EC%A0%95%EC%83%9D%EC%84%B1-%EB%B0%8F-%EC%82%AD%EC%A0%9C>
+
+
+
+▶그룹확인
+
+**]# cat /etc/group**
+
+root::0:root**...
+sysadmin::14:
+nobody::60001:
+noaccess::60002:
+nogroup::65534:
+dba::200:oracle
+websrv::600:
+
+......
+
+
+
+▶그룹만들기
+
+]# groupadd test**
+
+▶계정만들기
+
+]# useradd -g root -d / -m -s /bin/ksh test**
+
+[재생하기 바로보기가 지원되지 않는 파일입니다. 클릭하여 팝업창으로 플레이 해보세요.](http://blog.naver.com/ObjectHttpView.naver?blogId=kkforgg&logNo=60194669977&hashKey=e27143b026acb9e8e69c36df4c59da07)
+
+------------------------------------------------------------------------------
+
+useradd** [ -u uid ] [ -G gid [,gid,...] ] [ -d dir ] [ -m ] [ -s shell ] [ -c comment ] **[ -k skel_dir] [ -e expire ] [ -f inactive ] loginname
+-u : 유저의 id
+-G : 사용자가 포함될 그룹의 id(다수 선택 가능)
+-d : 사용자의 홈디렉토리
+-m : 사용자 디렉토리가 생성되어 있지 않을때 자동으로 디렉토리 생성
+-s : 사용하는 셀 위치를 정해줌,  지정하지 않을시 /bin/sh 인 본셀이 적용
+-c : 사용자가 어떤 사람인지 코멘트를 남기는겁니다.
+-k : skel 파일이 있는 디렉토리를 지정하며, skel 파일이란 사용자 만들어 질때 로그인에 필요한 .profle 이라던지 .login .cshrc 등등의 초기화 파일을 자동으로 홈디렉토리에 카피합니다
+-e : mm/dd/yy 의 형식으로 해당 날짜가 되면 계정이 만기
+
+-f : 정수를 입력하고 그 해당 정수만큼 접속이 없을때 계정은 만기
+loginname : 실제 만들 user 를 지정
+
+=> 이 내용들은 /etc/passwd 파일에서 확인
+
+]# cat /etc/passwd**
+
+------------------------------------------------------------------------------
+
+▶암호변경하기
+
+]# passwd test**
+
+
+
+▶계정 삭제하기
+
+**]# userdel test**
+
+
+<script src="http://holiclove.tistory.com/plugin/CallBack_bootstrapper?&src=http://s1.daumcdn.net/cfs.tistory/v/0/blog/plugins/CallBack/callback&id=66&callbackId=holiclovetistorycom668000&destDocId=callbacknestholiclovetistorycom668000&host=http://holiclove.tistory.com&float=left&random=369"></script>

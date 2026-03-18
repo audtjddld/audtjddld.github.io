@@ -1,0 +1,150 @@
+---
+title: "리눅스 (서버) PROCESS KILL 하기"
+date: 2014-02-13 20:36:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60209174096"
+---
+
+출처  : <http://ngee.tistory.com/132>
+
+
+
+
+
+리눅스에서 프로세스를 죽이는 방법은 다음과 같습니다.
+
+
+
+**1. PID를 확인한다. **
+
+
+
+ **1.1 top 명령어를 통해서 PID를 확인한다.  맨 앞에 나오는 것이 PID죠.**
+
+
+
+
+
+[yourid@blrblrblrblrblr examples]$ **top**
+
+
+
+top - 08:18:31 up 11:10,  3 users,  load average: 0.57, 0.31, 0.16
+
+Tasks: 181 total,   1 running, 180 sleeping,   0 stopped,   0 zombie
+
+Cpu(s):  0.6%us,  1.4%sy,  0.0%ni, 97.9%id,  0.0%wa,  0.0%hi,  0.1%si,  0.0%st
+
+Mem:   3354856k total,  3260856k used,    94000k free,   163416k buffers
+
+Swap:  5439484k total,        0k used,  5439484k free,  2666480k cached
+
+
+
+  **PID** USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+
+** 1534** root      20   0 60132  25m 7064 S  1.0  0.8   0:14.77 Xorg
+
+**18329** yourid      20   0  125m  13m  10m S  1.0  0.4   0:03.01 gnome-terminal
+
+**17823** yourid      20   0 25664 1816 1476 S  0.7  0.1   0:03.94 synergyc
+
+**17852** yourid      20   0  110m 7384 6052 S  0.5  0.2   0:31.41 multiload-apple
+
+    1 root      20   0  2888 1332 1120 S  0.0  0.0   0:01.04 init
+
+    2 root      20   0     0    0    0 S  0.0  0.0   0:00.00 kthreadd
+
+    3 root      20   0     0    0    0 S  0.0  0.0   0:00.29 ksoftirqd/0
+
+    4 root      RT   0     0    0    0 S  0.0  0.0   0:01.36 migration/0
+
+    5 root      RT   0     0    0    0 S  0.0  0.0   0:00.00 watchdog/0
+
+    6 root      RT   0     0    0    0 S  0.0  0.0   0:01.37 migration/1
+
+    7 root      20   0     0    0    0 S  0.0  0.0   0:00.27 ksoftirqd/1
+
+    8 root      RT   0     0    0    0 S  0.0  0.0   0:00.00 watchdog/1
+
+    9 root      20   0     0    0    0 S  0.0  0.0   0:01.33 events/0
+
+   10 root      20   0     0    0    0 S  0.0  0.0   0:00.20 events/1
+
+   11 root      20   0     0    0    0 S  0.0  0.0   0:00.00 cpuset
+
+   12 root      20   0     0    0    0 S  0.0  0.0   0:00.00 khelper
+
+   13 root      20   0     0    0    0 S  0.0  0.0   0:00.00 netns
+
+   14 root      20   0     0    0    0 S  0.0  0.0   0:00.00 async/mgr
+
+   15 root      20   0     0    0    0 S  0.0  0.0   0:00.00 pm
+
+   16 root      20   0     0    0    0 S  0.0  0.0   0:00.01 sync_supers
+
+   17 root      20   0     0    0    0 S  0.0  0.0   0:00.03 bdi-default
+
+   18 root      20   0     0    0    0 S  0.0  0.0   0:00.00 kintegrityd/0
+
+ 1.2 top 말고 ps -ax로 PID를 확인한다.**
+
+
+
+
+
+[yourid@blrblrblrblrblr examples]$ **ps -ax**
+
+Warning: bad syntax, perhaps a bogus '-'? See /usr/share/doc/procps-3.2.8/FAQ
+
+**  PID** TTY      STAT   TIME COMMAND
+
+**     1 **?        Ss     0:01 /sbin/init
+
+**     2** ?        S      0:00 [kthreadd]
+
+     3 ?        S      0:00 [ksoftirqd/0]
+
+     4 ?        S      0:01 [migration/0]
+
+     5 ?        S      0:00 [watchdog/0]
+
+     6 ?        S      0:01 [migration/1]
+
+     7 ?        S      0:00 [ksoftirqd/1]
+
+     8 ?        S      0:00 [watchdog/1]
+
+     9 ?        S      0:01 [events/0]
+
+    10 ?        S      0:00 [events/1]
+
+    11 ?        S      0:00 [cpuset]
+
+    12 ?        S      0:00 [khelper]
+
+    13 ?        S      0:00 [netns]
+
+    14 ?        S      0:00 [async/mgr]
+
+    15 ?        S      0:00 [pm]
+
+    16 ?        S      0:00 [sync_supers]
+
+    17 ?        S      0:00 [bdi-default]
+
+**18212** ?        S      0:00 /usr/libexec/gvfsd-burn --spawner :1.10 /org/gtk/gvfs/exec_spaw/1
+
+**18219** ?        S      0:00 /usr/libexec/gvfsd-metadata
+
+**18329** ?        Sl     0:03 gnome-terminal
+
+**18332** ?        S      0:00 gnome-pty-helper
+
+**18333** pts/0    Ss     0:00 bash
+
+**18593** pts/1    Ss+    0:00 bash
+
+**19309** ?        S      0:00 /usr/sbin/httpd
+
+**19396** pts/0    R+     0:00 ps -ax

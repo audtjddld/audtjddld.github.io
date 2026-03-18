@@ -1,0 +1,17 @@
+---
+title: "이클립스 jdk 버전 넣기"
+date: 2013-06-11 11:37:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60193753896"
+---
+
+D:\egovFrame\program\eclipse\eclipse.exe
+
+ -vm D:\egovFrame\program\jdk1.6.0_23\bin\javaw.exe
+
+  -data D:\egovFrame\projects\EMJava2\workspace
+
+
+
+바로가기 아이콘 -> 등록정보 -> 경로 뒤에 위와 같이 작성해주면 된다.

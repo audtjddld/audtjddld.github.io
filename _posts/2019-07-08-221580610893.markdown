@@ -1,0 +1,107 @@
+---
+title: "gradle multi module & integration test"
+date: 2019-07-08 16:45:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221580610893"
+---
+
+<http://kwonnam.pe.kr/wiki/gradle/java>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                [**gradle:java [권남]**
+
+                                        Gradle Java Plugin Java Plugin apply plugin: 'java' Gradle Dependencies Java Project 기본 build.gradle 기본적인 자바 프로젝트 구성을 도와주는 build.gradle 로 Eclipse 프로젝트를 가정하고 있다. apply plugin: 'java' apply plugin: 'eclipse'
+ext { javaVersion = '1.6' }
+buildDir = 'build'
+repositories { mavenCentral ( ) }
+depen...
+                                        kwonnam.pe.kr](http://kwonnam.pe.kr/wiki/gradle/java)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+junit 테스트와 spock test간 충돌인지 -_-;
+
+​
+
+기존에 설정했을 땐 이슈가 없었는데, 다시금 테스트 코드 작성 후 돌려보니 오류가 발생되었다.
+
+​
+
+대략적으로 파악한건 gradle 설정을 root project에 추가하고, 기존 설정들을 분리하면서 이슈가 생긴 것 같다.
+
+​
+
+spock는 groovy 이고 junit은 java이기 때문에 해당 gradle plugin 마다 적용을 해줘야 된다.
+
+​
+
+-_- ;; 2일 삽을 풧다.
+
+​
+
+
+
+
+
+
+
+```
+sourceSets {
+        integrationTest {
+            java {
+                compileClasspath += main.output + test.output
+                runtimeClasspath += main.output + test.output
+                srcDir file('src/test/java')
+            }
+            groovy { // for Spock
+                compileClasspath += main.output + test.output
+                runtimeClasspath += main.output + test.output
+                srcDir file('src/test/groovy')
+            }
+            resources.srcDir file('src/test/resources')
+        }
+    }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

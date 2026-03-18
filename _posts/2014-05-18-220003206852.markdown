@@ -1,0 +1,21 @@
+---
+title: "mongoDB 구조"
+date: 2014-05-18 15:59:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220003206852"
+---
+
+SQL Terms/ConceptsMongoDB Terms/Conceptsdatabase[*database*](http://docs.mongodb.org/manual/reference/glossary/#term-database)table[*collection*](http://docs.mongodb.org/manual/reference/glossary/#term-collection)row[*document*](http://docs.mongodb.org/manual/reference/glossary/#term-document) or [*BSON*](http://docs.mongodb.org/manual/reference/glossary/#term-bson) documentcolumn[*field*](http://docs.mongodb.org/manual/reference/glossary/#term-field)index[*index*](http://docs.mongodb.org/manual/reference/glossary/#term-index)table joinsembedded documents and linking
+primary key
+
+Specify any unique column or column combination as primary key.
+
+[*primary key*](http://docs.mongodb.org/manual/reference/glossary/#term-primary-key)
+
+In MongoDB, the primary key is automatically set to the [*_id*](http://docs.mongodb.org/manual/reference/glossary/#term-id)field.
+aggregation (e.g. group by)
+aggregation framework
+
+See the [*SQL to Aggregation Framework Mapping Chart*](http://docs.mongodb.org/manual/reference/sql-aggregation-comparison/).
+
+**[출처]** [mongoDB 구조](http://blog.naver.com/atoz333/120175364762)|**작성자** [June](http://blog.naver.com/atoz333)

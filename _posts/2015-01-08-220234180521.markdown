@@ -1,0 +1,65 @@
+---
+title: "JSP 내장객체 관련"
+date: 2015-01-08 21:34:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/220234180521"
+---
+
+** JSP 내장객체**
+
+**** jsp 내장객체란 jsp 내에 선언하지 않고 사용하는 객체라는 의미에서 붙여진 이름. 간단하게 jsp 컨테이너에 의해 미리 선언되어 있는 클래스 인스턴스 이름으로 생각하면 된다.
+
+내장객체 종류**
+
+****request
+
+response
+
+pagecontext
+
+session
+
+application
+
+out
+
+config
+
+page
+
+exception
+
+request**
+
+ request 주로 HTML form 을 통해 전달되는 값을 가지고 올때 사용한다.
+
+response**
+
+​response는 사용자 요청에 대한 응답을 처리하기 위한 것이다.
+
+주로 헤더와 관련된 정보를 가지고 있다.
+
+config**
+
+​ 서블릿이 최초로 메모리에 적제될때 컨테이너는 서블릿 초기화와 관련된 정보를 읽고 java.servlet.ServletConfig 객체에 저장한다.
+
+이때 초기화 정보는 화면에 노출되지 않으며, 수시로 변경되는 공통된 정보등을 설정할 때 사용한다.
+
+초기화 값은 웹 애플리케이션을 배치 할 때 호환되는 배치도구등을 이용하여 손쉽게 설정할 수 있는데, 배치 할때가 아니라면 web.xml 파일을 직접 작성해야 한다.
+
+application**
+
+application은 javax.servlet.ServletContext 객체에 참조 변수로 config 객체를 생성한다. servletContext 객체에는 컨테이너와 관련된 여러 정보를 제공하며 application 참조 변수를 통해서 서블릿이 실행되는 환경이나 서버 자원과 정보를 얻거나 로그파일을 기록하는 작업등을 수행한다.
+
+ 즉, application 객체는 웹 애플리케이션 (컨텍스트) 전체를 관리하는 객체라고 볼 수 있다.
+
+page**
+
+​page는 jsp 컨테이너에서 생성된 서블릿 인스턴스를 참조하는 레퍼런스 변수며, jsp에서 자기자신을 참조 할 때 사용된다.
+
+**ex) <%page ~~ **
+
+**​pageContext**
+
+​pageContext는 java.servlet.jsp.pageContext 의 인스턴스의 참조 변수로, 다른 모든 내장객체에 대한 프로그래밍적인 접근방법을 제공하며, HTTP 요청을 처리하는 제어권을 다른 페이지로 넘길때 사용한다.

@@ -1,0 +1,213 @@
+---
+title: "분산 서버 로그 처리"
+date: 2019-05-16 10:35:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221538825840"
+---
+
+kafka log back appender + elasticsearch + kibana
+
+​
+
+현재 운영중인 장비가 너무 많기 때문에 로그를 어떻게 확인할까 고민은 많이 있었다.
+
+​
+
+ELK 방식으로 예전에 구축했을 때 설정해줄 것이 많이 있었는데, 이번에는 SPRING BOOT에 logback에 kafka log appender 형태로 로그를 보낼 수 있는 것을 확인하고, 적용하게 되었다.
+
+(네트워크 방화벽 설정만 잘되어 있으면 ok)
+
+​
+
+바탕으로 설치되어야 할 것은 아래 링크와 같이 구축이 되어 있어야 한다.
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    ![]()
+
+
+
+
+
+
+
+
+
+
+
+
+
+[출처 : <https://www.elastic.co/kr/blog/just-enough-kafka-for-the-elastic-stack-part1>]
+
+​
+
+위 그림 처럼 logstash indexer 와 elasticsearch 등 설정 부분에 대해서는 아래 블로거 처럼 가능할 것 같다.
+
+​
+
+[출처 : <https://gyrfalcon.tistory.com/entry/Kafka-Kafka%EB%A1%9C-Log%EB%A5%BC-%EB%B3%B4%EB%82%B4%EB%8A%94-%EB%B0%A9%EB%B2%95%EB%93%A4>]
+
+​
+
+​
+
+kafka logback appender 라이브러리는 아래 링크를 확인이 가능하다.
+
+​
+
+[출처 : <https://github.com/danielwegener/logback-kafka-appender>]
+
+​
+
+gradle 의존성 라이브러리는 아래와 같다.
+
+
+
+
+
+
+
+```
+// <https://mvnrepository.com/artifact/com.github.danielwegener/logback-kafka-appender>
+    compile group: 'com.github.danielwegener', name: 'logback-kafka-appender', version: '0.2.0-RC2'
+// <https://mvnrepository.com/artifact/net.logstash.logback/logstash-logback-encoder>
+    compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '5.2'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+logback 설정은 다음과 같다.
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+      {"instanceId":"${인스턴스ID}"}
+
+
+    ${topic}
+
+bootstrap.servers=${kafka}
+
+
+
+
+
+
+
+
+      %date{yyyy-MM-dd:HH:mm:ss.SSS} %-5level %relative --- [%thread] %logger.%method\(%file:%line\) : %msg %n
+
+
+      INFO
+
+
+
+ ...
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+kafka에서 수신 받을 수 있는 logback indexer + elasticsearch 등이 필요하며, 위와 같이 spring application의 logback에 추가하게 되면 아래와 같이 키바나에서 로그가 확인 가능하다.
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    ![](/assets/images/posts/221538825840/a4635f08d74c.png?type=w580)
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+더 잘 나타내주는 곳
+
+​
+
+아래 링크
+
+<https://gyrfalcon.tistory.com/entry/LogstashShipper-%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%B4-Kafka-%EB%A9%94%EC%84%B8%EC%A7%80%EB%A5%BC-elasticsearch%EB%A1%9C-%EC%A0%80%EC%9E%A5?category=674612>
+
+​

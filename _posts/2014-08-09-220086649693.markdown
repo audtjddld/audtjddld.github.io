@@ -1,0 +1,202 @@
+---
+title: "8월 9일 스터디"
+date: 2014-08-09 14:35:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220086649693"
+---
+
+오래 자리를 비워둔 관계로 ubuntu 설정 부분 부터 무작정 따라하기로 하였다.
+
+
+
+chkconfig 를 우분투에 설치한다
+
+
+
+chkconfig 를 치면 아래 설치하는방법 메시지가 생긴다.
+
+
+
+그런 뒤 설치된 디렉토리
+
+
+
+/usr/lib/insserv
+
+
+
+권한 문제가 발생되어  sbin으로 해당 폴더를 링크를 걸어준다.
+
+
+
+sudo ln -s /usr/lib/insserv/insserv /sbin/insserv
+
+
+
+이후
+
+
+
+sudo chkconfig ssh on
+
+
+
+입력한 뒤
+
+
+
+chkconfig 를 치면 ssh on 으로 변경된 걸 확인 할 수 있다.
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+ Network File Sending (우분투 파일 전송 방법)
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+scp : <http://blog.jinbo.net/ubuntu/29?commentInput=true>
+
+
+
+
+
+
+
+```
+scp ./sshd.txt root@192.168.1.154:/usr/local/src/
+```
+
+
+
+
+
+몽고디비가 설치되어있는 곳은
+
+
+
+~/mongo
+
+
+
+위치이고
+
+
+
+~/mongo/bin
+
+안에 shard_start 와 shard_stop이 들어있다.
+
+
+
+내 컴퓨터는 slave 이기 때문에 sharding 만 한다.
+
+
+
+해당 프로세스를 찾을 땐
+
+
+
+ ps -ef | grep mongo
+
+쳐주고 P_ID 를
+
+
+
+kill -9 P_ID 하면 된다.
+
+
+
+
+
+mongod 몽고 데몬이라서 되어있고
+
+mongos 랑은 다른거다.
+
+
+
+----------------------------------------------------------------------------------
+
+
+
+몽고디비 마스터 서버에서
+
+
+
+샤딩 서버 추가 방법은
+
+
+
+db.runCommand({"shard":"192.168.43.33:30004"}) 이런 방법으로 추가하면
+
+성공적으로 되었다고 메시지가 나오면 샤딩 완료.
+
+
+
+
+
+ -----------------------------------------
+
+샤딩으로 해서 들어오는 데이터 값을 보기 위해서는
+
+mongo --port 30004
+
+포트는 샤딩 포트
+
+
+
+몽고 디비에 접속 후에
+
+
+
+해당 계정으로 이동
+
+use db명
+
+
+
+show collections
+
+
+
+테이블 생성확인 후
+
+db.table.count()
+
+
+
+로 카운팅해보면 확인 할 수 있다.
+
+
+
+
+
+
+
+**scp 사용법**
+
+**scp는 자신의 컴퓨터에서 원격의 컴퓨터로 또는 원격의 컴퓨터에서 자신의 컴퓨터로 간단하게
+파일을 전송할 수 있는 프로그램이다.
+다음은 현재 디렉토리에 있는 sshd.txt 라는 파일을 IP가 192.168.1.154 인 컴퓨터에 root 라는 계정으로
+접속하여 /usr/local/src/ 디렉토리 밑에 복사해 넣는 명령이다.
+
+```
+[root@in4nux root]# scp ./sshd.txt root@192.168.1.154:/usr/local/src/
+```
+
+다음은 IP가 192.168.1.154 인 컴퓨터에 root 라는 계정으로 접속하여 /usr/local/src/ 디렉토리 밑에 있는
+sshd.txt 라는 이름의 파일을 자신의 컴퓨터로 현재 위치한 디렉토리에 복사하는 명령이다.
+
+```
+[root@in4nux root]# scp root@192.168.1.154:/usr/local/src/sshd.txt ./ ssh를 이용한 원격 파일 복사 - 보안 글쓴이 : 임은재 (2000년 11월 24일 오전 09:15) 읽은수:499scp는 ssh 클라이언트 패키지에 따라옵니다.예를 들어, 복사하려는 파일명이 'dumb' 라고 하고접속하려는 원격 서버의 주소는 www.foobar.com, 당신의 쉘 계정은 babo 라고 한다면, dumb 파일을 www.foobar.com 의babo 계정 홈 디렉토리에 복사하기: scp dumb babo@www.foobar.com :. www.foobar.com 의 babo 계정 홈 디렉토리에 있는 dumb 파일을 로컬로 복사하기:scp babo@www.foobar.com:dumb .간단하죠? 만약 ~/.ssh/config 파일에 다음과 같이 www.foobar.com 의 계정을 설정해 놓았다면, Host *fbc HostName www.foobar.com User babo ForwardAgent yes다음과 같이 더 간단하게 할수 있습니다. scp dumb fbc:.또한 scp 는 -r 옵션도 가지고 있는데 이것은 디렉토리를 통채로 복사 할때 유용합니다.예를 들어 test/ 디렉토리안의 모든 파일과 하위 디렉토리를 서버 계정의 www 디렉토리 안에 복사 하려면 다음과 같이 합니다. scp -r test/ babo@www.foobar.com::www/
+```
+
+포트 옵션 : -P
+
+```
+
+```

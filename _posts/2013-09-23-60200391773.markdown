@@ -1,0 +1,428 @@
+---
+title: "구글 지도 (google map ) API 연동"
+date: 2013-09-23 14:07:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60200391773"
+---
+
+오랜만에 적는다.
+
+요새 좀 바쁘고 반복 작업을 하느라..
+
+따로 정리해놓은게 많이 부족해지는 것 같다.
+
+이번엔 구글에서 제공해주는 구글지도 연동 관련된 내용을 정리해봤다.
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+55
+
+56
+
+57
+
+58
+
+59
+
+60
+
+61
+
+62
+
+63
+
+64
+
+65
+
+66
+
+67
+
+68
+
+69
+
+70
+
+71
+
+72
+
+73
+
+74
+
+75
+
+76
+
+77
+
+78
+
+79
+
+80
+
+81
+
+82
+
+83
+
+84
+
+85
+
+86
+
+87
+
+88
+
+89
+
+90
+
+91
+
+92
+
+93
+
+94
+
+95
+
+96
+
+97
+
+98
+
+99
+
+100
+
+101
+
+102
+
+103
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+    <title>Places Autocomplete</title>
+
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+
+    <meta charset="utf-8">
+
+    <link href="https://developers.google.com/maps/documentation/javascript/examples/default.css" rel="stylesheet">
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+
+
+
+    <style>
+
+      input {
+
+        border: 1px solid  rgba(0, 0, 0, 0.5);
+
+      }
+
+      input.notfound {
+
+        border: 2px solid  rgba(255, 0, 0, 0.4);
+
+      }
+
+    </style>
+
+
+
+    <script>
+
+function initialize() {
+
+  var mapOptions = {
+
+    center: new google.maps.LatLng(37.4346, 126.7968),
+
+    zoom: 10,
+
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+
+  };
+
+  var map = new google.maps.Map(document.getElementById('map-canvas'),
+
+    mapOptions);
+
+
+
+  var input = /** @type {HTMLInputElement} */(document.getElementById('address'));
+
+  var autocomplete = new google.maps.places.Autocomplete(input);
+
+
+
+  autocomplete.bindTo('bounds', map);
+
+
+
+  var infowindow = new google.maps.InfoWindow();
+
+  var marker = new google.maps.Marker({
+
+    map: map
+
+  });
+
+
+
+  google.maps.event.addListener(autocomplete, 'place_changed', function() {
+
+    infowindow.close();
+
+    marker.setVisible(false);
+
+    input.className = '';
+
+    var place = autocomplete.getPlace();
+
+
+
+    if (!place.geometry) {
+
+      // Inform the user that the place was not found and return.
+
+      input.className = 'notfound';
+
+      return;
+
+    }
+
+
+
+    // If the place has a geometry, then present it on a map.
+
+    if (place.geometry.viewport) {
+
+      map.fitBounds(place.geometry.viewport);
+
+    } else {
+
+      map.setCenter(place.geometry.location);
+
+      map.setZoom(17);  // Why 17? Because it looks good.
+
+    }
+
+
+
+    marker.setIcon(/** @type {google.maps.Icon} */({
+
+      url: place.icon,
+
+      size: new google.maps.Size(71, 71),
+
+      origin: new google.maps.Point(0, 0),
+
+      anchor: new google.maps.Point(17, 34),
+
+      scaledSize: new google.maps.Size(35, 35)
+
+    }));
+
+
+
+    //위치 등록 부분
+
+    marker.setPosition(place.geometry.location);
+
+    var pot = place.geometry.location;
+
+    var x    = pot.lat().toFixed(4);
+
+    var y    = pot.lng().toFixed(4);
+
+
+
+    alert("x = "+x + " y = "+ y);
+
+
+
+    marker.setVisible(true);
+
+
+
+    var address = '';
+
+    if (place.address_components) {
+
+      address = [
+
+        (place.address_components[2] && place.address_components[2].short_name || ''),
+
+        (place.address_components[1] && place.address_components[1].short_name || ''),
+
+        (place.address_components[0] && place.address_components[0].short_name || '')
+
+      ].join(' ');
+
+    }
+
+
+
+    infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+
+    infowindow.open(map, marker);
+
+  });
+
+
+
+  // Sets a listener on a radio button to change the filter type on Places
+
+  // Autocomplete.
+
+   autocomplete.setTypes([]); // 전체 주소
+
+}
+
+
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+    </script>
+
+  </head>
+
+  <body>
+
+    <input id="address" type="text" size="50">
+
+    <div id="map-canvas" style="width:600px;height:300px;"></div>
+
+  </body>
+
+</html>

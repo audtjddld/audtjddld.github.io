@@ -1,0 +1,24 @@
+---
+title: "RequestBody 시  mapping not marked as ignorable Error 발생"
+date: 2016-03-30 14:50:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220669496071"
+---
+
+<http://stackoverflow.com/questions/4486787/jackson-with-json-unrecognized-field-not-marked-as-ignorable>
+
+프로젝트 parameter 부분에 Vo로 request를 받는 부분이 있었는데, 개발 했을 때 당시 문제가 없었다.
+
+하지만 -_-; 다른 쪽 모듈 개발시 에러가 발생되어 Service 단에서 bean mapping Error인가 싶었는데
+
+Controller 단에서 RequestBody시에 에러나느 것이였다.
+
+해결 방법은 간단하다.
+
+Vo 클래스 상단에
+
+```
+@JsonIgnoreProperties(ignoreUnknown = true)
+```
+
+선언하면 된다. -_-

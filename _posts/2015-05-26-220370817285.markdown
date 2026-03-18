@@ -1,0 +1,144 @@
+---
+title: "spring -> controller json 주고 받을때"
+date: 2015-05-26 17:03:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220370817285"
+---
+
+화면단에서 꼭 JSON.stringfy()!!!!!!
+
+
+
+설정을 안하면
+
+
+
+ObjectMapper로 해야되고
+
+
+
+StringFy로 보내면
+
+
+
+simple jackson 으로 Json Object로 파싱해서 받을 수 있다.
+
+
+
+------------------------------- view ------------------------------------
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+        var selecteddatais = $("#datalist").jqGrid('getRowData',selectedrows[i]);
+
+
+
+                            postArray.push(selecteddatais);
+
+                        }
+
+                    var sale = [{"sale_start":$("#sale_start").val(),
+
+                            "sale_end"  :$("#sale_end").val(),
+
+                            "sale_ratio":$("#sale_ratio").val(),
+
+                            "del_yn"    : $("#del_yn").val()
+
+                            }];
+
+
+
+
+
+                    } else {
+
+                        alert("상품 리스트를 선택해 주세요");
+
+                        return false;
+
+                    }
+
+                    var data = {"product" : postArray , "saleinfo" : sale};
+
+[cs](http://colorscripter.com/info#e)
+
+
+
+
+
+
+
+
+
+------------------------------ server -----------------------------------
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+jsonobj = (JSONObject) jsonParser.parse(atr);
+
+            String product = jsonobj.get("product").toString();
+
+            String saleinfo = jsonobj.get("saleinfo").toString();
+
+
+
+            JSONArray productArray = new JSONArray();
+
+            JSONArray saleArray = new JSONArray();
+
+
+
+            productArray = (JSONArray) jsonParser.parse(product);
+
+            saleArray = (JSONArray) jsonParser.parse(saleinfo);
+
+[cs](http://colorscripter.com/info#e)

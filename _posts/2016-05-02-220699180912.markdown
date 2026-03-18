@@ -1,0 +1,16 @@
+---
+title: "mongoItemReader"
+date: 2016-05-02 15:51:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220699180912"
+---
+
+<http://stackoverflow.com/questions/17940013/problems-in-spring-batch-mongo-itemreader>
+
+<http://stackoverflow.com/questions/17940013/problems-in-spring-batch-mongo-itemreader>
+
+[problems in spring batch mongo itemreader?I found a weird issue with MongoItemReader.
+This is the configuration I've for a step:
+
+    private Step addMnpInformation() thr...stackoverflow.com](http://stackoverflow.com/questions/17940013/problems-in-spring-batch-mongo-itemreader)
+

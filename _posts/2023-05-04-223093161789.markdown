@@ -1,0 +1,74 @@
+---
+title: "open api"
+date: 2023-05-04 10:38:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223093161789"
+---
+
+잘 정리된 블로그 추가
+
+<https://colabear754.tistory.com/130>
+> [**[Swagger] Spring Boot 3.0.X 버전에서 Swagger UI 접속 시 404 에러가 발생할 때**](https://colabear754.tistory.com/130)
+>
+> 목차 문제의 배경 JPA 공부를 위해 스프링부트 프로젝트를 생성할 때 새로운 버전을 사용해보자는 마음으로 스프링부트 3.0.3 버전으로 프로젝트를 생성했다. 그리고 평소처럼 Springdoc의 스웨거 UI를 사용해서 API를 호출하려고 했는데 스웨거 문서에 접속하니까 404 에러가 반겨줬다. 그래들에 의존성은 기존처럼 implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'를 추가해놨고, 아래와 같이 SwaggerConfig도 설정해놨고 애플리케이션 설정도 잡아놨는데 404 에러가 떠...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+공식 reference
+
+[https://springdoc.org](https://springdoc.org/#properties)/
+> [**OpenAPI 3 Library for spring-boot**](https://springdoc.org/#properties)
+>
+> Library for OpenAPI 3 with spring boot projects. Is based on swagger-ui, to display the OpenAPI description.Generates automatically the OpenAPI file.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+swagger가 open api 로 공개하면서 여러 라이브러리들이 생겨난 것 같은데, 그중에서도 springdoc을 고르느라 나름 진땀을 뺏다.
+
+(fox를 쓸지 뭘 쓸지 이런 저런..?)
+
+​
+
+이전에 하던 restdoc은 이제 안쓰는 것 같고, open api로 사용하면서 적용하고 나온 json을 이용해서 흩어져 있는 API 목록들을 가져올 수 있다는 뭐 이런 저런 내용들이 있는 것 같다.
+
+​
+
+사용방법은 매우 간단하고, 어렵지 않은데, spring boot 3.x 적용할 때 open-api-ui 버전을 2버전대로 사용해야된다는 것을 헤메고 다녔다.
+
+​
+
+위에 링크를 건 블로그에서 아주 자세히 정리가되어 있어서 쉽게 해결할 수 있었다.

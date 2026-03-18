@@ -1,0 +1,239 @@
+---
+title: "hibernate envers"
+date: 2023-07-31 18:33:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223171047149"
+---
+
+hiberate의 audit 설정을 할 수 있다고해서, 관련해서 작성해보았다.
+
+hibernate envers를 설정하게 되면 audit정보를 기록하고자 하는 테이블이 생긴다.
+
+생성되는 규칙은 ***_aud **형태로 생성되다.
+
+​
+
+선언하는 방식은 매우 단순하다.
+
+​
+
+gradle
+
+
+
+
+
+
+
+
+
+```
+implementation("org.hibernate:hibernate-envers:6.2.7.Final")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+spring boot 3.x 버전부터는 6 버전대를 사용해야 한다.
+
+​
+
+audit을 하고 싶은 class나 변수에 **@Audited** 애노테이션을 걸어주면 된다.
+
+​
+
+envers 설정을 한 뒤 테이블을 확인하면 rev, revtype 들을 확인할 수 있다.
+
+rev값이 int로 설정되어 있어서 20억건 이상되면 문제가 발생될 수 있다는 글들이 꽤 있는 상태이다.
+
+설정 방법은 아래 참고 링크로 이동해서 확인할 수 있다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![](/assets/images/posts/223171047149/3243bae32273.png?type=w580)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+revType의 값은 다음과 같다.
+
+​
+
+**ADD (0)** : 엔티티가 해당 리비전에서 **추가 (지속)되었음을 나타냅니다.**
+
+**MOD (1)** : 해당 개정에서 엔터티가 **수정** 되었음을 나타냅니다 (해당 필드 중 하나 이상).
+
+**DEL** (2): 해당 개정에서 엔터티가 **삭제 (제거)되었음을 나타냅니다.**
+
+​
+
+​
+
+AuditTable명을 별도로 설정이 가능한 것 같다.
+
+
+
+
+
+
+
+
+
+```
+@AuditTable("name_audit")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+생성된 audit 테이블을 조회하는 api와, 관계 설정이 되어 있는 테이블에서는 몇가지 설정이 필요한거 같다.
+
+​
+
+​
+
+​
+
+​
+
+​
+
+참고 링크:
+
+<https://medium.com/maestral-solutions/creating-a-win-win-scenario-auditing-entity-revisions-in-spring-boot-with-hibernate-fc0cf81e4f50>
+> [**Creating a Win-Win Scenario: Auditing & Entity Revisions in Spring Boot with Hibernate**](https://medium.com/maestral-solutions/creating-a-win-win-scenario-auditing-entity-revisions-in-spring-boot-with-hibernate-fc0cf81e4f50)
+>
+> A database with incorrect or outdated data is of no use to anyone, especially if you don’t have auditing and entity revisioning set up.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<https://youtu.be/fGPaj-rlN5w>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<https://blog.leocat.kr/notes/2021/04/23/hibernate-envers-settings>
+> [**[Hibernate Envers] Hibernate Envers 사용할 때 필요한 이런 저런 설정들**](https://blog.leocat.kr/notes/2021/04/23/hibernate-envers-settings)
+>
+> 이 설정들은 꾸준히 업데이트 될 수 있음
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

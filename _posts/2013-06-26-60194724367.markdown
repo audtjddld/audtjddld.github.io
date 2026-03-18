@@ -1,0 +1,8 @@
+---
+title: "[공유] 솔라리스 텔넷,ftp설정"
+date: 2013-06-26 10:28:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60194724367"
+---
+
+솔라리스 ftp 파일 업로드 다운로드

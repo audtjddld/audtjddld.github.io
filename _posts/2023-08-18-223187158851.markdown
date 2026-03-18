@@ -1,0 +1,30 @@
+---
+title: "ZGC"
+date: 2023-08-18 17:01:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223187158851"
+---
+
+<https://d2.naver.com/helloworld/0128759>
+> [**ZGC의 기본 개념 이해하기**](https://d2.naver.com/helloworld/0128759)
+>
+> ZGC(Z Garbage Collector)는 Serial GC와 Parallel Old GC, Parallel GC, CMS GC, G1 GC를 지나 새로운 세대로..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

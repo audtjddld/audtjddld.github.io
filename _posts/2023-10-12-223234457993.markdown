@@ -1,0 +1,34 @@
+---
+title: "Finding enum by the value in kotlin"
+date: 2023-10-12 10:55:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223234457993"
+---
+
+​
+
+<https://www.baeldung.com/kotlin/enum-find-by-value>
+> [**Finding Enum by the Value in Kotlin | Baeldung on Kotlin**](https://www.baeldung.com/kotlin/enum-find-by-value)
+>
+> Learn how to find an enum instance by a given value.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+kotlin 문법으로 여러 방법을 나타내준다.
+
+물론 예제에는 enum에 변수가 1개로 나오는데 여러개일 경우에는 알려주는 방법중에서 선택해서 해야할 것 같다.

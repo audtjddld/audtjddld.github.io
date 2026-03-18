@@ -1,0 +1,7 @@
+---
+title: "Akka (7) - 번외 elixir Actor, erlang"
+date: 2017-08-06 21:56:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221068154407"
+---
+

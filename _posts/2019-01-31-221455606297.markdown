@@ -1,0 +1,27 @@
+---
+title: "ubuntu zookeeper 셋팅"
+date: 2019-01-31 14:52:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221455606297"
+---
+> [**How to install and configure Zookeeper in Ubuntu 18.04 - LinuxConfig.org**](https://linuxconfig.org/how-to-install-and-configure-zookeeper-in-ubuntu-18-04)
+>
+> How to install and configure Zookeeper in Ubuntu 18.04 Sandip Bhowmik Ubuntu 18.04 28 November 2018 Zookeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services. All of these kinds of services are used in so...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<https://linuxconfig.org/how-to-install-and-configure-zookeeper-in-ubuntu-18-04>

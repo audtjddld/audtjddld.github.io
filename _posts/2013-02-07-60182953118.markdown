@@ -1,0 +1,159 @@
+---
+title: "[공유] ~ 2. 7 까지 ) 공통과제 if문 case문 while문 for문 배열"
+date: 2013-02-07 10:31:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60182953118"
+---
+
+public static void main(String[] args) throws IOException{
+  int su1,su2,result = 0;
+  String operator;
+
+  InputStreamReader isr = new InputStreamReader(System.in);
+  BufferedReader br = new BufferedReader(isr);
+
+  System.out.println("----- 사칙 연산 프로그램 -------- ");
+  System.out.println(" 연산자는 (+,-,*,/) 만 입력하세요. ");
+  System.out.println("1. 첫번째 숫자 입력");
+  su1 = Integer.parseInt(br.readLine());
+  System.out.println("2. 연산자 입력 (+,-,*,/)");
+  operator = br.readLine();
+
+  System.out.println("3. 두번째 숫자 입력");
+  su2 = Integer.parseInt(br.readLine());
+
+
+   if(operator.equals("+")){
+    result=su1+su2;
+   }else if(operator.equals("-")){
+    result=su1-su2;
+   }else if(operator.equals("*")){
+    result=su1*su2;
+   }else if(operator.equals("/")){
+    if(su2==0){
+     System.out.println("0으로는 나눌 수 없습니다.");
+    }else{
+     result=su1*su2;
+    }
+
+   }else{
+    System.out.println("올바른 연산자를 입력하세요.");
+   }
+
+   System.out.println(su1+""+operator+""+su2 +" =  " + result);
+
+ }
+
+
+
+------------------- 계산기 끝 ------------------------------------
+
+
+
+
+
+------------------ 반복문 (for) 2013.02.06 ----------------------------------
+
+
+
+ public static void main(String args[]) throws Exception{
+  int su1=0,sum=0,j=0;
+
+  InputStreamReader isr = new InputStreamReader(System.in);
+  BufferedReader br = new BufferedReader(isr);
+
+  System.out.println("------ 1 부터 더하고 싶은 숫자를 입력하세요.");
+  su1=Integer.parseInt(br.readLine());
+
+
+
+  for(int i=0; i<su1;  i++){
+   sum=sum+1;
+  }
+  System.out.println("합은 : " +su1);
+
+ }
+
+
+
+while 문
+
+
+
+ public static void main(String args[]) throws Exception{
+  int su1=0,sum=0,j=0;
+
+  InputStreamReader isr = new InputStreamReader(System.in);
+  BufferedReader br = new BufferedReader(isr);
+
+  System.out.println("------ 1 부터 더하고 싶은 숫자를 입력하세요.");
+  su1=Integer.parseInt(br.readLine());
+
+  while(j<su1){
+   sum=sum+1;
+   j++;
+  }
+
+  System.out.println("합은 : " +su1);
+
+ }
+
+
+
+----------------------------------------------------------------------
+
+
+
+public static void main(String args[]) throws Exception{
+  InputStreamReader isr = new InputStreamReader(System.in);
+  BufferedReader br = new BufferedReader(isr);
+
+  int [] su = new int [3];
+
+  System.out.println(" 첫 번째 숫자를 입력 하세요.");
+  su[0] = Integer.parseInt(br.readLine());
+
+  System.out.println(" 두 번째 숫자를 입력 하세요.");
+  su[1] = Integer.parseInt(br.readLine());
+
+  System.out.println(" 연산자를 입력 하세요. ('+','-','*','/') ");
+  String input = br.readLine();
+
+  switch(input.charAt(0)){
+
+  case '+' :
+   su[2] = su[0]+su[1];
+   break;
+  case '-' :
+   su[2] = su[0]-su[1];
+   break;
+  case '*' :
+   su[2] = su[0]*su[1];
+   break;
+  case '/' :
+   if(su[1]!=0){
+    su[2] = su[0]/su[1];
+    break;
+   }else{
+    System.out.println("0으로 나눌 수 없습니다.");
+    break;
+   }
+
+   default :
+    System.out.println("연산자를 정확하게 입력하세요.");
+
+  }
+
+  System.out.println(su[0] +" "+ input.charAt(0) +" " + su[1] + " = " + su[2]);
+
+ }
+
+
+
+
+
+
+
+-------------------------- 끝 ------------------------------------
+
+자바의 정석 4,5장 응용 예제

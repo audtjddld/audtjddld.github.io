@@ -1,0 +1,68 @@
+---
+title: "Mybatis에서 Merge 문 사용 하기"
+date: 2013-03-04 18:45:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60185600269"
+---
+
+merge문은 Mybatis에서는 insert 와 update로 하여 사용하면 된다.
+
+
+
+아래는 테이블 1개를 이용하여 데이터 값을 넣을 때 사용 했던 부분 이다.
+
+
+
+2개는 using에 쿼리를 하나더 준다음에 a , b 이런 식으로 이름을 지어준다.
+
+
+
+그리고 on 구절 안에 조인 문을 걸어주면 된다.
+
+
+
+<updateid="MergeTestSubmit" parameterType="java.util.HashMap" >
+        <![CDATA[
+        MERGE INTO t_levelup_test_grade  a
+            USING dual
+               on (a.system_id=#{winId,jdbcType=VARCHAR} AND
+                      a.course_no=#{courseNo} AND a.test_lang=#{testLang,jdbcType=VARCHAR}
+                       AND a.exam_no=#{examNo})
+             WHEN MATCHED THEN
+             UPDATE SET
+                 a.usr_answer=#{usrAnswer ,jdbcType=VARCHAR}
+              WHEN NOT MATCHED THEN
+                INSERT (
+                              a.cp_code,
+                              a.course_no,
+                              a.system_id,
+                              a.test_lang,
+                              a.exam_no,
+                              a.total_question,
+                              a.correct_answer,
+                              a.incorrect_answer,
+                              a.usr_answer,
+                              a.test_dt,
+                              a.reg_id,
+                              a.reg_dt,
+                              a.usr_answer_ox
+                        )
+                values (
+                               #{cpCode , jdbcType=VARCHAR},
+                               #{courseNo},
+                               #{winId , jdbcType=VARCHAR},
+                               #{testLang , jdbcType=VARCHAR},
+                               #{examNo},
+                               '0',
+                               '0',
+                               '0',
+                               #{usrAnswer , jdbcType=VARCHAR},
+                               '2013-02-28',
+                               'test',
+                               sysdate,
+                               ''
+                        )
+
+          ]]>
+    </update>

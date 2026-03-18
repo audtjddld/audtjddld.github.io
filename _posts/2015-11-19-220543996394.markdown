@@ -1,0 +1,10 @@
+---
+title: "JPA 한글 번역 레퍼런스"
+date: 2015-11-19 15:40:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220543996394"
+---
+
+정말 정말 감사하다 ㅠㅠ
+
+<http://arahansa.github.io/docs_spring/jpa.html>

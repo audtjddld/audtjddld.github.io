@@ -1,0 +1,224 @@
+---
+title: "디자인 패턴 - 데코레이터 패턴"
+date: 2016-01-13 08:38:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220595861278"
+---
+
+# 디자인 패턴 - 데코레이터 패턴
+
+데코레이터 패턴은 사용자가 그 구조를 변경하지 않고 기존 개체에 새로운 기능을 추가 할 수 있습니다. 이 패턴은 기존의 클래스에 대한 래퍼 역할로 디자인 패턴이 유형의 구조적 패턴 중 하나입니다.
+
+이 패턴은 원래의 클래스를 래핑 그대로 추가 기능 유지 클래스 메소드 서명을 제공하는 데코레이터 클래스를 만듭니다.
+
+우리는 우리가 ALTER 모양 클래스없이 일부 색상과 모양을 장식 할에 다음과 같은 예를 통해 데코레이터 패턴의 사용을 시연한다.
+
+## 이행
+
+우리는 만들려고 *모양의* 인터페이스와 구현 구체적인 클래스 *모양의* 인터페이스를. 우리는 그 추상 장식 클래스 생성합니다 *ShapeDecorator* 구현 *모양의* 인터페이스를 갖는 *모양* 의 인스턴스 변수로 개체를.
+
+*RedShapeDecorator을* 구현하는 구체적인 클래스입니다 *ShapeDecorator을* .
+
+*DecoratorPatternDemo* , 우리의 데모 클래스는 사용 *RedShapeDecorator을* 장식하는*모양* 객체를.
+*
+## 1 단계
+
+인터페이스를 만듭니다.
+
+Shape.java*
+
+```
+public interface Shape {
+   void draw();
+}
+```
+
+## 2 단계
+
+같은 인터페이스를 구현하는 구체적인 클래스를 만듭니다.
+
+*Rectangle.java*
+
+```
+public class Rectangle implements Shape {
+
+   @Override
+   public void draw() {
+      System.out.println("Shape: Rectangle");
+   }
+}
+```
+
+*Circle.java*
+
+```
+public class Circle implements Shape {
+
+   @Override
+   public void draw() {
+      System.out.println("Shape: Circle");
+   }
+}
+```
+
+## 3 단계
+
+구현 추상 장식 클래스 만들기 *모양의* 인터페이스를.
+
+*ShapeDecorator.java*
+
+```
+public abstract class ShapeDecorator implements Shape {
+   protected Shape decoratedShape;
+
+   public ShapeDecorator(Shape decoratedShape){
+      this.decoratedShape = decoratedShape;
+   }
+
+   public void draw(){
+      decoratedShape.draw();
+   }
+}
+```
+
+## 4 단계
+
+연장 콘크리트 장식 클래스 만들기 *ShapeDecorator의* 클래스를.
+
+*RedShapeDecorator.java*
+
+```
+public class RedShapeDecorator extends ShapeDecorator {
+
+   public RedShapeDecorator(Shape decoratedShape) {
+      super(decoratedShape);
+   }
+
+   @Override
+   public void draw() {
+      decoratedShape.draw();
+      setRedBorder(decoratedShape);
+   }
+
+   private void setRedBorder(Shape decoratedShape){
+      System.out.println("Border Color: Red");
+   }
+}
+```
+
+## 5 단계
+
+사용 *RedShapeDecorator을* 장식하는 *모양* 객체를.
+
+*DecoratorPatternDemo.java*
+
+```
+public class DecoratorPatternDemo {
+   public static void main(String[] args) {
+
+      Shape circle = new Circle();
+
+      Shape redCircle = new RedShapeDecorator(new Circle());
+
+      Shape redRectangle = new RedShapeDecorator(new Rectangle());
+      System.out.println("Circle with normal border");
+      circle.draw();
+
+      System.out.println("\nCircle of red border");
+      redCircle.draw();
+
+      System.out.println("\nRectangle of red border");
+      redRectangle.draw();
+   }
+}
+```
+
+## 6 단계
+
+출력을 확인합니다.
+
+```
+Circle with normal border
+Shape: Circle
+
+Circle of red border
+Shape: Circle
+Border Color: Red
+
+Rectangle of red border
+Shape: Rectangle
+Border Color: Red
+```
+
+출처 : <http://www.tutorialspoint.com/design_pattern/decorator_pattern.htm>
+
+------------------- 2016.12.28 ----------------------
+
+```
+/**
+  Decorator 패턴은 계층화도니 객체들을 사용해서 개별적인 객체들에게 동적이고, 투명하게
+  책임(responsibility)을 추가한다. Decorator에서 최초 객체를 포장(wrap) 하고 있는 모든
+   객체들이 동일한 기본 인터페이스를 갖도록 한다.즉, 다른 클래스들을 포장하여 가능성을
+   계층화하는 것이다.
+
+   Decorator는 컴포지션과 정형화된 구조를 사용해서 구현되는 반면, mixin은 상속 기반으로 구현된다.
+   따라서 파라미터화 타입 기반의 mixin을 제네릭 decorator 메커니즘
+   (Decorator 패턴의 상속 구조를 필요로하지 않는)으로 고려할 수 있다.
+ */
+
+class Basic {
+    private String value;
+    public void set(String val) {
+        value = val;
+    }
+    public String get() {
+        return value;
+    }
+}
+
+class Decorator extends Basic {
+    protected Basic basic;
+    public Decorator(Basic basic) {
+        this.basic = basic;
+    }
+    public void set(String val) {
+        basic.set(val);
+    }
+    public String get() {
+        return basic.get();
+    }
+}
+
+class TimeStamped extends Decorator {
+    private final long timeStamp;
+    public TimeStamped(Basic basic) {
+        super(basic);
+        timeStamp = new Date().getTime();
+    }
+    public long getStamp() {
+        return timeStamp;
+    }
+}
+
+class SerialNumbered extends Decorator {
+    private static long counter = 1;
+    private final long serialNumber = counter++;
+    public SerialNumbered(Basic basic) {
+        super(basic);
+    }
+    public long getSerialNumber() {
+        return serialNumber;
+    }
+}
+
+public class Decoration {
+    public static void main(String[] args) {
+        TimeStamped t = new TimeStamped(new Basic());
+        TimeStamped t2 = new TimeStamped( new SerialNumbered(new Basic()));
+        // t2.getSerialNumber(); // 사용할 수 없다.
+        SerialNumbered s = new SerialNumbered(new Basic());
+        SerialNumbered s2 = new SerialNumbered(new TimeStamped(new Basic()));
+        // s2.getStamp(); // 사용할 수 없다.
+    }
+}
+```

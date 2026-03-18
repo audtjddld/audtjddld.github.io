@@ -1,0 +1,20 @@
+---
+title: "com.amazonaws.services.s3.model.AmazonS3Exception: The request signature we calculated does not ..."
+date: 2019-08-26 10:38:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221628629854"
+---
+
+최근 들어 S3 버킷 업데이트시에 이슈가 발생되고 있다.
+
+이러한 내용을 확인한 즉 stackoverflow에서는 해당 이미지 경로의 이슈에 문제가 있을거란 이야기를 했었는데,
+
+그에 맞게 내 코드에서도 S3 버킷으로 업로드시에 경로에 +-와 같은 URL 에서 사용할 수 없는 문자열들이 포함되어 있는 것이 확인되었다.
+
+​
+
+우선 1차적으로는 해당 경로를 인코딩을 진행하여 업로드를 진행할 예정이며, 해당 데이터를 넣는 부분까지 확인이 필요해보인다.
+
+​
+
+co[m.amazonaws.services.s3.model.AmazonS3Exception:](http://m.amazonaws.services.s3.model.AmazonS3Exception:) The request signature we calculated does not match the signature you provided. Check your key and signing method.

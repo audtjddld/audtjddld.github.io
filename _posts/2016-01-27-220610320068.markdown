@@ -1,0 +1,10 @@
+---
+title: "Spring Security OAuth 관련 정리"
+date: 2016-01-27 15:15:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220610320068"
+---
+
+Spring Security OAuth 관련 설명에서 OAuth 프로세스에 대해서는 링크에 염감님이 잘 설명해주신다.
+
+<https://www.youtube.com/watch?v=LnJsspvxE1c>

@@ -1,0 +1,124 @@
+---
+title: "Jsp request parameter hashmap 에 전부 담기 [퍼옴]"
+date: 2012-10-30 19:27:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60174555215"
+---
+
+Map paramMap = new HashMap();
+        Enumeration enums = request.getParameterNames();
+        while(enums.hasMoreElements()){
+            String paramName = (String)enums.nextElement();
+            String[] parameters = request.getParameterValues(paramName);
+
+        // Parameter가 배열일 경우
+            if(parameters.length > 1){
+                paramMap.put(paramName, parameters);
+        // Parameter가 배열이 아닌 경우
+            }else{
+                paramMap.put(paramName, parameters[0]);
+            }
+        }
+
+[퍼옴]
+
+---------------------------- 2012.11.08 ---------------------------------
+
+Enumeration 에서 Iterator로 바꾸는게 요즘은 더 낫다고 합니다.
+
+
+
+--------------------------- 2013.01.23 ----------------------------------
+
+java.util.HashMap,
+
+java.util.Iterator" %><%
+
+
+
+Map resultMap = null;
+
+String key = "";
+
+String[] values = null;
+
+
+
+Map map = request.getParameterMap();
+
+Iterator iterator = map.keySet().iterator();
+
+
+
+while (iterator.hasNext()) {
+
+key = (String)iterator.next();
+
+values = (String[])map.get(key);
+
+}
+
+﻿
+
+ if (values != null) {
+
+resultMap = new HashMap();
+
+
+
+out.println("* SIZE = " + values.length + "<br />");
+
+
+
+for (int i = 0; i < values.length; i++)
+
+resultMap.put(new String(key + "_" + i), values[i]);
+
+﻿//out.println("* RESULT_MAP = " + resultMap + "<br />");
+
+}
+
+출처 - <http://som2day.com/35﻿>
+
+
+
+
+
+-------------------------- 2013.01.29 ------------------------------------------
+
+﻿ 이건 내가 직접 해본 것..
+
+﻿
+
+﻿
+
+         Map paramMap = new HashMap();                             // 넘길 파라미터 생성
+         Map paramHashMap = (HashMap)request.getParameterMap();     // 파라미터 값 저장
+        Iterator it = paramHashMap.keySet().iterator();
+
+  //파라미터값 받은 맵 내용을 iterator 실시
+
+
+
+        while(it.hasNext()){
+            String key = it.next().toString();                          // 키 값 등록
+           String [] parameters = request.getParameterValues(key);
+
+// String 배열에 getParameterValues를 사용하여 같은 이름으로 던지는 내용 담음.
+
+            if(parameters.length>1){
+
+         // 만약 parameter가 같은 이름으로 던진 것일땐 해쉬맵에 키값과 함께 배열로 저장
+              paramMap.put(key,parameters);
+   }else{                                                      // 아니면 그냥 저장.
+              paramMap.put(key,request.getParameter(key));
+            }
+        }
+
+
+
+  ----------------------------- 2014.12.11 ---------------------------------------
+
+
+
+HashMap 에서 Map 으로 변경

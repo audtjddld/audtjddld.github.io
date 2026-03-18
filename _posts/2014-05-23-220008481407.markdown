@@ -1,0 +1,8 @@
+---
+title: "몽고디비 쿼리!!"
+date: 2014-05-23 17:25:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220008481407"
+---
+
+<http://www.slideshare.net/niddo/mongo-d-b>

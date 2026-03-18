@@ -1,0 +1,211 @@
+---
+title: "크롤링4"
+date: 2019-01-30 17:37:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221454880966"
+---
+
+업체 크롤링을 진행하기 위해 해당 페이지 코드를 확인해보니, javascript에 정보가 다 기록되어 있었다.
+
+javascript 변수에 들어 있는 내용을 이용하여 scraping 할 수 있으면 더욱 간편하다고 생각되어 시도를 해보았다.
+
+​
+
+**가장 중요한 것은 작업자 PC에 chorme이 설치되어있어야 한다는 것이다.**
+
+​
+
+아래 링크에서 힌트를 얻어 설치했다. -_- (1시간 삽풨어요. 전 쓰레기예요)
+
+<https://stackoverflow.com/questions/50138615/cannot-find-chrome-binary-with-selenium-in-python-for-older-versions-of-google-c>
+
+​
+
+사내 chrome 사용 도중에 이슈가 있어서 chrome canary 버전을 이용하고 있었는데. 그것 때문에 에러가 계속 발생하고 있었다.
+
+​
+
+우선 selenium 셋팅 부터 알아보자.
+
+​
+
+나는 chrome web driver를 선택했다.
+
+
+
+
+
+
+
+```
+// <https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java>
+ compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+
+// <https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver>
+ compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '3.141.59'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document 링크는 아래
+
+<https://www.seleniumhq.org/docs/>
+
+​
+
+도입하게 된 계기.
+
+​
+
+makeshop의 상품 정보를 스크래핑 하는 도중에 소스보기에서 javascript 전역 변수에 값들이 있는 것을 확인하였다.
+
+​
+
+**jsoup은 html만 파싱하고 다룰 수 있었는데 selenium은 javascript도 실행이 가능하다고 하더라..**
+
+(그럼 써야지 -_-)
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    ![](/assets/images/posts/221454880966/11212c6c56e8.png?type=w580)
+
+
+상품 정보가 보인다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+상품 정보가 전역변수에 보인다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    ![](/assets/images/posts/221454880966/186cb534bfaa.png?type=w580)
+
+
+
+
+
+
+
+
+
+
+
+
+
+메타테그에는 이미지 링크가 보인다.
+
+​
+
+이것을 합치면 상품 정보를 가져올 수 있다.
+
+​
+
+
+
+
+
+
+
+```
+ChromeOptions options = new ChromeOptions();
+    options.addArguments("headless");
+    WebDriver webDriver = new ChromeDriver(options);
+
+    webDriver.get(event.getLink());
+
+    JavascriptExecutor executor = (JavascriptExecutor) webDriver;
+    String productName = executor.executeScript("return product_name").toString();
+    String expireCheck = executor.executeScript(
+        "var t = []; var wonderOptions = optionJsonData.basic[0];  for (var prop in wonderOptions) {t.push(wonderOptions[prop]['sto_state'])}; return t.every(function(state){return state == 'SOLDOUT'});")
+        .toString();
+    String productPrice = executor.executeScript("return product_price").toString();
+    String imageLink = executor.executeScript("return $(\"meta[property='og:image']\").attr('content')").toString();
+    String link = event.getLink();
+
+    // 품절 체크
+    if (Boolean.valueOf(expireCheck)) {
+      log.info("품절 입니당~ {}", link);
+      return;
+    }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+위와 같이 코드를 작성하면 상품명, 가격, 품절 정보, 이미지 링크 데이터를 추출할 수 있다.
+
+​
+
+난 SSG를 탈락했다는 메일을 받았다.
+
+​
+
+쓰레기다.
+
+​
+
+공통영역이 없어서 포기한다.
+
+​
+
+-_ㅠ

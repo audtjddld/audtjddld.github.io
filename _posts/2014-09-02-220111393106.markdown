@@ -1,0 +1,125 @@
+---
+title: "mybatis foreach 문 [펌]"
+date: 2014-09-02 20:57:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/220111393106"
+---
+
+출처 : <http://blueverbena.com/archives/845>
+
+
+
+[ome](http://blueverbena.com/) » [Programing](http://blueverbena.com/archives/category/programing) » [Framework](http://blueverbena.com/archives/category/programing/framework) » [Mybatis](http://blueverbena.com/archives/category/programing/framework/mybatis) » MyBatis 8 . 동적 SQL – foreach
+
+#
+
+SQL의 조회 조건에는 IN절로 조건을 추가하는 경우가 있다. IN절에는 어떠한 값들을 전달하게 되는데, 이때 IN절에 들어갈 값들을 <foreach>엘리먼트를 이용하여 반복해서 설정 할 수 있다. 다음은 특정 id값들로 게시 글을 가져오는 동적 SQL 매핑구문이다.
+
+
+
+
+
+Example
+
+XHTML
+
+<textarea class="crayon-plain print-no" style='background: rgb(255, 255, 255); margin: 0px; padding: 0px 5px; border-radius: 0px; border: 0px currentColor; border-image: none; width: 958px; height: 274px; color: rgb(0, 0, 0); line-height: 15px !important; overflow: auto; font-family: Monaco, MonacoRegular, "Courier New", monospace !important; font-size: 12px !important; white-space: pre; z-index: 0; -ms-word-wrap: normal; box-sizing: border-box; opacity: 0; box-shadow: none; resize: none; -webkit-box-shadow: none; tab-size: 4;' wrap="soft" readonly="" data-settings="dblclick"></textarea>
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+<select id="selectArticle" parameterType="hashmap" resultType="Article">
+
+    SELECT
+
+        article_no,
+
+        article_title,
+
+        article_content,
+
+        article_date,
+
+        article_writer
+
+    FROM board_article
+
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+
+        <if test="articleNos != null">
+
+            article_no IN
+
+            <foreach collection="articleNos" item="articleNo" index="index" open="(" close=")" separator=",">
+
+                #{articleNo}
+
+            </foreach>
+
+        </if>
+
+    </trim>
+
+</select>
+
+
+
+ 만약 매핑구문에 게시 글 번호 목록인 articleNos에 {1,2,3}을 설정했다면 다음과 같은 SQL이 생성되게 된다.
+
+
+
+Example
+
+XHTML
+
+<textarea class="crayon-plain print-no" style='background: rgb(255, 255, 255); margin: 0px; padding: 0px 5px; border-radius: 0px; border: 0px currentColor; border-image: none; width: 958px; height: 64px; color: rgb(0, 0, 0); line-height: 15px !important; overflow: auto; font-family: Monaco, MonacoRegular, "Courier New", monospace !important; font-size: 12px !important; white-space: pre; z-index: 0; -ms-word-wrap: normal; box-sizing: border-box; opacity: 0; box-shadow: none; resize: none; -webkit-box-shadow: none; tab-size: 4;' wrap="soft" readonly="" data-settings="dblclick"></textarea>
+
+1
+
+2
+
+3
+
+SELECT article_no, article_title, article_content, article_date, article_writer
+
+FROM board_article
+
+WHERE article_no IN (1,2,3)
+
+
+
+ 위 구문에서 사용한 <foreach>엘리먼트의 속성은 총 6개 이며 각각 역할은 다음과 같다.
+
+**collection** 값 목록을 가진 객체를 설정한다. 위 구문에서는 게시 글 목록이며, 파라미터의 타입은 배열이나 List 모두 처리가 가능하다.**item** 목록에서 각각의 값을 사용하고자 할 때 사용하는 속성이다.**index** 몇 번째 값인지 나타내는 인덱스 값이며 0부터 시작한다.**open** 목록에서 값을 가져와서 실정할 때 가장 앞에 붙여 주는 문자를 지정한다. IN절에서는 대부분 “(“로 시작한다.**close** 목록에서 값을 가져와서 설정할 떄 가장 뒤에 붙여 주는 문자를 지정한다. IN절에서는 대부분 “)”로 끝난다.**separator** 목록에서 값을 가져와서 설정할 때 값들 사이에 붙여 주는 문자를 지정한다. IN절에서는 값 사이에 쉼표를 붙여준다.

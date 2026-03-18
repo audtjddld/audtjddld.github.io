@@ -1,0 +1,64 @@
+---
+title: "java virtual thread"
+date: 2023-11-24 11:36:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223273524811"
+---
+
+<https://medium.com/@mertcakmak2/virtual-threads-in-spring-boot-f720dcdf018c>
+> [**Virtual Threads in Spring Boot**](https://medium.com/@mertcakmak2/virtual-threads-in-spring-boot-f720dcdf018c)
+>
+> In this article, I will discuss virtual threads in Spring Boot.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+non-blocking 방식이 무색할 정도로 성능향상 됨
+
+​
+
+어렵게 작성하던 것을 기존대로 하고, 편리하게 하는건 매우 좋은 일인 듯
+
+​
+
+​
+
+<https://blog.naver.com/kkforgg/223186272299>
+> [**Project Loom (virtual thread) in jdk 21**](https://blog.naver.com/kkforgg/223186272299)
+>
+> <https://findstar.pe.kr/2023/04/17/java-virtual-threads-1/> java의 thread가 os 기반으로 동작하던 방식...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

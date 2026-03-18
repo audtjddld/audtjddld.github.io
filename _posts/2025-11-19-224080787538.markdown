@@ -1,0 +1,209 @@
+---
+title: "Spring batch 관련 까먹었던 내용들"
+date: 2025-11-19 10:09:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/224080787538"
+---
+
+batch작업에 대한 정의는 스킵
+
+​
+
+Batch job을 동작시키는 방법은 애플리케이션 자채 스케줄링을 걸거나 외부 스캐줄링 잡을 만들고 API를 호출해서 실행시키는 방법등이 있다.
+
+​
+
+​
+
+Batch 구조
+
+​
+
+-
+ItemReader
+
+-
+ItemProcessor
+
+-
+ItemWriter
+
+​
+
+형태로 구성할 수 있음
+
+​
+
+그리고 Spring에서 Batch Job을 정의하는 데에는 아래와 같이 가능하다.
+
+​
+
+Job (작업 단위)
+
+ ├── Step 1 (처리 단계)
+
+ │     ├── Reader → Processor → Writer
+
+ ├── Step 2 (...)
+
+ └── Step 3 (...)
+
+​
+
+Job이란
+
+**Job**은 Spring Batch에서 실행할 **전체 배치 작업의 논리적 단위**입니다.
+
+​
+
+아래처럼 여러 스텝을 이어서 만들 수 있음
+
+​
+
+@Bean
+
+fun sampleJob(jobRepository: JobRepository, step1: Step, step2: Step): Job {
+
+    return JobBuilder("sampleJob", jobRepository)
+
+        .start(step1)
+
+        .next(step2)
+
+        .build()
+
+}
+
+​
+
+Step이란
+
+**Step**은 Job을 구성하는 **하나의 처리 단위**입니다.
+
+Reader → Processor → Writer 세 구성요소를 기반으로 실제 데이터를 처리합니다.
+
+​
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**ItemReader**
+
+
+
+
+
+데이터 읽기 (DB, 파일, API 등)
+
+
+
+
+
+**ItemProcessor**
+
+
+
+
+
+데이터 가공, 필터링, 변환
+
+
+
+
+
+**ItemWriter**
+
+
+
+
+
+데이터 쓰기 (DB 저장, 파일 출력 등)
+
+
+
+
+
+**Chunk Size**
+
+
+
+
+
+몇 개 아이템을 한 트랜잭션으로 묶을지 결정
+
+
+
+
+
+**Listeners**
+
+
+
+
+
+before/after read/write/step 등 훅 포인트
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+하나의 batch job이 수행할 때 파라미터 정보를 넘길 수 있다. 이것을 job parameter라고 하고, reader나 writer등에서 값을 넘겨 받아서 사용할 수 있다.
+
+​
+
+​
+
+​
+
+@StepScope는
+
+​
+
+“**Step 실행 시점에 동적으로 Bean을 생성해서 JobParameter나 StepContext에 접근할 수 있게 하는 스코프**”입니다.
+
+​
+
+실무에서는 거의 필수적으로 사용돼요 👇
+
+• Reader/Processor/Writer에 **파라미터 주입이 필요할 때**
+
+• **다른 Step마다 Bean 동작을 다르게 해야 할 때**
+
+• **Step 재시작/리트라이 시 독립된 Bean 컨텍스트가 필요할 때**

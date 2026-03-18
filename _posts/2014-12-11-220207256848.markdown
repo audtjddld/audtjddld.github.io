@@ -1,0 +1,64 @@
+---
+title: "모바일 브라우저 체크"
+date: 2014-12-11 18:50:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220207256848"
+---
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+ $(function(){
+
+  //모바일 브라우저 문자열 체크
+
+  var mobileInfo = new Array('Android', 'iPhone', 'iPod', 'BlackBerry', 'Windows CE', 'SAMSUNG', 'LG', 'MOT', 'SonyEricsson');
+
+  for (var info in mobileInfo){
+
+      if (navigator.userAgent.match(mobileInfo[info]) != null){
+
+       /*
+
+     <p><img src="/common/images/icon/pc_img1.gif" alt="접속하신 기기에서는 해당 메뉴의 이용이 불가능 하오니 PC를 이용해 주세요.감사합니다."></p>
+
+        */
+
+       var mobileBanHtmlSrc = "<p><img src=\"/common/images/icon/pc_img1.gif\" alt=\"접속하신 기기에서는 해당 메뉴의 이용이 불가능 하오니 PC를 이용해 주세요.감사합니다.\"></p>";
+
+       $(".infoChangeDiv").html(mobileBanHtmlSrc);
+
+          // 모바일 수행
+
+          break;
+
+      }
+
+  }

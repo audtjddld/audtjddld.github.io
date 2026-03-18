@@ -1,0 +1,14 @@
+---
+title: "mysql 특정 column 대소문자 구분 설정"
+date: 2016-03-24 10:55:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220663836052"
+---
+
+mysql의 기본설정은 대소문자를 구분하지 않는다.**쿠폰코드같은 대소문자를 구분해야하는 서비스의 경우 당황스러울수 있다.데이터정렬방식을 utf8_bin 으로 설정해주면 해당 컬럼만 대소문자를 구분하게 할수 있다.`coupon_num` varchar(16) CHARACTER SET utf8 COLLATE utf8_bin** NOT NULL COMMENT '쿠폰 번호',
+
+출처 : <http://blog.miyu.pe.kr/830>
+
+ALTER TABLE test CHANGE COLUMN `user_id` `user_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL;
+
+문제는 -_-;; FK가 걸려져 있는 테이블들..

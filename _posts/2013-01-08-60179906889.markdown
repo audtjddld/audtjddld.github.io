@@ -1,0 +1,18 @@
+---
+title: "[공유] 스프링 페이징 기법(PagedListHolder)"
+date: 2013-01-08 15:27:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60179906889"
+---
+
+개념은
+
+리스트를 전체를 읽어 온뒤
+
+보여줄 갯수
+
+보여줄 페이지를 넣어주면
+
+
+
+나온다고 합니다.

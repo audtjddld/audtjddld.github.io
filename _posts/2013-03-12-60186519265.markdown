@@ -1,0 +1,12 @@
+---
+title: "웹 표준 관련 정보 얻는 곳"
+date: 2013-03-12 16:58:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60186519265"
+---
+
+여기 좋은듯?
+
+
+
+<http://naradesign.net/wp/category/accessibility/>

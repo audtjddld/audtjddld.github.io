@@ -1,0 +1,46 @@
+---
+title: "java 한글 체크"
+date: 2013-07-15 18:44:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60196000302"
+---
+
+출처 : <http://www.okjsp.net/seq/33317>
+
+Character**라는 클래스에 **public static int getType**(char ch)
+getType이라는 메소드가 문자값을 받아 character category값을 리턴해줍니다.
+
+  String str = "dasjfl1ie ^&*으샤으샤 ㅁㄴ";
+  for(int i=0;i<str.length();i++){
+     if(Character.getType(str.charAt(i)) == 5) System.out.print("이건한글이넹 :: ");
+
+     System.out.println(str.charAt(i));
+  }
+
+이런식으로 값을 찍어보면 한글의 경우는 5를 리턴합니다.
+5가 리턴되면 무조건 한글이겠져..ㅎㅎㅎ
+
+리턴되는 캐릭터 카테고리값들은 static으로 선언되어 있습니다.
+[`COMBINING_SPACING_MARK`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#COMBINING_SPACING_MARK), [`CONNECTOR_PUNCTUATION`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#CONNECTOR_PUNCTUATION), [`CONTROL`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#CONTROL), [`CURRENCY_SYMBOL`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#CURRENCY_SYMBOL), [`DASH_PUNCTUATION`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#DASH_PUNCTUATION), [`DECIMAL_DIGIT_NUMBER`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#DECIMAL_DIGIT_NUMBER), [`ENCLOSING_MARK`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#ENCLOSING_MARK), [`END_PUNCTUATION`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#END_PUNCTUATION), [`FORMAT`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#FORMAT), [`LETTER_NUMBER`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#LETTER_NUMBER), [`LINE_SEPARATOR`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#LINE_SEPARATOR), [`LOWERCASE_LETTER`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#LOWERCASE_LETTER), [`MATH_SYMBOL`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#MATH_SYMBOL), [`MODIFIER_LETTER`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#MODIFIER_LETTER), [`MODIFIER_SYMBOL`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#MODIFIER_SYMBOL), [`NON_SPACING_MARK`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#NON_SPACING_MARK), [`OTHER_LETTER`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#OTHER_LETTER), [`OTHER_NUMBER`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#OTHER_NUMBER), [`OTHER_PUNCTUATION`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#OTHER_PUNCTUATION), [`OTHER_SYMBOL`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#OTHER_SYMBOL), [`PARAGRAPH_SEPARATOR`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#PARAGRAPH_SEPARATOR), [`PRIVATE_USE`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#PRIVATE_USE), [`SPACE_SEPARATOR`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#SPACE_SEPARATOR), [`START_PUNCTUATION`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#START_PUNCTUATION), [`SURROGATE`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#SURROGATE), [`TITLECASE_LETTER`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#TITLECASE_LETTER), [`UNASSIGNED`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#UNASSIGNED), [`UPPERCASE_LETTER`](http://java.sun.com/j2se/1.3/docs/api/java/lang/Character.html#UPPERCASE_LETTER)
+
+이값들을 체크해서 입력된 문자가 어떤 문자인지 체크가 가능합니다.
+그리고 게시판 리스트의 제목을 보여줄때 한글일경우와 영문을 경우를 체크해서
+제목테이블 사이즈 만큼 보여주는것도 가능하겠죠...^^
+
+제가 메인화면에 게시글 리스트들을 보여줄때.. 제목의 길이가 길면
+String message = a_data[i][1];
+int sublen = 0;
+StringBuffer sbuf = new StringBuffer();
+for(int j=0;(j<message.length()&&sublen<35);j++){
+         if(Character.getType(message.charAt(j)) == 5) sublen=sublen+2;//한글
+         else sublen++;//기타 영문,특수문자,공백
+         sbuf.append(message.charAt(j));
+}
+out.println(sbuf.toString()+"...");
+
+문자열중에 한글의 갯수, 특수문자의 갯수.. 등등 원하는 문자만을 자를수도 있습니다.
+
+<http://www.okjsp.net/seq/33317>
+
+정말 좋은 메소드에염.

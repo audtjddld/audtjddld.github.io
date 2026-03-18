@@ -1,0 +1,83 @@
+---
+title: "소프트웨어 재사용을 위한 실증적 객체지향 Refactoring 프로세스 설계"
+date: 2021-11-24 13:54:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222577311156"
+---
+
+<http://www.koreascience.kr/article/CFKO200011920402317.pdf>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![]()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![]()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![]()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

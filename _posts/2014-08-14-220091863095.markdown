@@ -1,0 +1,31 @@
+---
+title: "jstl 개행 방법"
+date: 2014-08-14 14:07:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/220091863095"
+---
+
+출처 : <http://lunajin.tistory.com/3>
+
+
+
+ 1
+
+2
+
+3
+
+4
+
+5
+
+            <jsp:scriptlet>
+
+                pageContext.setAttribute("crlf","\r\n");
+
+                pageContext.setAttribute("lf","\n");
+
+                pageContext.setAttribute("cr","\r");
+
+            </jsp:scriptlet>

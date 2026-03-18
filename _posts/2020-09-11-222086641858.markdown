@@ -1,0 +1,156 @@
+---
+title: "Private Method를 테스트하라"
+date: 2020-09-11 14:32:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222086641858"
+---
+
+Spring 프로젝트를 기준으로 Spring-test 라이브러리를 추가해준다.
+
+
+
+
+
+
+
+
+
+```
+testImplementation 'org.springframework.boot:spring-boot-starter-test'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+private method를 테스트 하기 위해서는 spring test 라이브러리에 있는 `**ReflectionTestUtils**`가 필요하다.
+
+​
+
+<https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/test/util/ReflectionTestUtils.html>
+> [**ReflectionTestUtils (Spring Framework 5.2.8.RELEASE API)**](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/test/util/ReflectionTestUtils.html)
+>
+> public abstract class ReflectionTestUtils extends Object ReflectionTestUtils is a collection of reflection-based utility methods for use in unit and integration testing scenarios. There are often times when it would be beneficial to be able to set a non- public field, invoke a non- public setter met...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+API에서 제공 목록
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![](/assets/images/posts/222086641858/4195b221bfe4.png?type=w580)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+여기서 private method메서드를 호출해야 하니 invokeMethod 메서드를 사용해서 하겠다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+class Target {
+ private String name;
+ public Target(String name) {
+  this.name = name;
+ }
+
+ private String addString(String value) {
+   return name + value;
+ }
+}
+
+class TestTarget {
+
+  @Test
+  void privateMethod() {
+   Target target = new Target("ABC");
+   String returnValue = ReflectionTestUtils﻿.invokeMethod(target, "addString", "DEF")
+   org.junit.jupiter.api.Assertions.assertEquals("ABCDEF", returnValue);
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

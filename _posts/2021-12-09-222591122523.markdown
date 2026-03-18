@@ -1,0 +1,38 @@
+---
+title: "jira 배포 기능을 사용하는 방법 [펌]"
+date: 2021-12-09 16:31:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222591122523"
+---
+
+지라의 피처를 이용해서 언제 이슈가 배포 되었는지 확인하는 방법을 설명해준 글이다.
+
+​
+
+이때, github action을 활용해야 하는데, 비용도 일부 들어간다고 하고, yaml 파일을 작성하는 것도 좀 많이 읽어야 하는 부분이 많아서 쉽지는 않은 것 같다.
+
+​
+
+<https://blog.indentcorp.com/integrate-jira-deployment-with-github-actions/>
+> [**지라의 배포(deployments) 기능을 사용해볼까요?**](https://blog.indentcorp.com/integrate-jira-deployment-with-github-actions/)
+>
+> 깃헙 액션과 지라 배포를 연동해보았습니다. 언제, 어떤 기능이, 어느 서버에 배포됐는지 한 눈에 볼 수 있어서 좋아요.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

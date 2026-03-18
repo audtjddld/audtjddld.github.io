@@ -1,0 +1,20 @@
+---
+title: "cmd 로 smtp 메일 서버 테스트 하기"
+date: 2015-12-14 10:38:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220567686342"
+---
+
+telnet 아이피 포트
+
+helo server
+
+mail from:mail@mail.com(발신 주소)
+
+rcpt to:mail@mail.com(수신 주소)
+
+data
+
+subject: test
+
+test message(테스트 메세지)

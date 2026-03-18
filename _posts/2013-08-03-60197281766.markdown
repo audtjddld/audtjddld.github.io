@@ -1,0 +1,42 @@
+---
+title: "쿠키와 세션"
+date: 2013-08-03 13:47:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60197281766"
+---
+
+출처 : 구글
+
+
+
+v Cookie란
+
+§ 동일 Session 동안 특정 값들이 유지되도록 서버에 의해 보내져서 브라우저내에 저장
+
+되도록 하는 방법
+
+• Browser should store up to 300 cookies
+
+• 4Kb each(disk space)
+
+• 20 per domain
+
+
+
+§ Cookie의 동작
+
+• 브라우저는 Cookie를 저장하며, 서버의 페이지에 접근하는 모든 요청에
+
+대해 모든 Cookie를 전송함
+
+
+
+§ Cookie : 브라우저에 보관됨
+
+§ 쿠키 기술은 웹 서버가 웹 브라우저로 데이터를 보냈다가 웹 서버 쪽으로 다시 되돌려
+
+받는 방법을 사용한다. § 첫 번째 웹 컴포넌트는 웹 브라우저로 HTML 문서를 보낼 때 전달한 데이터를 함께 보
+
+내며, 웹 브라우저는 그 데이터를 저장해 두었다가 두 번째 웹 컴포넌트를 호출할 때
+
+URL과 함께 웹 서버로 보낸다.

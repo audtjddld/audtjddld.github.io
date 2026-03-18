@@ -1,0 +1,109 @@
+---
+title: "H2 console 설정 방법"
+date: 2016-06-14 16:18:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220736099866"
+---
+
+<http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                [**29. Working with SQL databases**
+
+
+                                        docs.spring.io](http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+기본 메모리db 저장 위치
+
+jdbc:h2:mem:testdb
+
+id : sa
+
+생성됨
+
+​
+
+admin 페이지 설정 방법
+
+​
+
+<https://medium.com/@harittweets/how-to-connect-to-h2-database-during-development-testing-using-spring-boot-44bbb287570>
+
+
+
+
+
+
+
+```
+spring:
+  h2:
+    console: true
+    path: /h2-console
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+> [**How to connect to H2 database during development/testing using Spring-Boot**](https://medium.com/@harittweets/how-to-connect-to-h2-database-during-development-testing-using-spring-boot-44bbb287570)
+>
+> Often times during development we would want to look inside the database to view the schema or data. H2 is a perfect choice for in-memory…
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

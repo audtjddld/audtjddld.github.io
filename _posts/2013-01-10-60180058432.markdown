@@ -1,0 +1,75 @@
+---
+title: "오라클 count()over() 쿼리"
+date: 2013-01-10 09:34:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60180058432"
+---
+
+**★ OVER()함수란?**
+OVER함수는 ORDER BY, GROUP BY 서브쿼리를 개선하기 위해 나온 함수라고 할 수 있습니다.
+
+
+
+
+
+**★ OVER 함수 이용**
+
+SELECT YYMM**           , SUM(TOT_PRICE)OVER(ORDER BY YYMM DESC) AS PRICE
+   FROM TABLE1
+
+
+
+
+
+﻿****★ 전통 SQL 사용**
+
+SELECT YYMM, PRICE**   FROM ( SELECT YYMM, SUM(TOT_PRICE) AS PRICE
+                  FROM TABLE1
+                 GROUP BY YYMM
+                 ORDER BY YYMM DESC )
+
+
+
+﻿****★** COUNT(*)OVER() 사용
+
+실제 데이터와 함께 해당 테이블의 전체 로우 컬럼을 쉽고 편리하게 추출할 수 있다.
+
+
+
+   SELECT MENU_ID, MENU_NAME, COUNT(*) AS TOTALCOUNT**     FROM MENU_MG
+
+위의 쿼리를 실행하면 다음과 같은 오류 메시지가 나온다.
+ORA-00937: not a single-group group function
+
+
+
+다음 쿼리로 쉽게 전체 카운트를 추출할 수 있다.
+
+ SELECT MENU_ID, MENU_NAME, COUNT(*)OVER() AS TOTALCOUNT
+    FROM MENU_MG
+
+
+
+﻿****★** OVER() 함수
+
+COUNT(*)OVER() : 전체행 카운트**COUNT(*)OVER(PARTITION BY 컬럼) : 그룹단위로 나누어 카운트
+
+MAX(컬럼)OVER() : 전체행 중에 최고값
+MAX(컬럼)OVER(PARTITION BY 컬럼) : 그룹내 최고값
+
+MIN(컬럼)OVER() : 전체행 중에 최소값
+MIN(컬럼)OVER(PARTITION BY 컬럼) : 그룹내 최소값
+
+SUM(컬럼)OVER() : 전체행 합
+SUM(컬럼)OVER(PARTITION BY 컬럼) : 그룹내 합
+
+AVG(컬럼)OVER() : 전체행 평균
+AVG(컬럼)OVER(PARTITION BY 컬럼) : 그룹내 평균
+
+STDDEV(컬럼)OVER() : 전체행 표준편차
+STDDEV(컬럼)OVER(PARTITION BY 컬럼) : 그룹내 표준편차
+
+RATIO_TO_REPORT(컬럼)OVER() : 현재행값/SUM(전체행값) 퍼센테이지로 나타낼경우 100곱하면 됩니다.
+RATIO_TO_REPORT(컬럼)OVER(PARTITION BY 컬럼) : 현재행값 / SUM(그룹행값) 퍼센테이지로 나타낼경우 100곱하면 됩니다.
+
+[출처]** [COUNT(*)OVER()](http://blog.naver.com/kyumi0705/20103565451)|**작성자** [행복한오뚜기](http://blog.naver.com/kyumi0705)

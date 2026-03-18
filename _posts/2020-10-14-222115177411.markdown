@@ -1,0 +1,330 @@
+---
+title: "Reactive Feign"
+date: 2020-10-14 10:24:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222115177411"
+---
+
+현재 진행중인 프로젝트에서 일부 구간은 ReactiveStreams를 적용하려 하였다.
+
+​
+
+이때 Spring Cloud Open Feign으로 통신하는 구간도 Reactive 형태로 지원을 해줘야하는데, 공식 레퍼런스에서는 현재 지원하지 않는다고 한다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![]()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+하지만 feign-reactive를 추천해준다고 하여 링크로 이동하게 되면 spring framework에서 의존성 라이브러리들을 확인할 수 있고, pom.xml을 열어보면 필요 라이브러리들을 알 수 있다.
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![]()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Maven 설정
+
+
+
+
+
+
+
+
+
+
+```
+
+
+            com.playtika.reactivefeign
+            feign-reactor-spring-configuration
+
+
+            com.playtika.reactivefeign
+            feign-reactor-cloud
+
+
+            com.playtika.reactivefeign
+            feign-reactor-webclient
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Gradle 설정
+
+
+
+
+
+
+
+
+
+```
+implementation 'com.playtika.reactivefeign:feign-reactor-spring-configuration:2.0.22'
+        implementation 'com.playtika.reactivefeign:feign-reactor-cloud:2.0.22'
+        implementation 'com.playtika.reactivefeign:feign-reactor-webclient:2.0.22'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+여기서 좀 특이한점이 'org.springframework.boot:spring-boot-starter-webflux' 를 의존성으로 걸 필요가 없다는 것이다.
+
+​
+
+예제 프로젝트는 아래 링크를 확인하면 된다.
+
+<https://github.com/audtjddld/feign-reactive-sample>
+
+(추가적인 예제는 나중에 올려보도록한다.)
+
+
+
+
+
+
+
+
+
+
+```
+@SpringBootApplication
+@EnableEurekaClient
+@RestController
+@EnableReactiveFeignClients
+@EnableFeignClients
+public class FeignApplication {
+
+...
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+구동 설정은 위와 같이 설정한다.
+
+
+
+
+
+
+
+
+
+```
+@EnableReactiveFeignClients
+@EnableFeignClients
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mono, Flux를 사용하기 때문에 자연스럽게 @EnableWebFlux를 같이 걸어주게 되면 오류가 발생된다.
+
+
+
+
+
+
+
+
+
+```
+Caused by: java.lang.IllegalStateException: The Java/XML config for Spring MVC and Spring WebFlux cannot both be enabled, e.g. via @EnableWebMvc and @EnableWebFlux, in the same application.
+	at org.springframework.util.Assert.state(Assert.java:76) ~[spring-core-5.2.9.RELEASE.jar:5.2.9.RELEASE]
+	at org.springframework.web.reactive.config.WebFluxConfigurationSupport.setApplicationContext(WebFluxConfigurationSupport.java:101) ~[spring-webflux-5.2.9.RELEASE.jar:5.2.9.RELEASE]
+	at org.springframework.context.support.ApplicationContextAwareProcessor.invokeAwareInterfaces(ApplicationContextAwareProcessor.java:123) ~[spring-context-5.2.9.RELEASE.jar:5.2.9.RELEASE]
+	at org.springframework.context.support.ApplicationContextAwareProcessor.postProcessBeforeInitialization(ApplicationContextAwareProcessor.java:100) ~[spring-context-5.2.9.RELEASE.jar:5.2.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:415) ~[spring-beans-5.2.9.RELEASE.jar:5.2.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1786) ~[spring-beans-5.2.9.RELEASE.jar:5.2.9.RELEASE]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:594) ~[spring-beans-5.2.9.RELEASE.jar:5.2.9.RELEASE]
+	... 61 common frames omitted
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+WebFlux 설정은 빼서 설정해주면 된다.
+
+​
+
+그 밖의 Feing Client는 아래와 같이 작성해주면 된다.
+
+
+
+
+
+
+
+
+
+```
+@ReactiveFeignClient(name = "web-flux-app")
+public interface GreetingReactive {
+
+    @GetMapping("/greeting")
+    Mono greeting();
+
+    @GetMapping("/greetingWithParam")
+    Mono greetingWithParam(@RequestParam(value = "id") Long id);
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

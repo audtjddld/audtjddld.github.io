@@ -1,0 +1,40 @@
+---
+title: "시큐어 코딩 가이드 [행안부]"
+date: 2014-03-11 14:26:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60210822641"
+---
+
+출처 : <http://joke00.tistory.com/253>
+
+
+
+[ 붙임1._JAVA_시큐어_코딩_가이드.pdf](http://joke00.tistory.com/attachment/cfile7.uf@163C673A4E9BB01137217B.pdf)
+
+
+
+**행안부에서 제공하는 JAVA 코딩시 보안관련한 파일 입니다.유용한 내용이 많이 있네요...비교적 쉽게 설명되어 있고, 안좋은 예와 좋은 예가 있어 한번 쭈욱~ 훑어보시면 괜찮을 것 같습니다.
+
+이밖의 유용한 자료가 많으니**
+
+홈 > 정책자료 > 참고자료실 > **참고자료실****
+<object width="100%" height="100%" id="joke00tistorycom2539334" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000">
+
+
+
+
+
+ <embed width="100%" height="100%" id="joke00tistorycom2539334" src="http://s1.daumcdn.net/cfs.tistory/v/0/blog/plugins/CallBack/callback.swf?destDocId=callbacknestjoke00tistorycom2539334&id=253&callbackId=joke00tistorycom2539334&host=http://joke00.tistory.com&float=left&" type="application/x-shockwave-flash" allowhtmlpopupwindow="false" enablehtmlaccess="false" allownetworking="internal" invokeurls="false" menu="false" allowscriptaccess="never" wmode="transparent">
+
+</embed>
+
+</object>
+가셔서 다운 받을수 있습니다.
+ **
+
+****
+---
+****
+
+행정기관등이 안전한 소프트웨어를 개발하여 각종 사이버위협으로부터 예방∙대응코자 함 정보시스템 개발시 보안성을 고려하고 보안취약점을 사전에 제거하기 위한『정보시스템  소프트웨어 개발보안 가이드』를 게시하오니 적극 활용하시기 바랍니다.   ㅇ 가이드 내역     - 정보시스템 소프트웨어 개발보안 가이드(종합)     - 언어별 시큐어 코딩 가이드(JAVA, C, 모바일언어 등)   ㅇ 활용 : 행정ㆍ공공기관 정보시스템 개발ㆍ운영 담당자, 개발자 및 유지보수자 등 (전체) 정보시스템 소프트웨어 개발보안 가이드 붙임1. JAVA 시큐어 코딩 가이드 붙임2. C 시큐어 코딩 가이드 붙임3. Android-JAVA 시큐어 코딩가이드 (참고) 소프트웨어 개발보안(시큐어코딩) 연간 교육일정
+<script src="http://joke00.tistory.com/plugin/CallBack_bootstrapper?&src=http://s1.daumcdn.net/cfs.tistory/v/0/blog/plugins/CallBack/callback&id=253&callbackId=joke00tistorycom2539334&destDocId=callbacknestjoke00tistorycom2539334&host=http://joke00.tistory.com&float=left&random=280"></script>

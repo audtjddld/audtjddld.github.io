@@ -1,0 +1,92 @@
+---
+title: "웹서버와 WAS의 차이 [퍼옴]"
+date: 2013-09-10 10:27:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60199682990"
+---
+
+**웹서버와 WAS의 차이 **
+
+
+
+** 구분**
+
+**설 명 **
+
+** 웹 서버**
+
+Web Client(웹 브라우저)에게 제공하는 컨텐츠를 제공하는 서버.
+
+정적인 HTML 혹은 jpeg나 gif같은 이미지를 HTTP프로토콜을 통해 웹 브라우저로 제공.
+
+** WAS**
+
+Server단에서 어플리케이션을 동작할 수 있도록 지원.
+
+일반적으로 **컨테이너**라는 용어로 사용됨.
+
+**Servlet, JSP, ASP, PHP** 등의 프로그램으로 사용됨.
+
+
+
+**Background**
+
+
+
+초기 web: 이미지 혹은 단순 HTML
+
+현재: 게시판, 방명록 등 Server-Client간 상호대화하는 페이지를 제공.
+
+-> 내부 어플리케이션을 동작시킬 수 있는 컨테이너를 내장.
+
+동적인 요구에 대응하기 위해 이에 적합한 형태로 변화.
+
+
+
+각 사이트가 많은 사용자에게 원활한 서비스를 제공하기 위해 기능적인 layer를 나누게 됨.
+
+-> 여기서 웹서버와 WAS의 구분이 나타나게 됨.
+
+
+
+ ![](/assets/images/posts/60199682990/e7f3d0be0001.gif?type=w3)
+
+
+
+* 웹 서버와 WAS의 기능적 분류를 통해 효과적 분산을 유도한 예
+
+
+
+정적인 데이터(image, CSS, js-javascript- 파일 등의 리소스)는 구조족으로 앞에 존재하는 웹 서버에서 처리하고
+
+WAS로 서비스 요청이 넘어가지 않게 한다.
+
+동적인 데이터는 WAS가 처리한다. WAS는 웹 어플리케이션의 수행에 집중할 수 있다.
+
+
+
+**Extended Description**
+
+****
+
+**- 웹서버 기능**
+
+1. Clustering 기능: 사용자 요청이 발생하면 상황에 따라 각각의 WAS에 요청을 넘김.
+
+2. Cache 기능: css, js, image 등의 리소스 파일을 가지고 있다가 was를 거치지 않고 사용자에게 직접 넘김.
+
+사용자는 cache period동안 전달받은 리소스를 사용함.
+
+
+
+**- WAS 기능**
+
+Servlet 페이지를 html 형태로 변환함.
+
+예를 들어 jsp의 경우 jsp를 WAS에서 java class파일로 컴파일 후 html형태의 페이지를 사용자에게 전달하게 됨.
+
+
+
+[Ref.] 웹서버와 WAS의 종류: <http://darkmirr.egloos.com/1546510>
+
+**[출처]** [웹서버와 WAS의 차이](http://blog.naver.com/jwlee0208/10124326051)|**작성자** [슈렉](http://blog.naver.com/jwlee0208)

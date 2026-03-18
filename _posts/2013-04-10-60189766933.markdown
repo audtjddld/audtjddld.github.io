@@ -1,0 +1,111 @@
+---
+title: "코어 자바스크립트2"
+date: 2013-04-10 15:53:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60189766933"
+---
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<script src="./js/jquery-1.6.2.min.js"></script> </script>
+<script type="text/javascript">
+ String.prototype.trim = function() {
+  return (this.replace(/^[\s\xA0]+/, "").replace(/[\s\xA0]+$/, ""));
+ };
+
+ var sObj = new String("        Prototype Test         ");
+ sTxt = sObj.trim();
+
+ alert("--" + sTxt + "--");
+ // prototype을 이용한 trim 함수 구현.
+
+ Array.prototype.each = function (callback) {
+  for(i = 0; i< this.length; i++) {
+   callback(this[i]);
+  }
+ };
+
+ var test = [{name: 'a'}, {name : 'b'}, {name:'c'}];
+ test.each(function(elem) {
+  alert(elem.name);
+ });
+ // prototype을 이용한 jQuery each문 비슷하게 구현
+
+Array.prototype.each = function(callback){
+ for(i = 0; i<this.length; i++){
+  callback.prototype = this[i];
+  new callback(i);
+ }
+};
+
+ var test = [{name: 'a'}, {name : 'b'}, {name:'c'}];
+ test.each(function(index) {
+  alert(index + " = " + this.name);
+ });
+
+// 이것이 jQuery와 비슷하게 만든 each 문
+
+// 프로토 타입 체인
+
+ var Test = function() {
+  this.print = function() {
+   alert("this.print");
+  };
+ };
+
+ Test();
+
+ var ttt = new Test();
+ ttt.print();
+
+// 프로토 타입 체인 2
+
+ var Test = function() {
+  this.print =  function(){
+   alert("this.print");
+  };
+ };
+
+ Object.prototype.print = function(){
+  alert("Object.prototype.print");
+ };
+
+ Test.prototype.print = function() {
+  alert("Test.prototype.print");
+ };
+
+ new Test().print();
+
+ // 출처 : <http://youngman.kr/?p=537>
+ // 각 펑션들을 지워가면서 어느게 우선순위로 호출 되는지 알아보면 이해하기 쉽다.
+</script>
+</head>
+<body>
+
+</body>
+</html>
+
+
+
+<!--
+
+
+
+Javascript 내 Prototype 이란
+
+
+
+사실 function 함수 엔 Prototype 객체를 가르키는 prototype 이란 프로퍼티가 하나 존재합니다.
+
+이 Prototype 객체에 공유되어  있는 프로퍼티와 메소드가 객체 생성시 해당 생성자 function 으로
+
+생성한 모든 인스턴스에서 공유됩니다...
+
+출처 : <http://run2you.tistory.com/13>
+
+
+
+-->

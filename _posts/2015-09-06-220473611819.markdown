@@ -1,0 +1,12 @@
+---
+title: "번역사이트 모음"
+date: 2015-09-06 22:19:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220473611819"
+---
+
+<http://nolboo.github.io/trans/>
+
+[한국어 번역글 모음 페이지nolboo.github.io](http://nolboo.github.io/trans/)
+
+ㅋㅋ 많은 기술서나 내용들을 번역해서 잘 정리해두었다.

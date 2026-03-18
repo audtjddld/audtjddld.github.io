@@ -1,0 +1,104 @@
+---
+title: "Mysql memcached"
+date: 2021-03-04 16:26:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222264251658"
+---
+
+<http://www.gurubee.net/lecture/4204>
+> [**MEMCACHED 플러그인**](http://www.gurubee.net/lecture/4204)
+>
+> 6.5 Memcached 플러그인PK 를 통한 검색 과 같은 단순한 쿼리의 반복 수행은 분석/최적화 부하가 상대적으로 큼MariaDB 5.5 의 HandlerSocket 인터페..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+실행 계획 분석
+
+**​**
+
+
+
+
+
+
+
+
+
+```
+EXPLAIN Query
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+위 조건 보다 실행 계획을 더 자세히 보고 싶다면 아래와 같은 명령어로 확인한다.
+
+
+
+
+
+
+
+
+
+```
+EXPLAIN EXTENDED
+
+EXPLAIN PARTITIONS
+
+﻿
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EXPLAIN을 실행하면 쿼리 문장의 특성에 따라 표 형태로 된 1줄 이상의 결과가 표시된다. 표의 각 라인(레코드)은 쿼리 문장에서 사용된 테이블(서브 쿼리로 임시 테이블을 생성한 경우 그 임시 테이블까지 포함)의 개수만큼 출력된다.
+
+쿼리 자체가 상당히 복잡하고 무거운 쿼리인 경우에는 실행 계획의 조회 또한 느려질 가능성이 있다.
+
+​

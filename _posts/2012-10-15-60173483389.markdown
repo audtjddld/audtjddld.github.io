@@ -1,0 +1,394 @@
+---
+title: "jstl을 이용한 xml 파싱 [펌]"
+date: 2012-10-15 20:00:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60173483389"
+---
+
+[http://maestroys.tistory.com/category/Web%20Program/JSP](http://maestroys.tistory.com/category/Web%20Program/JSP )
+
+
+
+//2012 . 10. 18 수정.
+
+덤으로  SAXParseException-Content-is-not-allowed-in-prolog 다음과 같은 에러가 나면
+
+<http://bigfun.tistory.com/entry/SAXParseException-Content-is-not-allowed-in-prolog>
+
+위와 같은 내용이다. 따라서 파싱되는 파일을 찾는게 중요하다.
+
+
+
+또한 한글 깨지는 현상 을 고치기 위해서는
+
+
+
+<http://www.okjsp.pe.kr/seq/166006>
+
+okjsp 운영자님이 쓰신 댓글을 보면 됩니다.
+
+대신 ㅡㅡ;; 서유럽어로 선택된다는거..
+
+계속 쓰네
+
+<% response.setContentType("text/html; charser=UTF-8"); %>
+
+요래하니까 됨
+
+다른거 인코딩 다 지우고 저것만 상단에 뙇 박으면 됩니다.
+
+# Parsing RSS-XML using JSTL tag library
+
+- By [Viral Patel](http://viralpatel.net/blogs/author/viral/) on December 8, 2008
+
+RSS, or Really Simple Syndication, is a method of sharing and broadcasting content such as news from a website. Using XML, items such as news articles can be automatically downloaded into a News Reader or published onto another website. There are two ways of using RSS; to share your data with others or to harvest others’ data for your site.
+
+First version of RSS called RDF Site Summary was created by **Ramanathan V. Guha** at Netscape in March 1999. This version became known as RSS 0.9. Version 0.91 was launched by Dan Libby of Netscape in July 1999. He also renamed RSS “Rich Site Summary”.
+
+## Introduction to JSTL
+
+Java Server Pages Standard Tag Library is a component of Java Enterprise Edition Web application development platform (J2EE 1.4 SDK) released by Sun Microsystems. JSTL provides an effective way to embed logic within a JSP page without using embedded Java code directly. The use of a standardized tag set, rather than breaking in and out of Java code leads to more maintainable code and enables separation of concerns between the development of the application code and user interface.
+
+## Commonly used JAR files
+
+- [jstl.jar](http://jakarta.apache.org/site/downloads/downloads_taglibs-standard.cgi)
+- [standard.jar](http://jakarta.apache.org/site/downloads/downloads_taglibs-standard.cgi)
+- [xalan.jar (For XML Parsing)](http://www.apache.org/dyn/closer.cgi/xml/xalan-j)
+- //2012. 10. 18 일 망할 xalan.jar 파일이 없어서 다운 찾다가 ㅡㅡ 죽는줄 알앗네
+- <http://www.java2s.com/Code/Jar/x/Downloadxalan270jar.htm>
+- 요기 가면 다운 받을 수 있음.
+
+## Parsing XML using JSTL
+
+The x prefix type of tag of JSTL can be used for parsing xml documents.** Let us keep the XML content in a file called data.xml. Following is the content of data.xml
+
+``
+
+``
+
+`    ```
+
+`        ``Mary`
+
+`        ``12`
+
+`        ``5`
+
+`    ```
+
+`    ```
+
+`        ``John`
+
+`        ``13`
+
+`        ``6`
+
+`    ```
+
+``
+
+Assume that this file is placed next to JSP file where we need to parse this xml document. Following will be the JSP file which will parse data.xml file and display information of each student as a row in table.
+ Content of ShowStudents.jsp**
+
+``
+
+``
+
+``
+
+``
+
+``
+
+`    ``Display Student Information`
+
+`    ```
+
+`        ``table {border: 1px solid blue; width: 300px;}`
+
+`    ```
+
+``
+
+``
+
+`    `
+
+`    ```
+
+`    `
+
+`    ```
+
+`    ```
+
+`        ```
+
+`            ``Name`
+
+`            ``Age`
+
+`            ``Class`
+
+`        ```
+
+`        ```
+
+`        ```
+
+`            ``  `
+
+`            ``  `
+
+`            ``  `
+
+`        ```
+
+`        ```
+
+`    ```
+
+``
+
+``
+
+**Understanding the code**
+ To parse a given XML document, first we need to import it using <c:import> tag. This tag will import the content of the url into a variable. In previous example, content of the data.xml will be copied into variable xmlDoc.
+
+For parsing the imported XML content, <x:parse> tag is used. Hence the parsedDocument variable will contain parsed XML document. This variable can be used then to access other child tags as well as properties. <x:forEach> tag can be used to iterate across a given tag. Here in above example we have iterated through <student> tag by using <x:forEach select=”$parsedDocument/persons/student”>. Child elements of <student> tag can be accessed by <x:out select=”name” />. Hence this tag will print the value of the <name> tag.
+
+![](http://img.viralpatel.net/2008/12/xml-parsing-tutorial-using-jstl.jpg)
+
+## Understanding structure of RSS 2.0
+
+Since RSS 2.0 must be a valid XML, the first line of the feed must be the XML declaration.
+
+``
+
+The root of the RSS 2.0 format is <rss> and <channel> tag. All of the feed content goes inside these tags.
+
+``
+
+`  ```
+
+Next comes the information about the feed such as title of feed, the description, like of the site etc.
+
+`Google News Feed`
+
+`[http://news.google.com`
+
+`Google News Feed`
+
+`en-us`
+
+`Tue, 10 Jun 2008 04:00:00 GMT`
+
+`Tue, 10 Jun 2008 09:41:01 GMT`
+
+A channel may contain any number of <item>s. An item may represent a “story” — much like a story in a newspaper or magazine; if so its description is a synopsis of the story, and the link points to the full story. An item may also be complete in itself, if so, the description contains the text (entity-encoded HTML is allowed), and the link and title may be omitted. All elements of an item are optional, however at least one of title or description must be present. Each item has a title, link, description, publication date and guid.
+
+``
+
+`  ``Star City`
+
+`  ``[http://liftoff.msfc.nasa.gov/news/2003/news-starcity.asp`
+
+`  ```
+
+`     ``How do Americans get ready to work with Russians aboard the International Space Station? `
+
+``
+
+`  ``Tue, 03 Jun 2008 09:39:21 GMT`
+
+`  ``http://liftoff.msfc.nasa.gov/2008/06/03.html `
+
+``
+
+- title: The name of the channel.
+- link: The URL to the HTML website corresponding to the channel
+- language: The language the channel is written in
+- copyright: Copyright notice for content in the channel.
+- managingEditor: Email address for person responsible for editorial content.
+- webMaster: Email address for person responsible for technical issues relating to channel.
+- pubDate: The publication date for the content in the channel.
+- category: Specify one or more categories that the channel belongs to.
+- generator: A string indicating the program used to generate the channel.
+- image Specifies: a GIF, JPEG or PNG image that can be displayed with the channel.
+
+### Elements of <item>
+
+- title: The title of the item.
+- link: The URL of the item.
+- description: The item synopsis.
+- author: Email address of the author of the item.
+- category: Includes the item in one or more categories.
+- comments: URL of a page for comments relating to the item.
+- enclosure: Describes a media object that is attached to the item
+- guid: A string that uniquely identifies the item.
+- pubDate: Indicates when the item was published.
+- source: The RSS channel that the item came from.
+
+## Parsing RSS using JSTL
+
+We will create a parser which parse the given RSS feed and will display it in a JSP using JSTL. For this we will have a textbox where in user can specify the Feed URL. This URL will be submitted to same JSP page and then will be parsed using <x> tag of JSTL.</x>
+
+``
+
+``
+
+``
+
+``
+
+``
+
+`    ``Feed Reader in JSTL`
+
+`    ```
+
+`        ``table `
+
+`             ``{border: 2px ridge ; width: 500px}`
+
+`        ``#feed .title`
+
+`             ``{font-family: Arial; font-weight: bold; font-size: 18px}`
+
+`        ``#feed .label`
+
+`             ``{font-family: Tahoma; font-weight: bold; font-size: 11px}`
+
+`        ``#feed td `
+
+`             ``{font-family: Tahoma; font-size: 11px}`
+
+`    ```
+
+``
+
+``
+
+`    ```
+
+`        `` `
+
+`        ```
+
+`    ```
+
+
+
+`    ```
+
+`        `
+
+`    ``Feed URL: ${param.feedURL}`
+
+
+
+`    ```
+
+`    `
+
+`    ```
+
+`        `
+
+`        `
+
+`    ```
+
+`    ```
+
+`        ``  `
+
+`            ```
+
+`               ```
+
+`            `` `
+
+`        ```
+
+`    ```
+
+`     ```
+
+`        ```
+
+`            ``  `
+
+`        ```
+
+`        ```
+
+`          ``Topic`
+
+`          ``   `
+
+`        ```
+
+`        ```
+
+`          ``Published Date`
+
+`          ``     `
+
+`        ```
+
+`        ```
+
+`          ``Category`
+
+`          ``    `
+
+`        ```
+
+`        ```
+
+`            ``Description`
+
+`            ```
+
+`        ```
+
+`      ```
+
+`    ```
+
+`    ```
+
+``
+
+``
+
+## References
+
+- JSTL Home Page (https://java.sun.com/products/jsp/jstl/)
+- Documentation on XML tag library (http://java.sun.com/j2ee/1.4/docs/tutorial/doc/JSTL5.html)
+- Information about RSS (http://en.wikipedia.org/wiki/RSS_(file_format))
+
+## Further Reading
+
+The given tutorial about Parsing RSS using JSTL uses Java technologies like JSP/JSTL etc and focus on RSS 2.0 format. There are other open source free tools available which do the similar work of parsing different feed formats like RSS 0.90, RSS 0.91, and Atom etc. Readers who are interested in such formats or the open source tools can refer to following links:
+
+- RSS 1.0 Specification (http://web.resource.org/rss/1.0).
+- Project Rome: Open Source Java tools for parsing, generating and publishing RSS and Atom feeds. (https://rome.dev.java.net/).
+- Parsing RSS in .NET (http://www.rssdotnet.com/).
+- Parsing RSS in Ajax/Javascript (http://www.xml.com/pub/a/2006/09/13/rss-and-ajax-a-simple-news-reader.html).
+
+## Related Posts
+
+- [Parsing / Reading XML file in Java.](http://viralpatel.net/blogs/parsing-reading-xml-file-in-java-xml-reading-java-tutorial/)
+- [Hibernate Inheritance: Table Per Concrete Class (Annotation & XML mapping)](http://viralpatel.net/blogs/hibernate-inheritance-table-per-concrete-class-annotation-xml-mapping/)
+- [Hibernate Maven MySQL Hello World example (XML Mapping)](http://viralpatel.net/blogs/hibernate-maven-mysql-hello-world-example-xml-mapping/)
+- [How to iterate HashMap using JSTL forEach loop](http://viralpatel.net/blogs/iterate-hashmap-using-jstl-foreach/)
+- [Solving “According to TLD or attribute directive in tag file” issue](http://viralpatel.net/blogs/according-to-tld-or-attribute-directive-in-tag-file-issue/)
+- [Reading/Parsing RSS feed using ROME](http://viralpatel.net/blogs/reading-parsing-rss-feed-using-rome/)
+- [Generate Pie Chart/Bar Graph in PDF using iText & JFreeChart](http://viralpatel.net/blogs/generate-pie-chart-bar-graph-in-pdf-using-itext-jfreechart/)
+
+
+
+Get our Articles via Email. Enter your email address.

@@ -1,0 +1,357 @@
+---
+title: "oracle dblink 거는법!!"
+date: 2014-02-17 16:23:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60209409646"
+---
+
+출처 : <http://storing.tistory.com/56>
+
+
+
+모르면~~
+
+암 걸릴것 같아~!!!!!!!!
+
+
+
+출처 : <http://3030.tistory.com/14>
+
+
+
+**1. 권한****  DB Link를 생성하기 위해서는 DBA 권한이 있어야 함
+
+2.생성 방법
+  1) tnsnames.ora의 Alias 활용 방법
+  CREATE [SHARED][PUBLIC] DATABASE LINK link_name**
+
+         [CONNECT TO CURRENT_USER]**         [USING 'connect_string']
+
+  CREATE DATABASE LIKN <link_name>
+  CONNECT TO <연결하고자 하는 user> IDENTIFIED BY <연결하고자 하는 user password>
+  USING <원격 db alias>
+
+ 2) 직접 db 정보 사용 방법
+CREATE DATABASE LINK <link_name> **
+
+
+
+CONNECT TO <연결하고자 하는 user> **IDENTIFIED BY <연결하고자 하는 user password>
+    USING '(DESCRIPTION =
+(ADDRESS = (PROTOCOL = TCP)
+(HOST = <원격 서버 IP Address>)
+(PORT = 1521))
+(CONNECT_DATA = (SERVER = DEDICATED)
+(SERVICE_NAME = <원격서버 서비스명>))
+)';
+
+3. 사용방법**
+  SELECT COUNT(*) FROM TABLE_NAME@원격 db alias
+
+
+
+
+
+```
+Database Link사용법
+```
+
+```
+원격지에 있는 데이터베이스를 link하는 법은 다음과 같다.
+
+원격지의 Database의 Service Name이 piruks.kang.com이다.
+나의 tnsnames.ora파일에는 Database alias가 piruks가 잡혀있다.
+
+piruks.kang.com(원격지DB)의 init.ora내용
+db_name = "piruks"
+db_domain = kang.com
+instance_name = piruks
+service_names = piruks.kang.com
+
+maddog.kang.com(로컬DB)의 tnsnames.ora내용
+PIRUKS =
+  (DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 10.0.0.102)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SERVICE_NAME = PIRUKS.KANG.COM)
+    )
+  )
+
+원격지의 패러미터파일(init.ora)에 global_names를 true로 하면 dblink의 이름과 접속하는 db의 이름이
+동일하도록 요구한다.
+
+global_names = true [ or false ]
+
+이 설정은 다음과 같이 해서 알 수 있다.
+SQL> select name, value from v$parameter where name='global_names';
+
+NAME                 VALUE
+-------------------- ------
+global_names         FALSE
+
+현재 데이터베이스의 이름은 global_names에 질의함으로써 알 수 있다.
+
+SQL> connect kang/xxxxxx@piruks;
+연결되었습니다.
+SQL> select * from global_name;
+
+GLOBAL_NAME
+--------------------------------------
+PIRUKS.KANG.COM
+
+local db에 kang이라는 사용자로 접속한다.
+SQL> connect kang/xxxxxx
+연결되었습니다.
+
+이제 원격지(piruks.kang.com)의 DB에 kang이라는 사용자로 연결되는 Database link를 생성한다.
+여기서 piruks.kang.com은 원격지의 [Database name].[Domain name]이다.
+보통 [Database name].[Domain name]는 Service Name이라 불리운다.
+하지만 위와 같이 해서 제대로 않되는 경우가 있다.
+이럴때는 global_name에 있는 이름을 dblink이름으로 정하면 해결된다.
+piruks는 database connect string이다.
+SQL> create database link piruks.kang.com
+  2  connect to kang identified by xxxxxx
+  3  using 'piruks';
+
+데이타베이스 링크가 생성되었습니다.
+
+사용법은 다음과 같다.
+보통의 DML문장에 '@piruks.kang.com'을 추가한다.
+SQL> select * from tab@piruks.kang.com;
+
+TNAME                                                        TABTYPE         CLUSTERID
+------------------------------------------------------------ -------------- ----------
+TEST                                                         TABLE
+
+SQL> select * from test@piruks.kang.com;
+
+NAME                        AGE
+-------------------- ----------
+강명규                       27
+
+SQL> insert into test@piruks.kang.com values('홍길동', 30);
+
+1 개의 행이 만들어졌습니다.
+
+SQL> update test@piruks.kang.com set age=31 where age=30;
+
+1 행이 갱신되었습니다.
+
+SQL> select * from test@piruks.kang.com;
+
+NAME                        AGE
+-------------------- ----------
+강명규                       27
+홍길동                       31
+
+SQL> delete from test@piruks.kang.com where age=31;
+
+1 행이 삭제되었습니다.
+
+데이터베이스링크에서 DDL문장은 적용되지 않는다.
+SQL> drop table test@piruks.kang.com;
+drop table test@piruks.kang.com
+                *
+1행에 오류:
+ORA-02021: 원격 데이터베이스에 DDL 조작들이 허용되지 않습니다
+
+SQL> drop database link piruks.kang.com;
+
+데이타베이스 링크가 삭제되었습니다.
+
+SQL>
+
+[2003-07-30 추가]
+public DB링크와 동의어의 사용
+이제껏 설명한 private DB링크와는 달리, public DB링크는 DB내의 모든 사용자가 사용할 수 있다.
+이는 일반계정에서는 사용하지 못하므로 system사용자에서 생성해야 한다.
+일반계정에서 public DB링크를 생성하려면, 다음의 권한이 필요하다.
+
+DROP PUBLIC DATABASE LINK
+CREATE PUBLIC DATABASE LINK
+
+system계정에서 다음의 명령으로 kang계정에 이 권한을 줄 수 있다.
+
+SQL> grant CREATE PUBLIC DATABASE LINK, DROP PUBLIC DATABASE LINK to kang;
+
+권한이 부여되었습니다.
+
+SQL> connect system/xxxxxx
+연결되었습니다.
+SQL> create public database link db.world
+  2  connect to kang identified by xxxxxx
+  3  using 'linuxdb';
+
+데이타베이스 링크가 생성되었습니다.
+SQL> conn scott/tiger
+연결되었습니다.
+SQL> select * from v_emp@db.world;
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- -------- ---------- ---------- ----------
+      7369 SMITH      CLERK           7902 80/12/17        800                    20
+      7900 JAMES      CLERK           7698 81/12/03        950                    30
+      7521 WARD       SALESMAN        7698 81/02/22       1250        500         30
+이하생략
+
+12 개의 행이 선택되었습니다.
+
+SQL> conn kang/xxxxxx
+연결되었습니다.
+SQL> select * from v_emp@db.world;
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- -------- ---------- ---------- ----------
+      7369 SMITH      CLERK           7902 80/12/17        800                    20
+      7900 JAMES      CLERK           7698 81/12/03        950                    30
+      7521 WARD       SALESMAN        7698 81/02/22       1250        500         30
+이하생략
+
+12 개의 행이 선택되었습니다.
+
+이와 같이 매번 골뱅이와 DB링크명(@db.world)를 붙이면 불편하므로, 동의어를 사용하여 투명하게 사용할 수도
+있을 것이다. 모든 사용자에게 적용하려면 마찬가지로 system계정에서 public동의어를 생성하면 된다.
+
+SQL> conn kang/xxxxxx
+연결되었습니다.
+SQL> create synonym v_emp for v_emp@db.world;
+
+동의어가 생성되었습니다.
+
+SQL> select * from v_emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE        SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- -------- ---------- ---------- ----------
+      7369 SMITH      CLERK           7902 80/12/17        800                    20
+      7900 JAMES      CLERK           7698 81/12/03        950                    30
+      7521 WARD       SALESMAN        7698 81/02/22       1250        500         30
+이하생략
+
+12 개의 행이 선택되었습니다.
+
+SQL>
+
+[2003-07-30 추가]
+하나의 SQL명령에서 사용할 수 있는 DB링크수는 초기화 패러미터 open_links에 따라 정해진다.
+디폴트는 4개다.
+SQL> show parameter open_links
+
+NAME                                 TYPE    VALUE
+------------------------------------ ------- ------------------------------
+open_links                           integer 4
+open_links_per_instance              integer 4
+
+[2003-07-30 추가]
+본문에서 잠깐 언급했지만, DB링크가 제대로 생성되었으나 실제 질의시 실패하는 경우가 있다.
+이 경우에는, 연결DB의 global_name에 지정된 문자열을 사용하면 해결된다.
+원래 초기화패러미터 gloabl_names가 true일 경우에만, 이것을 강제하게 되어 있으나,
+이상한 것은 false일 경우에도 발생했다. 예제를 보면 쉽게 알 수 있을 것이다.
+
+[문제**********]
+DB링크는 에러없이 생성되나, 실제 질의가 실패함.
+SQL> conn kang/xxxxxx
+연결되었습니다.
+SQL> create database link linuxdb_link
+  2  connect to kang identified by xxxxxx
+  3  using 'linuxdb';
+
+데이타베이스 링크가 생성되었습니다.
+
+SQL> select * from tab@linuxdb_link;
+select * from tab@linuxdb_link;
+                  *
+1행에 오류:
+ORA-02085: 데이터베이스 링크 LINUXDB_LINK.WORLD가 DB.WORLD에 연결됩니다
+
+SQL> drop database link linuxdb_link;
+
+데이타베이스 링크가 삭제되었습니다.
+
+[해결책********]
+원격DB서버의 global_name값을 확인
+SQL> connect system/xxxxxx@linuxdb
+SQL> show parameter global_names
+
+NAME                                 TYPE    VALUE
+------------------------------------ ------- ------------------------------
+global_names                         boolean FALSE
+연결되었습니다.
+SQL> select * from global_name;
+
+GLOBAL_NAME
+--------------------------------------------------------------------------------
+DB.WORLD
+
+다시 돌아와, DB링크생성시 이름을 위에서 확인한 global_names로 한다.
+SQL> conn kang/xxxxxx
+연결되었습니다.
+SQL> create database link db.world
+  2  connect to kang identified by xxxxxx
+  3  using 'linuxdb';
+
+데이타베이스 링크가 생성되었습니다.
+
+SQL> select * from tab@db.world;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+A                              TABLE
+AA                             TABLE
+BONUS                          TABLE
+CUSTOMER                       TABLE
+DEPT                           TABLE
+EMP                            TABLE
+FAMILY                         TABLE
+HITEL                          TABLE
+ILSAN014                       TABLE
+INTERIOR                       TABLE
+MEMBER                         TABLE
+MEMBER_DETAIL                  TABLE
+PLAN_TABLE                     TABLE
+SALGRADE                       TABLE
+SAMWOO                         TABLE
+SERVER                         TABLE
+TEST                           TABLE
+TM_YH                          TABLE
+V_EMP                          VIEW
+
+19 개의 행이 선택되었습니다.
+
+SQL>
+
+This article comes from dbakorea.pe.kr (Leave this line as is)
+```
+
+```
+
+```
+
+```
+
+```
+
+```
+
+```
+
+```
+------------------------- 2015.09.07 ---------------------------------
+```
+
+```
+ CREATE SYNONYM 시노님명  FOR  계정명.테이블명  CREATE SYNONYM 시노님명  FOR  계정명.함수명       a. alex 계정으로 접속 [sqlplus alex/비번]      b. CREATE SYNONYM EMP FOR SCOTT.EMP; ===========================> 여기 까지 처리한 경우, alex계정에서 select * from EMP;와 같이 접근이 가능하다.
+```
+
+```
+
+```
+
+```
+
+```
+
+```
+
+```

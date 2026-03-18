@@ -1,0 +1,235 @@
+---
+title: "Protobuf Gateway"
+date: 2023-11-16 17:46:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223266670753"
+---
+
+protobuf 통신 구간을 rest api, gRPC로 사용할 수 있는 라이브러리가 있었다.
+
+(armeria를 왜 했..)
+
+​
+
+**grpc gateway**
+
+<https://github.com/grpc-ecosystem/grpc-gateway>
+
+​
+
+buf
+
+gRPC과 같이 사용할 수 있도록 지원해주는 것 같다.
+
+​
+
+<https://github.com/bufbuild/buf>
+
+​
+
+Buf는 Buf CLI 및 Buf Schema Registry(BSR) 두 가지 도구를 개발하는것을 목표로합니다. 그 중 Buf CLI 도구는 프로토콜버퍼 파일을 분석하여 내재된 문제를 파악하는린터(linter), 과거 버전의 프로토콜버퍼 대비 급격한 변화가 발생했는지를 감지하는 (급격한 변화 감지자)breaking changes detector, 플러그인을 지정하여 프로토콜버퍼로부터 원하는 규격의 Stub를 쉽게 생성하는 (제너레이터)generator 기능을 제공하며, 현재 어느정도 사용 가능한 수준으로 개발이 된 상태입니다.
+
+BSR은 현재 클로즈드 베타테스트 중이며, 말 그대로 프로토콜버퍼 파일과 디펜던시를 중앙집중형 체제로 패키징 및 관리할 수 있는 방법을 제공하는것으로 보입니다. // 내용이 갱신되면 이에 맞춰 이 글도 수정
+
+​
+
+​
+
+출처 : <https://codingpot.github.io/posts/2021-06-11-buf-intro/>
+> [**Buf에 대한 간략한 소개**](https://codingpot.github.io/posts/2021-06-11-buf-intro/)
+>
+> Enter Buf: We’re building tooling to make Protobuf reliable and easy to use for service owners and clients, while keeping it the obvious choice on the technical merits. Buf란 무엇인가? 공식문서에 따르면 Buf는 프로토콜버퍼를 안정적이면서도, 쉽게 사용할 수 있도록 도와주는 도구입니다. 이런 도구의 등장 배경에는 프로토콜버퍼가 상대적으로 JSON/REST 인터페이스를 통한 서비스 대비 진입장벽이 높...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+buf.gen.yaml
+
+
+
+
+
+
+
+
+
+```
+version: v1
+plugins:
+  - plugin: buf.build/grpc/java
+    out: java
+  - plugin: buf.build/grpc/kotlin
+    out: kotlin
+  - plugin: buf.build/protocolbuffers/java
+    out: java
+  - plugin: buf.build/protocolbuffers/kotlin
+    out: kotlin
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+buf.yaml
+
+
+
+
+
+
+
+
+
+```
+version: v1
+lint:
+  use:
+    - DEFAULT
+deps:
+  - buf.build/bufbuild/protovalidate
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+test.proto
+
+
+
+
+
+
+
+
+
+```
+syntax = "proto3";
+
+package sample.v1;
+
+import "buf/validate/validate.proto";
+
+option java_package = "com.test.sample.proto";
+
+service HelloService {
+  rpc Hello(HelloRequest) returns (HelloResponse);
+}
+
+message HelloRequest {
+  string name = 1 [(buf.validate.field).string.min_len = 1];
+}
+
+message HelloResponse {
+  string message = 1;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<https://github.com/bufbuild/protovalidate>
+> [**GitHub - bufbuild/protovalidate: Protocol Buffer Validation - Go, Java, Python, and C++ Beta Releases!**](https://github.com/bufbuild/protovalidate)
+>
+> Protocol Buffer Validation - Go, Java, Python, and C++ Beta Releases! - GitHub - bufbuild/protovalidate: Protocol Buffer Validation - Go, Java, Python, and C++ Beta Releases!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+여러 기능들
+
+<https://github.com/bufbuild?q=lint&type=all&language=&sort=>
+> [**Buf**](https://github.com/bufbuild?q=lint&type=all&language=&sort=)
+>
+> A new way of working with Protocol Buffers. Buf has 50 repositories available. Follow their code on GitHub.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

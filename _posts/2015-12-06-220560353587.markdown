@@ -1,0 +1,14 @@
+---
+title: "spring boot 시작"
+date: 2015-12-06 17:18:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220560353587"
+---
+
+## 출처 : <https://springframework.guru/spring-boot-web-application-part-2-using-thymeleaf/>
+
+## Conclusion
+
+At this point in this tutorial series on building a Spring Boot web application using Spring Boot, we’ve shown you how to create a basic project using the Spring Initializr and setup support for Thymeleaf. You can see how Spring Boot has made some common sense choices for us, like configuring the Thymeleaf template engine for use with Spring MVC, defaulting the locations for static resources, and providing out of the box support for WebJars.
+
+결론임

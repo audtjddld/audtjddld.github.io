@@ -1,0 +1,38 @@
+---
+title: "console stmp 테스트"
+date: 2016-03-30 10:41:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220669266146"
+---
+
+down voteaccepted
+
+Telnet to your smtp server like
+
+```
+telnet smtp.mydomain.com 25
+```
+
+Syntax :
+
+```
+telnet {smtp_domain_name} {port_number}
+```
+
+And copy and paste the below
+
+```
+hello velanapps.com
+mail from:
+rcpt to:
+data
+From: test@velanapps.com
+Subject: test mail from command line
+
+this is test number 1
+sent from linux box
+```
+
+출처 : <http://stackoverflow.com/questions/11988454/how-to-check-if-smtp-is-working-from-commandline-linux>
+
+스텍 오버플로 형님들

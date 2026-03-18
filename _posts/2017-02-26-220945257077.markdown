@@ -1,0 +1,7 @@
+---
+title: "XML과 JSON도 잘쓰자."
+date: 2017-02-26 21:57:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220945257077"
+---
+

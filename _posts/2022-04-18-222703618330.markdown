@@ -1,0 +1,1192 @@
+---
+title: "nginx"
+date: 2022-04-18 00:30:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222703618330"
+---
+
+이번에 오게 된 곳은 별도의 devops가 없는 팀이고, 팀 구성원들이 스스로 인프라 셋팅 및 구성을 진행한 것으로 보인다.
+
+​
+
+오랜만에 다시 살펴보자.
+
+​
+
+**NGINX**
+
+**​**
+
+엔진엑스(Nginx)는 Igor Sysoev라는 러시아 개발자가 동시접속 처리에 특화된 웹 서버 프로그램이다. Apache보다 동작이 단순하고, 전달자 역할만 하기 때문에 동시접속 처리에 특화되어 있다.
+
+동시접속자(약 700명) 이상이라면 서버를 증설하거나 Nginx 환경을 권장한다고 한다. 지금은 아파치가 시장 점유율이 압도적(?)이지만, 아마존웹서비스(AWS) 상에서는 시장 점유율 44%에 달할정도로 가볍고, 성능이 좋은 엔진이라고 한다.
+
+​
+
+NGINX 사용방법
+
+​
+
+**1-1. 정적 파일을 처리하는 HTTP 서버로서의 역할**
+
+웹서버의 역할은 HTML, CSS, Javascript, 이미지와 같은 정보를 웹 브라우저(Chrome, Iexplore, Opera, Firefox 등)에 전송하는 역할을 한다. (HTTP 프로토콜을 준수)
+
+​
+
+**1-2. 응용프로그램 서버에 요청을 보내는 리버스 프록시로서의 역할**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![](/assets/images/posts/222703618330/cb707493e627.png?type=w580)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+두번째 역할은 리버스 프록시(reverse proxy)인데, 한마디로 말하면 클라이언트는 가짜 서버에 요청(request)하면, 프록시 서버가 배후 서버(reverse server)로부터 데이터를 가져오는 역할을 한다. 여기서 프록시 서버가 Nginx, 리버스 서버가 응용프로그램 서버를 의미한다.
+
+웹 응용프로그램 서버에 리버스 프록시(Nginx)를 두는 이유는 요청(request)에 대한 버퍼링이 있기 때문이다. 클라이언트가 직접 App 서버에 직접 요청하는 경우, 프로세스 1개가 응답 대기 상태가 되어야만 한다. 따라서 프록시 서버를 둠으로써 요청을 배분하는 역할을 한다.
+
+​
+
+nginx.conf 파일에서 location 지시어를 사용하여 요청을 배분한다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![](/assets/images/posts/222703618330/ada2990fb7e3.png?type=w580)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Nginx는 비동기 처리 방식(Event-Drive) 방식을 채택하고 있다.
+
+​
+
+동기(Synchronous) : A가 B에게 데이터를 요청했을 때, 이 요청에 따른 응답을 주어야만 A가 다시 작업 처리가 가능 (하나의 요청, 하나의 작업에 충실)
+
+​
+
+비동기(Asynchronous) : A의 요청을 B가 즉시 주지 않아도, A의 유휴시간으로 또 다른 작업 처리가 가능한 방식
+
+​
+
+​
+
+​
+
+**NGINX Reverse Proxy**
+
+​
+
+NGINX의 프록시는 요청을 1개 받을 때 설정된 프록시 서버로 요청을 보내준다. 그리고 응답을 다시 클라이언트에게 전달한다. 이러한 프록시 요청을 가능하게 하는 방법은 프록시 요청이 가능한 HTTP 서버(NGINX서버 또는 다른 서버) 또는 non-HTTP 서버( PHP나 Python을 이용한 특정한 프레임워크를 이용하여 개발된 애플리케이션 서버)의 특정한 프로토콜을 사용할 때 이다. 내부적으로 FastCGI, uwsgi,SCGI, memcached 등
+
+​
+
+​
+
+두가지 요청을 받는 HTTP Proxy 서버가 있다고 가정하자. proxy_pass 디렉티브는 내부에 정의된 특정안 로케이션으로 전달한다.
+
+
+
+
+
+
+
+
+
+```
+location /some/path/ {
+    proxy_pass <http://www.example.com/link/;>
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+이 예제는 특정한 주소의 모든 요청을 처리한다. 이 주소는 특정한 도메인이나 IP Address로 조정할 수 있다. 주소는 또한 포트를 가지고 있다.
+
+
+
+
+
+
+
+
+
+```
+location ~ \.php {
+    proxy_pass <http://127.0.0.1:8000;>
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+주의 할 점은 첫번째 예제는 피해야 한다. 주소기반 Proxy된 서버는 URI에 연관된다. 만약 URI 특정한 주소 라면, 요청 URI의 일부를 변환하고 요청 파라미터를 맞춰야한다.
+
+​
+
+non-proxy 서버의 요청은 아래와 같이 directive를 사용해야 한다.
+
+​
+
+[fastcgi_pass](https://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_pass) passes a request to a FastCGI server
+
+[uwsgi_pass](https://nginx.org/en/docs/http/ngx_http_uwsgi_module.html#uwsgi_pass) passes a request to a uwsgi server
+
+[scgi_pass](https://nginx.org/en/docs/http/ngx_http_scgi_module.html#scgi_pass) passes a request to an SCGI server
+
+[memcached_pass](https://nginx.org/en/docs/http/ngx_http_memcached_module.html#memcached_pass) passes a request to a memcached server
+
+​
+
+​
+
+NGINX의 리버시 프록시를 사용하고, DNS로 분기를 해주는 형태로 작성되어있다.
+
+​
+
+github 액션이나 build script에서 nginx config 파일을 교체해서 배포하는 방식이라고 했다.
+
+​
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+그 밖의 설정 값들은 나중에 필요하면 여기서 검색해보자.
+
+​
+
+​
+
+**Nginx 설정**
+
+​
+
+**​****1. user**
+
+
+
+
+
+
+
+
+
+```
+user [user] [group];
+user www www;
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+worker process에서 사용하는 사용자 및 그룹 자격 증명을 정의합니다. group을 생략하면 이름이 user와 같은 그룹이 사용됩니다.
+
+**2. worker_processes**
+
+
+
+
+
+
+
+
+
+```
+worker_processes Number | auto;
+worker_processes 1;
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+worker process의 수를 정의합니다.
+
+최적의 값은 CPU 코어 수, 데이터를 저장하는 하드 디스크 드라이브 수 및 로드 패턴을 포함하여 많은 요인에 따라 다릅니다. 확실하지 않은 경우, 사용 가능한 CPU 코어 수로 설정하는 것이 좋습니다. (auto로 설정하는 경우, nginx에서 자동으로 감지를 시도합니다)
+
+**3. error_log**
+
+
+
+
+
+
+
+
+
+```
+error_log file [level];
+error_log logs/error.log info;
+
+# levels: debug, info, notice, warn, error, crit, alert, emerg
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+웹서버 실행 중 발생하는 에러에 대한 로깅을 설정합니다.
+
+첫 번째 인자로는 파일의 위치, 두 번째 인자로는 로깅 레벨을 설정합니다. 만약 error_log 설정을 하지 않는다면, 기본 파일에 로그가 저장됩니다. 또한 두 번째 인자를 생략하면 level은 error로 설정됩니다.
+
+**4. pid**
+
+
+
+
+
+
+
+
+
+```
+pid file;
+pid logs/nginx.pid;
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+nginx의 process ID를 저장할 파일을 설정합니다.
+
+**5. worker_rlimit_nofile**
+
+worker process에 대한 최대 열린 파일 수(RLIMIT_NOFILE)에 대한 제한을 변경합니다. 기본 프로세스를 다시 시작하지 않고 한계를 늘리는 데 사용됩니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**events 설정**
+
+일반적으로 worker process의 연결 수, 연결 방법에 대한 것을 설정할 때 events 영역 내부에 설정합니다.
+
+**1. worker_connections**
+
+
+
+
+
+
+
+
+
+```
+events {
+  worker_connections  number;
+  # worker_connections 1024;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+worker process에서 열 수 있는 최대 동시 연결 수를 설정합니다.
+
+​
+
+이 숫자에는 클라이언트와의 연결뿐만 아니라 모든 연결(ex. 프록시 서버와의 연결)이 포함됩니다. 또 다른 고려 사항은 실제 동시 연결 수가 최대 open files 개수에 대한 현재 한계를 초과 할 수 없습니다.
+
+​
+
+**2. use**
+
+
+
+
+
+
+
+
+
+```
+events {
+  use [method];
+  # use kqueue;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+사용할 connection 처리 방법을 지정합니다. nginx는 기본적으로 가장 효율적인 방법을 사용하므로 명시 적으로 지정할 필요가 없습니다.
+
+**http 설정**
+
+Http 어플리케이션 layer와 3, 4 layer 사이에 관련한 설정을 하는 영역입니다.
+
+**1. include**
+
+
+
+
+
+
+
+
+
+```
+http {
+  include mime.types;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+설정파일 외부에 있는 다른 설정파일을 포함시킬 때 사용합니다.
+
+**2. default_type**
+
+
+
+
+
+
+
+
+
+```
+http {
+  default_type application/octet-stream;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+이 웹서버의 기본 Content-Type을 설정합니다. octet-stream은 바이너리 형태의 타입을 의미합니다. 일반적으로 nginx에서 해석할 수 없는 타입이라면 요청을 기본 타입으로 요청을 받도록 설정됩니다.
+
+**3. log_format**
+
+
+
+
+
+
+
+
+
+
+```
+http {
+  log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    '$status $body_bytes_sent "$http_referer" '
+    '"$http_user_agent" "$http_x_forwarded_for"';
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+로그 포맷을 설정합니다.
+
+변수와 관련한 내용은 다음 링크에서 확인 가능합니다.
+
+[Alphabetical index of variables](http://nginx.org/en/docs/varindex.html)
+
+[nginx.org](http://nginx.org/en/docs/varindex.html)
+
+**4. access_log**
+
+
+
+
+
+
+
+
+
+```
+http {
+  access_log logs/access.log [context];
+  # access_log logs/access.log main;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+액세스 로그를 저장할 파일을 설정합니다.
+
+**5. sendfile**
+
+
+
+
+
+
+
+
+
+```
+http {
+  sendfile on | off;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+nginx에서 정적파일을 보내도록 설정합니다.
+
+**6. tcp_nopush**
+
+
+
+
+
+
+
+
+
+```
+http {
+  tcp_nopush on | off;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+클라이언트로 패킷이 전송되기 전에 버퍼가 가득 찼는지 확인하여, 다 찼으면 패킷을 전송하도록 하여 네트워크 오버헤드를 줄이도록 설정합니다.
+
+**7. tcp_nodelay**
+
+
+
+
+
+
+
+
+
+```
+http {
+  tcp_nodelay on | off;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tcp_nodelay를 활성화하면 소켓이 패킷 크기에 상관없이 버퍼에 데이터를 보내도록합니다.
+
+sendfile, tcp_nopush, tcp_nodelay에 대해서 자세히 알고 싶다면 아래 링크를 참고하세요. 해당 글 내용에 의하면 세 가지 설정 모두 사용하는 것을 권장하는 것 같습니다.
+
+[Nginx Optimization: understanding sendfile, tcp_nodelay and tcp_nopush](https://thoughts.t37.net/nginx-optimization-understanding-sendfile-tcp-nodelay-and-tcp-nopush-c55cdd276765)
+
+[thoughts.t37.net](https://thoughts.t37.net/nginx-optimization-understanding-sendfile-tcp-nodelay-and-tcp-nopush-c55cdd276765)
+
+**​**
+
+**​**
+
+**8. keepalive_requests**
+
+
+
+
+
+
+
+
+
+```
+http {
+  keepalive_requests number;
+  # keepalive_requests 100;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+웹서버가 캐싱할 수 있는 커넥션 수를 설정합니다. 너무 많은 수를 사용하면 자원 점유에 문제가 생기니 적절하게 설정하는 것이 좋습니다.
+
+**9. keepalive_timeout**
+
+
+
+
+
+
+
+
+
+```
+http {
+  keepalive_timeout [seconds];
+  # keepalive_timeout 65;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+클라이언트에서 해당 서버로 keepalive 커넥션을 유지할 수 있는 시간을 설정합니다. 너무 길면 요청이 없는 클라이언트와의 커넥션을 연결하고 있기 때문에 자원의 낭비가 발생한다.
+
+**10. server_names_hash_bucket_size**
+
+
+
+
+
+
+
+
+
+```
+http {
+  server_names_hash_bucket_size number;
+  # server_names_hash_bucket_size 512;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+호스트 네임의 해시 버킷 사이즈를 설정합니다.
+
+자세한 설명은 아래 링크를 통해서 확인하실 수 있습니다.
+
+[Nginx server_names_hash 설정](https://deeplify.dev/server/web/nginx-server-names-hash)
+
+[deeplify.dev](https://deeplify.dev/server/web/nginx-server-names-hash)
+
+​
+
+​
+
+**11. gzip**
+
+
+
+
+
+
+
+
+
+```
+http {
+  gzip on | off;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+웹서버에서 문서 요청에 대한 응답을 gzip 압축 전송에 대한 설정을 합니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**http > server**
+
+이 영역은 인증서, url 컨트롤, proxy 등 어플리케이션 layer 관련한 설정을 합니다.
+
+**1. listen**
+
+
+
+
+
+
+
+
+
+```
+http {
+  server {
+    listen 80;
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+서버의 리스너 포트를 설정합니다.
+
+**2. server_name**
+
+
+
+
+
+
+
+
+
+```
+http {
+  server {
+    server_name [host_name];
+    # server_name  www.example.com
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+서버 이름을 설정합니다. (도메인 등록)
+
+**3. location**
+
+
+
+
+
+
+
+
+
+```
+http {
+  server {
+    location [path] {
+      root [root directory path]
+      index [index page]
+    }
+    # location / {
+    #   root /usr/share/nginx/www/
+    #   index index.html
+    #}
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+path로 들어오는 요청에 대한 설정을 합니다. root는 linux file system에서의 디렉토리 경로를 index는 해당 위치의 index 문서를 설정합니다.
+
+**4. error_page**
+
+
+
+
+
+
+
+
+
+```
+http {
+  server {
+    error_page number [page.html]
+    # error_page 404 /404.html;
+    # error_page 500 502 503 504 /50x.html;
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+에러페이지를 설정합니다.
+
+​
+
+​
+
+​
+
+NGINX-CONFIG 문서
+
+<https://deeplify.dev/server/web/nginx-configuration>
+
+​
+
+NGINX Proxy Module 문서
+
+[https://nginx.org/en/docs/http/ngx_http_proxy_module.html](http://nginx.org/en/docs/http/ngx_http_proxy_module.html)
+
+​
+
+NGINX websocket 문서
+
+<http://nginx.org/en/docs/http/websocket.html>
+
+​
+
+출처 :
+
+<https://whatisthenext.tistory.com/123>
+
+​

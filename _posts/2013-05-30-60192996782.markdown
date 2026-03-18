@@ -1,0 +1,642 @@
+---
+title: "전자 정부 프레임워크 tiles 셋팅"
+date: 2013-05-30 14:26:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60192996782"
+---
+
+출처 : <http://blog.daum.net/janustop/84>
+
+
+
+<<객담...>>
+
+지난번에 오라클을 이용한 전자정부프레임워크 샘플페이지 보기를 해보았다.
+
+우히히.. 기뿌다.
+
+즐거운 마음과 뿌듯한 마음.. 이런것도 잠시.
+
+어딘가 허전한 마음.
+
+
+
+무엇일까....
+
+포스트를 몇번이고 읽어보고....
+
+어디가 허전할까를 고민해보다가....
+
+알아냈다.
+
+"나는 그냥 따라했을 뿐이다." 라는 허전함.
+
+
+
+"이것에다가 뭔가 변화를 줘야겠다."라는 결심을 하다가.....,
+
+이번엔 동일한 샘플에다가 "타일즈"를 적용해 보기로 했다
+
+
+
+지난번에 작성한 예제는 전자정부 프레임워크의 문서만으로 쉽게 따라할 수 있으리라.
+
+이번엔 동일한 샘플에다가.. 타일즈를 입혀보기로 한다.
+
+
+
+타일즈를 적용하기 위해서는 절차가 많다.
+
+하나라도 빼먹으면.. 당연히 안될거다.
+
+
+
+1. 타일즈 라이브러리를 포함시킨다.
+
+타일즈 라이브러리(*.jar)파일은 아파치 사이트에서 쉽게 구할 수 있다.
+
+여러분은 타일즈 자르파일을 가지고 있다는 가정하에 진행하도록 한다.
+
+다운로드한 집파일(*.zip)을 압축해제하고
+
+다음 파일들을 "WEB-INF/lib"폴더에 복사해 넣는다.
+
+(탐색기에서 "복사(Ctrl-C)'를 하고, 이클립스의 패키지익스플로러에서 해당폴더를 선택한 수 "붙여넣기(Ctrl-V)"를 하면 된다)
+
+(창피한 이야기지만.. 각 파일의 기능을 정확히 몰라서 본인은 모든 파일을 포함시켰습니다. ㅡ,.ㅡ)
+
+
+
+tiles-api-2.2.2.jar
+
+tiles-core-2.2.2.jar
+
+tiles-jsp-2.2.2.jar
+
+tiles-servlet-2.2.2.jar
+
+tiles-template-2.2.2.jar
+
+
+
+2. 타일즈 파일들을 프로젝트에 인식(등록)시킨다.
+
+타일즈 파일들을 프로젝트에 복사해 넣는다고, 천하무적 이클립스가... 일당백 메이블이 알아서 링크를 걸어주지 않는다.
+
+메이븐이든, 이클립스든, 톰캣이든.. 이놈들은 아무리 많은 파일들이 프로젝트에 포함되어 있어도...
+
+정작 컴파일중에 사용되지 않는다면...
+
+배포본에서는 포함되지 않는다는 사실...
+
+아무튼, 우리가 포함시킨 파일들을 프로젝트에서 사용할 수 있도록 등록해주어야 한다.
+
+어떻게?
+
+다음처럼...
+
+<프로젝트 루트 / pom.xml>
+
+ <properties>
+
+  <spring.maven.artifact.version>3.0.5.RELEASE</spring.maven.artifact.version>
+
+  <org.apache.tiles-version>2.2.2</org.apache.tiles-version>
+
+ </properties>
+
+ <dependencies>
+
+   .......
+
+     <!--  Tiles -->
+
+  <dependency>
+
+   <groupId>org.apache.tiles</groupId>
+
+   <artifactId>tiles-core</artifactId>
+
+   <version>${org.apache.tiles-version}</version>
+
+  </dependency>
+
+  <dependency>
+
+   <groupId>org.apache.tiles</groupId>
+
+   <artifactId>tiles-servlet</artifactId>
+
+   <version>${org.apache.tiles-version}</version>
+
+  </dependency>
+
+  <dependency>
+
+   <groupId>org.apache.tiles</groupId>
+
+   <artifactId>tiles-jsp</artifactId>
+
+   <version>${org.apache.tiles-version}</version>
+
+  </dependency>
+
+  <!-- Tiles -->
+
+ </dependencies>
+
+ .....
+
+** 파란색으로 처리한 부분은 섹션을 의미합니다. 삽입할 위치를 나타내기 위해서 표현했습니다.
+
+** 붉은색으로 처리한 부분은 입력될 코드를 의미합니다.
+
+** '....'으로 표현된 부분은 생략된 것입니다.
+
+** 위 코드에서 타일즈의 설정은 "dependencies"절의 맨 아래에 했습니다.
+
+3. 등록한 타일즈 파일들을 어떻게 사용할지를 설정하자.
+
+등록만 했다고 "어떻게?"라는 방법도 모른채 무조건 사용할 수는 없습니다. 방법도 지정해 주어야겠지요?
+
+그렇다면, 어디에 기술해야할까요?
+
+우리는 지금 전자정부프레임워크를 이용한 프로젝트를 대상으로하니.. 이파일이다.. 저파일이라.. 지정만 하면 모두가 찾아갈 수 있겠지만....
+
+이해를 위해 어떤 파일에 기술해야할지를 잠시 생각해봅시다.
+
+스프링은 서블릿이라는 방식으로 서비스를 합니다.
+
+서블릿의 설정은 "WEB-INF/web.xml"에서 할 수 있습니다.
+
+하지만, 그 설정내용이 길기때문에 별도의 파일로 작성하고 해당 파일을 지정하는 방식을 사용합니다.
+
+실제로 제가갖고 있는 web.xml파일에는 다음처럼 되어 있군요.
+
+ <servlet>
+
+  <servlet-name>action</servlet-name>
+
+  <servlet-class>
+
+   org.springframework.web.servlet.DispatcherServlet
+
+  </servlet-class>
+
+  <init-param>
+
+   <param-name>contextConfigLocation</param-name>
+
+   <param-value>
+
+    /WEB-INF/config/egovframework/springmvc/dispatcher-servlet.xml,
+
+    /WEB-INF/config/egovframework/springmvc/urlfilename-servlet.xml
+
+   </param-value>
+
+  </init-param>
+
+  <load-on-startup>1</load-on-startup>
+
+ </servlet>
+
+그리고, 서블릿의 처리의 앞뒤 작업의 흐름을 담당하는 녀석을 "디스펫쳐(dispatcher)"라고 하는데, 디스펫처의 설정을 별도의 파일
+
+(/WEB-INF/config/egovframework/springmvc/dispatcher-servlet.xml)로 지정해 두었군요.
+
+우리는 dispatcher-servlet.xml파일을 열어 디스펫처에게 타일즈의 사용방법에 대해 알려주면 되겠네요.
+
+<< 대상파일 : /WEB-INF/config/egovframework/springmvc/dispatcher-servlet.xml >>
+
+ <!-- For Tiles Tag -->
+
+ <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver"
+
+  id="viewResolver">
+
+  <property name="viewClass">
+
+   <value>org.springframework.web.servlet.view.tiles2.TilesView</value>
+
+  </property>
+
+  <property name="order">
+
+   <value>1</value>
+
+  </property>
+
+ </bean>
+
+ <bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer" id="tilesConfigurer">
+
+  <property name="definitions">
+
+   <list>
+
+    <value>/WEB-INF/tiles.xml</value>
+
+   </list>
+
+  </property>
+
+ </bean>
+
+ <!-- /For Tiles Tag -->
+
+
+
+ <!-- Internal Resolver :: Default Setting is REMOVED
+
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="2"
+
+    p:viewClass="org.springframework.web.servlet.view.JstlView"
+
+    p:prefix="/WEB-INF/jsp/egovframework/rte/" p:suffix=".jsp"/>
+
+  -->
+
+** 빨간색으로 표현한 부분은 새로 작성한 부분입니다.
+
+** 파란색으로 처리한 부분은 기존의 코드인데, 타일즈만을 이용하기 위해 주석처리한 부분입니다.
+
+** 기존의 ViewResolver를 타일즈로 대체하기 위한 작업이므로, xml파일에서 'UrlBasedViewResolver'를 찾고 해당 섹션을 주석처리한 다음
+
+   위 빨간색 코드를 넣으면 됩니다.
+
+
+
+다음으론 무엇을 해야할까?
+
+정답은 위 빨간색 코드안에 들어 있습니다.
+
+
+
+4. 타일즈내부의 처리를 위한 설정을 해야한다.
+
+타일즈가 화면을 어떻게 분할해서 어떤 내용으로 채우라는 설정이 필요하겠죠?
+
+지금까지는 프로젝트 입장에서 타일즈를 설정했다고 할 수 있습니다.
+
+하지만, 타일즈도 사용하는 사람의 취향에 그 활용방법이 천차만별일 것입니다.
+
+그러니, 타일즈내부에서 "어떻게 작동하라...!!"라는 설정이 필요합니다.
+
+위 빨간색 코드중에서 Id가 'tilesConfigurer'인 부분을 보면....타일즈의 환경설정(TilesConfigurer)을 위해 "/WEB-INF/tiles.xml"라고 표현되어 있습니다.
+
+즉, 우리가 다음으로 해야할 일은 타일즈의 환경설정파일인 "/WEB-INF/tiles.xml"를 작성하는 것입니다.
+
+그렇다면, "/WEB-INF/tiles.xml"는 어떻게 작성할까?
+
+다음은 보기입니다.
+
+(일단 따라해보시고.. 뭔가 알듯하면.. 변경을 해보면서 익힐 수 있기 바랍니다)
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+
+ "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+
+
+<tiles-definitions>
+
+ <definition name="mainTemplate" template="/WEB-INF/views/layout.jsp">
+
+  <put-attribute name="title"  value="전자정부프레임워크 따라하기" />
+
+  <put-attribute name="header" value="/WEB-INF/views/header.jsp" />
+
+  <put-attribute name="menu"  value="/WEB-INF/views/menu.jsp" />
+
+  <put-attribute name="content" value="" />
+
+  <put-attribute name="footer" value="/WEB-INF/views/footer.jsp" />
+
+ </definition>
+
+
+
+        <!-- 아래 name을 "/sample/egovSampleList"라고 정합니다.
+
+               "/sample/egovSampleLIst"는 컨트롤러가 리턴하는 값입니다.
+
+               컨트롤러에서 리턴할 때 맨앞에 "/"가 포함되어 있다는 점을 잊지 마세요. -->
+
+ <definition name="/sample/egovSampleList" extends="mainTemplate">
+
+  <put-attribute name="title"  value="Contact Manager" />
+
+  <put-attribute name="header" value="/WEB-INF/views/header.jsp" />
+
+  <put-attribute name="menu"  value="/WEB-INF/views/menu.jsp" />
+
+  <put-attribute name="content" value="/WEB-INF/jsp/egovframework/rte/sample/egovSampleList.jsp" />
+
+  <put-attribute name="footer" value="/WEB-INF/views/footer.jsp" />
+
+ </definition>
+
+</tiles-definitions>
+
+** 위 내용은 모두 작성해야합니다.
+
+
+
+간단히 설명을 하자면,
+
+1) 파일의 맨처음부터 *.dtd선언까지 : 우리가 작성한 tiles.xml파일을 파싱하고 어떤정보들이 있는지 이해하기 위한 dtd를 지정합니다.
+
+2) tiles-definitions 선언부 : 타일즈 환경설정파일에서 사용자가 정의할 내용을 포함하는 섹션입니다. 무조건 있어야겠죠?
+
+3) 사용자가 페이지의 구도를 선언(definition) : 위에서는 두개의 정의를 볼 수 있습니다.
+
+첫번째 정의 : 메인화면의 구도를 정의합니다.
+
+메인화면은 화면의 제목(title)과 상단부(header), 좌측메뉴부(menu), 하단부(footer)가 있습니다. 이는 고정된 내용이 출력되겠지요?
+
+그리고, 사용자가 요청한 변화무쌍한 내용들이 배치될 컨텐츠부(content)가 정의되어 있습니다.
+
+헉, 정의만 하면 모두 화면에 출력되나요?
+
+아니지요~!!
+
+일단 화면의 구성 요소들이 위와 같다는 말이구요. 실제 화면의 분할하는 크기는 "template="/WEB-INF/views/layout.jsp""에서 구체적으로 정의하고 있습니다.
+
+두번째 정의 : 그렇다면 두번째 정의는 무엇일까요?
+
+첫번째 정의에서 "컨텐츠부"는 변화무쌍하다고 했죠?
+
+다른 녀석들은 항상 그내용이 그내용이지만... 컨텐츠는 내용이 달라집니다. 그러기 위해서는 하나의 jsp파일로 처리하기가 힘들겠지요?
+
+그래서 각각 담당하는 jsp를 만들어 지정해야하는 것입니다.
+
+그래서 새로운 페이지의 구도를 정의하는데, "mainTemplate"를 상속받았습니다.
+
+첫번째 정의부의 "content"의 value는 ""인데, 두번째 정의의 "content"의 value는 /WEB-INF/jsp/egovframework/rte/sample/egovSampleList.jsp 입니다.
+
+** 위 두개의 정의를 잘보면 타일즈에서도 상속을 받고 있다는 것을 알 수 있습니다. 그래서 두번째 정의에서 "title"과 "content"를 제외한 나머지(header, menu, footer)는 삭제해도 무방합니다.
+
+자.. 이제 모두 끝난 것일까요?
+
+실행해 볼까요?
+
+아니면.. 어딘가 또 준비를 해야할까요?
+
+힌트는 위 두개의 정의에 담겨 있습니다.
+
+
+
+5. 화면의 구체적인 구획정리정보를 설정하자.
+
+위 절차 4.에서는 화면을 구성하는 요소들을 표현했다면, 이제는 화면을 어떤 요소들로.. 어떻게.. 배치할 것인가를 정의해야합니다.
+
+어떤 파일에 작성해야할까?
+
+또다른 xml파일을 작성해야할까?
+
+정답은 위 정의내용에 포함되어 있습니다.
+
+첫번째 정의(mainTemplate)에서 템플릿을 "/WEB-INF/views/layout.jsp"라고 했으니, 당연히 layout.jsp파일을 작성해야합니다.
+
+내용은 다음과 같습니다.
+
+[대상파일 : "/WEB-INF/views/layout.jsp"]
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+ <title>
+
+  <tiles:insertAttribute name="title" ignore="true" />
+
+ </title>
+
+ <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/sample.css'/>"/>
+
+</head>
+
+<body>
+
+    <table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+
+        <tr>
+
+            <td height="30" colspan="2">
+
+             <tiles:insertAttribute name="header" />
+
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td height="300" style="width:10%;">
+
+             <tiles:insertAttribute name="menu" />
+
+            </td>
+
+            <td width="300">
+
+             <tiles:insertAttribute name="content" />
+
+            </td>
+
+        </tr>
+
+    <tr>
+
+        <td height="30" colspan="2">
+
+         <tiles:insertAttribute name="footer" />
+
+        </td>
+
+    </tr>
+
+    </table>
+
+</body>
+
+</html>
+
+무척 간단하죠?
+
+간단히 내용을 보자면.. 화면을 분할하여 구획을 나누었습니다. 방법은 <table>태그를 이용하고 있군요.
+
+그리고, 각각의 영역에 "tiles.xml"에서 정의한 이름을 부어했습니다.
+
+템블릿이기 때문에 별다른 일을 하지 않고 있군요.
+
+그냥 화면을 분할하고, 해당 셀(TD)에 이름을 부여한 것밖에 없습니다.
+
+화면을 그려야 할때 타일즈는 각각의 이름에 tiles.xml에서 정의한 각각의 파일(jsp)을 삽입할 것입니다.
+
+
+
+이제 전체 화면을 구획정리했으니...
+
+각각의 영역(header, menu, content, footer)에 삽입할 페이지를 만들어야겠죠?
+
+다음은 각 구획을 담당할 파일들입니다.
+
+[대상파일 : "WEB-INF/views/header.jsp"]
+
+<% /*
+
+ @ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
+
+ */ %>
+
+
+
+<center>
+
+ <div style='background-color:#FFDDCC;'>
+
+  <font size='12px'>
+
+   HEADER 헤더
+
+  </font>
+
+ </div>
+
+</center>
+
+
+
+[대상파일 : "WEB-INF/views/menu.jsp"]
+
+<% /*
+
+@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
+
+ */ %>
+
+
+
+<center>
+
+ <div style='background-color:#CCDDFF;font-weight:bold;height:100%;'>
+
+  <font size='12px'>
+
+   MENU 메뉴
+
+  </font>
+
+ </div>
+
+</center>
+
+
+
+[대상파일 : "WEB-INF/views/footer.jsp"]
+
+
+
+<% /*
+
+@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
+
+ */ %>
+
+
+
+<center>
+
+ <div style='background-color:#CCFFDD;font-weight:bold'>
+
+  <font size='12px'>
+
+   FOOTER 푸터
+
+  </font>
+
+ </div>
+
+</center>
+
+
+
+** header.jsp, menu.jsp, footer.jsp각 파일의 상단에 주석처리된 부분이 있습니다. 이는 jsp를 생성하면 이클립스가 자동으로넣어주는 코드인데, 위에서 설명하였듯이 header.jsp, menu.jsp, footer.jsp파일은 layout.jsp파일의 일부로 삽입될 것입니다.
+
+헌데, 문서의 인코딩방식이나 캐릭터셋을 중복지정하면 한글을 바르게 표현하지 못하는 문제가 있더군요.
+
+그래서 주석처리한 것입니다.
+
+물론 삭제해야겠지만 삭제했더라면 제가 이렇게 언급하지 않게되겠죠? ^^
+
+
+
+마지막으로 content에 해당하는 페이지(/WEB-INF/jsp/egovframework/rte/sample/egovSampleList.jsp)를 작성해야하는데....
+
+어라? 이녀석은 이미 작성되어 있군요~~ ^^;
+
+
+
+그럼, 이제는 무엇을 해야할까요?
+
+
+
+6. 컴파일하고 실행하여 우리의 작업결과를 살펴보도록 합시다.
+
+
+
+웹 프로젝트에서 "Run As" -> "Maven Build"를 선택하여 메이븐의 컴파일 결과를 지켜봅시다.
+
+다음으로 "Run As" -> "Run on Serve"를 선택하여 우리가 작업한 결과를 반영하여 WAS를 구동해 봅시다.
+
+짜잔~~~
+
+
+
+![](http://cfile217.uf.daum.net/image/01200D365138528B29B476)
+
+
+
+원하는 결과를 얻었기를 바랍니다.
+
+언제나 초보의 애타는 마음을 생각하면 가능한한 자세히 작성하려고 노력했습니다만....
+
+충분한 글이 되었을지.. 조마조마하군요.
+
+
+
+잠깐 마무리를 하기 전에 두가지..
+
+첫번째 : 한글이 깨지는 분들은 위에서 언급했듯이.. 삽입되는 각각의 페이지에서 캐릭터 셋이랑 페이지 인코딩 방식을 모두 삭제 또는 주석처리하십시요.
+
+전자정부 프레임웤은 기본 UTF-8로 설정되어 있으나 변경하신 분들은 모두 utf-8로 설정할 필요도 있겠군요
+
+두번째 : 위 마지막 화면에서 "등록"버튼을 클릭하면 어찌될까요? 왜 그렇게 될까요?
+
+"등록"버튼을 클릭했을 때 다음 화면이 무난하게 처리되도록 프로그램을 작성해보십시요.
+
+
+
+부지런히 공부해서 다음 포스트를 준비해보도록 하겠습니다.
+
+----------------------------- 2016.09.26 ---------------------------------------
+
+tiles 3 셋팅
+
+<http://apieceofspace.blogspot.kr/2014/01/java-spring3-tiles3.html>
+
+[[java] spring3 + tiles3 설정 하기A free open-sourced templating framework for modern Java applications.       Based upon the Composite pattern it is built to simplify...apieceofspace.blogspot.com](http://apieceofspace.blogspot.com/2014/01/java-spring3-tiles3.html)
+

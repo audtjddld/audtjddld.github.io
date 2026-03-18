@@ -1,0 +1,69 @@
+---
+title: "ActiveMQ (amazon MQ)"
+date: 2021-04-21 15:14:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222317914381"
+---
+
+<https://zuminternet.github.io/ZUM-Activemq-virtual-destination/>
+> [**Amazon MQ의 Virtual Topics를 활용한 (Pub-sub)메시지 로드밸런싱**](https://zuminternet.github.io/ZUM-Activemq-virtual-destination/)
+>
+> AmazonMQ(ActiveMQ)의 Virtual Topics 사용 경험을 공유합니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![]()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+​

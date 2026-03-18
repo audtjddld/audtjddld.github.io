@@ -1,0 +1,30 @@
+---
+title: "Processes, threads, green threads, protothreads, fibers, coroutines: what's the difference?"
+date: 2022-03-04 15:39:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222663788018"
+---
+
+<https://stackoverflow.com/questions/3324643/processes-threads-green-threads-protothreads-fibers-coroutines-whats-the>
+> [**Processes, threads, green threads, protothreads, fibers, coroutines: what's the difference?**](https://stackoverflow.com/questions/3324643/processes-threads-green-threads-protothreads-fibers-coroutines-whats-the)
+>
+> I'm reading up on concurrency. I've got a bit over my head with terms that have confusingly similar definitions. Namely: Processes Threads "Green threads" Protothreads Fibers Coroutines "Gorouti...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

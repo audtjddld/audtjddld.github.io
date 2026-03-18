@@ -1,0 +1,13 @@
+---
+title: "web socket"
+date: 2016-03-22 13:44:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220662005281"
+---
+
+<http://m.mkexdev.net/98>
+
+<http://m.mkexdev.net/98>
+
+[[HTML5] Web Socket (웹 소켓)실시간 (양방향) 통신을 위한 웹의 노력 개인적인 생각으로 HTML5의 새로운 스펙중에 사용자가 가장 흥미로워 한 것이 Canvas 라면 개발자가 ...m.mkexdev.net](http://m.mkexdev.net/98)
+

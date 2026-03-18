@@ -1,0 +1,36 @@
+---
+title: "JUnit Test 예제"
+date: 2016-02-24 17:14:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220636947235"
+---
+
+<https://github.com/audtjddld/angularjs-springboot-jpa-example/blob/changeProcess/demo2/src/test/java/com/user/controller/UserTest.java>
+
+<https://github.com/audtjddld/angularjs-springboot-jpa-example>
+
+[audtjddld/angularjs-springboot-jpa-exampleangularjs-springboot-jpa-example - new sample sitegithub.com](https://github.com/audtjddld/angularjs-springboot-jpa-example)
+
+계속해서 작성중이다. 모자란 부분은 추후 작성 예정.
+
+return 되는 컨텐츠를 받는 방법은 ObjectMapper를 이용하여 값을 생성하는 방법이 있다.
+
+
+
+```
+ObjectMapper om = new ObjectMapper();
+        AuthToken authToken = om.readValue(content, AuthToken.class);
+```
+
+
+
+ ------------------------------------------ 2016.06.22 추가 ------------------------------------------------
+
+matcher 부분
+
+<http://tutorials.jenkov.com/java-unit-testing/matchers.html>
+
+<http://tutorials.jenkov.com/java-unit-testing/matchers.html>
+
+[MatchersThis tutorial explains how the Matchers class in JUnit works, which enable your Java unit tests to do more advanced matching of valu...tutorials.jenkov.com](http://tutorials.jenkov.com/java-unit-testing/matchers.html)
+

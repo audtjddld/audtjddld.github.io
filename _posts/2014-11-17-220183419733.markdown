@@ -1,0 +1,62 @@
+---
+title: "mssql 테이블 복사"
+date: 2014-11-17 10:01:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220183419733"
+---
+
+## 출처 : <http://overit.tistory.com/entry/%ED%85%8C%EC%9D%B4%EB%B8%94-%EB%B3%B5%EC%82%AC-%EB%8B%A4%EB%A5%B8-DB%EA%B0%84-%EB%B3%B5%EC%82%AC%ED%8F%AC%ED%95%A8>
+
+##
+
+## [MS SQL] 테이블 복사 (다른 DB간 복사포함)
+
+from [DataBase/MS SQL](http://overit.tistory.com/category/DataBase/MS%20SQL) 2012/09/01 18:26
+
+** 필드의 타입과, 필드의 숫자가 동일한 두 테이블간의 데이터를 복사하는방법 입니다.**
+
+
+
+
+
+**■  복사한 데이터를 넣을 테이블이 존재하지 않을 경우 (테이블 생성 + 테이블 복사)**
+
+    □ Create Tables [**대상 테이블명**] Select * from [**원본 테이블명**]
+
+
+
+    □ Select * Into [**생성될 테이블명**] From [**원본 테이블명**]
+
+     (기본 모드 데이터까지 복사)
+
+    □ Select * Into [**생성될 테이블명**] From [**원본 테이블명**] Where '1' = '2'
+
+    (데이터 없이 테이블 구조만 복사)
+
+    □ Select * Into [**생성될 테이블명**] From [**원본 테이블명**] Where '1' = '1'
+
+    (데이터까지 복사)
+
+
+
+ **■ 복사한 데이터를 넣을 테이블이 존재하는 경우 (테이블 복사)**
+
+  Insert Into [**대상 테이블명**] Select * From [**원본 테이블명**]
+
+
+
+
+
+ **■ 다른 DB간의 테이블 복사 **
+
+ Insert Into [**대상 데이터베이스명**].[**대상 테이블명**]
+
+ Select * From [**원본 데이터베이스명**].[**원본 테이블명**]
+
+
+
+**▶ 중복 데이터에 대한 에러를 무시하는 방법 **
+
+ 복사하려는 대상필드가 기본키로 지정되어 있는데 중복 레코드로 인하여 에러를 발생시 처리방법
+
+  INSERT **ignore** INTO

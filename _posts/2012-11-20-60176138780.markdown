@@ -1,0 +1,37 @@
+---
+title: "MyBatis에서 resultType HashMap 사용법"
+date: 2012-11-20 17:26:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60176138780"
+---
+
+    <resultMap id="Book" type="java.util.HashMap">
+
+    <resultMap id="아이디명" type="java.util.HashMap">
+        <result javaType="java.lang.String" column="bookName" property="bookName"/>
+        <result javaType="데이터타입" column="db컬럼명" property="맵에서 키값"/>
+
+          ...
+
+</resultMap>
+
+<select id="셀렉트id" resultMap="Book">
+
+ Select book_name bookName
+
+FROM book
+
+WHERE book_num = #{value}
+
+</select>
+
+
+
+이렇게 하게되면
+
+반환은 해쉬맵 형태의 list가 반환된다.
+
+
+
+리스트 인덱스만큼 해쉬맵에 담아서 보내든 그건 당신이 결정!

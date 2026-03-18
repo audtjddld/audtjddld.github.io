@@ -1,0 +1,82 @@
+---
+title: "Nginx 최적화"
+date: 2022-08-09 06:48:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222843515679"
+---
+
+​
+
+잘 정리된 블로그 링크
+
+<https://12bme.tistory.com/366>
+> [**[Nginx] 엔진엑스 기본 환경 설정**](https://12bme.tistory.com/366)
+>
+> 일반적으로 환경 설정 파일은 관리자가 편집하거나 프로그램으로 분석할 수 있는 텍스트 파일로, 여러 가지 값을 지정해 프로그램의 작동 방법을 결정합니다. 리눅스 기반 운영체제에서는 애플리케이션의 상당 부..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+nginx performance tunning
+
+<https://kwonnam.pe.kr/wiki/nginx/performance>
+> [**nginx:performance [권남]**](https://kwonnam.pe.kr/wiki/nginx/performance)
+>
+> nginx Performance nginx gzip nginx Proxy Cache Nginx Performance Tuning Nginx Optimization – The Definitive Guide Optimizing Nginx for High Traffic Loads Tuning Nginx for Best Performance How To Optimize Nginx For Maximum Performance nginx: See Active connections / Connections Per Seconds Static Fil...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<https://sysopstechnix.com/7-tips-for-nginx-performance-tuning/>
+> [**7 Tips for NGINX Performance Tuning**](https://sysopstechnix.com/7-tips-for-nginx-performance-tuning/)
+>
+> Nginx is a lightweight and high-performance web server, but you can tweak a few factors to make sure it's as fast as possible for your use case in production.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

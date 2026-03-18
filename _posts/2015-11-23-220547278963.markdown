@@ -1,0 +1,13 @@
+---
+title: "mysql workbench 사용법"
+date: 2015-11-23 10:35:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220547278963"
+---
+
+<http://withcoding.com/36>
+
+<http://withcoding.com/36>
+
+[MySQL Workbench 스키마(데이터베이스) 만들기 & 사용자 계정 생성, 권한 부여 방...윈도우에서 기본으로 MySQL을 설치하게 되면 MySQL Workbench라는 프로그램도 같이 설치가 됩니다. 이 프로그램을 잘 활용하면 SQL쿼...withcoding.com](http://withcoding.com/36)
+

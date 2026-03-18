@@ -1,0 +1,99 @@
+---
+title: "manifest 파일을 못찾겠읍니다."
+date: 2019-02-28 10:52:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221476793410"
+---
+
+```
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.hello.HelloWorld'
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+​
+
+출처 :
+
+<https://jjeong.tistory.com/1223>
+> [**[Gradle] Gradle project 맛보기.**](https://jjeong.tistory.com/1223)
+>
+> Intellij 를 이용한 gradle project 를 생성하는 아주 초보적인 내용입니다. 개인적인 생각으로는 single project 이고 maven 에 익숙하시면 그냥 maven project 로 개발 하시는게 편하실 수 있습니다. Step 0) -..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+runnable jar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <https://www.mkyong.com/gradle/gradle-create-a-jar-file-with-dependencies/>
+                                [**Gradle – Create a Jar file with dependencies – Mkyong.com**
+
+                                        By default, Gradle is using the standard Maven project structure. ${Project}/src/main/java/ ${Project}/src/main/resources/ ${Project}/src/test/java/ 2. Java Files A single Java file to print out the current date time, and logs the message with logback. DateUtils.java package com.mkyong;
+
+import java...
+                                        www.mkyong.com](https://www.mkyong.com/gradle/gradle-create-a-jar-file-with-dependencies/)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+<https://www.mkyong.com/gradle/gradle-create-a-jar-file-with-dependencies/>

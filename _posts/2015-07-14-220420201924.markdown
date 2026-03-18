@@ -1,0 +1,785 @@
+---
+title: "Java reflection 해보기"
+date: 2015-07-14 21:03:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220420201924"
+---
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+    /**
+
+     출처 : <http://www.nextree.co.kr/p3643/>
+
+     객체구조탐색의 대안 – 리플랙션(Reflection)
+
+    대부분의 객체지향 프로그래밍 언어에서는 객체가 속한 타입을 추적할 수 있도록 객체들에 대한 RTTI
+
+    (Runtime Type Identification, 런타임 타입 식별정보)를 관리합니다.
+
+    Java 역시 RTTI를 사용하는 언어 중의 하나이며, JVM은 런타임 타입정보를 통해 정확한 메소드를 찾아내어 실행합니다.
+
+
+
+    Java는 런타임 타입정보를 담고 있는 특수한 클래스를 제공하는데 그것은 Class 클래스입니다.
+
+     객체에서 Class 클래스를 얻기 위해서는 getClass() 메소드를 호출합니다.
+
+    Class 클래스를 이용하여 런타임에 객체의 타입을 알 수 있으며, 객체 필드의 값을 조회하거나 변경할 수도 있습니다.
+
+     이와 같이 런타임에 타입정보를 다루는 것을 리플랙션이라 하며 java.lang.reflect 패키지에는 다양한 리플랙션과 관련된 API를 제공합니다.
+
+
+
+    리플랙션은 IDE와 같은 도구를 제작할 때나, 프레임워크를 만들 때 주로 활용됩니다.
+
+    예를 들어 Spring Framework의 bean 설정에 정의한 클래스 정보나 iBatis의 resultMap에 정의한 객체의
+
+    프로퍼티 정보가 실제로 동작하기 위해서는 리플랙션의 도움을 받아야 합니다.
+
+     */
+
+    public static void main(String[] args) throws Exception{
+
+        System.out.println("시작~~~");
+
+
+
+        TestVO vo = new TestVO();
+
+        reflectionSetting(vo);
+
+
+
+        System.out.println("Main method get " + vo.getPageIndex());
+
+
+
+    }
+
+
+
+    private static void reflectionSetting(Object obj){
+
+
+
+        Field[] f = obj.getClass().getSuperclass().getDeclaredFields();
+
+        try {
+
+
+
+            for(Field fi : f){
+
+                if(fi.getName().equals("pageIndex")){    // 필드 이름 중 pageIndex가 존재하면
+
+                    // getter 와 setter 가 있다고 가정하고 해당 메서드를 가져온다.
+
+                    Method m = obj.getClass().getMethod("setPageIndex", int.class);
+
+                    m.invoke(obj, 12345);
+
+                    m = obj.getClass().getMethod("getPageIndex", null);
+
+                    System.out.println("reflection get " +  m.invoke(obj));
+
+                }
+
+            }
+
+
+
+        } catch(Exception e){
+
+            e.printStackTrace();
+
+        }
+
+
+
+    }
+
+
+
+
+
+ 개발을 해오다보니 반복작업을 하기 싫어졌고, 동적으로 값을 바인딩 하는 방법을 찾던 중 reflection 이라는 걸 이용해서 method나 변수에 접근할 수 있다는 사실을 알게 되었다.
+
+TestVO 는 BaseVO를 상속받은 클래스이다.
+
+BaseVO는 공통 변수들을 포함하기 때문에 내가 원하는 작업들은 TestVO를 넘기면 BaseVO 내에 변수들에 값이 셋팅 되도록 하고 싶었다.
+
+위 예제를 보면 Object로 받은 객체에 원하는 메서드가 있으면 물론 Value Object 에서 내가 원하는 변수에 getter setter 메서드가 구현되어 있다는 전제로 구현하였고 위와 같은 방법을 알게되었으니 그것으로 응용하도록 하였다.
+
+그렇다고 아직 완벽하게 한건 아니지만 그로 인하여 계속해서 반복하던 작업을 많이 줄일 수 있었다.
+
+ex) 예를 들자면 전자정부프레임워크 list단 구현시 항상 번거롭게 pagination 객체에 값을 바인딩 시키고 하는 방법을 자주 사용하였는데, 이 부분 부터 줄여나가자고 시작하였다.
+
+기존에 구현되었던 list 부분이다.
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+ public String testList(HttpServletRequest request,
+
+                                        ModelMap modelMap,
+
+                                        @ModelAttribute TestVO vo) throws Exception{
+
+
+
+        try{
+
+            PaginationInfo paginationInfo = new PaginationInfo();
+
+            paginationInfo.setCurrentPageNo(vo.getP());                    //    현재 pageIndex
+
+            paginationInfo.setRecordCountPerPage(vo.getPageSize());    //  설정된 list 갯수
+
+            paginationInfo.setPageSize(vo.getPageSize());                        //    페이징 사이즈
+
+
+
+            vo.setFirstIndex(paginationInfo.getFirstRecordIndex());                // 계산된 첫번째 페이지
+
+            vo.setLastIndex(paginationInfo.getLastRecordIndex());                // 계산된 마지막 페이지
+
+            vo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());    // 계산된 페이징 당 갯수
+
+            Map resultMap = null;
+
+            List resultList =null;
+
+
+
+            resultMap = Service.selectProposalList(vo);
+
+
+
+
+
+            modelMap.addAttribute("noticeList",resultMap.get("noticeList"));          // 공지글 가져오기
+
+            modelMap.addAttribute("list",resultMap.get("list"));                   // 리스트 정보
+
+            paginationInfo.setTotalRecordCount(Integer.parseInt(resultMap.get("listCnt").toString()));    // 총 페이징 갯수 셋팅
+
+            modelMap.addAttribute("listCnt",resultMap.get("listCnt"));                // 페이징 갯수
+
+            modelMap.addAttribute("paginationInfo",paginationInfo);                 // 페이징 정보
+
+            modelMap.addAttribute("searchVO",vo);
+
+
+
+
+
+
+
+        }catch(Exception e){
+
+
+
+            e.printStackTrace();
+
+
+
+        }
+
+
+
+
+
+
+
+        return "test/list";
+
+    }
+
+
+
+
+
+굵게 표시한 라인들이 계속해서 게시판 리스트 마다 들어갔다. 변명처럼 들리겠지만 그 전에는 저렇게만 해야된다고 생각을 했었다. 다른 생각을 하지 않았고 바뻐서 못했었다 -_-;; 하지만 계속해서 프로젝트 진행 할때마다 반복작업을 줄여나가자 하다보니 reflection을 알게 되었다.
+
+원래는 Annotation을 접근 할때 reflection을 사용해서 하는 것을 알게 된 후 그 방법을 찾아서 할려고 했었는데, 저 페이징으로 관심이 맞춰지면서 완벽하진 않지만 그래도 나름 보기 좋을 만큼 줄여나갈 수 있었다.
+
+일단 페이징을 계산할때 paginationInfo 와 parameter가 셋팅된 VO를 넘기는 조건하에 작성하였다.
+
+CommonMethodCollection.java**
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+@Component("CommonMethod")
+
+public class CommonMethodCollection {
+
+
+
+    /**
+
+     * 페이징 값 셋팅을 위한 공통 메서드
+
+     * @param paginationInfo
+
+     * @param obj
+
+     * @throws Exception
+
+     */
+
+    public void setPaginationInfo(PaginationInfo paginationInfo, Object obj) throws Exception{
+
+
+
+        // 필드
+
+        Field [] f = obj.getClass().getSuperclass().getDeclaredFields();
+
+        Method m = null;
+
+        for(Field fi : f){
+
+            if(fi.getName().equals("p")){
+
+                m = obj.getClass().getMethod("getP", null);
+
+                paginationInfo.setCurrentPageNo(Integer.parseInt(m.invoke(obj).toString()));
+
+            }
+
+            if(fi.getName().equals("pageSize")){
+
+                m = obj.getClass().getMethod("getPageSize", null);
+
+                paginationInfo.setRecordCountPerPage(Integer.parseInt(m.invoke(obj).toString()));
+
+            }
+
+            if(fi.getName().equals("pageUnit")){
+
+                m = obj.getClass().getMethod("getPageUnit", null);
+
+                paginationInfo.setRecordCountPerPage(Integer.parseInt(m.invoke(obj).toString()));
+
+            }
+
+        }
+
+
+
+        m = obj.getClass().getMethod("setFirstIndex", int.class);
+
+        m.invoke(obj, paginationInfo.getFirstRecordIndex());
+
+        m = obj.getClass().getMethod("setLastIndex", int.class);
+
+        m.invoke(obj, paginationInfo.getLastRecordIndex());
+
+        m = obj.getClass().getMethod("setRecordCountPerPage", int.class);
+
+        m.invoke(obj, paginationInfo.getRecordCountPerPage());
+
+
+
+    }
+
+}
+
+[Colored by Color Scripter](http://colorscripter.com/info#e)
+[cs](http://colorscripter.com/info#e)
+
+위와같이 작성하였다. 아래쪽 다시 넘어온 Object VO에 셋팅할때는 set 메서드를 직접 불럿다.
+
+별도의 예외가 발생 되도록 조건을 걸지 않았으니 적용할 땐 확인하고 작업해야 한다.
+
+Component로 등록하였으니 가져다 쓸땐 DI 주입 후 사용하도록 하자.
+
+기존에 작성했던 리스트 메서드에 먼저 선언한다.
+
+1
+
+2
+
+3
+
+    /** 공통 메서드 **/
+
+    @Resource(name="CommonMethod")
+
+    private CommonMethodCollection common;
+
+[cs](http://colorscripter.com/info#e)
+
+그리고 위에 보았던 메서드를  before 와 after로 확인하면 나름 깔끔해진걸 알 수 있다.
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+    public String testList(HttpServletRequest request,
+
+                                        ModelMap modelMap,
+
+                                        @ModelAttribute TestVO vo) throws Exception{
+
+
+
+        try{
+
+            /* before
+
+            PaginationInfo paginationInfo = new PaginationInfo();
+
+            paginationInfo.setCurrentPageNo(vo.getP());                    //    현재 pageIndex
+
+            paginationInfo.setRecordCountPerPage(vo.getPageUnit());    //  설정된 list 갯수
+
+            paginationInfo.setPageSize(vo.getPageSize());                        //    페이징 사이즈
+
+
+
+            vo.setFirstIndex(paginationInfo.getFirstRecordIndex());                // 계산된 첫번째 페이지
+
+            vo.setLastIndex(paginationInfo.getLastRecordIndex());                // 계산된 마지막 페이지
+
+            vo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());    // 계산된 페이징 당 갯수
+
+            */
+
+            /* after */
+
+            PaginationInfo paginationInfo = new PaginationInfo();
+
+
+
+            // 페이징 셋팅을 위한 메서드
+
+            common.setPaginationInfo(paginationInfo, vo);
+
+
+
+            Map resultMap = null;
+
+            List resultList =null;
+
+
+
+            resultMap = Service.selectProposalList(vo);
+
+
+
+
+
+            modelMap.addAttribute("noticeList",resultMap.get("noticeList"));          // 공지글 가져오기
+
+            modelMap.addAttribute("list",resultMap.get("list"));                   // 리스트 정보
+
+            // 총 페이징 갯수 셋팅
+
+            paginationInfo.setTotalRecordCount(Integer.parseInt(resultMap.get("listCnt").toString()));
+
+            modelMap.addAttribute("listCnt",resultMap.get("listCnt"));                // 페이징 갯수
+
+            modelMap.addAttribute("paginationInfo",paginationInfo);                 // 페이징 정보
+
+            modelMap.addAttribute("searchVO",vo);
+
+
+
+
+
+
+
+        }catch(Exception e){
+
+
+
+            e.printStackTrace();
+
+
+
+            throw new EgovBizException("고객 제안방 조회 Error!!");
+
+        }
+
+
+
+
+
+
+
+        return "test/list";
+
+    }
+
+
+
+
+
+-------------------------------  2016.01.29 ---------------------------------------
+
+inner Class 일때 해보기
+
+```
+public class ReflectionTest {
+
+    public static void main(String[] args) throws Exception {
+        try{
+
+            ReflectionTest rt = new ReflectionTest();
+            ReflectionTest.B b = rt.new B();
+
+            Method m = b.getClass().getMethod("hello", null);
+            m.invoke(b, null);
+
+        }catch( Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    class B {
+
+        public void hello() {
+            System.out.println("hello~");
+        }
+    }
+}
+```

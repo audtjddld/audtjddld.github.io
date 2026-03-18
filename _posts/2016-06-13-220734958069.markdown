@@ -1,0 +1,7 @@
+---
+title: "angularjs directive"
+date: 2016-06-13 13:35:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220734958069"
+---
+

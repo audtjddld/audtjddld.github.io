@@ -1,0 +1,200 @@
+---
+title: "인풋 박스 유효성 검사 (길이 체크)"
+date: 2013-08-20 15:43:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60198394928"
+---
+
+db 컬럼이 varchar2 50이라고 했을때
+
+영문 50자, 국문 25자만 가능하다.
+
+일단 다른 요구사항이 없어서 둘다 같도록 설정.
+
+
+
+따라서 인풋박스에 들어오는 글자수에 대한 제한이 필요했다.
+
+
+
+방법은 길이 체크하는 스크립트를 찾은 뒤
+
+
+
+
+
+ document.ready에다가 input text를 읽은 뒤 스크립트를 바인딩 시켰다.
+
+
+
+완전히 좋은 방법은 아니라 생각된다 ㅡㅡ;
+
+ie7에선 안되고 ie 8부터 된다.
+
+
+
+
+
+1
+
+2
+
+3
+
+            jQuery("input[type='text']").each(function(){
+
+                jQuery(this).attr("onkeyup","text_maxlength(this)");
+
+            });
+
+
+
+
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+    function text_maxlength(obj) {
+
+
+
+          var message;
+
+           var tempMessage = "";
+
+           var totalString= obj.value;
+
+           var maxlengthAttr = obj.getAttribute? parseInt(obj.getAttribute("maxlength")) : "";
+
+           //maxlength = maxlengthAttr * 2;
+
+           maxlength = maxlengthAttr;
+
+                var textareaLength = obj.value.length;
+
+
+
+                if (textareaLength == 0) {
+
+                  //totalString = maxlengthAttr * 2;
+
+                    totalString = maxlengthAttr;
+
+                 }
+
+                else {
+
+                      for (var i=0; i<textareaLength; i++) {
+
+                           message = totalString.charAt(i);
+
+                            if (escape(message).length > 4) {
+
+                            maxlength -= 2;
+
+                            }
+
+                            else {
+
+                           maxlength--;
+
+                           }
+
+
+
+                           if (maxlength < 0) {
+
+                           alert("총 영문 "+maxlengthAttr+"글자, 총 한글 "+(maxlengthAttr/2)+"자까지 작성할 수 있습니다.\n" +
+
+                                   "A total of "+maxlengthAttr+" characters in English, a total of "
+
+                                    +(maxlengthAttr/2)+" Hangul letters you can write to.");
+
+                           obj.value= tempMessage;
+
+                           break;
+
+                          }
+
+                        else {
+
+                            tempMessage += message;
+
+                         }
+
+                      }//end for
+
+                 }
+
+          }

@@ -1,0 +1,88 @@
+---
+title: "대단한것"
+date: 2014-01-06 15:14:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60206737991"
+---
+
+출처 : <http://otep.tistory.com/entry/JSPF-%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-INCLUDE-%EC%84%A4%EB%AA%85>
+
+
+
+**[ 배경지식 ]
+
+**JSP 를 개발하다 보면 아래와 같은 코드를 발견하기 쉽다.**
+1번 include <jsp:include page="test.jsp" flush="true">
+
+2번 include <%@ include file="파일의 위치(url)" %>
+
+우선적으로 이 글의 목적은 JSPF에 대해서 설명하는 글이지만, 위의 1,2번 항목에 대해 정확하게 알아야만,
+
+설명이 가능하기 때문에 1번과 2번의 차이점에 대해 집고 넘어가도록 하겠다.
+
+[ jsp:include 와 include file 의 차이 ]
+
+1번 과 2번은 둘다 빈번하게 사용되어지는 특정 페이지를 include시킬때 사용되어지는 방법이다.
+
+그럼 차이점은 ? 그렇다!!!! 바로 로딩 시점의 차이이다.
+
+1번의 경우 .java의 servlet 파일로 compile 되어진 뒤 결과물을 include 하는것이다. 보통 저런 방식은 jsp로 디자인
+
+frame를 구성할때 top 이라던가 bottom 이라던가 하는 요소에서 많이 사용되어지는 방법이다.
+
+그렇다면 2번방식은 어떤것인가? 2번은 page가 compile되기전에 소스코드를 include 한후 compile 하는 과정을
+
+거치게 된다. 이런경우 사용되어지는 대표적인 예가 공통변수 를 사용하여 모든 페이지에 체크를 해야하는 경우, 해당 공통
+
+변수를 include 한후 사용하면된다.
+
+[ JSPF 란 무엇인가? ]**
+
+JSPF 란 별거 없다. JSP Servlet Page Framegment의 약어로써 , 매번 2번과 같은 방식으로 매번 include해야하는
+
+페이지에 대해 JSPF라는 확장자로 선언 한뒤 web.xml에 선언하여 모든 jsp페이지 내에 자동으로 include해주는
+
+하나의 방법론이다.
+
+백문이불여일견이다!!! 아래 web.xml의 태그를 보도록 하자.
+
+[ web.xml 파일 ]
+<jsp-config>
+<jsp-property-group>
+<url-pattern>*.jsp</url-pattern>
+<include-prelude>/web/jsp/common/webConstraint.jspf</include-prelude>
+</jsp-property-group>
+</jsp-config>
+
+별도로 태그에 대해 자세한 설명을 하지 않도록 하겠다.
+
+*.jsp 에 대해서 /web/jsp/common/webConstraint.jspf 파일을 include 하라는 내용이다.
+
+그럼 webConstraint.jpsf 에는 어떻게 생겨먹었는지 아래코드를 보도록 하자.
+
+[ WebConstraint.jspf 파일 ]
+
+<%@page pageEncoding="UTF-8"%>
+< %@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+< %@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+< c:set var="HOME" value="${pageContext.request.contextPath}" />
+< c:set var="IMG" value="${HOME}/web/image" />
+< c:set var="JS" value="${HOME}/web/js" />
+< c:set var="JSP" value="${HOME}/web/jsp" />
+< c:set var="CSS" value="${HOME}/web/css" />
+
+나의 경우 위의 코드처럼 jsp내의 특정 경로의 data를 공통 변수로 설정하여사용하였다.
+
+얼마나깔끔한가?ㅋㅋㅋㅋㅋ
+
+많은 활용요소가 있겠지만, 위의 활용요소가 가장 좋은 활용예제인것 같다.
+
+이상 끝!!
+
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+
+
+어제에 이은 내용을 찾아보니 이런 내용이!!

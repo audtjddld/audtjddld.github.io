@@ -1,0 +1,30 @@
+---
+title: "kafka option 정리"
+date: 2021-12-28 10:30:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222605578222"
+---
+
+<https://getto215.github.io/kafka-architecture-2/>
+> [**Kafka 구성과 주요 설정**](https://getto215.github.io/kafka-architecture-2/)
+>
+> 빅데이터 플랫폼에서 주로 메시지 큐, 버퍼 역할을 하는 Kafka 구성과 주요 설정에 대해 0.10 이후 버전을 기준으로 정리하였습니다. 기본 설정만으로도 운영하는데 큰 이슈는 없으나 production에서는 살펴봐야할 설정들을 다뤘습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

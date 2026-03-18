@@ -1,0 +1,323 @@
+---
+title: "[펌] angular.js 시작하기 위해 알아야하는 모든 것"
+date: 2015-05-07 09:07:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220352200745"
+---
+{% raw %}
+
+출처 : <http://stephanebegaudeau.tumblr.com/post/48776908163/everything-you-need-to-understand-to-start-with>
+
+2012 was the year of the rise of the Javascript MVC frameworks and librairies with countless of those frameworks that were released or that went under the spotlight. Among others, you must have heard about [Backbone.js](http://backbonejs.org/), [Ember.js](http://emberjs.com/) but my personal favorite is [AngularJS](http://angularjs.org/). AngularJS is a Javascript MVC framework created by Google to build properly architectured and maintenable web applications.
+
+2012년  많은  Javascript MVC 프레임워크들이 나타났다. 그중 Backbone.js나 Ember.js는 한번쯤 들어봤을 것이다. 그중 AngularJS가 개인적으로 맘에 들었다. AmgularJS는 Google에서 만들어 졌고 좀 더 architectured하고 maintenable 한 web application을 만들도록 해준다.
+
+Why AngularJS?
+
+AngularJS is a MVC framework that defines numerous concepts to properly organize your web application. Your application is defined with modules that can depend from one to the others. It enhances HTML by attaching directives to your pages with new attributes or tags and expressions in order to define very powerful templates directly in your HTML. It also encapsulates the behavior of your application in controllers which are instanciated thanks to dependency injection. Thanks to the use of dependency injection, AngularJS helps you structure and test your Javascript code very easily. Finally, utility code can easily be factorized into services that can be injected in your controllers. Now let’s have a closer look at all those features.
+
+AngularJS는 web application을 만들기 위해 여러가지 컨셉을 가진 MVC 프레임워크다. application은 다른 modoule에 depend 할수있는 module들로 정의된다. HTML에 template를 정의하기 위해 새로운 attribute, tag, expression를 이용하는 directive들을 attach해서 HTML을 enhance한다.  AngularJS의 controller는 DI를 사용하고, application의 행동들을 encapsulate한다.  AngularJs의 DI는 javascript code를 쉽게 stucture하고 test하는 것을 도와준다. 마지막으로 utility code는 contorller에 inject될수 있도록 service를 사용해 쉽게 생성할수 있다. 좀 더 자세히 AngularJs에 대해 알아보자.
+
+Expressions
+
+AngularJS let you build properly structured web applications very easily. For that, AngularJS contains several concepts to separate the different parts of your application.
+
+AngularJS는 쉽게 structured web application을만들수 있게 해준다. 이를 위해, AngularJs는 applcation의 다른 부분들을 분리하기 위해 몇가지 concepts를 가지고 있다.
+
+In order to create the views of your application, AngularJS let you execute [expressions](http://docs.angularjs.org/guide/expression) directly within your HTML pages. In those expressions, you have access to Javascript code which give you the ability to realize some computation in order to display what you want. In the screenshots below, you can see a very basic expression and it result.
+
+application의 view를 만들기 위해, HTML 내부에서 바로 AnularJS expression을 사용할 수 있다. expression에서 연산기능이 있는 Javascript code를 사용할 수 있다. 아래는 expression을 사용하는 간단한 그림이다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007482614866530>
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007484930221938>
+
+Expressions in your HTML page are nice, but you won’t build a complete web application like that, it would be horrible to write and to maintain, we need the help of something more powerful. Expressions are used for small operations, In order to structure you web application, AngularJS will give you a much impressive tool, directives.
+
+expression만으로는 작성하고 유지보수하기 쉬운 코드를 작성하기 어렵다.  web application을 structure 하기 위해 AngularJs는 directives라는 concept을 제공한다.
+
+
+
+Directives
+
+[Directives](http://docs.angularjs.org/guide/directive) are one of the most powerful feature of AngularJS. They allow you to extend HTML to answer the needs of web applications. Directives let you specify how your page should be structured for the data available in a given scope.
+
+Directive는 AngularJS의 핵심 concept중에 하나다. Directives는 web application의 needs를 answer 하기위해 HTML을 extend하도록 해준다. Directives는 해당 scope에서 사용가능한 데이타를 이용해 페이지를 구성할수 있도록 한다.
+
+We will have a look at the scope and where those data are coming from later in this post but first let’s have a look at how directives are working.
+
+이 post의 후반에 scope에 대해 좀 더 알아보도록 하고, 먼저 directive가 어떻게 동작하는지 살펴보자
+
+AngularJS comes with several directives which let you build your basic application. The first directive you will use most of the time is “[ngRepeat](http://docs.angularjs.org/api/ng.directive:ngRepeat)”. This directive let AngularJS create a new set of elements in the dom for each element in a collection. In the following example, we ask AngularJS to create a new div containing a small title and a paragraph for each element of the array users. Each of those element will be affected to a variable named user wich let us access the individual elements of the array.
+
+AngularJs는 기본적으로 applcation을 만들는데 필요한 여러가지 directive를 제공한다. ngRepeat directive를 먼저 살펴보자. 이 directive는 collection의 각 element를 위해 해당 dom에 새로운 element set을 생성한다. 아래 예제에서, AngularJS는 users의 각 element를 위해 small title과 paragraph를 포함한 새로운 div를 생성한다. 각 Element는 user라는 이름을 가진 변수에 영향을 받을 것이다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007482438644370>
+
+The result is exactly what we were expecting, a new div has been created for each of my entity with their name as a title and their description in a paragraph.
+
+예상했던것 처럼, 새로운 div가  각각 생성되었다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007487564277410>
+
+For those who are wondering why I have prefixed “ng-repeat” by “data-“, have a look [here](http://webdesign.tutsplus.com/tutorials/htmlcss-tutorials/all-you-need-to-know-about-the-html5-data-attribute/).
+
+ng-repeat 앞에 data- 를 붙인 이유가 궁금하면 여기를 보자.
+
+AngularJS also let you determine if an element should be displayed or not with the directive “[ngShow](http://docs.angularjs.org/api/ng.directive:ngShow)”. This directive uses an expression which returns a boolean to determine if the element should be displayed or not.
+
+AngularJS는 ngShow directive를 통해 화면 노출여부를 결정할수 있다.  이 directive는 노출여부를 결정하는 boolean 타입을 리턴하는 expression을 사용한다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007492156421218>
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007497631812450>
+
+As you can see in the result, only females are displayed. If you inspect the dom, you would see that the other elements have been computed but their are just hidden (display = none).
+
+결과에 보듯이 오직 여성만 노출되었다. dom을 inspect해보면, 다른 엘리먼트들이 있지만 hidden인것을 알수 있다.
+
+AngularJS also contains more complex directives like “[ngSwitch](http://docs.angularjs.org/api/ng.directive:ngSwitch)”.
+
+AngularJS는 ngSwitch처럼 좀 더 복잡한 복잡한 directive를 포함한다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007495023666162>
+
+With those directives, you have the ability to define the basic structure of your web application very easily.
+
+이런 directive를 사용해 web application의 기본 구조를 아주 쉽게 정의하는 능력을 가질수 있다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007504069287778>
+
+Directives coming from the AngularJS standard library are named “ngMyAwesomeDirective” and used in the view using an attribute “ng-my-awesome-directive” or “data-ng-my-awesome-directive”. Some directives can also be used as comments, DOM elements name or even CSS classes.
+
+AngularJS 표준 라이브러리에서 제공하는 Directive는 "ngMyAwesomeDirective" 라는 네이밍을 사용하고  "ng-my-awesome-directive" 나 "data-ng-my-awesome-directive" 어트리뷰트를 사용하는 view에서 사용된다. 일부 directive들은 comments, DOM 엘리먼트이름, css class로 사용될수도 있다.
+
+Data Binding
+
+Angular does not only let you structure your views with directives, it also give you the ability to define the binding between the data in your scope and the content of your views. We have seen how we can display values from our scope using their attributes in expressions like {{user.name}}. You could also use operations in those expressions {{object.operation()}}.
+
+Angular는 directive를 사용해 view를 structre할 뿐아니라, scope의 data와 view의 컨텐츠 사이에 바인딩을 할수있다. {{user.name}} 같은 expression에서 어트리뷰트를 사용해 scope의 value를 노출하는 법을 보았다. {{object.operation()}} expression  처럼 operation을 사용할수도 있다.
+
+You can also create bidirectionnal binding in AngularJS very easily with the directive “[ngModel](http://docs.angularjs.org/api/ng.directive:ngModel)”.
+
+AngularJs에서 ngModel directive사용해  쉽게 양방향 binding을 할수도 있다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007513284218306>
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007513462467026>
+
+The result is directly binded to the value of the description. If you change the content of the text area, the description of the object in the scope is modified and the description in the paragraph is updated in real time.
+
+결과는 즉시 description의 value로 바인딩된다. text area의 content를 변경한다면, scope에서 object의 description은 수정되고 paragraph의descripton은 real time으로 업데이트된다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007516336172434>
+
+Filters
+
+In order to change the way your data are displayed in your page, AngularJS provides you with the [filter](http://docs.angularjs.org/guide/dev_guide.templates.filters.using_filters)mechanism. In the screenshot below, you can see how we can put the name in upper case with {{user.name | uppercase}}.
+
+page에서 노출되는 data를 변경하기 위해 AngularJs는 filter 메커니즘을 제공한다. 아래 그림에서 {{user.name | uppercase}} 처럼 하면 이름이 대분자로 변경되는 것을 볼수 있다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007527029622434>
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007524327428690>
+
+You can also easily create you own [filters](http://docs.angularjs.org/guide/dev_guide.templates.filters.creating_filters).
+
+filter를 쉽게 만들어 사용할 수도 있다.
+
+Partial Views
+
+AngularJS is very good to build [single page web applications](http://en.wikipedia.org/wiki/Single-page_application). For those who are not familiar with this concept, it consists on a web application where you only have one “real” HTML page whose content can be changed in Javascript without having to download a new page. The new content is created programmatically in Javascript of with the use of templates. Those applications have advantages like performances (since you are not downloading a new HTML page each time you are navigating to a new page) and drawbacks like history management (what happens if your users click on the button back of their browser?).
+
+AngularJS는 single page web application을 만들기 위해 이상적이다.  이 컨셉에 익숙하지 않는 사람들을 위해 설명하자면, single page application은 정말 하나의 HTML 페이지로 다른 페이지 다운로드 없이 javascript로 content를 변경하는 한다. 새로운 content는 template를 사용해 javascript를 사용해 만들어진다. 이런 application은 성능( 새로운 페이지로 이동할떄마다 새로운 HTML 페이지를 다운로드 하지 않아도 되기때문에 )과 같은 장점과 history 관리 같은 단점( 사용자가 브라우저의 back 버튼을 누른다면?)을 가진다.
+
+With AngularJS, you see that you are using a framework created by [people](https://github.com/angular?tab=members) who know what they are doing, as a result most of the problems of regular single page web applications are handled by AngularJS itself.
+
+AngularJS 사용하면,  일반적인 single page web application의 대부분의 문제를 다룰 수 있다.
+
+In order to build your application, You define a main page (index.html) which acts as a container for your web application. In this page, you can bind part of your application to a specific AngularJS module with the directive “[ngApp](http://docs.angularjs.org/api/ng.directive:ngApp)”. You can bind the whole page to a single AngularJS module if you want. After that, you can use the directive “[ngView](http://docs.angularjs.org/api/ng.directive:ngView)" in order to use partial views.
+
+application을 만들기 위해, web applcaition의 container역할을 하는 메인페이지 (index.html)을 정의한다. 이 페이지에서, ng-app directive를 사용해서 특정 angularJS 모듈에 application의 일부를 바인딩할수 있다. 원한다면, 단일 AngularJS 모듈에 전체 페이지를 바인드할수 있다.  그후, ngView directive를 사용해 부분적인 view를 구성할수있다.
+
+Your module will tell AngularJS which view should be display in the “ngView” element. This directive also let you separate the content of your application in dedicated files.
+
+modeule은 AngularJS에게 ngView 내부에서 display되어야 한다는 것을 알려준다. 이 directive는 dedicated 파일에서 application의 컨텐트를 분리하도록 한다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007534243408178>
+
+Since the beginning of this article, we have been using a dedicated view to display users information.
+
+이 article 초반부부터, 사용자정보를 보여주기위한 전용 view를 사용하고있다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007530480036642>
+
+Modules
+
+Now that we have seen how we can display the information that we want with AngularJS, let’s have a look under the hood. In AngularJS, applications are structured in [modules](http://docs.angularjs.org/guide/module). A module can depend on other modules and a module can contain controllers, services, directives and filters.
+
+AngularJS에서 원하는 정보를 보여주는 것을 보았다. 좀 더 자세히 알아보자. AngularJS에서 application은 module을 사용해 구조화한다. module은 다른 module을 참조할수 있고, controller, services, directice, filter를 가질 수 있다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007536034539026>
+
+The empty array, visible in the screenshot, is where you declare the modules needed by your module. We have already binded this module our view with the directive “ngApp” before.
+
+위 그림의 빈 배열은 모듈에서 필요한 모듈을 정의하는 곳이다. 이미 앞서 이 모듈에 ngApp directive를 가진 뷰를 bind했다.
+
+You can configure some services of your application thanks to the operation “config”. Since AngularJS has been created to build maintainable web applications, it helps you to separate your application in small, easily testable, components. As a result, AngularJS will often rely on dependency injection in order to plug the various components of your application together.
+
+config operator를 사용해 application에 service를 설정할수 있다. AngularJS는 maintainable web application을 만들기 때문에, application을 작은, 쉽게 테스트가능한, 컴포넌트로 분리하도록 도와준다.  그결과, AngularJS는 application의 다양한 컴포넌트들을 plugin 하기 위해 dependcy injection에 의존할 것이다.
+
+Dependency Injection
+
+The operation “config” is using [dependency injection](http://docs.angularjs.org/guide/di) in order to retrieve some elements of the application that should be configured when the module will be loaded. Here, we will use the service provider “[$routeProvider](http://docs.angularjs.org/api/ng.%24routeProvider)" in order to define the routes of our application. You have two ways of using dependency injection in AngularJS. You can pass a function to the operation with parameters named after the elements that you want to retrieve.
+
+config operation은 모듈이 로딩될때 설정되는 application의 elements를  찾기위해 dependency injection을 사용한다. application의 route를 정의하기 위해 $routeProvide 라는 service provider를 사용한다. AngularJs에서 DI를 사용하는 2가지 방법이 있다. 사용하기 원하는 element를 파라미터 이름으로 function에 전달하는 것이다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007542566665010>
+
+This solution is not really recommended since minification of the code would change the name of the variable which would prevent your application from working. If you want to use a robust solution, you should use an array with the name of the elements that you want to see injected and a function naming those elements.
+
+이 방법은 code minification을 하는경우 변수의 이름이 변경되기 때문에 동작하지 않아 추천되진 않는다. robust한 해결책을 원한다면, inject하기 원하는 element의 이름과 그 element 이름을 갖는 함수의 배열을 사용해야 한다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007542531230386>
+
+The name of the parameter of the function does not have to be the same as the name of the element injected.
+
+함수 파라미터의 이름은 injected되는 엘리먼트의 이름과 반드시 같을 필요는 없다.
+
+Routes
+
+Using the route provider, we can configure the [routes](http://docs.angularjs.org/api/ng.%24route) available in our application. For our example, we will only create two routes, one for our users “/users” and for any other routes, a redirection to our error page.
+
+route provide를 사용해, application에서 사용가능한 route를 설정할수 있다. 아래 예제에서 2개의 route를 만들것이다. 하나는 /users 이고 다른 route는 error page로 redirect한다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007553118747538>
+
+You can see that, if we go to the url “http://domain/#/users”, AngularJS will load the partial view “views/users.html” and use the controller “UsersCtrl”. For any other url, the error view will be used instead. We have seen how our application is organized, now let’s have a look at the behavior of the application.
+
+<http://domain/#/users> url을 호출한다면 angularJs는 views/users.html partial view를 로드하고, UserCtrl controller를 사용할 것이다. 대신 다른 url은 error view를 사용한다. application이 어떻게 만들어지는지 알아보았다. 이제 applicaiton의 동작에 대해 알아보자.
+
+Controllers
+
+In AngularJS, the [controller](http://docs.angularjs.org/guide/dev_guide.mvc.understanding_controller) is where the behavior of your application is located. Controllers are used to populate the scope with all the necessary data for the view. Using proper separation of concerns, controllers should never contain anything related to the DOM.
+
+AngularJS에서 controller는 application의 행동을 정의하는 곳이다. Controller는 view 에 필요한 data를 가진 scope를 만들기 위해 사용된다. separation of concern을 지키기 위해, controller에서는 DOM에 관련된것을 포함해선 안된다.
+
+Controllers communicate with the view using a specific service named “$scope”. This service let the controller give objects and functions to the views that can later be manipulated with expressions and directives. In order to be easily tested, controllers are defined using dependency injection.
+
+Controller는 $scope라는 이름의 service를 사용해 view와 communication을 한다. 이 service는 controller가 object와 function을 expresion과 directive로 조작되는 view에 전달하도록 한다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007552906964322>
+
+Scope
+
+The [scope](http://docs.angularjs.org/api/ng.%24rootScope.Scope) is used to link the controllers and the views to which they are binded. A controller can add data and function in its scope and then they will be accessible in the view. In our case, we have used in the view a variable named “users” which was created in the scope by the controller “UsersCtrl”.
+
+scope는 controller와 bind되는 view를 연결하기 위해 사용된다. controller는 data와 function을 scope에 추가할수 있고, view에서 접근하수 있다. 예제에서, users라는 이름의 변수를 view에서 사용하고,  그 변수는 UsersCtrl에서 scope에서 생성되었다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007554864370514>
+
+We have seen before how we can use the data in the scope from our view.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007530480036642>
+
+Without digging into the details too much, when changes are occuring on the scope, events are fired to warn those who are interested. The views are using those events to know if they should refresh the elements involved.
+
+간단히 설명하면, scope에 변경이 발생하면,  이를 알리는 event가 발생한다. view는 관련된 element를갱신해야되는지를 알기위해 해당 event를 사용하게 된다.
+
+Watch
+
+AngularJS comes with lot of operations to manipulate the scope. AngularJS provides the necessary tool to observe the changes on the data of the scope from the controller. With the operation “$watch”, a controller can add a listener on an attribute of its scope.
+
+AngularJS는 scope를 다루는 많은 operation을 제공한다. AngualrJS는 controller의 scope data를 변경을 관찰하기 위한 툴을 제공한다. $watch operation으로 controller는 scope의 attrbite에 listner를 추가할 수 있다.
+
+
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007569376839634>
+
+Events and root scope
+
+AngularJS also gives you access to a system of events and listeners on the scope. You can use the operation “$broadcast” in order to fire an event on a specific scope, then the event will be transmitted to the selected scope and all its children. If you want to send an event to the whole application, you can use the root scope thanks to $rootScope.
+
+AngularJS는 events 의 system과 scope의 listener에 접근을 허용한다. 특정 scope의 이벤트를 fire하기 위해 $broadcast operation을 사용할수있다. 그런뒤, event는 선택된 scope와 모든 하위 scope에 전파될 것이다. 만약 전체 application에 이벤트를 보내고 싶다면, $rootScope를 사용하면 된다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007568678873730>
+
+Services
+
+While controllers contains the behavior of the application that should be available to the view, you may have some code that you want to re-use or that you want to abstract from the controller which communicates directly with the view. For this, AngularJS let you define [services](http://docs.angularjs.org/guide/dev_guide.services.creating_services) that can be [injected in your controllers](http://docs.angularjs.org/guide/dev_guide.services.injecting_controllers) or in other services to build your application.
+
+controllers가 view에서 사용가능한 applcaition의 동작을 포함하는 반면, view 직접 commucate하는 controller로 부터 추상화 되거나 재사용하기 원하는 코드가 필요할지 모른다. 이를 위해 AngularJs는 applcation을 만들기 위해 controller나 다른 service에 inject되는 service를 제공한다.
+
+If you want to communicate with a server for example, you can inject the $http service into your own service. This service can be injected in your controller which will not have to manipulate HTTP requests directly.
+
+예를 들어, server와 communication 하길 원한다면, $http service를 inject하면 된다. 이 서비스는 직접 HTTP request를 디룰필요가 없는 controller에 inject될수 있다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007571161310418>
+
+Your custom services can be injected in your controller just like any regular AngularJS service.
+
+cumstom servie는 AngularJS에서 제공하는 service처럼 controller에 inject될수 있다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007574998940978>
+
+Your service can define a public API that will be used by the other services or controllers in which they will be injected.
+
+service는 inject될 service나 controller에서 사용될 public API를 정의할수 있다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007578825482290>
+
+REST communication
+
+In order to communicate with a restful server, AngularJS provides two services [$http](http://docs.angularjs.org/api/ng.%24http) and [$resource](http://docs.angularjs.org/api/ngResource.%24resource). $http is a small layer on top of XmlHttpRequest while $resource is working at a higher level of abstraction, both can perform the same job.
+
+restfull service와 communication 하기 위해, AngualrJS의 $http, $resource 2개의 service를 제공한다. $http는 XmlHttpRequest 위의 small layer인 반면, $resource는 더 높이 추상화되어 있다. 둘다 같은 일을 수행할수 있다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007583822548738>
+
+$resource let you communicate with a server using custom actions instead of relying on the default get, post, delete, etc. Those custom actions are binded to the default HTTP method. “Get” is using the method GET while “save” is using the method POST etc. Keep in mind that this service comes from the module “ngResource”. As such, your module will need a dependency to “ngResource” in order to let you inject “$resource” in your code.
+
+$resource는 기본적인 get,post,delete를 사용하지 않고 일반적인 action을 사용해 service와 communication 한다. 이 custom action을 기본 HTTP method에 bind된다. Get은 GET method를 사용하고, save는 POST 메소드를 사용한다. 이 service는 ngResource에서 왔다는 것을 명심하자. $resource를 사용하기 위해 ngResource dependency 필요하다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007587134085954>
+
+In order to make sure that you can test your application easily, AngularJS also comes with a[$httpBackend](http://docs.angularjs.org/api/ngMock.%24httpBackend) mock to test HTTP requests without a web server.
+
+어플리케이션 테스트를 쉽게하기 위해, AngularJS는 web server 없이 HTTP request를 테스트하기 위해 $httpBackend Mock을 제공한다.
+
+Custom directives
+
+We have seen how AngularJS provides you with directives in order to extend regular HTML. You can also create you very own [directives](http://docs.angularjs.org/guide/directive) in order to adapt your views to your needs. If you need to have Javascript code in order to manipulate the DOM, it should not be located in a controller but in your own custom directive.
+
+AngularJS가 일반적인 HTML을 확장하기 위해 directive를 제공하는 것을 보았다. 필요에 따라 directive를 만들어 사용할 수있다. 만약 DOM을 다루기 위한 Javascript code가 필요하다면, controller에서 하지 말고 custom diretive를 만들어라.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007588477643714>
+
+Using a custom directive is very easy.
+
+custom directive를 만드는 것은 쉽다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007588363433986>
+
+And we have our expected result immediatly.
+
+바로 원하는 결과를 얻을 수 있다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007598740641522>
+
+As I said before, directives are among the most powerful mechanisms of AngularJS and as such you have access to tons of options in order to build your own. You should definetly have a look at the documentation to learn more about everything you can do with directives.
+
+앞서 말했듯이 directive는 AngularJs의 가장 막강한 메커니즘 가운데 하나고,  여러가지 옵션을 제공한다. 문서를 통해 directive에 대해 좀 더 공부해보길 바란다.
+
+<https://plus.google.com/photos/105625286543794908607/albums/5870007481198325345/5870007601697359042>
+
+In a next post, you will see how we can improve our AngularJS application development with [Jenkins](http://jenkins-ci.org/)-friendly unit tests, code coverage and static analysis. In order to put in place continuous integration for our application, we will use tools like [Grunt](http://gruntjs.com/) and [Karma](http://karma-runner.github.io/0.8/index.html). We will also have a look at various tools like [Yeoman](http://yeoman.io/) and [Bower](http://twitter.github.io/bower/) to build and organize our application.
+
+다음 post에서 Jenkins-friendly test, code coverage, static analysis 같은 AngularJS Application 개발을 항샹 하수 있는 방법을 소개할 것이다. application의 지속적인 통합을 위해 Grunt와 Karma같은 tool을 사용할 것이다. Applcaition을 build하고 organize 하기 위해 Yeoman과 Bower같은 다양한 도구도 살표볼 것이다.
+
+For more news about AngularJS, don’t forget to suscribe to the [RSS](http://stephanebegaudeau.tumblr.com/rss) feed of this blog or follow me on[Twitter](https://twitter.com/sbegaudeau) or [Google+](https://plus.google.com/105625286543794908607).
+
+**[출처]** [[본문스크랩] AngularJs를 시작하기 하기 위해 알아야하는 모든 것 (남궁성의 코드초보스터디(자바 java, c언어))](http://cafe.naver.com/javachobostudy/106701) |**작성자** [tranquil](http://cafe.naver.com/javachobostudy.cafe?iframe_url=/CafeMemberNetworkView.nhn%3Fm=view%26memberid=tranquil84)
+
+A{% endraw %}

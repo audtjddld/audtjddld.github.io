@@ -1,0 +1,30 @@
+---
+title: "graalvm"
+date: 2023-08-18 17:20:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223187177319"
+---
+
+<https://www.oracle.com/kr/java/graalvm/what-is-graalvm/>
+> [**GraalVM 소개 | Oracle**](https://www.oracle.com/kr/java/graalvm/what-is-graalvm/)
+>
+> GraalVM과 JIT 컴파일러 또는 AOT(Ahead-of-Time) 컴파일러를 사용하여 Java 바이트코드를 생성함으로써 Java 애플리케이션 성능을 가속화하여 네이티브 실행 파일을 생성하는 방법을 알아보세요.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

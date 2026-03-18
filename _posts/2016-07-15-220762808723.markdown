@@ -1,0 +1,7 @@
+---
+title: "angularjs $http 일때 plain text 일때는 transformResponse 를 걸어줘야된다."
+date: 2016-07-15 12:30:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220762808723"
+---
+

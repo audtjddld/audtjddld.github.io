@@ -1,0 +1,160 @@
+---
+title: "JEUS session timeout 설정 부분"
+date: 2014-02-11 09:38:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60208995861"
+---
+
+출처 : <http://mcpaint.tistory.com/72>
+
+
+
+사전지식
+
+- Timeout설정은 분 단위.
+
+- 설정은 크게 2가지임. 소스/환경파일
+
+- 환경파일은 web.xml, webcommon.xml, WEBMain.xml 3개임.
+
+- 소스에 설정할 경우엔 무저건 우순순위는 1등~!
+
+
+
+
+
+JEUS 4, 5
+
+===========================================================================
+
+: WEBMain.xml의 shared설정 값에 따라 적용순서가 달라짐.
+
+=======================
+
+<session-config>
+
+    <timeout>30</timeout>
+
+    <shared>false</shared>
+
+</session-config>
+
+=======================
+
+
+
+<shared>true</shared>일 경우
+
+1. setMaxInactiveInterval
+
+2. WEBMain.xml
+
+3. web.xml
+
+4. webcommon.xml
+
+
+
+<shared>false</shared>일 경우
+
+1. setMaxInactiveInterval
+
+2. web.xml
+
+3. webcommon.xml
+
+4. WEBMain.xml
+
+===========================================================================
+
+
+
+
+
+JEUS6
+
+===========================================================================
+
+: JEUS6에서는 <shared>값과는 무관함.
+
+1. setMaxInactiveInterval
+
+2. web.xml
+
+3. webcommon.xml
+
+4. WEBMain.xml
+
+===========================================================================
+
+
+
+
+
+BONUS
+
+각 설정법
+
+
+
+web.xml
+
+
+
+<web-app>
+
+    <session-config>
+
+        <session-timeout>30</session-timeout>
+
+    </session-config>
+
+...중략...
+
+</web-app>
+
+
+
+
+
+webcommon.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee">
+
+    <session-config>
+
+        <session-timeout>30</session-timeout>
+
+    </session-config>
+
+    ... 중략 ...
+
+
+
+
+
+
+
+WEBMain.xml
+
+<web-container>
+
+    <context-group>
+
+         ... 중략 ...
+
+        <session-config>
+
+            <timeout>30</timeout>  <!-- 분단위 -->
+
+            <shared>false</shared>
+
+        </session-config>
+
+        ... 중략 ...
+
+    </context-group>
+
+</web-container>

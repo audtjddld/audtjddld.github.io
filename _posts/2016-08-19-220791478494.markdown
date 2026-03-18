@@ -1,0 +1,92 @@
+---
+title: "DDD start 4"
+date: 2016-08-19 13:48:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220791478494"
+---
+
+4장을 읽다보니 Entity와 Value의 구분이 애매모호 했다.
+
+검색해서 찾던 중 <http://cyberx.tistory.com/57> 블로그에서 정리된 내용으로 이해를 할 수 있었다.
+
+ Entity
+
+- 속성이 아닌 식별성을 기준으로 정의되는 도메인 객체.
+
+ex) DB , ERD
+
+​
+
+Value object
+
+- 식별성이 아닌 속성을 이용해 정의되는 불변 객체
+
+- 모든 것이 식별성을 부여하고 Entity로 관리한다면 복잡성 증가
+
+- 과거 Java의 DTO(Data Transfer Object) 패턴의 Value Object과 관계 없음.
+
+- Entity와 Value Object를 구별하는 첫 번째 조건은 식별성 ( ID)
+
+- 식별성을 가지만 Entity 그렇지 않으면 Value Object
+
+​
+
+Service
+
+ - Domain Object에서 위치시키기 어려운 operation을 가지는 객체
+
+- 여러 Domain Object 다루는 연산 Service의 오퍼레이션은 일반적으로 stateless
+
+- Domain Object에 해당되는 역할을 Service operation으로 만드는 경우 도메인 역할을 침범하여 강 결합이 일어남.
+
+​
+
+Module
+
+ - 유사 작업 및 개념을 그룹화 하여 복잡도를 감소시키는 기법
+
+ - 응집도가 높은 모듈은 모듈간의 관계는 약 결합.
+
+ - Java로 구현하는 경우 Package로 구성될 수 있다.
+
+( 단위 묶는 부분을 이야기 하는 것 같음)
+
+​
+
+Aggregate
+
+ - 연관된 Entity와 Value Object의 묶음. 일관성과 트랜잭션, 분산의 단위, 캡슐화를 통한 복잡성 관리
+
+ - 예를 들어 쇼핑몰 사이트에서 주문 Entity내에 배송주소 정보를 우편번호 주소1, 주소2, 상세주소 이런식으로 각 컬럼으로 정의하는 것이 아니라, 주소라는 Value Object를 별도로 작성하고 주문 Entity는 주소 Value Object를 포함하는 방식으로 관계 일관성 및 단순화를 유지한다.
+
+​
+
+Factory
+
+ - 복잡한 Entity의 생성 절차에 캡슐화 할 수 있는 개념
+
+- 생성하기 복잡한 Aggregate의 일관성 유지
+
+- 생성시 Aggregate의 일관성 유지
+
+​
+
+Repository
+
+ - 도메인 영역과 데이터 인프라스트럭쳐 계층의 분리하여 데이터 계층에 대한 결합도를 낮추기 위한 방안
+
+- 생성된 Aggregate에 대한 영속성 관리, 조회, 등록, 수정, 삭제시 Aggregate의 일관성 유지
+
+- DB 및 데이터 저장소의 데이터를 조회하고 저장하는 경우 Repository를 활용한다.
+
+​
+
+​
+
+Entity 객체와 Value Type의 구분.
+
+​
+
+Entity 객체는 getter, setter를 허용하는 반면.
+
+Value Type은 불변형으로 사용한다.

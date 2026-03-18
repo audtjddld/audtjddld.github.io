@@ -1,0 +1,782 @@
+---
+title: "Spring Authorization Server reference"
+date: 2023-03-07 14:30:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223037417320"
+---
+
+OAuth 2가 신규로 변경된 것 같다.
+
+기존 OAuth를 이용하여 oauth2.0 구성은 불가능한 것 같고, oauth authorization server 라는 형태로 프로젝트가 신규로 띄워진 것 같다.
+
+​
+
+<https://github.com/spring-projects/spring-authorization-server>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                [*](https://github.com/spring-projects/spring-authorization-server)
+> [**GitHub - spring-projects/spring-authorization-server: Spring Authorization Server**](https://github.com/spring-projects/spring-authorization-server)
+>
+> Spring Authorization Server. Contribute to spring-projects/spring-authorization-server development by creating an account on GitHub.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+baeldung
+
+<https://www.baeldung.com/spring-security-oauth-auth-server>
+
+​
+
+authorization server docs:
+
+<https://docs.spring.io/spring-authorization-server/docs/current/reference/html/protocol-endpoints.html#oauth2-token-endpoint>
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+OAuth2 Authorization Endpoint
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+OAuth2AuthorizationEndpointConfigurer는 OAuth2 Authorization의 endpoint를 customize할 수 있는 기능을 제공한다. 이렇게 확장할 수 있는 점은 OAuth2 authorization request들의 pre-processing, main-processint 그리고 post processing의 Logic을 customize할 수 있다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+@Bean
+public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+	OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+		new OAuth2AuthorizationServerConfigurer();
+	http.apply(authorizationServerConfigurer);
+
+	authorizationServerConfigurer
+		.authorizationEndpoint(authorizationEndpoint ->
+			authorizationEndpoint
+				.authorizationRequestConverter(authorizationRequestConverter)
+				.authorizationRequestConverters(authorizationRequestConvertersConsumer)
+				.authenticationProvider(authenticationProvider)
+				.authenticationProviders(authenticationProvidersConsumer)
+				.authorizationResponseHandler(authorizationResponseHandler)
+				.errorResponseHandler(errorResponseHandler)
+				.consentPage("/oauth2/v1/authorize")
+		);
+
+	return http.build();
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![](/assets/images/posts/223037417320/7e26e0238cc8.png?type=w580)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. authorizationRequestConverter(): HttpServletRequest에서 OAuth2AuthorizationCodeRequestAuthenticationToken 또는 OAuth2AuthorizationConsentAuthenticationToken의 인스턴스로 OAuth2 인증 요청(또는 동의)을 추출하려고 시도할 때 사용되는 AuthenticationConverter(pre-processing)를 추가합니다.
+
+​
+
+2. authorizationRequestConverters(): 기본 및 (선택적으로) 추가된 AuthenticationConverter 목록에 대한 액세스를 제공하는 소비자를 설정하여 특정 AuthenticationConverter를 추가, 제거 또는 사용자 지정하는 기능을 허용합니다.
+
+​
+
+3. authenticationProvider(): OAuth2AuthorizationCodeRequestAuthenticationToken 또는 OAuth2AuthorizationConsentAuthenticationToken 인증 요청을 처리할 때 AuthenticationProvider (main processor*) 추가합니다.
+
+​
+
+4. authenticationProviders() : 기본 및 (선택적으로) 추가된 AuthenticationProvider 목록에 대한 엑세스 기능을 제공하는 소비자를 설정하여 특정 AuthenticationProvider를 추가, 제거 또는 사용자 지정하는 기능을 허용합니다.
+
+​
+
+5. authorizationResponseHandler(): "인증된" OAuth2AuthorizationCodeRequestAuthenticationToken을 처리하고 OAuth2AuthorizationResponse를 반환하는 데 사용되는 AuthenticationSuccessHandler(사후 처리기)입니다.
+
+​
+
+6. errorResponseHandler(): OAuth2AuthorizationCodeRequestAuthenticationException을 처리하고 OAuth2Error 응답을 반환하는 데 사용되는 AuthenticationFailureHandler(사후 처리기)입니다.
+
+​
+
+7. consentPage(): 권한 부여 요청 흐름 중에 동의가 필요한 경우 리소스 소유자를 리디렉션할 사용자 지정 동의 페이지의 URI입니다.
+
+​
+
+OAuth2AuthorizationEndpointConfigurer의 설정은 OAuth2AuthorizationEndpointFilter와 OAuth2 authorization server SecurityFilterChain @Bean 으로 등록합니다. OAuth2AuthorizationEndpointFilter는 OAuth2의 인증 요청들의 처리를 하는 Filter이다.(그리고 consents)
+
+​
+
+OAuth2AuthorizationEndpointFilter 아래의 기본설정이다.
+
+​
+
+-
+**AuthenticationConverter** — OAuth2AuthorizationCodeRequestAuthenticationConverter와 OAuth2AuthorizationConsentAuthenticationConverter 가 조합된 DelegatingAuthenticationConverter
+
+-
+**AuthenticationManager** — OAuth2AuthorizationCodeRequestAuthenticationProvider and OAuth2AuthorizationConsentAuthenticationProvider가 조합된 AuthenticationManager
+
+-
+**AuthenticationSuccessHandler** — 내부적으로 "인증된" OAuth2AuthorizationCodeRequestAuthenticationToken을 처리하고, OAuth2AuthorizationResponse 반환 합니다.
+
+-
+**AuthenticationFailureHandler** — OAuth2Error와 연관이 있는 OAuth2AuthorizationCodeRequestAuthenticationException 다루는 것을 구현하거나OAuth2Error response를 반환합니다.
+
+​
+
+​
+
+**Customizing Authorization Request Validation**
+
+​
+
+OAuth2AuthorizationCodeRequestAuthenticationValidator OAuth2 인증 요청 파라미터 안에 Authorization Code를 검증하는 것으로 기본적으로 사용합니다. 기본 구현은 redirect_uri와 scope 파라미터들로 검증을 구현합니다. 만약 검증 실패되면 OAuth2AuthorizationCodeRequestAuthenticationException 예외를 던집니다.
+
+​
+
+OAuth2AuthorizationCodeRequestAuthenticationProvider 기본 인증 요청 검증을 재정의 할 수 있도록 Consumer<OAuth2AuthorizationCodeRequestAuthenticationContext> to setAuthenticationValidator() 로 제공해줍니다.
+
+​
+
+OAuth2AuthorizationCodeRequestAuthenticationContext는  OAuth2 인증 요청 파라미터를 포함하고 있는 OAuth2AuthorizationCodeRequestAuthenticationToken 가지고 있습니다.
+
+​
+
+유즈케이스는 redirect_uri 파라미터안에 localhost를 허용하도록 하였습니다.
+
+​
+
+아래 예제는 OAuth2AuthorizationCodeRequestAuthenticationProvider에 redirect_uri 파라미터 안에 localhost를 허용하기 위한  변경된 authentication validator를 어떻게 설정하는지 보여줍니다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+@Bean
+public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+	OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+		new OAuth2AuthorizationServerConfigurer();
+	http.apply(authorizationServerConfigurer);
+
+	authorizationServerConfigurer
+		.authorizationEndpoint(authorizationEndpoint ->
+			authorizationEndpoint
+				.authenticationProviders(configureAuthenticationValidator())
+		);
+
+	return http.build();
+}
+
+private Consumer> configureAuthenticationValidator() {
+	return (authenticationProviders) ->
+		authenticationProviders.forEach((authenticationProvider) -> {
+			if (authenticationProvider instanceof OAuth2AuthorizationCodeRequestAuthenticationProvider) {
+				Consumer authenticationValidator =
+					// Override default redirect_uri validator
+					new CustomRedirectUriValidator()
+						// Reuse default scope validator
+						.andThen(OAuth2AuthorizationCodeRequestAuthenticationValidator.DEFAULT_SCOPE_VALIDATOR);
+
+				((OAuth2AuthorizationCodeRequestAuthenticationProvider) authenticationProvider)
+					.setAuthenticationValidator(authenticationValidator);
+			}
+		});
+}
+
+static class CustomRedirectUriValidator implements Consumer {
+
+	@Override
+	public void accept(OAuth2AuthorizationCodeRequestAuthenticationContext authenticationContext) {
+		OAuth2AuthorizationCodeRequestAuthenticationToken authorizationCodeRequestAuthentication =
+			authenticationContext.getAuthentication();
+		RegisteredClient registeredClient = authenticationContext.getRegisteredClient();
+		String requestedRedirectUri = authorizationCodeRequestAuthentication.getRedirectUri();
+
+		// Use exact string matching when comparing client redirect URIs against pre-registered URIs
+		if (!registeredClient.getRedirectUris().contains(requestedRedirectUri)) {
+			OAuth2Error error = new OAuth2Error(OAuth2ErrorCodes.INVALID_REQUEST);
+			throw new OAuth2AuthorizationCodeRequestAuthenticationException(error, null);
+		}
+	}
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**OAuth2 Token Endpoint**
+
+​
+
+OAuth2TokenEndpointConfigurer는 OAuth2 Token의 endpoint를 customize할 수 있도록 제공한다.
+
+확장 포인트들은 OAuth2 access token 요청들의 pre-processing, main-processing, post processing login을 수정할 수 있다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+@Bean
+public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+	OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+		new OAuth2AuthorizationServerConfigurer();
+	http.apply(authorizationServerConfigurer);
+
+	authorizationServerConfigurer
+		.tokenEndpoint(tokenEndpoint ->
+			tokenEndpoint
+				.accessTokenRequestConverter(accessTokenRequestConverter)
+				.accessTokenRequestConverters(accessTokenRequestConvertersConsumer)
+				.authenticationProvider(authenticationProvider)
+				.authenticationProviders(authenticationProvidersConsumer)
+				.accessTokenResponseHandler(accessTokenResponseHandler)
+				.errorResponseHandler(errorResponseHandler)
+		);
+
+	return http.build();
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![](/assets/images/posts/223037417320/363ebbb0070c.png?type=w580)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. accessTokenRequestConverter(): HttpServletRequest부터 OAuth2AuthorizationGrantAuthenticationToken를 인스턴스화 해서 OAuth2 Access Token 요청으로부터 pre-processing을 할 수 있는 AuthenticationConverter를 추가할 수 있습니다.
+
+​
+
+2. accessTokenRequestConverters(): Consumer들에게 특별하게 변형된 AuthenticationConverter를 추가,제거를 선택적으로 제공할 수 있습니다.
+
+​
+
+3. authenticationProvider(): OAuth2AuthorizationGrantAuthenticationToken의 인증을 위한 AuthenticationProvider(main-processing)을 추가할 수 있습니다.
+
+​
+
+4. authenticationProviders() : Consumer들에게 접근할 수 있는 (선택적으로) 특별하게 변형된 AuthencationProvider를 추가, 제거, 할 수 있습니다.
+
+​
+
+5. accessTokenResponseHandler(): The AuthenticationSuccessHandler (post-processor)는
+
+OAuth2AccessTokenAuthenticationToken and returning the OAuth2AccessTokenResponse을 다루기 위해 사용할 수 있습니다.
+
+​
+
+6. errorResponseHandler(): The AuthenticationFailureHandler (post-processor)는 OAuth2AuthenticationException and returning the OAuth2Error response 다루기 위해 사용할 수 있다.
+
+​
+
+OAuth2TokenEndpointConfigurer는 the OAuth2TokenEndpointFilter와 the OAuth2 authorization server SecurityFilterChain @Bean으로 설정할 수 있다.
+
+​
+
+authorization grant type들은 authorization_code로 refersh_token, authorization_code 그리고 client_credential들을 지원한다.
+
+​
+
+OAuth2TokenEndpointFilter는 아래 기본 설정을 참고
+
+-
+**AuthenticationConverter** — A DelegatingAuthenticationConverter composed of OAuth2AuthorizationCodeAuthenticationConverter, OAuth2RefreshTokenAuthenticationConverter, and OAuth2ClientCredentialsAuthenticationConverter.
+
+-
+**AuthenticationManager** — An AuthenticationManager composed of OAuth2AuthorizationCodeAuthenticationProvider, OAuth2RefreshTokenAuthenticationProvider, and OAuth2ClientCredentialsAuthenticationProvider.
+
+-
+**AuthenticationSuccessHandler** — An internal implementation that handles an OAuth2AccessTokenAuthenticationToken and returns the OAuth2AccessTokenResponse.
+
+-
+**AuthenticationFailureHandler** — An internal implementation that uses the OAuth2Error associated with the OAuth2AuthenticationException and returns the OAuth2Error response.
+
+​
+
+**OAuth2 Token Introspection Endpoint**
+
+​
+
+OAuth2TokenIntrospectionEndpointConfigurer OAuth2 Token 검증 endpoint를 변경하는 기능을 제공합니다.
+
+이러한 정의의 좋은 점들은 OAuth2 검증 요청들을 위한 pre-processing, main-processing, post-processing logic 변경할 수 있다.
+
+​
+
+OAuth2TokenIntrospectionEndpointConfigurer는 설정 옵션들을 따르고 있다.
+
+​
+
+
+
+
+
+
+
+
+
+
+```
+@Bean
+public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+	OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+		new OAuth2AuthorizationServerConfigurer();
+	http.apply(authorizationServerConfigurer);
+
+	authorizationServerConfigurer
+		.tokenIntrospectionEndpoint(tokenIntrospectionEndpoint ->
+			tokenIntrospectionEndpoint
+				.introspectionRequestConverter(introspectionRequestConverter)
+				.introspectionRequestConverters(introspectionRequestConvertersConsumer)
+				.authenticationProvider(authenticationProvider)
+				.authenticationProviders(authenticationProvidersConsumer)
+				.introspectionResponseHandler(introspectionResponseHandler)
+				.errorResponseHandler(errorResponseHandler)
+		);
+
+	return http.build();
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![](/assets/images/posts/223037417320/a0cb6fd3aa94.png?type=w580)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+-
+introspectionRequestConverter(): HttpServletRequest를 OAuth2TokenIntrospectionAuthenticationToken으로 부터 OAuth2 검증 요청을 추출하는 것을 시도하는 AuthenticationConverter(pre-processor)를 추가할 수 있다.
+
+-
+ introspectionRequestConverters(): 본 및 (선택적으로) 추가된 AuthenticationConverter. 목록에 대한 엑세스 기능을 제공하는 소비자를 설정하여 특정 AuthenticationConverter. 추가, 제거 또는 사용자 지정하는 기능을 허용합니다.
+
+-
+authenticationProvider(): 추가하는 AuthenticationProvider(main-processor)는 OAuth2TokenIntrospectionAuthenticationToken의 검증하는 것을 위해 사용됩니다.
+
+-
+authenticationProviders() :  본 및 (선택적으로) 추가된 AuthenticationProvider  목록에 대한 엑세스 기능을 제공하는 소비자를 설정하여 특정 AuthenticationProvider 추가, 제거 또는 사용자 지정하는 기능을 허용합니다.
+
+-
+introspectionResponseHandler(): The AuthenticationSuccessHandler (post-processor)는 "인증된" OAuth2TokenIntrospectionAuthenticationToken and returning the OAuth2TokenIntrospection response를 위해 사용 됩니다.
+
+-
+errorResponseHandler(): The AuthenticationFailureHandler (post-processor)는 OAuth2AuthenticationException 과 OAuth2Error response을 다루기 위해 사용됩니다.
+
+​
+
+OAuth2TokenIntrospectionEndpointConfigurer은 OAuth2TokenIntrospectionEndpointFilter 과  the OAuth2 authorization server SecurityFilterChain @Bean.등록으로 설정합니다.
+
+OAuth2TokenIntrospectionEndpointFilter는OAuth2 검증 요청 filter 입니다.
+
+​
+
+-
+**AuthenticationConverter** — An OAuth2TokenIntrospectionAuthenticationConverter.
+
+-
+**AuthenticationManager** — An AuthenticationManager composed of OAuth2TokenIntrospectionAuthenticationProvider.
+
+-
+**AuthenticationSuccessHandler** — An internal implementation that handles an “authenticated” OAuth2TokenIntrospectionAuthenticationToken and returns the OAuth2TokenIntrospection response.
+
+-
+**AuthenticationFailureHandler** — An internal implementation that uses the OAuth2Error associated with the OAuth2AuthenticationException and returns the OAuth2Error response.
+
+​
+
+**OAuth2 Token Revocation Endpoint**
+
+​
+
+OAuth2TokenRevocationEndpointConfigurer 변경가능한 OAuth2 Token 해지 endpoint를 제공합니다.
+
+이것의 확장된 의미는 OAuth2 해지 요청을 위한 pre-processing, main-processing, post-processing logic을 변경할 수 있습니다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+@Bean
+public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+	OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+		new OAuth2AuthorizationServerConfigurer();
+	http.apply(authorizationServerConfigurer);
+
+	authorizationServerConfigurer
+		.tokenRevocationEndpoint(tokenRevocationEndpoint ->
+			tokenRevocationEndpoint
+				.revocationRequestConverter(revocationRequestConverter)
+				.revocationRequestConverters(revocationRequestConvertersConsumer)
+				.authenticationProvider(authenticationProvider)
+				.authenticationProviders(authenticationProvidersConsumer)
+				.revocationResponseHandler(revocationResponseHandler)
+				.errorResponseHandler(errorResponseHandler)
+		);
+
+	return http.build();
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![](/assets/images/posts/223037417320/537745c2bb87.png?type=w580)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-
+  revocationRequestConverter(): AuthenticationConverter (pre-processor) 추가하는 것은  HttpServletRequest 로부터 인스턴스화 된 OAuth2TokenRevocationAuthenticationToken 에서 OAuth2 폐지 요청에서 추출하는 것에 사용됩니다.
+
+-
+revocationRequestConverters(): Consumer들에게 접근할 수 있는 기본적인 것과 (선택적인) 특별한AuthenticationConverter 추가, 제거, 변경 할 수 있도록 허용합니다.
+
+3. authenticationProvider() : AuthenticationProvider (main-processor) 는OAuth2TokenRevocationAuthenticationToken을 인증하기 위해 사용 됩니다.
+
+4. authenticationProviders(): Consumer들에게 접근할 수 있는 기본적인 것과 (선택적인) AuthenticationProvider  추가, 제거, 변경 할 수 있도록 허용합니다.
+
+5.revocationResponseHandler():   AuthenticationSuccessHandler (post-processor)는 "인증된" OAuth2TokenRevocationAuthenticationToken 과 OAuth2 revocation response 을 다룰 수 있게 사용 됩니다.
+
+6. errorResponseHandler(): AuthenticationFailureHandler(post-processor) OAuth2AuthenticationException 과 returning the OAuth2Error response를 다루기 위해 사용 됩니다.
+
+​
+
+OAuth2TokenRevocationEndpointConfigurer는 OAuth2TokenRevocationEndpointFilter와 등록된 OAuth2 authorization server SecurityFilterChain @Bean으로 설정합니다.
+
+OAuth2TokenRevocationEndpointFilter는 OAuth2 해지 요청 처리의 Filter 이다.
+
+​
+
+Auth2TokenRevocationEndpointFilter is configured with the following defaults:
+
+-
+**AuthenticationConverter** — An OAuth2TokenRevocationAuthenticationConverter.
+
+-
+**AuthenticationManager** — An AuthenticationManager composed of OAuth2TokenRevocationAuthenticationProvider.
+
+-
+**AuthenticationSuccessHandler** — An internal implementation that handles an “authenticated” OAuth2TokenRevocationAuthenticationToken and returns the OAuth2 revocation response.
+
+-
+**AuthenticationFailureHandler** — An internal implementation that uses the OAuth2Error associated with the OAuth2AuthenticationException and returns the OAuth2Error response.
+
+​
+
+**​**
+
+**OAuth2 Authorization Server Metadata Endpoint**
+
+​
+
+OAuth2AuthorizationServerMetadataEndpointConfigurer OAuth2 AuthorizationServer의 Metadata endpoint를 customize 할 수 있도록 제공해줍니다.
+
+
+
+
+
+
+
+
+
+```
+@Bean
+public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+	OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+		new OAuth2AuthorizationServerConfigurer();
+	http.apply(authorizationServerConfigurer);
+
+	authorizationServerConfigurer
+		.authorizationServerMetadataEndpoint(authorizationServerMetadataEndpoint ->
+			authorizationServerMetadataEndpoint
+				.authorizationServerMetadataCustomizer(authorizationServerMetadataCustomizer));
+
+	return http.build();
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+authorizationServerMetadataCustomizer() : OAuth2 Authorization Server 메타데이터에 대한 액세스를 제공하는 소비자.권한 부여 서버의 구성에 대한 클레임을 사용자 정의할 수 있는 작성기입니다.
+
+​
+
+​
+
+OAuth2AuthorizationServerMetadataEndpointConfigurer 는 OAuth2AuthorizationServerMetadataEndpointFilter와 OAuth2 authorization server SecurityFilterChain @Bean으로 등록하여 설정할 수 있습니다.
+
+​
+
+​
+
+**JWK Set Endpoint**
+
+​
+
+OAuth2AuthorizationServerConfigurer는 JWK Set endpoin를 제공합니다.
+
+​
+
+..
+
+​
+
+ Opne ID 등은 뒤에 이어서
+
+<https://docs.spring.io/spring-authorization-server/docs/current/reference/html/protocol-endpoints.html#oidc-provider-configuration-endpoint>
+> [**Protocol Endpoints**](https://docs.spring.io/spring-authorization-server/docs/current/reference/html/protocol-endpoints.html#oidc-provider-configuration-endpoint)
+>
+> Protocol Endpoints Back to index OAuth2 Authorization Endpoint Customizing Authorization Request Validation OAuth2 Token Endpoint OAuth2 Token Introspection Endpoint OAuth2 Token Revocation Endpoint OAuth2 Authorization Server Metadata Endpoint JWK Set Endpoint OpenID Connect 1.0 Provider Configurat...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

@@ -1,0 +1,171 @@
+---
+title: "spring boot gradle properties 가져오기"
+date: 2023-09-01 17:51:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223199819898"
+---
+
+​
+> [**Gradle extract function and gradle version management**](https://blog.naver.com/kkforgg/223197409843)
+>
+> gradle project의 버전 관리에 대해 작성합니다. 구조 gradle version을 major, minor, patch로 구조로 나...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+버전 관리하는 것을 gradle에 properties로 관리하고, 이 버전을 api response에 넣는 방법에 대해 알아봤다.
+
+​
+
+gradle task 중 'processResources' 라는 task를 이용하면 gradle project내 정의되어 있는 properties들을 application properties로 가져올 수 있고, 이 값을 이용해서 응답정보로 활용할 수 있는 것 같다.
+
+​
+
+gradle kts로는 불러오는 방법이 조금 달랐고, 불러오는 방법은 stackoverflow를 이용해서 알아냈다.
+
+​
+
+참고 링크
+
+<https://velog.io/@yyong3519/SpringBoot-Gradle%EC%97%90-%EC%A0%95%EC%9D%98%EB%90%98%EC%96%B4%EC%9E%88%EB%8A%94-%EC%A0%95%EB%B3%B4-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0>
+> [**SpringBoot - Gradle에 정의되어있는 정보 가져오기**](https://velog.io/@yyong3519/SpringBoot-Gradle%EC%97%90-%EC%A0%95%EC%9D%98%EB%90%98%EC%96%B4%EC%9E%88%EB%8A%94-%EC%A0%95%EB%B3%B4-%EA%B0%80%EC%A0%B8%EC%98%A4%EA%B8%B0)
+>
+> 출처
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<https://stackoverflow.com/questions/40096007/how-to-configure-the-processresources-task-in-a-gradle-kotlin-build>
+> [**How to configure the processResources task in a Gradle Kotlin build**](https://stackoverflow.com/questions/40096007/how-to-configure-the-processresources-task-in-a-gradle-kotlin-build)
+>
+> I have the following in a groovy-based build script. How do I do the same in a kotlin-based script? processResources { filesMatching('application.properties'){ expand(project.properti...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+build.gradle.kts
+
+
+
+
+
+
+
+
+
+```
+configure("processResources") {
+    filesMatching("application.yml") {
+        expand(project.properties)
+    }
+}
+
+inline fun  Project.configure(name: String, configuration: C.() -> Unit) {
+    (this.tasks.getByName(name) as C).configuration()
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+build path를 확인해보면 application.yml 파일에 추가된 내용을 확인할 수 있다.
+
+​
+
+이걸 이용하여 response 해더마다 version을 추가해주려고 한다.
+
+​
+
+이때 header name을 어떻게 지어주는 것이 좋을까? 하고 검색해보니 **X-API-VERSION **으로 사용하는 것 같아 이것으로 적용했다.
+
+​
+
+<https://webtechsurvey.com/response-header/x-api-version>
+> [**X-API-Version HTTP response header**](https://webtechsurvey.com/response-header/x-api-version)
+>
+> X-API-Version HTTP response header usage, prevalence and typical values. Create website list that use X-API-Version
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+​
+
+​

@@ -1,0 +1,178 @@
+---
+title: "Kustomize"
+date: 2023-01-02 09:45:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222972462230"
+---
+
+Kubernetes에서 custom하게 설정 정보를 변경할 수 있는 방법이 있는데, 그것이 kustomize인 것 같다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+Kustomize는 kustomization 파일을 통해 쿠버네티스 오브젝트를 사용자가 원하는 대로 변경하는(customize)
+독립형 도구이다.﻿
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+출처: <https://kubernetes.io/ko/docs/tasks/manage-kubernetes-objects/kustomization/>
+
+​
+
+현재 구성으로는 production, dev 환경에 맞춰서 설정 파일들을 관리할 수 있도록 도와주는 것 같다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        *
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+이때 kustomize 사용법 알아보기 위해 아래 reference 문서를 살펴보았다.
+
+​
+
+kustomization yaml file fomat은 아래 링크를 참고하면 된다.
+
+<https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/>
+
+​
+
+​
+
+내장 기능들이 많이 작성되어 있어서 변경이 필요한 값들을 yaml파일로 정의하여 관리할 수 있다.
+
+<https://kubectl.docs.kubernetes.io/references/kustomize/builtins/>
+
+​
+
+​
+
+cli는 아래 링크를 참고하면 된다.
+
+<https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/>
+
+​
+
+----------------- kustomize options ----------------
+
+​
+
+
+
+
+
+
+
+
+
+
+```
+Kustomize 기능 리스트
+----------------------------------------------
+필드	유형	설명
+-----------------------------------------------
+namespace	string	모든 리소스에 네임스페이스 추가
+namePrefix	string	모든 리소스 네임에 이 필드의 값이 접두사로 추가된다
+nameSuffix	string	모든 리소스 네임에 이 필드의 값이 접미사로 추가된다
+commonLabels	map[string]string	모든 리소스와 셀렉터에 추가될 레이블
+commonAnnotations	map[string]string	모든 리소스에 추가될 어노테이션
+resources	[]string	이 리스트 내 각각의 항목은 반드시 존재하는 리소스 구성 파일로 해석되어야 한다.
+configMapGenerator	[]ConfigMapArgs	이 리스트의 각 항목은 컨피그맵을 생성한다.
+secretGenerator	[]SecretArgs	이 리스트의 각 항목은 시크릿을 생성한다.
+generatorOptions	GeneratorOptions	모든 컨피그맵 및 시크릿 생성자(generator)의 동작을 수정한다.
+bases	[]string	이 리스트 내 각각의 항목은 kustomization.yaml 파일을 가지는 디렉터리로 해석되어야 한다.
+patchesStrategicMerge	[]string	이 리스트 내 각각의 항목은 쿠버네티스 오브젝트의 전략적 병합 패치로 해석되어야 한다.
+patchesJson6902	[]Patch	이 리스트 내 각각의 항목은 쿠버네티스 오브젝트와 Json 패치로 해석되어야 한다.
+vars	[]Var	각각의 항목은 한 리소스의 필드에서 텍스트를 캡쳐한다.
+images	[]Image	각각의 항목은 패치를 생성하지 않고 하나의 이미지에 대한 name, tags 그리고/또는 digest를 수정한다.
+configurations	[]string	이 리스트 내 각각의 항목은 Kustomize 변환 설정을 포함하는 파일로 해석되어야 한다.
+crds	[]string	이 리스트 내 각각의 항목은 쿠버네티스 타입에 대한 OpenAPI 정의 파일로 해석되어야 한다.
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+하단 : <https://kubernetes.io/ko/docs/tasks/manage-kubernetes-objects/kustomization/>
+
+​
+
+​
+
+Lable
+
+레이블* 은 파드와 같은 오브젝트에 첨부된 키와 값의 쌍이다. 레이블은 오브젝트의 특성을 식별하는 데 사용되어 사용자에게 중요하지만, 코어 시스템에 직접적인 의미는 없다. 레이블로 오브젝트의 하위 집합을 선택하고, 구성하는데 사용할 수 있다. 레이블은 오브젝트를 생성할 때에 붙이거나 생성 이후에 붙이거나 언제든지 수정이 가능하다. 오브젝트마다 키와 값으로 레이블을 정의할 수 있다. 오브젝트의 키는 고유한 값이어야 한다.
+
+​
+
+Spec
+
+<https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status>
+<https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#spec-and-status>
+​

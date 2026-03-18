@@ -1,0 +1,173 @@
+---
+title: "[공유] 솔라리스에 JDK6 설치하기"
+date: 2013-09-09 16:48:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60199641038"
+---
+
+jdk 변경 방법
+
+
+
+-------------------------- 링크 내용 --------------------------------
+
+
+
+**<솔라리스에서 JDK6을 설치하는 방법>**
+
+
+
+설치의 편의를 위해서 솔라리스 패키지 형태로 설치 할것입니다.
+
+
+
+우선 솔라리스 커널 정보를 확인하여 JDK를 다운로드 받아야 합니다.
+
+
+
+다운로드 경로
+
+<http://www.oracle.com/technetwork/java/javase/downloads/jdk6-downloads-1637591.html>
+
+솔라리스 콘솔에서 다음 명령어를 칩니다.
+
+$> isainfo -kv
+
+
+
+응답에 따라 다음 파일들을 다운로드 받습니다.
+
+32-bit i586 kernel modules 라고 나오면
+
+32비트: **jdk-6u33-solaris-i586.tar.Z**
+
+
+
+64-bit amd64 kernel modules 라고 나오면
+
+32비트:** jdk-6u33-solaris-i586.tar.Z**
+
+64비트:** jdk-6u33-solaris-x64.tar.Z**
+
+
+
+32-bit sparc kernel modules 라고 나오면
+
+32비트:** jdk-6u33-solaris-sparc.tar.Z**
+
+
+
+64-bit sparcv9 kernel modules 라고 나오면
+
+32비트:** jdk-6u33-solaris-sparc.tar.Z**
+
+64비트:** jdk-6u33-solaris-sparcv9.tar.Z**
+
+
+
+32비트 JDK의 경우에는 32비트만 설치하고, 64비트 JDK를 설치 하기 위해서는 32비트를 설치 한후 설치를 해야 합니다.
+
+
+
+**<설치방법-64비트 SPARC로 설명: 설치방법은 파일명만 틀릴 뿐 동일>
+**root 로 로그인후 32비트 설치**
+[root] /home/jdk6/32bit > gunzip jdk-6u33-solaris-sparc.tar.Z**
+
+[root] /home/jdk6/32bit > **tar xvf jdk-6u33-solaris-sparc.tar
+**[root] /home/jdk6/32bit > **pkgadd -d . SUNWj6rt SUNWj6dev SUNWj6cfg SUNWj6man SUNWj6jmp**** **
+
+
+
+/usr/jdk/jdk1.6.0_33  위치에 설치 됩니다
+
+**64비트 추가 설치
+
+[root] /home/jdk6/64bit > gunzip jdk-6u33-solaris-sparcv9.tar.Z
+**[root] /home/jdk6/64bit >** tar xvf jdk-6u33-solaris-sparcv9.tar**
+
+[root] /home/jdk6/64bit > **pkgadd -d . SUNWj6rtx SUNWj6dvx**
+
+**설치된 디렉토리로 이동해서 버전 및 64비트 확인
+[root] / > cd /usr/jdk/jdk1.6.0_33/bin
+**[root] /usr/jdk/instances/jdk1.6.0/bin > **./java  –version
+**java version "1.6.0_33"**Java(TM) SE Runtime Environment (build 1.6.0_33-b04)
+Java HotSpot(TM) Server VM (build 20.8-b03, mixed mode)
+
+[root] /usr/jdk/instances/jdk1.6.0/bin > ./java  -d64 -version**
+
+java version "1.6.0_33"**Java(TM) SE Runtime Environment (build 1.6.0_33-b04)
+Java HotSpot(TM) 64-Bit Server VM (build 20.8-b03, mixed mode)
+
+/etc/profile 에 환경변수 등록
+export JAVA_HOME=/usr/jdk/jdk1.6.0_33
+export PATH=$JAVA_HOME/bin:$PATH
+export CLASSPATH=$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib:$CLASSPATH
+
+솔라리스 이전 java 파일 변경
+[root] / > mv /usr/bin/javac /usr/bin/javac.old
+**[root] / > **mv /usr/bin/java /usr/bin/java.old
+****심볼릭 링크 생성
+[root] / > ln -s /usr/jdk/jdk1.6.0_33/bin/java /usr/bin/java
+**[root] / > **ln -s /usr/jdk/jdk1.6.0_33/bin/javac /usr/bin/javac**
+
+****
+
+※ 위와 같이 설정되고 재로그인 해도 버전이 변경되지 않는 경우는 이전버전이 설치된 경로가 path 에 지정되 있는 경우이므로 찾아서 수정해 주어야 합니다.**
+
+[출처]** [솔라리스에 JDK6 설치하기](http://blog.naver.com/sedge04/100163254159)|**작성자** [모래풀](http://blog.naver.com/sedge04)
+
+-------------- 링크 내용 끝 ----------------------------------
+
+아래는 내가 해본거
+
+
+
+
+
+# pwd
+
+/usr/j2se/jdk1.5.0/bin
+
+# /usr/j2se/jdk1.5.0/bin
+
+/usr/j2se/jdk1.5.0/bin: ▒▒▒▒▒Ҽ▒ ▒▒▒
+
+#
+
+#
+
+# which java
+
+no java in /webtob/bin /webtob/jeus/bin /jeus6/bin /jeus6/webserver/bin /jeus6/l
+
+# ln -s /usr/bin/java /usr/j2se/jdk1.5.0/bin
+
+ln: /usr/j2se/jdk1.5.0/bin/java▒▒ ▒▒▒▒▒ ▒▒▒: ▒▒▒▒▒▒ ▒▒▒▒▒
+
+# ln -s /usr/j2se/jdk1.5.0/bin
+
+# ls
+
+ControlPanel   apt            idlj           java           javadoc        javaw
+
+HtmlConverter  bin            jar            java-rmi.cgi   javah          jcons
+
+appletviewer   extcheck       jarsigner      javac          javap          jdb
+
+# ln java
+
+ln: java▒▒(▒▒) ./java▒(▒▒) ▒▒▒▒▒մϴ▒
+
+# which java
+
+no java in /webtob/bin /webtob/jeus/bin /jeus6/bin /jeus6/webserver/bin /jeus6/l
+
+# ln -s /usr/j2se/jdk1.5.0/bin/java /usr/bin/java
+
+# ln -s /usr/j2se/jdk1.5.0/bin/javac /usr/bin/java
+
+ln: /usr/bin/java▒▒ ▒▒▒▒▒ ▒▒▒: ▒▒▒▒▒▒ ▒▒▒▒▒
+
+# ls
+
+ControlPanel   jarsigner      jconsole       jstatd

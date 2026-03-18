@@ -1,0 +1,85 @@
+---
+title: "gradle include library"
+date: 2019-07-16 15:33:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221587087022"
+---
+
+gradle의존성으로 관리되는 라이브러리 외의 것을 추가 할 땐 아래와 같이 작성한다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+dependencies {
+  …
+  compile fileTree(dir: 'src/main/resources/libs', include: ['*.jar'])
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+
+
+
+
+
+
+
+
+```
+sourceSets {
+    main {
+        resources {
+            if (project.hasProperty('profile')) {
+                srcDirs "src/main/resources", "src/main/resources-env/${profile}"
+            } else {
+                srcDirs "src/main/resources"
+            }
+        }
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

@@ -1,0 +1,29 @@
+---
+title: "kafka 압축 성능 비교"
+date: 2018-09-10 12:16:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221355961360"
+---
+
+<http://blog.yaorenjie.com/2017/01/03/Kafka-0-10-Compression-Benchmark/>
+> [**Kafka 0.10 Compression Benchmark**](http://blog.yaorenjie.com/2017/01/03/Kafka-0-10-Compression-Benchmark/)
+>
+> BackgroudIn my previous blog about compression benchmark for Kafka, I have made some tests for Kafka 0.8.2.1. Kafka 0.10 has made a lot of progress, and this post aims to make some benchmaks on Kafka
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+오늘도 양키님들을 찬양합니다.

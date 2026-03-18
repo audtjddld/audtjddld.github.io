@@ -1,0 +1,168 @@
+---
+title: "response gzip 설정 부분"
+date: 2019-10-31 21:37:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221694454686"
+---
+
+<https://www.codepedia.org/ama/how-to-compress-responses-in-java-rest-api-with-gzip-and-jersey/>
+> [**How to compress responses in Java REST API with GZip and Jersey**](https://www.codepedia.org/ama/how-to-compress-responses-in-java-rest-api-with-gzip-and-jersey/)
+>
+> Share coding knowledge
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+application 내에서 설정하는 방식이 아닌 tomcat에서 설정이 가능하다.
+
+​
+
+<https://community.ptc.com/t5/IoT-Tech-Tips/Enable-compression-in-Tomcat-to-speed-up-network-performance-in/td-p/543650>
+> [**Enable compression in Tomcat to speed up network performance in ThingWorx**](https://community.ptc.com/t5/IoT-Tech-Tips/Enable-compression-in-Tomcat-to-speed-up-network-performance-in/td-p/543650)
+>
+> Large files could cause slow response times. In some cases large queries might cause extensively large response files, e.g. calling a ThingWorx service that returns an extensively large result set as JSON file.   Those massive files have to be transferred over the network and require additional band...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+무려 10배 정도 압축이 되는 것이 확인되었다.
+
+---------------- 2019.11.04 수정 --------------
+
+​
+
+디폴트 설정으로 그런 것
+
+**Configuration**
+
+
+
+To configure compression, open Tomcat's **server.xml**
+
+
+
+In the <Connector> definitions add the following:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+compression="on" compressableMimeType="text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+This will use the default compressionMinSize of 2048 bytes.
+
+In addition to the default Mime Types I've also added application/json to compress ThingWorx service call results.
+
+
+
+This needs to be configured for all Connectors that users should access - e.g. for HTTP and HTTPS connectors. For testing purposes I have a HTTPS connector with compression while HTTP is running without it.
+
+​
+
+​
+
+- 주의 사항
+
+*사이트 방문자가 많음. 트래픽 절감 효과가 있습니다.
+
+*싱글코어 이상, 서버 성능 확인 필요.
+
+*타겟 대상자가 다른 지역일 때.
+
+​
+
+즉 압축속도가 > 전송속도보다 이득일 때에는 사용하는 것이 좋다.
+
+​
+
+​
+
+<https://betterexplained.com/articles/how-to-optimize-your-site-with-gzip-compression/>
+> [**How To Optimize Your Site With GZIP Compression – BetterExplained**](https://betterexplained.com/articles/how-to-optimize-your-site-with-gzip-compression/)
+>
+> How To Optimize Your Site With GZIP Compression Home › Guides , Web › Compression is a simple, effective way to save bandwidth and speed up your site. I hesitated when recommending gzip compression when speeding up your javascript because of problems in older browsers . But it’s the 21st century. Mo...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+IE에서는 압축이 안된 상태로 응답이 오는 것을 확인하였다.
+
+​
+
+windows 9, IE edge

@@ -1,0 +1,37 @@
+---
+title: "sun.security.validator.ValidatorException: PKIX path building failed:"
+date: 2019-08-13 14:24:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221615038899"
+---
+
+인증서 이슈 발생시 해결 방법에 대하여 아래 잘 정리해놨다.
+
+​
+
+외국 블로그에서 찾던 인증서 생성 클래스는 깃으로 이동하였고, 그걸 다운로드 받아 인증서 생성 후 JDK Security에 저장하는게 마지막이다. 이때 Application을 구동중이라면 재부팅을 해야한다는 것이다.
+
+​
+
+<https://www.lesstif.com/pages/viewpage.action?pageId=12451848>
+> [**Java 에서 ValidatorException 등 인증서 관련 에러 해결 - keystore에 SSL/TLS 인증서를 import 하기**](https://www.lesstif.com/pages/viewpage.action?pageId=12451848)
+>
+> java 에서 HTTPS 로 remote 사이트에 연결시 다음과 같은 Exception 이 발생
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

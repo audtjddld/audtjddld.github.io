@@ -1,0 +1,294 @@
+---
+title: "maven을 이용해 배포대상에 따라서 환경설정 다르게 적용하기"
+date: 2014-08-29 10:11:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220106972948"
+---
+
+**2014년 6월 19일 오전 11:26
+maven bulid시에 팀장님께서 알려주신 팁이다.
+
+개발하다보면 로컬/개발/운영의 환경설정 값들이 다른 경우가 있다.
+
+대표적인 예가 DB 접속이다. 로컬/개발에서는 개발DB를 이용하고 운영서버에서는 운영DB를 이용한다.
+
+
+
+초기 프로젝트 구축시에 이 부분에 대한 구조를 제대로 결정하지 않으면
+
+소스배포시 많은 부분 수작업이 들어가게 되고, 잠깐 방심하는사이에 운영서버인데 개발서버의 환경설정을 적용하는 경우가 생기기도 한다.
+
+
+
+이것들을 이제 분리해보자.
+
+
+
+**1. pom.xml 파일 수정**
+
+pom.xml 파일에 로컬(local), 개발(dev), 운영(release) 이 3개의 profile를 추가한다.
+
+resources 부분도 추가한다.
+
+
+
+[?](http://www.mungchung.com/xe/spring/21264#)
+
+``
+
+``
+
+`    ``4.0.0Version``>`
+
+`    ``com.mungchungoupId``>`
+
+`    ``samplectId``>`
+
+`    ``SampleSessionLoginname``>`
+
+`    ``war`
+
+`    ``1.0.0-BUILD-SNAPSHOT`
+
+`    ```
+
+`        ``1.6a-version``>`
+
+`        ``version``>3.0.6.RELEASEspringframework-version``>`
+
+`        ``1.6.9`
+
+`        ``1.5.10`
+
+`    ```
+
+`    ```
+
+`       ``... 생략`
+
+`    ```
+
+`    ```
+
+`         ``... 생략`
+
+`            ```
+
+`                ``org.apache.maven.plugins`
+
+`                ``maven-resources-pluginctId``>`
+
+`                ``2.5version``>`
+
+`                ``>`
+
+`                    ``UTF-8`
+
+`                ``n``>`
+
+`            ```
+
+`        ```
+
+`        ```
+
+`            ```
+
+`                ``src/main/resources`
+
+`            ```
+
+`            ```
+
+`                ``src/main/resources-${env}ectory``>`
+
+`            ```
+
+`        ```
+
+`    ```
+
+`    ```
+
+`        ```
+
+`        ```
+
+`            ``local`
+
+`            ```
+
+`                ``lt``>true`
+
+`            ```
+
+`            ```
+
+`                ``localv``>`
+
+`            ```
+
+`        ```
+
+`        ```
+
+`        ```
+
+`            ``dev`
+
+`            ```
+
+`                ``dev`
+
+`            ```
+
+`        ```
+
+`        ```
+
+`        ```
+
+`            ``release`
+
+`            ```
+
+`                ``releaseenv``>`
+
+`            ```
+
+`        ```
+
+`    ```
+
+``
+
+**pom 파일 보면 profile의 값을 가지고 resource-{profile env} 의 디렉토리를 컴파일 해주는것을 알수 있다.
+
+
+이제 로컬/개발/운영 환경설정 파일을 저장할 디렉토리를 생성한다.
+
+
+
+2. 배포대상별 환경 디렉토리 생성**
+
+src/main 디렉토리로 이동 한 후에 아래 디렉토리를 생성한다.
+
+src/main/resources-local
+
+src/main/resources-dev
+
+src/main/resources-release
+
+
+
+그리고 DB 환경설정이 들어있는 src/main/resources/properties/jdbc.properties 정보를
+
+각각 위에서 만든 디렉토리로 복사하고
+
+src/main/resources/ 디렉토리에선 properties 디렉토리 삭제한다.
+
+
+
+이렇게하는 이유는 위의 pom파일 잘 살펴보면 알겠지만
+
+src/main/resources의 공통적인 환경파일들은 그대로 컴파일해서 이용하고
+
+배포대상별로 다르게 가져가야할 환경 파일은 각각 디렉토리에 넣기 위함이다.
+
+
+
+아래와 같은 디렉토리 구조로 만들면 된다.
+![](https://ci6.googleusercontent.com/proxy/3KClqphjT3uXtm5v1EIK0adCtaTaaTTkcu09kalSPIMgc0NuUCHTCsQ2m6JkN1EyjG9wyeRdiNyzEY3uYUIJiS4odTtzmMD1jA=s0-d-e1-ft#http://search.easymedia.co.kr/DATA/_editor/1(4).JPG)
+
+
+
+
+
+
+**3. 프로젝트 소스의 빌드 path 수정**
+
+기존 src/main/resources/properties 디렉토리를 다른 디렉토리로 옮겼기 때문에
+
+이 상태로 프로젝트이용하면 properties 파일들이 컴파일되지 않아서 오류난다.
+
+그래서 빌드 path에 src/main/resources-local 을 넣어줘야한다.
+
+
+
+1) 프로젝트 선택후 마우스 오른쪽 버튼 눌러서 Properties를 선택한다.
+
+2) Java Build Path 항목으로 이동후에 Source 탭을 클릭하고선 Add Folder 누른다.
+
+     ![](https://ci4.googleusercontent.com/proxy/vWoYDYX_3dueaAsa0EhxhfCgR0f4dkdoIsHQKDCBk3xQ8_dGBwacSN9b6HWlO1OjeY_eEQBk1iJnV2ElPr9ff9u3wkN_YcT32A=s0-d-e1-ft#http://search.easymedia.co.kr/DATA/_editor/2(2).JPG)
+
+3) src/main/resources-local 디렉토리를 선택한다.
+
+     ![](https://ci6.googleusercontent.com/proxy/X5rG3011GyRdYnbWRiumvMn7ZQdV_H955LrmIITDw8_J0JYul_RHNiWXj83HohXSfJ5lpRVG6bM-chHu_xlI_6OVQ6HPJA=s0-d-e1-ft#http://search.easymedia.co.kr/DATA/_editor/3.JPG)
+
+4) 순서 변경해준다. resources 아래에 resources-local에 위치하도록 한다.
+
+  ![](https://ci6.googleusercontent.com/proxy/exF42_hS1iQS2KNavXlRBUgsvTbGUtSaNqvfjclvEQeUBWkS4hVSQm1udg6BKpPR8b3BlG8Zo5GJSx19el-ycfTTAuMbXzjcGg=s0-d-e1-ft#http://search.easymedia.co.kr/DATA/_editor/3(1).JPG)
+
+
+
+이렇게 설정했으면 이제 로컬 개발시에 환경설정 부분은 끝났다.
+
+헌데, 혹시 만약 이렇게 설정해놓고선 서버 시작했을때 오류가 발생하거나 잘 안된다면 아래 방법들을 사용해본다.
+
+(아래 방법들은 순서대로하는것이 아니라 이것저것 섞어서 해보면 되는 경우가 있다 -_-;; )
+
+    - 이클립스의 [Project] - [Clean..]
+
+    - 톰캣서버에서 SampleSessionLogin 웹모듈 삭제/추가 다시 해봄
+
+    - 톰캣서버에서 웹모듈을 Clean 또는 Publish 해봄
+
+    - SampleSessionLogin/target 디렉토리 및의 모든 파일 다 지워본다.
+
+    - 톰캣서버에 Publishing 된 임시 파일들 지워본다. 이 위치는 사용자마다 다른데 내 경우는 아래였다.
+
+       \workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\SampleSessionLogin
+
+      SampleSessionLogin 디렉토리 지워보면 된다.
+
+
+
+**4. 운영 또는 개발에 배포하기**
+
+운영/개발에 배포할때는 maven 명령어를 통해서 배포하면된다.
+
+운영(release)에 배포할때 예를 들자면 프로젝트에서 마우스 우측키를 누른뒤 Run As > Run Configuration 클릭
+
+![](https://ci4.googleusercontent.com/proxy/IqZE4l-8aCaeUB6MvLW3IBaEmqKdB2Hik1CwwAprbL6pg9-8dR0mXxIFH83fvEImlu4Y2s6hoRaOJa57CPCJnJXnwiIfag=s0-d-e1-ft#http://search.easymedia.co.kr/DATA/_editor/4.JPG)
+
+
+
+Base Directory : 물리적인경로
+
+Goals : 명령
+
+Profiles : pom.xml에 정의된 환경
+
+Run을 누르게 되면 Build가 실행되고 target 하위 디렉토리에 war 파일 및 파일들이 떨어지게 된다.
+
+![](https://ci4.googleusercontent.com/proxy/rlnSSzr4Eh45pYiMO3NZbyRgcy5q9MJ7x-zZ6izVK9XMIIF-bJh2YZbr0_6k92dzgNYYjEMQ-EIz4IPqIjM6cMLPN4QEZQ=s0-d-e1-ft#http://search.easymedia.co.kr/DATA/_editor/5.JPG)
+
+
+
+
+
+이렇게 한 후에 target/classes/properties 디렉토리에서 jdbc.properties 파일 열어보면
+
+운영으로 설정한 jdbc.url이 나타남을 알 수 있다.
+
+
+
+로컬, 개발, 운영 서버에 globals.properties를 이관할때 열어서 수정하는일 없어도 될 듯 싶다.
+
+
+
+------------------------------------------------ 2016.03.11 -------------------------------------------------------------
+
+resource가 이상하게 나올때는
+
+Java Build Path에서 해당 resources 폴더의 Excluded에 ** 추가 하면 된다.

@@ -1,0 +1,32 @@
+---
+title: "VPC 전체 네트워크 traffic 확인 방법"
+date: 2022-08-09 15:29:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222843891822"
+---
+
+<https://support.bespinglobal.com/ko/support/solutions/articles/73000544790--aws-vpc-%EC%A0%84%EC%B2%B4-network-traffic-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EB%B0%A9%EB%B2%95>
+> [**[AWS] VPC 전체 Network traffic 모니터링 방법**](https://support.bespinglobal.com/ko/support/solutions/articles/73000544790--aws-vpc-%EC%A0%84%EC%B2%B4-network-traffic-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EB%B0%A9%EB%B2%95)
+>
+> Question EC2 개별이 아닌, VPC 전체 Network In/Out bytes 현황 모니터링 (과거 데이터에 대한 조회 포함) 방법이 있을까요? Answer 현재 VPC를 기준으로 데이터를 합쳐서 보여주는 기능은 따로 없습니다. 대안으로는 데이터 확인을 원하시는 region의 CloudWatch Metric (지표)에서 EC2 지표 → 전체 인스턴스 → NetworkI...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+cloud watch metric에서 조회가 가능하다.

@@ -1,0 +1,8 @@
+---
+title: "패턴 정리 소스는 github에 올려놓음"
+date: 2016-03-13 20:53:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220653868579"
+---
+
+<https://github.com/audtjddld/pattern/tree/master/pattern>

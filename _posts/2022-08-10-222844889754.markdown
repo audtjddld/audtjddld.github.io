@@ -1,0 +1,100 @@
+---
+title: "Jmeter 작성 예제"
+date: 2022-08-10 16:36:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222844889754"
+---
+
+![]()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+Post method의 작성법은 HTTP Header Manager로 oauth token을 추가하고 요청하면 정상적으로 호출되는 것을 볼 수 있다.
+
+​
+
+AWS EC2 인스턴스에서 로컬 JMX 파일을 복사해서 붙여넣은 뒤 command line으로 구동해서 확인했다.
+
+​
+
+<https://blog.naver.com/kkforgg/220807776035>
+> [**jmeter command line 실행**](https://blog.naver.com/kkforgg/220807776035)
+>
+> 커맨드 라인으로 실행하는 방법은 아래와 같다.jmeter -n -t /path/to/your/test.jmx -l /path/to/results/...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+테스트를 했을 때 마지막에 summary로 작성되서 나오는 것을 확인할 수 있다.
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![](/assets/images/posts/222844889754/422f94803be2.png?type=w580)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

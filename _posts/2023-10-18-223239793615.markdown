@@ -1,0 +1,305 @@
+---
+title: "Spring Boot 내장 WAS 종류와 특징 [펌]"
+date: 2023-10-18 10:12:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223239793615"
+---
+
+​
+
+출처 : <https://gofnrk.tistory.com/73>
+
+​
+
+**Tomcat**
+
+~7버전까지 대규모 트래픽에서 불안정하다 vs 아니다 등의 의견이 분분했고,
+
+8버전은 폭망했지만, 8.5버전으로 대응하여 안정화시켰고,
+
+9버전이 나와 안정화되었고 이후로도 꾸준히 업데이트 중입니다.
+
+
+
+강력한 커뮤니티, 다양한 성공 사례 등... Java 진영에서 실제로 가장 널리 사용되는 WAS에요.
+
+Spring Boot에서도 기본 내장 WAS는 Tomcat이구요.
+
+저 역시도 아직까지는 기본 WAS를 사용하고 있습니다.
+
+
+
+
+
+
+
+
+
+```
+
+	org.springframework.boot
+	spring-boot-starter-web
+
+```
+
+
+
+
+
+
+
+
+
+
+```
+implementation('org.springframework.boot:spring-boot-starter-web')
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+**Jetty**
+
+이 친구는 컨셉이 명확합니다. 경량 WAS에요.
+
+적은 메모리를 사용하고 가벼운 이점이 있고, 속도 역시 빠릅니다.
+
+그렇기 때문에 소형 장비, 소규모 프로그램 등에 내장하여 사용하면 좋아요.
+
+
+
+당연히 대규모 트래픽에 취약하구요.
+
+이것을 단점이라고 평가할 수 있겠지만 특징으로 보는 것이 맞는 것 같네요.
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+	org.springframework.boot
+	spring-boot-starter-web
+
+
+			org.springframework.boot
+			spring-boot-starter-tomcat
+
+
+
+	org.springframework.boot
+	spring-boot-starter-jetty
+
+```
+
+
+
+
+
+
+
+
+
+
+```
+implementation('org.springframework.boot:spring-boot-starter-web') {
+	exclude module: 'spring-boot-starter-tomcat'
+}
+implementation('org.springframework.boot:spring-boot-starter-jetty')
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**Undertow**
+
+Blocking과 Non-Blocking API를 모두 안정적으로 제공하는 유연한 고성능 웹서버입니다.
+
+대규모 트래픽으로부터 Tomcat보다 안정적이라고 평가 받아요.
+
+Spring에서 공식적으로 내장 WAS를 지원하구요.
+
+여러 벤치마크 테스트에서 안정성을 증명한 사례가 있으니 안심하고 쓰셔도 될 것 같습니다.
+
+앞으로 더욱 많이 볼 수 있을지도 모르겠어요.
+
+
+
+
+
+
+
+
+
+
+
+```
+
+	org.springframework.boot
+	spring-boot-starter-web
+
+
+			org.springframework.boot
+			spring-boot-starter-tomcat
+
+
+
+	org.springframework.boot
+	spring-boot-starter-undertow
+
+```
+
+
+
+
+
+
+
+
+
+
+```
+implementation('org.springframework.boot:spring-boot-starter-web') {
+	exclude module: 'spring-boot-starter-tomcat'
+}
+implementation('org.springframework.boot:spring-boot-starter-undertow')
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+**Netty**
+
+Netty는 Async, Event-Driven 방식 네트워크 애플리케이션 프레임워크입니다.
+
+위에서 소개해드린 Undertow도 Netty 기반이에요.
+
+
+
+Spring Boot 2 부터 Webflux Framework를 사용해서 Reactive Programming을 할 수 있어요.
+
+바로 이 Webflux를 사용하면 기본 내장 WAS는 Netty가 됩니다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+
+	org.springframework.boot
+	spring-boot-starter-webflux
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+implementation('org.springframework.boot:spring-boot-starter-webflux')
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

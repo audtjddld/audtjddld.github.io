@@ -1,0 +1,268 @@
+---
+title: "Junit5 그리고 Describe - Context - It 패턴"
+date: 2020-01-31 15:57:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221791426639"
+---
+
+[BDD 테스트 코드](https://www.popit.kr/bdd-behaviour-driven-development%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B0%84%EB%9E%B5%ED%95%9C-%EC%A0%95%EB%A6%AC/)작성하는 방법도 해보았었지만, 결국에는 일반 Junit의 단위테스트로 작성을 해왔었다.
+
+​
+
+그런데 스터디를 통해서 DCI 패턴이라는 것을 알게 되었고, Junit5에서 @Nested를 사용하여 계층 구조 형태로 작성할 수 있다는 내용을 알게되었다.
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**구분**
+
+
+
+
+
+**설명**
+
+
+
+
+
+Describe
+
+
+
+
+
+설명할 테스트 대상을 명시하는 역할.
+
+
+
+
+
+Context
+
+
+
+
+
+테스트 대상이 특정 상황에 놓은 경우를 명시한다.
+
+- 영어로 Context문을 작성할 때에는 반드시 with 또는 when으로 시작하도록 한다.
+
+
+
+
+
+It
+
+
+
+
+
+테스트 대상의 행동을 설명한다.
+
+- It returns true, It responds 404와 같이 심플하게 설명할수록 좋다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+출처 : <https://johngrib.github.io/wiki/junit5-nested/>
+
+​
+
+Describe, Context, It을 이해하기 쉽게 작성하는 것이 포인트 같다.
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    ![](/assets/images/posts/221791426639/979dcea56707.png?type=w580)
+
+
+실행 결과 예시
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+intellij 에서 테스트 구동이 gradle로 잡혀 있으면 위와 같은 실행 결과가 나타나지 않는다. Test 동작 위치를 Intellij로 셋팅 해줘야 위와 같이 보인다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    ![](/assets/images/posts/221791426639/34a01715625c.png?type=w580)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+테스트 코드 예시
+
+
+
+
+
+
+
+
+
+
+```
+@DisplayName("주문 조회 테스트")
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class OrderServiceTest {
+
+  @DisplayName("주문번호 0001일 때 조회하면")
+  @Nested
+  @SpringBootTest
+  public class test1 {
+
+    @Autowired
+    OrderService orderService;
+
+    @Before
+    public void init() {
+      Order order = new Order(new OrderNo(String.format("0001")));
+      orderService.create(order);
+    }
+
+    @Test
+    @DisplayName("성공한다.")
+    void success1() {
+      OrderNo orderNo = new OrderNo("0001");
+      Optional order = orderService.findByOrderNo(orderNo);
+      order.ifPresent(o -> {
+        assertThat(orderNo.getNumber(), is(o.getNumber()));
+      });
+    }
+  }
+
+  @DisplayName("신규 주문을 등록하면")
+  @Nested
+  @SpringBootTest
+  class test2 {
+
+    @Autowired
+    OrderService orderService;
+
+    @Before
+    public void init() {
+    }
+
+    @Test
+    @DisplayName("등록된다.")
+    void success2() {
+      Order order = new Order(new OrderNo("0002"));
+      Order order1 = orderService.create(order);
+      assertThat(order.getNumber(), is(order1.getNumber()));
+    }
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+클래스 내부에 클래스를 작성해서 계층 형태로 하다보니, Spring test 같은 경우에는 계층 클래스 마다 선언을 해줘야 의존성이 주입되고 동작하는 것을 확인했다.
+
+​
+
+스프링 테스트에 더 효율적인 방법이 있는지는 추가로 확인이 필요하다.
+
+​
+
+​
+
+​

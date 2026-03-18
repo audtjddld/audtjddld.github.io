@@ -1,0 +1,22 @@
+---
+title: "Errors occurred during the build. Errors running builder 'JavaScript Validator' on project"
+date: 2014-09-03 17:56:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/220112294519"
+---
+
+출처 : <http://vicki.tistory.com/998>
+
+​
+
+Errors occurred during the build. Errors running builder 'JavaScript Validator' on project
+
+
+
+
+이클립스를 헬리오스로 올렸더니 자바스크립트 검증하시느라 메모리도 1기가 가까이 잡아드시고 'Problem Occurred' 창을 뱉어내셨습니다.
+![](http://cfile8.uf.tistory.com/image/204840274C6CE8A1B3E5A6)
+해결책은 프로젝트의 속성에서 Builders > JavaScript Validator 체크를 해제하면 됩니다.
+![](http://cfile10.uf.tistory.com/image/1957AC274C6CE937875EAB)
+괜히 다른 속성 만져보고 안되서 눈물을 흘릴 뻔했습니다...

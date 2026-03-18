@@ -1,0 +1,72 @@
+---
+title: "특정 영역 프린트 하기"
+date: 2013-03-12 15:03:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60186503715"
+---
+
+```
+var initBoby;
+function beforePrint() {
+    var area = document.getElementById("test");
+    initBody = document.body.innerHTML;
+    document.body.innerHTML = area.innerHTML
+}
+function afterPrint() {
+    document.body.innerHTML = initBody;
+}
+function printTestPage() {
+    window.print();
+}
+window.onbeforeprint = beforePrint;
+window.onafterprint = afterPrint;
+```
+
+
+
+이것도 있음.
+
+
+
+개념은 이거다.
+
+복사하고 싶은 영역 태그 및 값이 있다면,
+
+기존 전체 소스를 한 변수 innerHTML로 가져와서 저장시킨다
+
+그 다음 복사하고 싶은 영역들의 소스를 innerHTML로 가져온 뒤에
+
+body에다가 프린트할 영역을 넣고 window.print()시킨 다음
+
+다시 body에다가 기존 전체 소스를 넣는다.
+
+이거다 프린트 방법은.
+
+
+
+
+
+출처 : <http://dantes.kr/365>
+
+<http://dantes.kr/365>
+
+[자바스크립트로 특정영역만 인쇄하기<script type="text/javascript"> //<![CDATA[ function printPage(){ var initBody; window.onbeforeprint = function(){ initBody = doc...dantes.kr](http://dantes.kr/365)
+
+----------------------------- 2016-11-03 추가 ----------------------------------
+
+```
+function printTest() {
+
+    var win = window.open();
+    self.focus();
+     win.document.open();
+     win.document.write('');
+     win.document.write('');
+     win.document.write($("#layerPrint").html());
+     win.document.write('');
+     win.document.close();
+     win.print();
+     win.close();
+
+   }
+```

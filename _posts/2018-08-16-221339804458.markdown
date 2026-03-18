@@ -1,0 +1,7 @@
+---
+title: "kafka batch를 이용한 메시지 전송"
+date: 2018-08-16 11:32:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221339804458"
+---
+

@@ -1,0 +1,32 @@
+---
+title: "@Transactional readOnly"
+date: 2021-02-18 18:42:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222248179126"
+---
+
+​
+
+You can use transactions for read-only queries and mark them as such by setting the readOnly flag. Doing so does not, however, act as a check that you do not trigger a manipulating query (although some databases reject INSERT and UPDATE statements inside a read-only transaction). The readOnly flag is instead propagated as a hint to the underlying JDBC driver for performance optimizations. Furthermore, Spring performs some optimizations on the underlying JPA provider. For example, when used with Hibernate, the flush mode is set to NEVER when you configure a transaction as readOnly, which causes Hibernate to skip dirty checks (a noticeable improvement on large object trees).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+읽기 전용 쿼리에 트랜잭션을 사용하고 readOnly 플래그를 설정하여 트랜잭션을 표시 할 수 있습니다. 그러나 이렇게하면 쿼리 조작을 트리거하지 않는지 확인하는 역할을하지 않습니다 (일부 데이터베이스는 읽기 전용 트랜잭션 내에서 INSERT 및 UPDATE 문을 거부하지만). 대신 readOnly 플래그는 성능 최적화를 위해 기본 JDBC 드라이버에 대한 힌트로 전파됩니다. 또한 Spring은 기본 JPA 공급자에 대해 몇 가지 최적화를 수행합니다. 예를 들어, Hibernate와 함께 사용되는 경우 트랜잭션을 readOnly로 구성 할 때 flush 모드가 NEVER로 설정되어 Hibernate가 더티 검사를 건너 뛰도록합니다 (대형 개체 트리에서 눈에 띄게 개선됨).

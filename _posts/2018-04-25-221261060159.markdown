@@ -1,0 +1,7 @@
+---
+title: "spring boot test 에서 mockMvc 셋팅 및 yml 적용 방법."
+date: 2018-04-25 12:38:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221261060159"
+---
+

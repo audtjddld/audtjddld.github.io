@@ -1,0 +1,78 @@
+---
+title: "Spring Cloud Gateway AbstractGatewayFilterFactory"
+date: 2023-02-22 10:23:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223023864877"
+---
+
+using abstractGatewayFilterFactory  how to get body data
+
+​
+
+
+
+
+
+
+
+
+
+```
+implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
+```
+
+
+
+
+
+
+
+
+
+
+```
+@Component
+class LoginFilter() : AbstractGatewayFilterFactory() {
+    private val objectMapper = jacksonObjectMapper()
+
+    override fun apply(config: Any?): GatewayFilter {
+        return GatewayFilter { exchange, chain ->
+                    DataBufferUtils.join(exchange.request.body)
+                        .map {
+                            val bytes = ByteArray(it.readableByteCount())
+                            it.read(bytes)
+                            DataBufferUtils.release(it)
+                            bytes
+                        }.flatMap {
+                           // request body data get
+                           val loginRequest = objectMapper.readValue(inputStream, LoginRequest::class.java)
+                        }
+                }
+}
+
+data class LoginRequest @JsonCreator constructor(
+    val loginId: String,
+    val password: String,
+)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+abstractGatewayFilterFactory에서 post method, request body에 데이터를 추출 하는 방법을 알아냈고 짧게 정리한다.

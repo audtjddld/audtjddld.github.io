@@ -1,0 +1,68 @@
+---
+title: "spring boot 3.0 querydsl 설정 (gradle kotlin)"
+date: 2023-07-24 18:32:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223164911287"
+---
+
+<https://v3.leedo.me/devs/118>
+> [**Spring boot 3 버전에서 kotlin gradle에서 queryDSL 설정하기**](https://v3.leedo.me/devs/118)
+>
+> Spring boot 3.x 버전으로 넘어오면서 kotlin gradle에서 queryDSL 설정하는 방법이 조금 변경되었습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![]()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![]()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

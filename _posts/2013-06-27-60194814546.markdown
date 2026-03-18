@@ -1,0 +1,108 @@
+---
+title: "asp 엑셀로 뽑기"
+date: 2013-06-27 16:24:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60194814546"
+---
+
+**Response.Buffer = True
+Response.ContentType = "application/vnd.ms-excel"
+Response.AddHeader "Content-Disposition","attachment; filename=test.xls"**
+
+
+
+선언 해주고
+
+
+
+db에서 내용을 가져온 뒤에~
+
+html table로 만들어주면 된다.
+
+한글 안깨지게 할려면
+
+
+
+**<meta http-equiv="content-type" content="text/html; charset=euc-kr">**
+
+필요하다 .
+
+<style>
+BODY,TD,DIV,form,center,pre,blockquote {font-size:9pt;font-family:"돋움";line-height:130%;color:7E7E7E}
+</style>
+<%
+ If session("admin_id") = "" Then
+ Response.redirect "http://www.wellkin.co.kr"
+ Response.End
+ End If
+
+m_name = request("m_name")
+
+If m_name = "" Then
+ tmparea = ""
+Else
+ tmparea = " and a.name = '"&m_name&"'"
+End If
+
+Response.Buffer = True
+Response.ContentType = "application/vnd.ms-excel"
+Response.AddHeader "Content-Disposition","attachment; filename=댓글이벤트.xls"
+
+SQL = "SELECT b.m_no, idx , a.m_id, a.m_name, comment,"
+SQL = SQL& " b.m_phone1, b.m_phone2, b.m_phone3, b.m_juso1, b.m_juso2, b.m_email, CONVERT(char(10), a.regdate, 126) AS regdate "
+SQL = SQL &" FROM well_event_comment a, member b where a.m_id = b.m_id " & tmparea & " order by idx desc"
+
+SQL2 = "SELECT count(*)as tot FROM well_event_comment a, member b where a.m_id = b.m_id " & tmparea
+
+SET RS = Dbcon.EXECUTE( SQL2 )
+tot = RS("tot")
+RS.close
+
+SET RS = Dbcon.EXECUTE( SQL )
+%>
+<meta http-equiv="content-type" content="text/html; charset=euc-kr">
+
+<table border=1>
+<tr bgColor="#ffeb5a">
+ <td align="center" width="30">번호</td>
+ <td align="center" width="50">아이디</td>
+ <td align="center" width="50">이름</td>
+ <td align="center" width="30">연락처</td>
+ <td align="center" width="100">댓글내용</td>
+ <td align="center" width="100">주소</td>
+ <td align="center" width="80">이메일주소</td>
+ <td align="center" width="70">작성일</td>
+</tr>
+
+<%
+
+Do Until Rs.eof
+idx  = RS("idx")
+id   = RS("m_id")
+name  = RS("m_name")
+phone  = RS("m_phone1") &"-"& RS("m_phone2") &"-"& RS("m_phone3")
+juso  = RS("m_juso1") & " " & RS("m_juso2")
+comment  = Trim(RS("comment"))
+regdate  = RS("regdate")
+email  = RS("m_email")
+
+%>
+<tr>
+ <td align="center" ><%=idx%></td>
+ <td align="center" ><%=id%></td>
+ <td align="center" ><%=name%></td>
+ <td align="center" ><%=phone%></td>
+ <td align="center" ><%=comment%></td>
+ <td align="center" ><%=juso%></td>
+ <td align="center" ><%=email%></td>
+ <td align="center" ><%=regdate%></td>
+</tr>
+<%
+ Rs.movenext
+Loop
+rs.close
+set rs = Nothing
+Dbcon.close
+%>
+</table>

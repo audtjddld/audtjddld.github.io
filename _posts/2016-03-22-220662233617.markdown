@@ -1,0 +1,14 @@
+---
+title: "STOMP"
+date: 2016-03-22 17:24:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220662233617"
+---
+
+## What is STOMP?
+
+[STOMP](http://stomp.github.com/) is a simple text-orientated messaging protocol. It defines an[interoperable wire format](http://stomp.github.com/stomp-specification-1.1.html) so that any of the available STOMP clients can communicate with any STOMP message broker to provide easy and widespread messaging interoperability among languages and platforms (the STOMP web site has a [list of STOMP client and server implementations](http://stomp.github.com/implementations.html).
+
+STOMP는 단순 텍스트 기반 프로토콜이다.
+
+<http://jmesnil.net/stomp-websocket/doc/>

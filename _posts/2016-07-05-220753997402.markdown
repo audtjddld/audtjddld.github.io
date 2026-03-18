@@ -1,0 +1,7 @@
+---
+title: "우분투 고정아이피 설정"
+date: 2016-07-05 11:49:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220753997402"
+---
+

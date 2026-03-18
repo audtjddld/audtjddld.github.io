@@ -1,0 +1,378 @@
+---
+title: "파일쪽 Exception 처리 마지막!"
+date: 2014-01-22 17:12:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60207817053"
+---
+
+아놩~ 어제에 이어 수정 사항
+
+**파일 업로드 중에 용량 초과시 제가 만든 익셉션으로 해서 떨궈서 view 단 (jsp) 페이지로 이동 후 메시징 처리를 했었는데요.
+
+간과하고 있었던 spring 설정 부분
+
+context-common.xml에 정의 되어있는
+
+[Colored By Color Scripter**™](http://prev.kr/app/ColorScripter)
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+    <!-- custom multi file resolver-->
+
+    <bean id="local.MultiCommonsMultipartResolver" class="egovframework.com.cmm.web.EgovMultipartResolver">
+
+        <property name="maxUploadSize" value="10485760" />
+
+        <property name="maxInMemorySize" value="10485760" />
+
+    </bean>
+
+
+
+ **
+
+부분이 있었습니다. (위 용량은 현재 환** 최대 사이즈는 10MB 입니다.)
+
+해당 부분이
+
+view -> controller로 action 하기전에 먼저 처리되어지는 부분이였습니다.
+
+우연치 않게 OutOfMemory가 발생되어지는 바람에 알게 되었네요 .. (_ _);
+
+저 부분에서 체크시에 Error가 발생되어지는데 해당 에러는
+
+org.springframework.web.multipart.MaxUploadSizeExceededException
+
+따라서 어제 공유해드렸던 FileSizeExceed~ Exception을 없에 버리고 저 부분으로 변경하였습니다.
+
+[Colored By Color Scripter**™](http://prev.kr/app/ColorScripter)
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+
+        <!-- property name="defaultErrorView" value="error/defaultError"/ -->
+
+        <property name="exceptionMappings">
+
+            <props>
+
+                <!-- 파일이 없을때 -->
+
+                <prop key="java.io.FileNotFoundException">error/filenotfound</prop>
+
+                <!-- 예기치 않는 에러 -->
+
+                <prop key="egovframework.rte.fdl.cmmn.exception.EgovBizException">egovframework/com/cmm/error/egovBizException</prop>
+
+                <!-- 메뉴 권한 에러 -->
+
+                <prop key="org.springframework.web.HttpSessionRequiredException">egovframework/com/uat/uia/EgovLoginUsr</prop>
+
+                <!-- 게시글, 콘텐츠 권한에러 history.back(-2) -->
+
+                <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">error/notpermit</prop>
+
+                <!-- db 및 server 에러 발생 에러 -->
+
+                <prop key="egovframework.com.cmm.exception.UnknownErrorException">error/unknown</prop>
+
+                <!-- 파일 용량 초과 Error -->
+
+                <prop key="egovframework.com.cmm.exception.FileSizeExceedException">error/filesizeexceed</prop>
+
+            </props>
+
+        </property>
+
+    </bean>
+
+  **
+
+그리고 서비스단에서 예외처리 할 때
+
+[Colored By Color Scripter**™](http://prev.kr/app/ColorScripter)
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+55
+
+56
+
+    // 답글 등록 부분
+
+    // 부적정업무처리신고 입력
+
+    public void insertReplyUnsuitableInfo(final MultipartHttpServletRequest multiRequest, UnsuitableVO vo) throws Exception{
+
+
+
+        try{
+
+            final Map<String, MultipartFile> files = multiRequest.getFileMap();
+
+            if(!files.isEmpty()){
+
+                List<FileVO> atchFileId = null;
+
+                String attach_file_id = null;
+
+
+
+                int limitFileSize = Integer.parseInt(EgovProperties.getProperty("Globals.atchfileSize"));
+
+                atchFileId = fileUtil.parseFileInf(files, "", 0, "", "Globals.fileStorePath", limitFileSize);    // 파일 아이디
+
+
+
+                if(atchFileId.size() > 0)
+
+                {
+
+                    attach_file_id = fileMngService.insertFileInfs(atchFileId);
+
+                }
+
+                if(atchFileId.size() != files.size()){
+
+                    throw new MaxUploadSizeExceededException(10485760);
+
+                }
+
+                if(attach_file_id != null){
+
+                    vo.setATCH_FILE_ID(attach_file_id);
+
+                }
+
+            }
+
+            // 첨부 파일 끝
+
+
+
+            vo.setIDX(IDX.getNextIntegerId());    // PK 값 셋팅
+
+
+
+            System.out.println("GROUP ID " + vo.getGROUP_ID());
+
+            // 메일 발송 부분
+
+            /*
+
+            if(vo.getSTATUS().equals("C")){    // 완료 일때
+
+                UnsuitableVO info = new UnsuitableVO();
+
+                info.setIDX(Integer.parseInt(vo.getGROUP_ID()));    // 정보 가져와야함.
+
+                info = dao.selectUnsuitableInfo(info);
+
+
+
+                Map data = new HashMap();
+
+                data.put("subject", " **** 부조리신고 답변 안내 메일 입니다.");
+
+                data.put("userMail", info.getEMAIL());
+
+                data.put("adminEmail", vo.getEMAIL());
+
+                mailService.sendMail(data);
+
+            }
+
+            */
+
+            dao.updateParentStatusInfo(vo);        // 부모 처리 상태 상태 값 변경
+
+            dao.insertUnsuitableInfo(vo);        // 정보 입력
+
+
+
+        }catch(MaxUploadSizeExceededException me){
+
+            System.out.println(me.getMessage());
+
+            throw new MaxUploadSizeExceededException(10485760);
+
+        }
+
+        catch(Exception e){
+
+            e.printStackTrace();
+
+            throw new UnknownErrorException("부적정 업무처리 답글 부분 Error!!");
+
+        }
+
+
+
+    }
+
+
+
+저렇게 Exception을 태우게되면 view 페이지로 이동 후 message 처리 및 history.back() 되어지게 됩니다.
+
+이상으로 아마도 파일 쪽 용량 초과 Exception은 마무리 되지 않을까 합니다.
+
+추후에 FileUpload 하는 저부분도 수정할 예정인데..
+
+아무래도 다음번 프로젝트때 다시 공유할 것 같습니다.
+
+
+
+하아하아 힘들당

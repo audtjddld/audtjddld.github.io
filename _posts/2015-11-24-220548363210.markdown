@@ -1,0 +1,22 @@
+---
+title: "centos network 설정"
+date: 2015-11-24 10:19:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220548363210"
+---
+
+<http://devanix.tistory.com/81>
+
+<http://devanix.tistory.com/81>
+
+[[CentOS]Consol Network 설정콘솔에서 네트워크 설정해주기 1) # ifconfig –a ==> 모든 네트워크 인터페이스 확인 2) # vi /etc/sysconfig/network ==> 네트워크의 기본적인 ...devanix.tistory.com](http://devanix.tistory.com/81)
+
+eh1 설정시
+
+ip및 네트워크 마스크, 게이트웨이 현재 사용중인 정보로 입력하고 난뒤
+
+service network restart  실행
+
+그리고 ip addr 명령어를 치게되면 실제 eth1  에 잡혀있는 아이피 주소가 노출된다
+
+그걸 활용해서 xshell을 이용해서 사용하면 된다.

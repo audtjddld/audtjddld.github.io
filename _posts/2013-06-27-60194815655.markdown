@@ -1,0 +1,26 @@
+---
+title: "asp 종료 ( function 및 sub 등) [펌]"
+date: 2013-06-27 16:40:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60194815655"
+---
+
+출처 : <http://renewal.tistory.com/62>
+
+
+
+
+
+ASP와의 만남은 부담이다.경험이 없는데다..이미 만들어진 녀석을 수정하는 것이라서..더욱 그렇다..대충 비슷하다고.. 나 자신을 격려해도..아주 기본적인 것도 처리하지 못하고 헤매고 있다. ㅠ.ㅠ;;exit는 어디에 있는 것일까?php에서 사용하는 exit의 기능을 하는 녀석은 어디에 있는 것일까..주위에 ASP를 하는 사람이 없어서.. 자문도 못 구하고..미련하게..f.. else를 통하여 모든 것을 해결했다..그리고 우연히..
+
+asp 코드실행중 이하의 코드를 실행할 필요가 없는 경우(c나 jsp등의 return, php의 exit)
+=> response.end
+
+function 에서 함수 종료
+=> exit function
+
+sub 에서 루틴 종료
+=> exit sub
+
+미련한짓 해버린.. 그 소스들은 어떠하지.. ㅠ.ㅠ;;또 몰래 넘어간다..미안해요..이 소스 유지보수 하실분..

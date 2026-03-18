@@ -1,0 +1,24 @@
+---
+title: "스터디 관련 진행사항"
+date: 2015-06-22 09:14:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220397428838"
+---
+
+2015.06.22
+
+2주차**
+
+File System.**
+
+Child_process. 진행
+
+3주차**
+
+net 모듈
+
+udp모듈
+
+http 모듈 진행.
+
+각 개념 및 사용 방법 예제를 통해 진행.

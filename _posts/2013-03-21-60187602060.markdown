@@ -1,0 +1,20 @@
+---
+title: "jQuery 다른 라이브러리에서 코드 빌려쓰기"
+date: 2013-03-21 10:18:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60187602060"
+---
+
+![]()
+
+
+
+출처 : jQuery CookBook
+
+주석 출처 : <http://dimpledfox.tistory.com/12>
+
+
+
+주석도 몇개 추가시켜놨다. jQuery Chain function을 만드는 기능인듯?
+
+좀더 해보고 나중에 몇개 만들어 봐야겠다.

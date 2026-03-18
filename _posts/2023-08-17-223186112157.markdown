@@ -1,0 +1,64 @@
+---
+title: "Kotlin Coroutine"
+date: 2023-08-17 15:33:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223186112157"
+---
+
+<https://tech.wonderwall.kr/articles/CoroutineDeepDive/>
+> [**Wonderwall Tech | Kotlin Coroutine의 개념과 동작원리**](https://tech.wonderwall.kr/articles/CoroutineDeepDive/)
+>
+> Kotlin Coroutine의 개념과 동작원리
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<https://velog.io/@koo8624/Kotlin-Coroutine%EC%9D%98-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC>
+> [**[Kotlin] Coroutine의 동작 원리**](https://velog.io/@koo8624/Kotlin-Coroutine%EC%9D%98-%EB%8F%99%EC%9E%91-%EC%9B%90%EB%A6%AC)
+>
+> 본 글은 Kotlin Coroutine의 디자인을 제안한 문서를 참조하여 coroutine의 동작 원리에 대해 상세히 다루는 것을 목표로 하고 있습니다.원문에서는 coroutine을 한 문장으로 an instance of suspendable computation이라고
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+Kotlin 의 Coroutine의 개념에는 Continuous Passing Style(CPS), State Machine, Thread suspend, resume 의 여러 요소들이 복합적으로 구성되어져서 만들어진 개념이라는 것을 알 수 있었다.
+
+​
+
+다만 코드의 작성 내용으로만은 잘 이해할 수 없었고, 위 블로그에 작성된 내용을 보다보니, 어떤 형태로 컴파일되고 동작하는지 아주 조금 이해할 수 있었다. (실제로 지금으로서는 바로 소화하기 어렵다)
+
+​
+
+내용을 좀더 차근차근 읽어보고, 정리해봐야 될 것 같다.
+
+어렵네;

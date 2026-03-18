@@ -1,0 +1,71 @@
+---
+title: "function 응용"
+date: 2019-04-30 17:24:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221526351912"
+---
+
+```
+public class FunctionRef {
+
+  public static void ifFalseThen(boolean bool, Runnable runnable) {
+    if ( !bool ) runnable.run();
+  }
+
+  public static void ifTrueThen(boolean bool, Runnable runnable) {
+    if ( bool ) runnable.run();
+  }
+
+  public static  T ifFalseApply(boolean bool, Supplier runnable) {
+    if ( !bool ) return runnable.get(); else return null;
+  }
+
+  public static  T ifTrueApply(boolean bool, Supplier runnable) {
+    if ( bool ) return runnable.get(); else return null;
+  }
+
+  public static  T ifApply(boolean bool, Supplier runnable, Supplier falseSupply) {
+    if ( bool ) return runnable.get(); else return falseSupply.get();
+  }
+
+  public static void ifThen(boolean bool, Runnable trueRun, Runnable falseRun) {
+    if ( bool ) trueRun.run(); else falseRun.run();
+  }
+
+  public static void ifTrueThen(Supplier supplier, Runnable runnable) {
+    if ( supplier.get() ) runnable.run();
+  }
+
+  public static void ifFalseThen(Supplier supplier, Runnable runnable) {
+    if ( !supplier.get() ) runnable.run();
+  }
+
+  public static void ifThen(Supplier supplier, Runnable trueThen, Runnable falseThen) {
+    if ( supplier.get() ) trueThen.run(); else falseThen.run();
+  }
+
+  public static void ifTrueThrow(boolean bool, Exception e) throws Exception {
+    if (bool) throw e;
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+static 메서드로 condition, successFunction, failFunction 등을 선언해놓은 것은 매우 재미있는 것 같다.
+
+덕분에 메서드 체이닝도 되고

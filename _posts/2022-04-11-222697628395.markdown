@@ -1,0 +1,49 @@
+---
+title: "macbook zsh .gitconfig 설정 방법"
+date: 2022-04-11 15:41:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222697628395"
+---
+
+bash에서 zsh로 변경할 경우 .gitconfig가 정상적으로 등록이 안되는 경우가 있다.
+
+​
+
+이럴 경우에는 terminal을 열어서 아래와 같이 입력하면 된다.
+
+
+
+
+
+
+
+
+
+```
+git config --system --edit
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+입력 창이 켜지면, git repo에 저장한 설정을 붙여놓으면 정상적으로 동작한다.
+
+​
+
+<https://github.com/audtjddld/dotfiles/blob/master/.gitconfig>
+
+​

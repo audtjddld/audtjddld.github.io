@@ -1,0 +1,18 @@
+---
+title: "오라클 주중 날짜만 구하기"
+date: 2013-02-14 10:50:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60183542704"
+---
+
+출처 - <http://www.okjsp.pe.kr/seq/100156>
+
+
+
+SELECT SUM(DECODE(YO,1,0,7,0,1)) RESULT FROM
+(
+ SELECT TO_CHAR(SYSDATE+(LEVEL-365*5),'YYYYMMDD') DATES,TO_CHAR(SYSDATE+(LEVEL-365*5),'D') YO FROM DUAL
+ CONNECT BY LEVEL-365*5< 365 * 5 + 1
+)
+WHERE DATES BETWEEN '20070715' AND '20070731'

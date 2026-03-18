@@ -1,0 +1,13 @@
+---
+title: "input text 영어만 써지기"
+date: 2012-05-23 09:05:00 +0900
+categories: [경험 및 정보 공유]
+tags: [inputtext, inputtext영어, inputtext영어만]
+original_url: "https://blog.naver.com/kkforgg/60163037948"
+---
+
+<input type='text' name='only_eng' style='**ime-mode:disabled**' />
+
+
+
+출처 네이버 지식인

@@ -1,0 +1,249 @@
+---
+title: "jasypt (암호화) 적용 방법"
+date: 2023-09-01 13:53:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223199582933"
+---
+
+github에 dev 환경에서 사용할 database 접속 정보라던지, 민감한 정보들을 암호화해서 저장하는 방법을 찾아보았다.
+
+​
+
+이때, jasypt를 이용해서 간단하게 암호화가 가능한 것으로 판단되어 적용했고, 생각보다 간단한데 개인적으로는 많이 삽을 풨던 것 같다. OTL
+
+​
+
+repository:
+
+<https://github.com/ulisesbocchio/jasypt-spring-boot>
+> [**GitHub - ulisesbocchio/jasypt-spring-boot: Jasypt integration for Spring boot**](https://github.com/ulisesbocchio/jasypt-spring-boot)
+>
+> Jasypt integration for Spring boot. Contribute to ulisesbocchio/jasypt-spring-boot development by creating an account on GitHub.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+우선 spring boot에서 사용하는 방법이 2가지 정도로 나뉠 수 있을 것 같다.
+
+​
+
+첫번째로는 위 repository에 있는 내용대로 gradle에 라이브러리를 등록하고,
+
+spring properties에 암호화 방식등을 적용해서 동작하는 방식이 있는 것 같고,
+
+​
+
+다른 방법은 configuration을 이용하여 jsypt bean을 생성하여 관리하는 방법이 있는 것 같다.
+
+​
+
+gradle 설정
+
+
+
+
+
+
+
+
+
+
+```
+
+        com.github.ulisesbocchio
+        jasypt-spring-boot-starter
+        3.0.5
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+bean 생성
+
+
+
+
+
+
+
+
+
+```
+@EnableEncryptableProperties
+@Configuration
+class Encrypt {
+
+   @Bean("jasyptStringEncryptor")
+    public StringEncryptor stringEncryptor(@Value("password") String password) {
+        PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+        SimpleStringPBEConfig config = new SimpleStringPBEConfig();
+        config.setPassword(password);
+        config.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");
+        config.setKeyObtentionIterations("1000");
+        config.setPoolSize("1");
+        config.setProviderName("SunJCE");
+        config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
+        config.setIvGeneratorClassName("org.jasypt.iv.RandomIvGenerator");
+        config.setStringOutputType("base64");
+        encryptor.setConfig(config);
+        return encryptor;
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+여기에서 password 값은 외부의 config 서버에 저장해둬야 한다.
+
+왜냐하면 양방향 암호화 이기 때문에 password를 알고 있으면 properties에 등록한 값들을 알아낼 수 있다.
+
+​
+
+Bean 생성시 repository에 있는 것 처럼 기본 값으로 셋팅될 줄 알았는데, 아닌거 같다..
+
+<https://github.com/ulisesbocchio/jasypt-spring-boot#password-based-encryption-configuration>
+
+​
+
+​
+
+이런 방식으로 만든 뒤에 사용할 properties에 등록한다.
+
+​
+
+application-properties.yml
+
+
+
+
+
+
+
+
+
+```
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(Vs+k4Bw48W4BwLiiurEOtRIbGjema716M1V7Lgir0EfyHP6so2iTxjF1nib723+IpMaSopQ9WFqluj6K2HKp154hEI8k/jzjXUzJbuL1wfM=)
+    username: ENC(+P09Kb8Dj+pUA1i/HGuv8nlPhe+O+1TJ/oE43mMfnBMQWdQHNYYEHKZQuCiUvzpg)
+    password: ENC(+P09Kb8Dj+pUA1i/HGuv8nlPhe+O+1TJ/oE43mMfnBMQWdQHNYYEHKZQuCiUvzpg)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+이후 application을 구동하면 이상 없이 동작하는 것을 확인할 수 있다.
+
+​
+
+관련 task code
+
+
+
+
+
+
+
+
+
+```
+class EncryptTest {
+   @Test
+   public void ecryptTest() {
+           val beforeData = "password"
+            val encryptor = PooledPBEStringEncryptor()
+            val config = SimpleStringPBEConfig()
+            config.setPassword("password")
+            config.algorithm = "PBEWITHHMACSHA512ANDAES_256"
+            config.setKeyObtentionIterations("1000")
+            config.setPoolSize("1")
+            config.providerName = "SunJCE"
+            config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator")
+            config.setIvGeneratorClassName("org.jasypt.iv.RandomIvGenerator")
+            config.stringOutputType = "base64"
+            encryptor.setConfig(config)
+            val encrypted = encryptor.encrypt(beforeData)
+            Asserts.Equals(encryptor.decrypt(encrypted), beforeData)
+   }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

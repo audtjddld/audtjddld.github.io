@@ -1,0 +1,58 @@
+---
+title: "자바스크립트(javascript)를 이용한 랜덤 비밀번호 생성"
+date: 2013-07-24 12:23:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60196594909"
+---
+
+출처 : <http://www.javascriptsource.com/passwords/random-password-generator.html>
+
+<http://www.javascriptsource.com/passwords/random-password-generator.html>
+
+<http://www.javascriptsource.com/passwords/random-password-generator.html>
+
+길이만 조절하면 최대 32자리까지 가능하다. chars에 문자를 추가로 입력한 뒤에 chars 길이만큼 넣으면 됨.
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+    function randomPassword()
+
+    {
+
+    var  chars = "abcdefghijklmnopqrstuvwxyz1234567890";
+
+          pass = "";
+
+      for(var x=0;x<10;x++)
+
+      {
+
+        i = Math.floor(Math.random() * 36);
+
+        pass += chars.charAt(i);
+
+      }
+
+      return pass;
+
+    }

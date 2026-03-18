@@ -1,0 +1,15 @@
+---
+title: "각 db 별 ibatis like문"
+date: 2014-05-26 15:26:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/220011163643"
+---
+
+출처 :
+
+<http://shonm.tistory.com/category/ibatis/like%20%EB%AC%B8%20%EC%82%AC%EC%9A%A9%EB%B2%95>
+
+
+
+오라클은 like '%'||#value#||'%' <embed width="1" height="1" id="bootstrappershonmtistorycom2394550" src="http://shonm.tistory.com/plugin/CallBack_bootstrapperSrc?nil_profile=tistory&nil_type=copied_post" type="application/x-shockwave-flash" style="margin: 0px; padding: 0px;" allowscriptaccess="never" wmode="transparent" enablecontextmenu="false" flashvars="&callbackId=shonmtistorycom2394550&host=http://shonm.tistory.com&embedCodeSrc=http%3A%2F%2Fshonm.tistory.com%2Fplugin%2FCallBack_bootstrapper%3F%26src%3Dhttp%3A%2F%2Fs1.daumcdn.net%2Fcfs.tistory%2Fv%2F0%2Fblog%2Fplugins%2FCallBack%2Fcallback%26id%3D239%26callbackId%3Dshonmtistorycom2394550%26destDocId%3Dcallbacknestshonmtistorycom2394550%26host%3Dhttp%3A%2F%2Fshonm.tistory.com%26float%3Dleft" swliveconnect="true" invokeurls="false" allownetworking="internal" enablehtmlaccess="false" allowhtmlpopupwindow="false"></embed>Mysql은 like concat('%','#value#','%') Sysbase, SQL SERVERlike '%' + #value# + '%'

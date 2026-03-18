@@ -1,0 +1,23 @@
+---
+title: "현재 url 저장 방법."
+date: 2012-09-05 09:23:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터, url저장, 현재url, aspurl저장, asp현재url]
+original_url: "https://blog.naver.com/kkforgg/60170553276"
+---
+
+현재 url 저장 방법.
+
+
+
+게시글 읽은뒤 뒤로 돌아갈때 봣던 페이지로 다시 돌아가기 위한??
+
+
+
+url 저장
+
+
+
+thispage = "http://& Request.ServerVariables("SERVER_NAME")&Requset.ServerVariables("URL")&"?"&Request.Querystring&Request.Form
+
+<% thispage=http://&request.servervariables("HTTP_HOST")&request.servervariables("HTTP_url")%>

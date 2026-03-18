@@ -1,0 +1,8 @@
+---
+title: "node.js 한글 API"
+date: 2015-06-15 10:45:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220390446540"
+---
+
+<http://nodejs.sideeffect.kr/docs/>

@@ -1,0 +1,12 @@
+---
+title: "[공유] 자바스크립트 줄바꿈(엔터) 처리"
+date: 2013-06-17 16:30:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60194155608"
+---
+
+.replace( /\n/g, "<br>" );
+
+
+
+이게 줄바꿈 되더라

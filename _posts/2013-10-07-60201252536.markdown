@@ -1,0 +1,26 @@
+---
+title: "리팩토링 시작."
+date: 2013-10-07 21:59:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60201252536"
+---
+
+## 리팩토링 코드 품질을 개선하는 객체지향 사고법
+
+*
+
+<http://book.naver.com/bookdb/review.nhn?bid=7047630>
+[별점](http://book.naver.com/bookdb/review.nhn?bid=7047630)
+**9.0점** | 네티즌리뷰 **10**건
+
+[마틴 파울러](http://book.naver.com/search/search.nhn?query=%EB%A7%88%ED%8B%B4+%ED%8C%8C%EC%9A%B8%EB%9F%AC&frameFilterType=1&frameFilterValue=18422) 저 |[김지원](http://book.naver.com/search/search.nhn?query=%EA%B9%80%EC%A7%80%EC%9B%90) 역 |[한빛미디어](http://book.naver.com/search/search.nhn?filterType=7&query=%ED%95%9C%EB%B9%9B%EB%AF%B8%EB%94%94%EC%96%B4) |2012.11.09
+
+원제* Refactoring : improving the design of existing code
+
+*페이지* 500|*ISBN <http://book.naver.com/bookdb/book_detail.nhn?bid=7047630#*> 9788979149715|*판형* B5, 188*257mm|[책정보더보기](http://book.naver.com/bookdb/book_detail.nhn?bid=7047630#) *도서관 소장 정보* [국립중앙도서관](http://www.dibrary.net/search/common/makeDetailUrl.jsp?control_no=KMO201300742)
+
+*도서* **21,900원** 30,000원 -27%
+
+
+
+이 책을 읽으며 시작.

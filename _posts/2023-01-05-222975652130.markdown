@@ -1,0 +1,804 @@
+---
+title: "DockerFile, Docker Compose"
+date: 2023-01-05 14:20:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222975652130"
+---
+
+DockerFile
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+- Docker Image를 빌드하는데 사용한다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+FROM openjdk:17.0.2
+
+EXPOSE 8080
+
+ADD ./build/libs/*.jar app.jar
+
+ENTRYPOINT ["java","-jar","/app.jar"]
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+위 Docker File 내용을 정리하면 아래와 같다.
+
+​
+
+-
+Java SE 17.0.2를 사용하여 OpenJDK의 공식 Docker Image 기반이다.
+
+-
+다른 Docker Container에 8080 Port를 공개한다.
+
+-
+Gradle build folder(build/libs)에 있는 fat jar 파일을 Docker Image에 추가한다.
+
+-
+Docker Image로 Container를 시작할 때 Docker에서 사용할 Command(java -jar /app.jar)를 지정한다.
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**Docker Image Build**
+
+
+
+
+
+
+
+```
+docker build -t image명
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+생성된 Docker image 확인
+
+
+
+
+
+
+
+
+
+```
+docker images | grep image명
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**실행**
+
+
+
+
+
+
+
+```
+docker rum --rm -p8080:8080 -e "SPRING_PROFIES_ACTIVE=docker" image명
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-
+docker run : container를 시작하고 terminal에 log를 출력한다. container를 실행하는 중에는 terminal이 잠긴다.
+
+-
+--rm : 이 옵션은 Ctrl + C를 입력하면 container를 중지하고, docker가 container를 제거한다.
+
+-
+-p8080:8080: 이 옵션은 container의 8080 port를 docker host의 8080 port에 매핑해 외부에서 호출할 수 있게 한다. 로컬 리눅스 가상머신에서 docker를 실행하는 Docker for macOS의 경우 localhost로 접근할 수  있도록 macOS로 port forwarding된다.
+
+-
+-e : 이 옵션으로 Container의 environment variable를 지정할 수 있다. 앞의 command에선 SPRING_PROFILES_ACTIVE=docker 라는 environment variable 사용해 Spring Profile을 docker로 지정했다.
+
+-
+image명 : docker가 container를 시작할 때 사용할 docker image의 이름이다.
+
+​
+
+만약 -rm 옵션 외에 -d 옵션을 사용하면 background로 실행할 수 있다.
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+로그 확인
+
+
+
+
+
+
+
+```
+docker logs image명 -f
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Container 제거
+
+
+
+
+
+
+
+```
+docker rm -f image명
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-f 옵션은 강제로 종료하는 옵션이다.
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Docker Compose
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+docker compose를 사용하면 전체 시스템 환경을 관리할 수 있다. 단일 커멘드로 docker container 기반 서비스 그룹의 로그를 기록하고 build, start, stop을 할 수 있다.
+
+​
+
+docker compose를 사용하려면 docker-compose.yml 파일을 만들어야 한다. 각 application 단위로 DockerFile을 만들어 놔야 한다.
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        ![](/assets/images/posts/222975652130/5332e237697b.png?type=w580)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+Docker-compose.yml
+
+
+
+
+
+
+
+
+
+```
+version: '2.1'
+
+services:
+  product:
+    build: microservices/product-service
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  recommendation:
+    build: microservices/recommendation-service
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  review:
+    build: microservices/review-service
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  product-composite:
+    build: microservices/product-composite-service
+    mem_limit: 350m
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-
+마이크로서비스의 이름. docker 내부 network에서 사용하는 container host이름이기도 하다.
+
+-
+docker image build에 사용할 Dockerfile의 위치를 지정하는 build 지시문이다.
+
+-
+memory를 350MB로 제한한다.
+
+-
+container에서 사용할 environment variable 이다. 여기에서는 Spring Profile을 docker로 지정하는 것을 설정했다.
+
+​
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+실행
+
+
+
+
+
+
+
+```
+docker-compose up -d
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-d 옵션은 위에 설명과 동일하다.
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+로그 확인
+
+
+
+
+
+
+
+```
+docker-compose logs -f
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+종료
+
+
+
+
+
+
+
+```
+docker-compose down
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+참고한 책은 아래 책이다.
+> [**스프링으로 하는 마이크로서비스 구축 - YES24**](http://www.yes24.com/Product/Goods/95593443)
+>
+> 기존 일체형 애플리케이션을 마이크로서비스로 나누고 온프레미스나 클라우드로 배포하려는 자바, 스프링 개발자와 아키텍트를 위한 책이다. 스프링 부트, 스프링 클라우드와 도커, 쿠버네티스, 이스티오, EFK 스택, 프로메테우스, 그라파나 등의 오픈 소스 도구를 조합...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+docker-compose.yml
+
+
+
+
+
+
+
+
+
+```
+version: '2.1'
+
+services:
+  product:
+    build: microservices/product-service
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - mongodb
+
+  recommendation:
+    build: microservices/recommendation-service
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - mongodb
+
+  review:
+    build: microservices/review-service
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  product-composite:
+    build: microservices/product-composite-service
+    mem_limit: 350m
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  # $ mongo
+  mongodb:
+    image: mongo:3.6.9
+    mem_limit: 350m
+    ports:
+      - "27017:27017"
+    command: mongod --smallfiles
+
+  # $ mysql -uroot -h127.0.0.1 -p
+  mysql:
+    image: mysql:5.7
+    mem_limit: 350m
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpwd
+      - MYSQL_DATABASE=review-db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pwd
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-uuser", "-ppwd", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+```
+
+
+
+
+
+
+
+
+
+
+```
+recommendation:
+    build: microservices/recommendation-service
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - mongodb
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+depends_on 조건을 걸면 mongodb container가 시작되기 전에는 docker compose가 container를 시작하지 않는다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+review:
+    build: microservices/review-service
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mysql:
+        condition: service_healthy
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+condition 조건은 mysql container가 실행 중이고 health check 결과 정상일 때만 실행된다.
+
+​
+
+docker compose는 mysql container가 정상동작할 때 까지 review container를 실행하지 않는다.
+
+​
+
+-------- 2023.07.04 추가 ---------
+
+**(Mac M1) no matching manifest for linux/arm64/v8 in the manifest list entries**
+
+**​**
+
+mysql image를 docker-compose로 구동할 때 발생되었다.
+
+간단하게 해결하는 방법은 platform을 추가로 작성해서 해결 할 수 있었다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+mysql:
+  images: mysql
+  platform: linux/amd64
+ ...
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+출처 : <https://velog.io/@sujeongim/%EC%98%A4%EB%A5%98-%EC%B2%9C%EA%B5%AD-Docker%ED%8E%B8-Mac-M1-no-matching-manifest-for-linuxarm64v8>
+> [**[오류 천국 : Docker편] (Mac M1) no matching manifest for linux/arm64/v8 in the manifest list entries**](https://velog.io/@sujeongim/%EC%98%A4%EB%A5%98-%EC%B2%9C%EA%B5%AD-Docker%ED%8E%B8-Mac-M1-no-matching-manifest-for-linuxarm64v8)
+>
+> 도커 허브의 MySQL 공식 이미지 안내에는 ARM 64 태그가 달려있다. 그럼에도 불구하고 정상적으로 이미지를 당겨 올 수 없다는 오류가 뜬다. 도커 명령어 옵션으로 ' --platform linux/amd64 '를 덧붙여 이미지를 당겨오는 플랫폼이 arm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**​**

@@ -1,0 +1,42 @@
+---
+title: "java string 특정 문자 갯수 구하기"
+date: 2013-01-25 10:41:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60181600619"
+---
+
+출처 :
+
+[p://dumbung.com/main/bbs/board.php?bo_table=JSP_TIP&wr_id=6&sfl=&stx=&sst=wr_good&sod=desc&sop=and&page=1](http://dumbung.com/main/bbs/board.php?bo_table=JSP_TIP&wr_id=6&sfl=&stx=&sst=wr_good&sod=desc&sop=and&page=1)
+
+
+
+
+
+package test2;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+/*
+ * 요구사항 : db에 저장된 설명 중 2번째 줄까지 내용만 보여 달라.
+ *      <br>의 갯수를 세서 3개 일 때 까지의 길이를 구한 다음.
+ *         substring으로 해당 문자 까지 잘라줌.
+ */
+public class TestDate {
+    public static void main(String[] args) {
+        String s = "<br>dddd<br>ddgggg<br>bbbbbttt<br>";
+        Pattern p = Pattern.compile("<br>");
+
+        Matcher m = p.matcher(s);
+        int count  = 0;
+        int count2 = 0;
+        for( int i = 0; m.find(i); i = m.end()){
+         if(count<4){
+          count++;
+          count2=i;
+         }
+        }
+        System.out.println(count+"  " + count2); //특정문자열(Pattern)의 갯수
+        System.out.println(s.substring(0,count2)); //특정 문자 갯수까지 출력하기
+     }
+}

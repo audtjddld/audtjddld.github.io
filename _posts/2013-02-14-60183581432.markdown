@@ -1,0 +1,73 @@
+---
+title: "스크립트 이해"
+date: 2013-02-14 16:59:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60183581432"
+---
+
+.data()**
+
+
+
+**jQuery :** .data( key ) - 값 세팅하기
+
+              .data( key, value ) - 값 저장하기
+
+**[출처]** [[jQuery] .data()](http://blog.naver.com/mindware/130082954670)|**작성자** [렌보](http://blog.naver.com/mindware)
+
+
+
+.data는 위와 같은 기능이 있다.
+
+
+
+따라서 현재 temp 같이 key,value로 저장하게 되면 화면에서 맵형식이 생기는 것이다.
+
+처음에 가져온 태그를 변수에 저장 시킨뒤 원래 있던 내용은 삭제 시킨다. (하위 태그 <tr> <td>들)
+
+이후에 변수에 담은 태그를 이용해서 그리드를 만드는 것이다.
+
+
+
+*/
+
+```
+/* ajax json 호출 */
+function getJson(){
+ $.ajax({
+  type: "post",
+  url: "sample_json.html",
+  data: "",
+  dataType: "json",
+  success: function(json){
+   //alert(JSON.stringify(json));
+   gridView("grid", json.data); // 첫번째 파라메터 : 그리드가 표현될 ID, 두번째 파라메터 : json 데이터
+  }
+ });
+}
+/* json Grid 구현 */
+function gridView(gridTagId, data){
+   //alert(data.length);
+   $("#" + gridTagId).html('');
+  for ( var i = 0; i
+
+
+
+  json 그리드 예제
+
+
+    번호
+    제목
+    글쓴이
+
+
+
+
+    COL_NAME_NUMBER
+    COL_NAME_TITLE
+    COL_NAME_USER_ID
+
+
+
+
+```

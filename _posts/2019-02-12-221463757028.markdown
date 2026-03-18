@@ -1,0 +1,158 @@
+---
+title: "google guice, guava event-bus"
+date: 2019-02-12 10:58:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221463757028"
+---
+
+<https://www.baeldung.com/guice>
+> [**Guide to Google Guice | Baeldung**](https://www.baeldung.com/guice)
+>
+> A quick, practical guide to dependency injection in Google Guice.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DI 도구로서 오래전부터 이미 활용이 되어있던 것 같다.
+
+​
+
+Crawler4j의 이전 버전에서 DI 주입 방법이 필요해서 찾아보니 Google에서는 유용한 툴을 많이 만들어 둔 것 같다.
+
+
+
+​
+
+Guava - eventBus
+
+​
+
+<https://www.baeldung.com/guava-eventbus>
+> [**Guide to Guava's EventBus | Baeldung**](https://www.baeldung.com/guava-eventbus)
+>
+> Use Guava's EventBus for publish-subscribe communication between components.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+현재 진행중인 스레드나 로직과 독립적으로 실행되어야 하는 경우에 event-bus를 이용하면 유용하다.
+
+​
+
+비동기 코드를 작성할 수 있으며 일부 성능을 향상시킬 수 있다. (단 비동기 방식일 땐, 적정 Thread 설정이 필요하다.
+
+​
+
+적정수 이상의 thread가 발생되면 OOM이 발생되고 OS에서 OOM Killer로 인하여 process가 죽을 수도 있기 때문이다.
+
+​
+
+그리고 적정수 이상의 Thread가 발생되면 왜 문제가 되는가에 대해서는 링크를 통해 확인해보면 된다.
+
+ <https://mooneegee.blogspot.com/2015/01/os-thread.html>
+
+​
+
+위 링크 작성자가 말한대로 메모리 구조로 생각하면 좋은 것 같다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    ![](https://2.bp.blogspot.com/-3AB4sE53Dfw/VMVNdWa_V0I/AAAAAAAAACo/UAGFO7f6_UA/s1600/euva3a00.p54z.gif)
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+​
+
+<http://kwonnam.pe.kr/wiki/java/guava/eventbus>
+> [**java:guava:eventbus [권남]**](http://kwonnam.pe.kr/wiki/java/guava/eventbus)
+>
+> Guava Event Bus 매우 간단하고 쉬운 Java Event Bus 구현체 EventBusExplained Guide to Guava's EventBus [Guava] EventBus 예제 Guava’s Event Bus 왜 필요한가 개발을 하다보면 본질적인 비즈니스 로직(예: 사용자 가입. 사용자정보 검증 및 DB 저장)과 비본질적인 비즈니스에 대한 후처리 로직(예: 가입 축하 Email발송, 통계 서비스에 가입자 통지 등)이 강하게 결합(Tight Coupling)하는 경우가 발생한다. 실제 비즈니스 로직과 그 후처리 로...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<https://github.com/google/guava/wiki/EventBusExplained>
+> [**google/guava**](https://github.com/google/guava/wiki/EventBusExplained)
+>
+> Google core libraries for Java. Contribute to google/guava development by creating an account on GitHub.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

@@ -1,0 +1,13 @@
+---
+title: "아마존 클라우드 서버 EC2 설치 방법"
+date: 2015-11-19 14:43:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220543929004"
+---
+
+<http://saksin.tistory.com/1240>
+
+<http://saksin.tistory.com/1240>
+
+[아마존 클라우드 서버, EC2 설치 - CentOS 6.x아마존클라우드에서 CentOS 서버를 설치해보았습니다. 먼저, AWS Management Console 에서 EC2 를 선택합니다.  Launch Instance 버튼...saksin.tistory.com](http://saksin.tistory.com/1240)
+

@@ -1,0 +1,42 @@
+---
+title: "Tomcat Session-timeout 설정"
+date: 2014-12-15 20:36:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220210955993"
+---
+
+​출처 : <http://blog.daum.net/istae0430/93>
+
+
+
+<!-- ==================== Default Session Configuration ================= -->  <!-- You can set the default session timeout (in minutes) for all newly         -->  <!-- created sessions by modifying the value below.                                 -->
+
+
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+
+
+---------------------------------------------------------------------
+
+
+
+위 <session-timeout>30</session-timeout>안의 30 숫자가 유지 시간임. (분 단위)
+
+
+
+
+
+tomcat 설치 폴더 안에
+
+conf/web.xml 안에 세션 timeout을 걸어줘야된다.
+
+
+
+애플리케이션 내에 web.xml도 있지만 tomcat쪽에 같이 걸어져 있으면
+
+서버쪽 web.xml을 더 참조하는 듯 함.
+
+(내 생각)

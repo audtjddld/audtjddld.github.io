@@ -1,0 +1,68 @@
+---
+title: "kotlin codestyle"
+date: 2022-09-27 10:11:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222885339881"
+---
+
+```
+root = true
+# All files
+[*]
+indent_style = space
+insert_final_newline = true
+end_of_line = lf
+charset = utf-8
+
+# kotlin
+[*.{kt,kts}]
+indent_size = 4
+disabled_rules = no-wildcard-imports, import-ordering
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.editorconfig
+
+​
+
+잘 정리된 문서 :
+
+<https://blog.benelog.net/ktlint.html>
+> [**ktlint로 Kotlin 공식 코딩 컨벤션 맞추기 - 개발수양록**](https://blog.benelog.net/ktlint.html)
+>
+> ktlint로 Kotlin 공식 코딩 컨벤션 맞추기 Kotlin 언어에는 공식 코딩 컨벤션이 정의되어 있습니다. 이를 준수할수 있도록 Gradle 빌드에서 ktlint로 코드 스타일을 검사하고, IntelliJ의 포멧터, Git의 pre-commit hook과 연동하는 방법을 안내합니다. Nov 12, 2019 Read Time: 5 min 정상혁 Kotlin 언어의 공식 사이트에서는 코딩 컨벤션 가이드를 제공합니다. <https://kotlinlang.org/docs/reference/coding-conventions.html> kt...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

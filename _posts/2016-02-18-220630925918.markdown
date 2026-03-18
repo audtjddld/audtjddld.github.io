@@ -1,0 +1,16 @@
+---
+title: "JSTL Locale 값 가져오기"
+date: 2016-02-18 15:35:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220630925918"
+---
+
+<http://stackoverflow.com/questions/21173283/display-the-locale-in-a-jstl>
+
+<http://stackoverflow.com/questions/21173283/display-the-locale-in-a-jstl>
+
+[Display the locale in a JSTLIn a jstl page i want to display the current locale being used to render the page. The page locale is working just fine. When i switch...stackoverflow.com](http://stackoverflow.com/questions/21173283/display-the-locale-in-a-jstl)
+
+<c:out value="${pageContext.request.locale.language}"/>
+
+사용하면 locale 값을 알 수 있다.

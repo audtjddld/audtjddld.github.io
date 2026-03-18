@@ -1,0 +1,7 @@
+---
+title: "spring mvc 406 error"
+date: 2016-09-12 17:36:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220811149559"
+---
+

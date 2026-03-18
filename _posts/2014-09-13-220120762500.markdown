@@ -1,0 +1,111 @@
+---
+title: "bigdata study 6"
+date: 2014-09-13 15:19:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220120762500"
+---
+
+http:// [www.virustotal.com](http://www.virustotal.com)
+
+
+
+바이러스 등을 체크 할 수 있는 사이트.
+
+
+
+가입을 하면 키를 준다. (md5 hash값을 분석해서 악성코드인지 판단한다고 함.)
+
+
+
+금일은 패킷 분석을 통하여 여러가지 내용을 볼려고 한다.
+
+
+
+vm ware로 샌드박스를 설치 후 분석하여 레포트등을 출력해준다.
+
+
+
+
+
+
+
+출처 : <http://blog.naver.com/atoz333/220046908190>
+
+
+
+
+
+하둡 설치 경로 (/home/junev/hadoop)
+
+
+
+1. 첨부한 hadooop-eclipse-plugin-1.2.1.jar 파일을 자신의 이클립스 폴더의 plugins 폴더에 넣는다.
+
+2. 이클립스를 실행하고, Window -> Open Perspective -> Other -> Map / Reduce 선택
+
+![](/assets/images/posts/220120762500/a92059c9f158.jpg?type=w3)
+
+3. 이클립스 하단 부에 Console 나오는 창에 보면 Map / Reduce Location 탭을 선택하고 오른쪽 마우스 클릭 후 , New Hadoop location을 선택한다.
+
+![](/assets/images/posts/220120762500/acf6409a0d47.jpg?type=w3)
+
+
+
+4.
+ Location name 은 아무거나 작성하고, Map/Reduce Master 의 호스트와 포트는 자신이 설치한 하둡의
+conf 폴더에 core-site.xml 에서 설정한대로 적어주고, DFS Master의 포트는 mapred-site.xml에서
+설정한대로 적어준다.
+
+
+
+![](/assets/images/posts/220120762500/ab6406f0bef4.jpg?type=w3)
+
+
+
+5. 위의 과정이 끝났다면 이클립스 좌측부에 다음과 같이 창이 생긴다.
+
+![](/assets/images/posts/220120762500/cb2acf459dd1.jpg?type=w3)
+
+
+
+만약 모든 폴더 및 파일이 열리지 않고 Permission Denied 에러가 뜬다면,  $HADOOP_HOME/conf/hdfs-site.xml 에서 다음과 같이 프로퍼티를 추가한다.
+
+<property>
+
+<name>dfs.permissions</name>
+
+<value>false</name>
+
+</property>
+
+
+
+ 6. 이제 하둡 맵 리듀스 프로젝트를 만들어보자. 이클립스에서 File -> New -> Other -> Map / Reduce Project 선택
+
+![](/assets/images/posts/220120762500/ea1270e0a082.jpg?type=w3)
+
+프로젝트이름을 정하고, Configure HAdoop install directory를 선택하여 자신이 설치한 하둡의 디렉토리를 선택한다.
+
+
+
+
+
+![](/assets/images/posts/220120762500/8cde8ea85be0.jpg?type=w3)**7. 무사히 프로젝트를 만들었다면 간단한 wordcount를 만들어본다.
+
+[출처]** [이클립스에 하둡 플러그인 설치](http://blog.naver.com/atoz333/220046908190)|**작성자** [June](http://blog.naver.com/atoz333)
+
+
+
+
+
+
+
+#### storm + esper + twitter  연동 예제
+
+
+
+<http://www.mimul.com/pebble/default/2012/03/14/1331718971671.html>
+
+
+
+<https://github.com/tomdz/storm-esper>

@@ -1,0 +1,7 @@
+---
+title: "모의 객체와 스텁(stub)"
+date: 2016-11-22 10:47:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220867674841"
+---
+

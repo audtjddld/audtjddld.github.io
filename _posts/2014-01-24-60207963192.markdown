@@ -1,0 +1,60 @@
+---
+title: "oracle"
+date: 2014-01-24 17:34:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60207963192"
+---
+
+<http://blog.naver.com/PostView.nhn?blogId=0moodgirl0&logNo=145764769>
+
+
+
+오라클 FK로 인하여 제약조건이 걸려서 안되서
+
+FK를 삭제했더니 인덱스가 깨잣다고 나온다.
+
+
+
+ INDEX는 TABLE PK값 컬럼명으로 생각하면 된다.
+
+
+
+**1. 테이블에 INDEX 확인**
+
+**SELECT * FROM USER_INDEXES**
+
+**WHERE TABLE_NAME='/*테이블명*/ ' ;**
+
+****
+
+****
+
+
+
+**2. INDEX에 키가되는 컬럼 조회 **
+
+**SELECT * FROM USER_IND_COLUMNS**
+
+**WHERE TABLE_NAME='/*테이블명*/ ' ;**
+
+
+
+
+
+
+
+**3. 해당 INDEX 컬럼만 확인 **
+
+**SELECT * FROM USER_IND_COLUMNS**
+
+**WHERE INDEX_NAME='/*인덱스명*/';**
+
+**ALTER INDEX 인덱스명_PK REBUILD;  해주면 된다.**
+
+
+
+
+
+
+
+**확ㅇ[출처]** [Oracle - Index 확인 방법 및 PK추가](http://blog.naver.com/onandme/110150909970)|**작성자** [onandme](http://blog.naver.com/onandme)

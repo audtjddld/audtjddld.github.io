@@ -1,0 +1,113 @@
+---
+title: "Void 메서드를 테스트하라"
+date: 2020-09-03 19:02:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222079454367"
+---
+
+<https://www.baeldung.com/mockito-void-methods>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                [*](https://www.baeldung.com/mockito-void-methods)
+> [**Mocking Void Methods with Mockito | Baeldung**](https://www.baeldung.com/mockito-void-methods)
+>
+> See how to mock methods that return void using Mockito.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**4. Answering a Call to ****Void***
+
+A method may perform more complex behavior than merely adding or setting value. For these situations we can use Mockito’s *Answer* to add the behavior we need:
+
+
+
+
+
+
+
+
+
+```
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+// import 라이브러리
+
+@Test
+public void whenAddCalledAnswered() {
+    MyList myList = mock(MyList.class);   // 목킹 클래스
+    doAnswer(invocation -> {               // 메서드 파라미터
+        Object arg0 = invocation.getArgument(0);
+        Object arg1 = invocation.getArgument(1);
+
+        assertEquals(3, arg0);              // 검증
+        assertEquals("answer me", arg1);
+        return null;
+    }).when(myList).add(any(Integer.class), any(String.class)); // 메서드 호출시 타입 지정
+    myList.add(3, "answer me");   // 목킹 클래스 실제 호출
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+As explained in [Mockito’s Java 8 Features](https://www.baeldung.com/mockito-2-java-8) we use a lambda with *Answer* to define custom behavior for *add()*.
+
+​
+
+void 메서드 검증 방법이 계속해서 마음에 걸렸는데, 의외로 쉽게 확인이 된거 같다.
+
+​
+
+// 2022.07.24
+
+​
+
+중첩된 메서드 호출 부분은 확인이 불가능하다.
+
+​
+
+이 부분은 참고해서 작성하면 좋을 것 같다.

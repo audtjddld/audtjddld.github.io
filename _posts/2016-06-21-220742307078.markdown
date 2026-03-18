@@ -1,0 +1,7 @@
+---
+title: "spring boot transaction manger"
+date: 2016-06-21 18:24:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220742307078"
+---
+

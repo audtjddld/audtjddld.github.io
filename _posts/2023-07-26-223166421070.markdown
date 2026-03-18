@@ -1,0 +1,76 @@
+---
+title: "Gradle \"Entry .classpath is a duplicate but no duplicate handling strategy has been set\""
+date: 2023-07-26 10:57:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223166421070"
+---
+
+<https://stackoverflow.com/questions/67265308/gradle-entry-classpath-is-a-duplicate-but-no-duplicate-handling-strategy-has-b>
+> [**Gradle "Entry .classpath is a duplicate but no duplicate handling strategy has been set"**](https://stackoverflow.com/questions/67265308/gradle-entry-classpath-is-a-duplicate-but-no-duplicate-handling-strategy-has-b)
+>
+> I'm trying to build a gradle project but, when I try $ gradle build I get the following output: Starting a Gradle Daemon (subsequent builds will be faster) > Task :jar FAILED FAILURE: Build fai...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+build.gradle.kts
+
+
+
+
+
+
+
+
+
+```
+tasks {
+    jar {
+        enabled = true
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 2023.08.02
+
+​
+
+gradle에서 application 실행시 이전 작업 설정이 가능한데, 이곳에서 clean build를 시키면 정상적으로 구동이 가능하다.
+
+​
+
+요 현상이 발생된 이유는 QueryDSL의 QClass가 generated package 외에 다른 곳에서도 생성되는 이슈가 발생되서 발생되었고, 앞서 application 구동전 gradle 명령어를 이용해서 정리할 수 있다.

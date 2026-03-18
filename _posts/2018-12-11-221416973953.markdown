@@ -1,0 +1,30 @@
+---
+title: "spring boot webConfiguration 설정 제거"
+date: 2018-12-11 15:17:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221416973953"
+---
+
+SpringApplication에서 WebApplicationType을 None으로 설정하면 웹 애플리케이션 설정을 제거하는 것 같다.
+
+​
+
+netty client 구동이 문제되어 이슈가 있었는데, 해당 설정으로 막을 수 있었다.
+
+
+
+
+
+
+
+```
+@SpringBootApplication
+public class Client {
+
+    public static void main(String[] args) throws Exception {
+        SpringApplication app = new SpringApplication(Client.class);
+        app.setWebApplicationType(WebApplicationType.NONE);
+        app.run(args);
+    }
+}
+```

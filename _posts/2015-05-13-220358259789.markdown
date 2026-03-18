@@ -1,0 +1,293 @@
+---
+title: "[java] 웹 페이지 특정영역 이미지 캡쳐 후 서버에 저장"
+date: 2015-05-13 14:14:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220358259789"
+---
+
+웹 페이지 특정영역 이미지 캡쳐 후 서버에 저장.
+
+
+
+요구사항 중에서 특정영역에 잘못 표시된 곳을 저장하도록 하면 웹 페이지 내에 화면을 캡쳐 후에
+
+서버에 이미지 파일로 저장되도록 하는 부분이 있어서 검색을 해보아서 찾았다.
+
+
+
+방법은
+
+
+
+html2canvas.js 를 이용하여
+
+특정 영역을 캡쳐 후 서버에 binary로 전송
+
+
+
+byte[] file = Base64.decodeBase64(); 로 파일로 받은 뒤
+
+FileOutputStream을 이용하여 서버에 저장도록 하는 방법으로 풀 수 있었다.
+
+
+
+일단 html2canvas 플러그인을 받기 위해서는 아래 사이트로 이동 후 파일을 다운 받는다.
+
+****
+
+**본사이트**
+
+<http://html2canvas.hertzen.com/>
+
+[html2canvashtml2canvas.hertzen.com](http://html2canvas.hertzen.com/)
+
+**다운로드 사이트**
+
+<https://github.com/niklasvh/html2canvas/releases>
+
+[niklasvh/html2canvashtml2canvas - Screenshots with JavaScriptgithub.com](https://github.com/niklasvh/html2canvas)
+
+페이지 상단에
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+
+
+    <script src="/common/js/html2canvas.js"></script>
+
+    <script type="text/javascript">
+
+
+
+        function capture() {
+
+
+
+            html2canvas($(".container"), {
+
+                  onrendered: function(canvas) {
+
+                    //document.body.appendChild(canvas);
+
+                    //alert(canvas.toDataURL("image/png"));
+
+
+
+                    $("#imgSrc").val(canvas.toDataURL("image/png"));
+
+
+
+                    $.ajax({
+
+                        type:     "post",
+
+                        data : $("form").serialize(),
+
+                        url:     /imageCreate.ajax",
+
+                        error: function(a, b, c){
+
+                            alert("fail!!");
+
+                        },
+
+                        success: function (data) {
+
+                            try{
+
+
+
+                            }catch(e){
+
+                                alert('server Error!!');
+
+                            }
+
+                        }
+
+                    });
+
+                  }
+
+
+
+
+
+            });
+
+
+
+        }
+
+   </script>
+
+
+
+[Colored by Color Scripter](http://colorscripter.com/info#e)
+[cs](http://colorscripter.com/info#e)
+
+호출 부쪽을 구현합니다.
+
+
+
+같은 was에서 호출하게되면 success로 떨어지지만,
+
+다른 곳으로 서버를 두게된다면 error쪽에서 떨어집니다. 크로스 도메인 때문에요.
+
+하지만 성공되는거죠. ![](https://ssl.pstatic.net/static.se2/static/full/20130612/emoticon/1_31.gif)
+
+
+
+document 내에 <input type="hidden" name="imgSrc" id="imgSrc" />를 선언 합니다.
+
+이곳에 캡쳐 영역 image 데이터 값이 들어가게 됩니다.
+
+ html2canvas(캡쳐영역**, {
+
+                  onrendered: function(canvas) {
+
+          // 원하는 이벤트 작성
+
+    }
+
+})
+
+
+
+형식으로 캡쳐 영역 설정 후 해당 부분을 미리 만들어둔 input tag로 데이터를 넣어 줍니다.
+
+
+
+그리고 jquery.ajax 를 이용해서 서버 저장용 controller로 데이터를 날려줍니다.
+
+```
+/**
+     * 캡쳐된 화면 서버 저장
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/imageCreate.ajax")
+    public ModelAndView createImage (HttpServletRequest request) throws Exception{
+
+        String binaryData = request.getParameter("imgSrc");
+        FileOutputStream stream = null;
+        ModelAndView mav = new ModelAndView();
+mav.setViewName("jsonView");
+        try{
+            System.out.println("binary file   "  + binaryData);
+            if(binaryData == null || binaryData=="") {
+                throw new Exception();
+            }
+
+
+            binaryData = binaryData.replaceAll("data:image/png;base64,", "");
+            byte[] file = Base64.decodeBase64(binaryData);
+            System.out.println("file  :::::::: " + file + " || " + file.length);
+            String fileName=  UUID.randomUUID().toString();
+
+            stream = new FileOutputStream("d:\\test2\\"+fileName+".png");
+            stream.write(file);
+            stream.close();
+            System.out.println("파일 작성 완료");
+            mav.addObject("msg","ok");
+
+        }catch(Exception e){
+            System.out.println("파일이 정상적으로 넘어오지 않았습니다");
+            mav.addObject("msg","no");
+            return mav;
+        }finally{
+            stream.close();
+        }
+        return mav;
+
+    }
+```
+
+
+
+위와 같이 파일 생성 부를 구현하면 정상적으로 데이터가 저장되는 것을 확인 할 수 있습니다.
+
+
+
+
+
+저장된 이미지
+
+
+
+![](/assets/images/posts/220358259789/028e774c1941.png?type=w3)
+
+
+
+참조 : <http://codingdojang.com/scode/356>

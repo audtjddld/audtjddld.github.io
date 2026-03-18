@@ -1,0 +1,51 @@
+---
+title: "싱글톤 패턴 (Singleton pattern)"
+date: 2016-02-22 21:57:00 +0900
+categories: [경험 및 정보 공유]
+tags: [디자인패턴, 싱글톤패턴, singleton, HEAD, FIRST, DESIGN, PATTERNS]
+original_url: "https://blog.naver.com/kkforgg/220635013785"
+---
+
+정의 :
+
+싱글턴 패턴은 해당 클래스의 인스턴스가 하나만 만들어지고, 어디서든지 그 인스턴스에 접근할 수 있도록 하기위한 패턴.
+
+- 어떤 클래스에 싱글턴 패턴을 적용하면 애플리케이션에 그 클래스의 인스턴스가 최대 한 개 까지만 있도록 할 수 있다.
+- 싱글턴 패턴을 이용하면 유일한 인스턴스를 어디서든지 접근할 수 있도록 할 수 있다.
+- 자바에서 싱글턴 패턴을 구현 할 때는 private 생성자와 정적 메소드, 정적 변수를 사용 한다.
+- 다중 스레드를 사용하는 애플리케이션에서는 속도와 자원 문제를 파악해보고 적절한 구현법을 사용해야 한다.
+- DCL을 사용하는 방법은 자바2 버전 5(자바 1.5)보다 전에 나온 버전에서는 쓸 수 없다는 점에 주의.
+- 클래스 로더가 여러 개 있으면 싱글턴이 제대로 작동하지 않고, 여러 개의 인스턴스가 생길 수 있다.
+
+출처 :
+
+헤드퍼스트 디자인패턴 (도서)
+
+
+<http://book.naver.com/bookdb/book_detail.php?bid=1882446>
+
+
+
+
+[HEAD FIRST DESIGN PATTERNS](http://book.naver.com/bookdb/book_detail.php?bid=1882446)
+
+
+  작가
+  에릭 프리먼
+  출판
+  한빛미디어
+  발매
+  2005.09.04.
+
+
+
+
+
+
+
+<http://wiki.gurubee.net/pages/viewpage.action?pageId=1507403>
+
+<http://wiki.gurubee.net/pages/viewpage.action?pageId=1507403>
+
+[5. 싱글턴 패턴 - 12.구루비 Dev 스터디 - 개발자, DBA가 함께 만들어가는 구루비 ...wiki.gurubee.net](http://wiki.gurubee.net/pages/viewpage.action?pageId=1507403)
+

@@ -1,0 +1,8 @@
+---
+title: "생활코딩"
+date: 2013-10-04 15:25:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60201052047"
+---
+
+<http://www.opentutorials.org/>

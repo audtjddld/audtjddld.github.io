@@ -1,0 +1,128 @@
+---
+title: "jQuery xml 파싱"
+date: 2012-10-19 15:39:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60173767699"
+---
+
+-------------------------------- xml --------------------------------------------
+
+<?xml version="1.0"?>
+<start>
+
+    <e1>
+        <talk1>Daniel:Hi, I moved here yesterday.1</talk1>
+        <talk2>Olivia:Oh, hi. I'm Olivia. Nice to meet you.1</talk2>
+        <talk3>Daniel:Hi, I moved here yesterday.1</talk3>
+        <talk4>Daniel:Hi, I moved here yesterday.1</talk4>
+        <talk5>Daniel:Hi, I moved here yesterday.1</talk5>
+    </e1>
+    <k1>
+        <talk1>Daniel:안녕하세요, 어제 여기로 이사 왔습니다.1</talk1>
+        <talk2>Olivia:아, 안녕하세요. 저는 올리비아에요.만나서 반가워요.1</talk2>
+        <talk3>Daniel:안녕하세요, 어제 또 이사왓네요.1</talk3>
+        <talk4>Daniel:안녕하세요, 어제 또 이사왓네요.1</talk4>
+        <talk5>Daniel:안녕하세요, 어제 또 이사왓네요.1</talk5>
+    </k1>
+ <line>
+
+ </line>
+
+    <e3>
+        <talk1>Daniel:Hi, I moved here yesterday.3</talk1>
+        <talk2>Olivia:Oh, hi. I'm Olivia. Nice to meet you.3</talk2>
+        <talk3>Daniel:Hi, I moved here yesterday.3</talk3>
+        <talk4>Daniel:Hi, I moved here yesterday.3</talk4>
+        <talk5>Daniel:Hi, I moved here yesterday.3</talk5>
+    </e3>
+    <k3>
+        <talk1>Daniel:안녕하세요, 어제 여기로 이사 왔습니다.3</talk1>
+        <talk2>Olivia:아, 안녕하세요. 저는 올리비아에요.만나서 반가워요.3</talk2>
+        <talk3>Daniel:안녕하세요, 어제 또 이사왓네요.3</talk3>
+        <talk4>Daniel:안녕하세요, 어제 또 이사왓네요.3</talk4>
+        <talk5>Daniel:안녕하세요, 어제 또 이사왓네요.3</talk5>
+    </k3>
+
+</start>
+
+
+
+------------------------------ script ----------------------------------------
+
+
+
+        function converted(str){
+            //alert(str);
+            var value=str.split(':');
+            var name=trim(value[0]);
+            var talk=trim(value[1]);
+            cnt++;
+
+            if(name!="" && talk !=""){
+                    return "<tr><td bgcolor='#f5f5f5'>"+value[0]+"</td> <td>"+value[1]+"</td></tr>";
+            }
+        }
+
+
+
+
+
+$(document).ready(function() {
+            $.ajax({
+                    type :"post",
+                    url : "/????/xml/data_01_01.xml", // xml 경로
+                    dataType: "xml", // xml 타입
+                    success : function(xml) {
+                       /**/
+                        var idx =$(xml).find("start").children().length+1; //elements 갯수
+                        var engIdx=0; // 영어 문장 갯수
+                        var korIdx=0; // 국어 문장 갯수
+                        var lineIdx=0; // 가로줄 갯수
+
+                        var htmlSrc = new Array();
+
+                        for(var i =1; i<idx;i++){
+                            engIdx=$(xml).find("e"+i).children().length+1;
+                                for(var j=1; j<engIdx; j++ ){
+                                    htmlSrc.push(converted($(xml).find("e"+i).find("talk"+j).text()));
+                                }
+                            korIdx=$(xml).find("k"+i).children().length+1;
+                                for(var h=1; h<korIdx; h++){
+                                    htmlSrc.push(converted($(xml).find("k"+i).find("talk"+h).text()));
+                                }
+                            if(lineIdx==0){ htmlSrc.push("<tr><td colspan='2'><hr></td></tr>"); lineIdx++;}
+                            $("#xmlGrid tbody").html(htmlSrc);
+                        }
+                        /**/
+                    }
+            });
+        });
+
+------------------------------------ html --------------------------------------------
+
+<body>
+
+<table width="390" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+    <td>
+        <table width="90%" id="xmlGrid" align="center">
+            <thead>
+
+            </thead>
+            <tbody>
+
+            </tbody>
+
+        </table>
+    </td>
+</tr>
+</table>
+</body>
+
+------------------------------------- 결과 ----------------------------------------------
+
+![](https://blogfiles.pstatic.net/20121019_42/kkforgg_1350637263745RX3TL_PNG/1.png?type=w3)
+
+
+
+이렇게 나옴﻿

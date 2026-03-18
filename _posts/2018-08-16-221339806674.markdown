@@ -1,0 +1,7 @@
+---
+title: "mac에서 nodejs 삭제하는 방법."
+date: 2018-08-16 11:34:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221339806674"
+---
+

@@ -1,0 +1,41 @@
+---
+title: "날짜 비교 하기"
+date: 2013-01-10 21:04:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60180126189"
+---
+
+  public static String getIssueTime(String time) throws Exception {
+
+        String result="";                   // 결과 값, 같거나 이전 것이면 1 아니면 0
+        try{
+            SimpleDateFormat smt = new SimpleDateFormat("yyyy-MM-dd");
+            long time2 = System.currentTimeMillis();    // 현재 시간
+            String cTime = smt.format(time2);
+            String cTimes[] = cTime.split("-"); // 현재 시간
+            String iTimes[] = time.split("-");  // DB에서 가져온 시간
+
+            Calendar c1= Calendar.getInstance();
+            Calendar c2= Calendar.getInstance();
+
+            Debug.logger.debug("------------------------- current " + cTime);
+            Debug.logger.debug("------------------------- input " + time);
+
+//c1.set(2012,1,23)  yyyy mm dd 에서 mm은 -1 해줘야 한다. 1월이 0 임.
+            c1.set(Integer.parseInt(cTimes[0]),Integer.parseInt(cTimes[1])-1,Integer.parseInt(cTimes[2]));    // db에서 가져온 시간
+            c2.set(Integer.parseInt(iTimes[0]),Integer.parseInt(iTimes[1])-1,Integer.parseInt(iTimes[2]));    // 현재 시간.
+
+            if(c1.before(c2)){
+                result="1";
+            }else if(c1.after(c2)){
+                result="0";
+            }else if(c1.equals(c2)){
+                result="1";
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }

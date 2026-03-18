@@ -1,0 +1,19 @@
+---
+title: "JPA 참조 컬럼 정렬 방법"
+date: 2016-02-24 16:03:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220636864486"
+---
+
+참조되는 컬럼위에
+
+@OrderBy("컬럼명")
+
+으로 hibernate 어노테이션을 건다.
+
+출처 : <https://dzone.com/articles/sorting-collections-hibernate>
+
+[Sorting Collections in Hibernate Using SQL in @OrderBy - DZone JavaWhen you have collections of associated objects in domain
+objects, you generally want to specify some kind of default sort order.
+For...dzone.com](https://dzone.com/articles/sorting-collections-hibernate)
+

@@ -1,0 +1,161 @@
+---
+title: "ubuntu 설치시 처음해야 할 설정"
+date: 2016-02-05 14:52:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220619354958"
+---
+
+출처 :  <http://www.shako.net/blog/ubuntu-server-14-04-initial-setup-guide/>
+
+Ubuntu 서버를 처음 설치한 후 기본적으로 해야 하는 셋업이 몇 가지 있습니다. 이번 포스팅에선 [DigitalOcean에 정리되어 있는 블로그 포스팅](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-14-04)과 [Ubuntu 보안 가이드 블로그 포스팅](http://luyin.tistory.com/336)을 참고하여, 보안 강화를 위해서 또는 쉬운 관리를 위해서 꼭 필요한 서버 초기설정에 대해서 알아보겠습니다.
+
+이 가이드는 Ubuntu 14.04를 기준으로, vultr.com VPS에서 테스트 되었습니다.
+
+---
+
+### 1단계. 루트(root) 로그인
+
+모든 작업을 위해서 가장 먼저 필요한 서버 로그인을 해보겠습니다.
+
+서버에 접속하기 위해서는 IP 주소와 root** 계정의 비밀번호를 알아야 합니다.
+vlutr.com과 같은 VPS 서비스를 이용하여 가상서버 인스턴스를 생성하게 되면 IP 주소와 초기 root 계정 비밀번호를
+제공해줍니다. 현재는 root 계정으로만 접근할 수 있습니다. OS X나 Unix 계열의 OS를 사용할 경우 터미널에서 다음과
+같은 명령어로 서버에 접속할 수 있습니다.
+
+```
+$ ssh root@{server-ip-address}
+```
+
+처음 접속할 경우에는 다음과 같은 메시지를 볼 수 있습니다. 접속한 적이 없는 원격 서버라고 경고하는 것입니다. "yes"를 누르면 다음으로 넘어갑니다.
+
+```
+The authenticity of host '0.0.0.0 (0.0.0.0)' can't be established.
+ECDSA key fingerpring is 79:95:46:1a:ab:37:11:8e:86:54:36:38:bb:3c:fa:c0.
+Are you sure you want to continue connecting (yes/no)?
+```
+
+---
+
+### 2단계. Hostname 설정
+
+서버에 연결될 도메인 주소를 입력합니다. 아래와 같이 입력하면 즉시 반영되지만 재부팅시에는 설정이 유지되지 않습니다. (`yourdomain.com` 값은 해당하는 값으로 변경하시기 바랍니다.)
+
+```
+$ sudo hostname yourdomain.com
+```
+
+서버를 재부팅해도 값을 유지하기 위해서 `/etc/hostname` 파일을 다음과 같이 수정합니다.
+
+```
+yourdomain.com
+```
+
+---
+
+### 3단계. 언어(locale) 설정
+
+`/etc/default/locale` 파일을 다음과 같이 수정합니다.
+
+```
+LANG="en_US.UTF-8"
+LANGUAGE="en_US.UTF-8"
+LC_ALL="en_US.UTF-8"
+```
+
+다음과 같이 서버를 재부팅하면 설정이 적용됩니다.
+
+```
+$ sudo reboot
+```
+
+---
+
+### 4단계. 계정 생성
+
+로그인할 수 있는 새로운 계정을 만들어 보도록 하겠습니다. 아래 {username} 부분을 원하시는 이름으로 바꾸시면 됩니다.
+
+```
+$ adduser {username}
+```
+
+비밀번호를 포함하여 몇 가지 정보를 입력하게 됩니다. 비밀번호를 제외하고는 필수 입력사항이 아니므로 그냥 엔터를 입력해도 됩니다.
+
+---
+
+### 5단계. 루트 권한
+
+윗 단계에서 만든 계정은 일반 계정입니다. 일반적인 작업은 수행할 수 있지만 관리자 작업은 수행할 수 없습니다.
+
+일반 계정에서 관리자 작업을 수행할 수 있도록 일반 계정에 "sudo" 권한을 부여할 수 있습니다. 이를 통해 일반 계정도 명령어 앞에 sudo를 붙이면 관리자 작업을 할 수 있게 됩니다.
+
+일반 계정에 루트 권한을 부여하기 위해서 먼저 루트 계정으로 로그인 한 후에 다음과 같이 입력합니다.
+
+```
+$ adduser {username} sudo
+```
+
+---
+
+### 6단계. 방화벽 설정
+
+ufw는 Ubuntu에 기본적으로 설치되어 있는 방화벽입니다. SSH 접속을 위해서 해당포트(기본값 22)를 열어줍니다. 필요한 경우 http 포트도 열어줍니다.
+
+```
+$ sudo ufw allow ssh
+$ sudo ufw allow http
+```
+
+이제 설정을 마쳤으므로 다음과 같이 enable할 수 있습니다.
+
+```
+$ sudo ufw enable
+```
+
+현재 동작여부와 열려있는 포트의 목록을 보려면 다음과 같이 입력합니다.
+
+```
+$ sudo ufw status
+```
+
+---
+
+### 7단계. SSH 보안
+
+SSH의 경우 무차별 아이디/패스워드 대입 공격을 당할 수 있으므로 root 계정을 비활성화 하고, 반복된 로그인 실패시 딜레이를 주도록 설정해야 합니다.
+
+#### root 계정 비활성화
+
+`/etc/ssh/sshd_config` 파일에서 다음 부분을 찾아서 `no`로 변경합니다.
+
+```
+PermitRootLogin no
+```
+
+다음과 같이 서비스를 다시 시작합니다.
+
+```
+sudo service ssh restart
+```
+
+#### 반복 접속시 딜레이 주기
+
+```
+$ sudo apt-get install sshguard
+```
+
+---
+
+### 8단계. apt-get 업데이트
+
+OS를 새로 설치한 후 최신 업데이트를 합니다. `apt-get update`를 통해 최신 업데이트 목록을 가져올 수 있으며, `apt-get upgrade`를 통해 실제로 업데이트를 할 수 있습니다.
+
+```
+$ apt-get update
+$ apt-get upgrade
+```
+
+---
+
+**이후에는?**
+
+이것으로 기본적인 서버 설정을 모두 마쳤습니다. 동적 웹 서비스를 위해서 웹 서버와 DB 등을 설치할 수 있습니다. 자세한 내용은 [Ubuntu 서버 14.04에 LEMP 스택 설치하기 (Nginx, MySQL, PHP)](http://www.shako.net/blog/installing-lemp-stack-on-ubuntu-server-14-04/)를 참고하시기 바랍니다.

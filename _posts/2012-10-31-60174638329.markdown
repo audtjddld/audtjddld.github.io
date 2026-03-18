@@ -1,0 +1,103 @@
+---
+title: "Spring mulitpartRequest를 이용한 파일 업로드 [펌]"
+date: 2012-10-31 20:01:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60174638329"
+---
+
+로직이 완벽하지는 않다.
+
+작성된 내용들을 검색하는 동안 확인해보았는데.
+
+cos.jar 파일을 이용한 방법이 두루쓰이는거 같았다.
+
+하지만 이 예제는 그냥 Spring에서 제공하는 걸로 파일 업로드 방법이다.
+
+
+
+내일 잘 연구해서 써먹어보자.
+
+
+
+출처 - <http://jeonsh.tistory.com/10>
+
+
+
+pring2.5에서는 File Upload를 위해서 기본적으로 CommonsMultipartResolver라는 클래스를 제공한다.**- MultipartResolver**우선 dispatcher-servlet.xml파일에 File Upload를 위한 설정을 한다.
+
+<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">**  <property name="maxUploadSize" value="100000" />  <property name="uploadTempDir" ref="uploadDirResource" /></bean><bean id="uploadDirResource" class="org.springframework.core.io.FileSystemResource">  <constructor-arg>    <value>D:/Temp/fileupload/temp/</value>  </constructor-arg></bean><bean name="fileUploadController" class="test.controller.FileUploadController">  <property name="methodNameResolver" ref="methodNameResolver" />  <property name="uploadRepository" value="D:/Temp/fileupload/" /></bean>
+
+uploadDirResource는 File Upload시 다중접속으로 인해 용량이 한꺼번에 몰리는것을 방지하기 위한 임시저장소 설정이고, uploadRepository가 실제 File이 Upload되는 Directory이다.
+
+﻿
+
+﻿
+
+﻿
+
+﻿fileUpload.jsp****
+
+<script>function formSubmit(oForm){ oForm.submit();}</script><form action="fileUpload.do?mode=fileUpload" method="post" enctype="multipart/form-data"><p> <label for="subject">제목</label> <input type="text" id="subject" name="subject"></p><p> <label for="reportFile">리포트 파일</label> <input type="file" id="multipartFile" name="multipartFile"></p><p> <input type="button" value="확인" onclick="formSubmit(this.form)"></p></form>
+
+View파일에서 주의할 점은 File Upload시 Form형식이 "multipart/form-data"라는 점이다. 이 경우에는 반드시 넘겨주어야 하는 값을 <input type='hidden'>으로 설정하더라도 Role과 Session을 체크할 경우 일반적인 HttpServletRequest로 받을 수 없다. 따라서, 이런 값들은 <form action="">에서 URL 뒤에 Parameter값으로 넘겨주어야 한다. 아니면, HttpServletRequest로 변환할 수 있는 Utility를 따로 구현해야 한다.FileUploadController.java**
+
+private String uploadRepository;**public void setUploadRepository(String uploadRepository) {  this.uploadRepository = uploadRepository;}public void fileUpload(HttpServletRequest request, HttpServletResponse response) throws Exception{  MultipartRequest multipartReq = (MultipartRequest)request;  MultipartFile multipartFile = multipartReq.getFile("multipartFile");  MultipartFile multipartFile = submitReport.getMultipartFile();  if(multipartFile.isEmpty()){    System.out.println("## 비어있는 파일입니다!!");  }  String uploadDir = uploadRepository + File.separator;  try{    new File(uploadDir).mkdir();    multipartFile.transferTo(new File(uploadDir + multipartFile.getOriginalFilename()));**  } catch(IOException e){**    throw new RuntimeException(e.getMessage());  }}
+
+보면 알겠지만, 실제로 구현해줘야 할 로직은 간단하다.
+
+﻿
+
+﻿
+
+﻿
+
+아래는 내가 응용한 것이다.﻿
+
+
+
+
+    String savePath = "D:\\경로";
+    int sizeLimit = 3 * 1024 * 1024;
+
+    public String ImgUpLoader(HttpServletRequest request) throws Exception {
+
+        MultipartRequest multi = (MultipartRequest) request;
+        MultipartFile file = multi.getFile("bookImg");
+        String reNameFile = "";
+
+        try {
+            if (file.isEmpty()) { //파일 유무 검사
+                return reNameFile;
+            } else if (file.getSize() > sizeLimit) {
+                System.out.println("## 용량이 너무 큽니다. \n 3메가 이하로 해주세요.");
+                return "error";
+            }
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_hhmmss");
+            Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"));
+
+            String uploadDir = savePath + File.separator;
+            new File(uploadDir).mkdir(); // 해당 경로 폴더 없을 떄 폴더 생성.
+            String getFileName[] = file.getOriginalFilename().split("\\.");
+
+ // 파일 이름 및 확장자 분리
+
+            //reNameFile = getFileName[0] + "_" + request.getParameter("loginId")
+
++ "_" + sdf.format(c.getTime()) + "." + getFileName[1];
+
+            //파일 이름 설정 = 원본 파일 이름 _ 사용자ID _ 년월일분초 .확장자.
+
+            reNameFile = getFileName[0] + "_" + sdf.format(c.getTime()) + "." + getFileName[1];
+            file.transferTo(new File(savePath + reNameFile));
+
+           Debug.logger.debug("fileName -----> \n" + file.getOriginalFilename() + " \n " +
+
+file.getSize()  + "\n reName : " + reNameFile);
+
+     } catch (IOException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        return reNameFile;
+    }

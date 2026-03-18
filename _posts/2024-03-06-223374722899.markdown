@@ -1,0 +1,32 @@
+---
+title: "Protobuf Best practices"
+date: 2024-03-06 10:46:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223374722899"
+---
+
+<https://protobuf.dev/programming-guides/dos-donts/#unspecified-enum>
+> [**Proto Best Practices**](https://protobuf.dev/programming-guides/dos-donts/#unspecified-enum)
+>
+> Shares vetted best practices for authoring Protocol Buffers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+코드 리뷰를 하는데, 자체적으로 Best Practices를 찾아보면서 참고할 수 있도록 알려주는데, 이런 점은 나도 뭔가 본 받아야 될 것 같다.
+
+​

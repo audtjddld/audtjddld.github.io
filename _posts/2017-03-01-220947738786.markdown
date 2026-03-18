@@ -1,0 +1,7 @@
+---
+title: "Service layer를 어떻게 나누는 것이 좋을까?"
+date: 2017-03-01 21:54:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220947738786"
+---
+

@@ -1,0 +1,86 @@
+---
+title: "[공유] Spring3+ibatis+maven 분석(1)"
+date: 2013-05-20 18:35:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60192326619"
+---
+
+1. Spring3, maven 설치되어있어야함.
+
+2. pom.xml 설정. maven을 이용해서 라이브러리를 받는다.
+
+기본 디펜던시 외에 내가 추가한 내용.
+
+  <!-- mysql driver -->
+
+  <dependency>
+
+   <groupId>mysql</groupId>
+
+   <artifactId>mysql-connector-java</artifactId>
+
+   <version>5.0.3</version>
+
+  </dependency>
+
+
+
+  <!-- dbcp jdbc connection pool -->
+
+  <dependency>
+
+   <groupId>commons-dbcp</groupId>
+
+   <artifactId>commons-dbcp</artifactId>
+
+   <version>1.2.2</version>
+
+  </dependency>
+
+  <!-- ibatis -->
+
+<dependency>
+
+<groupId>org.springframework</groupId>
+
+<artifactId>spring-orm</artifactId>
+
+<version>3.1.2.RELEASE</version>
+
+</dependency>
+
+  <dependency>
+
+   <groupId>org.apache.ibatis</groupId>
+
+   <artifactId>ibatis-sqlmap</artifactId>
+
+   <version>2.3.4.726</version>
+
+  </dependency>
+
+
+
+  <!-- cglib ibatis를 위한 프록시 라이브러리 -->
+
+  <dependency>
+
+   <groupId>cglib</groupId>
+
+   <artifactId>cglib</artifactId>
+
+   <version>2.2</version>
+
+  </dependency>
+
+
+
+디펜던시들을 추가한 다음에 pom.xml 오른쪽 버튼 누르고 run -> maven test 를 해주면 라이브러리들을 다 받아준다.
+
+
+
+--------- 2013.05.20 ----------
+
+
+
+Maven 관련 정보

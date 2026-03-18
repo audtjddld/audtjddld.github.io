@@ -1,0 +1,345 @@
+---
+title: "spring 관련 내용 정리 <펌>"
+date: 2013-09-09 14:11:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60199630942"
+---
+
+/////////////////////////////////// Spring ////////////////////////////////////////
+
+※ Spring Home : <http://www.springsource.org/>
+※ Spring IDE : <http://springide.org/blog/>
+※ Spring IDE Plugin 주소(eclipse에서 직접 입력) : <http://dist.springframework.org/release/IDE>
+
+1. Spring Framework 기본 개념 정리
+ (1) POJO (Plain Old Java Object)
+  다른 클래스를 상속받아서 만들어야 하는 클래스가 아닌 순수한 형태의 자바 클래스
+ (2) IoC(Inversion of Control)
+  제어의 역전이라는 뜻으로 개발자가 직접 객체를 언제 생성하고 없앨지 결정하는 것이 아니라
+  컨테이너에게 맡긴다는 뜻이다.
+  POJO(Plain Old Java Object) 객체의 생성에서 생명주기의 관리까지를
+  IoC Container 에게 담당시킴으로써(XML 이용)  개발에 있어서 편의성과 재사용성의 극대화를 추구하는 개념
+ (3) AOP (Aspect Oriented Programming)
+  관점 지향 프로그래밍이란 뜻으로 기존의 객체지향언어에 의해 추구된 모듈화에 따라 많아진 중복된
+  코드라던지 공통된 처리에 관련한 것들을 관점으로 뽑아내어 공통으로 처리하는 방식
+
+2.  IoC (Inversion of Control)
+ (1) Bean 의 관리
+  1) Spring 에서 org.springframework.beans.factory.BeanFactory 가 기본 IoC 컨테이너이고,
+   보다 진보된 형태로 ApplicationContext 라는 컨테이너도 같이 지원하고 있다.
+   - 직접 생성방법 (classpath 에 있는 Bean 설정파일을 읽어들이는 방식)
+    ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"services.xml","daos.xml"});
+    BeanFactory factory = context; // 상속관계에 있기 때문에 암시적 형변환 가능
+  2) IoC 컨테이너에 의해서 Bean 의 생명주기가 관리된다.
+  3) 이렇게 관리되는 Bean 은 POJO 타입이고 싱글톤이다.
+  4) XML 설정을 통해서 각각의 Bean 들을 묶어주는데, 이런 것을 일컬어 묶기(wiring)라고 한다.
+  5) 묶인 Bean 을 원하는 곳에 세팅하는 것을 DI(의존성 주입) 이라고 부른다.
+ (2) Bean XML 설정
+  1) scope 설정 : IoC Container 에 의해 관리되는 Bean의 기본 범위는 singleton이다.
+   이걸 scope 속성으로 다르게 지정하는 것이 가능하다.
+   <1> singleton(기본값) : IoC Container 내에서 유일한 객체로 생성하는 범위
+   <2> prototype : 호출때마다 객체가 따로 생성되는 방식
+   <3> request : 요청시마다 생성
+   <4> session : 세션마다 하나씩 생성
+  2) 객체 생성 메소드 지정 : Singleton 팩토리 클래스에는 생성자가 private 이므로 따로 객체 생성 메소드를
+   지정시 factory-method 속성으로 메소드명을 지정해줄 수 있다.(getInstance 같은..)
+
+ (3) DI (Dependency Injection)
+  의존성 주입이란 뜻으로 객체를 생성해서 필요로 하는 곳에 넣어주는 것을 뜻한다.
+  1) Constructor Injection (생성자 주입)
+   생성자에 필요 객체를 선언하고 멤버변수(Field)로써 객체를 사용하는 것을 말한다.
+   객체 생성시 자동으로 IoC 컨테이너가 관련 객체를 주입시켜준다.
+  2) Setter Injection (세터 메소드 이용 주입)
+   생성자 주입과 방식은 비슷하나 setter 메소드를 이용한다는 점이 차이점이다.
+   ex)
+   public class ExampleBean {
+    private AnotherBean beanOne;
+    private YetAnotherBean beanTwo;
+    private int i;
+
+    public void setBeanOne(AnotherBean beanOne) {
+     this.beanOne = beanOne;
+    }
+
+    public void setBeanTwo(YetAnotherBean beanTwo) {
+     this.beanTwo = beanTwo;
+    }
+
+    public void setIntegerProperty(int i) {
+     this.i = i;
+    }
+   }
+  3) Method Injection (메소드 주입)
+   Singleton(싱글톤 : 오직 하나의 객체만 생성되는 패턴) 객체와 Non-Singleton 객체간의 연결이
+   필요할 경우 사용하는 방식
+ (2) DI 를 위한 xml 설정
+  1) Constructor Injection
+   <bean id="foo" class="com.spring.Foo">
+    <constructor-arg><ref bean="bar" /></constructor-arg>
+   </bean>
+   c.f.) 생성자의 인자가 여러개인 경우 type 이나 index 로써 구별해서 넣어주는 것도 가능하다.
+  2) Setter Injection
+   <bean id="foo" class="com.spring.Foo">
+    <property name="bar">
+     <ref bean="bar"/>
+    </property>
+   </bean>
+  3) autowire
+   <1> 세팅
+    <bean autowire="autodetect">
+   <2> 종류
+    a. byName : 이름으로 자동 와이어링
+    b. byType : 타입으로 자동 와이어링
+    c. constructor : 생성자 파라미터 타입과 같은 것을 자동 와이어링
+    d. autodetect : c를 먼저, b를 그 후에 적용
+ (3) DI와 빈객체를 위한 Annotation 설정
+  1) XML 설정
+   <1> <context:component-scan base-package="" /> : @Component, @Service, @Controller
+   <2> <context:annotation-config /> : 위의 설정이 이 설정을 포함. @Required, @Autowired.. 등만 적용
+  2) 종류
+   <1> @Required : 필수 프로퍼티를 세팅할때 사용
+   <2> @Autowired : 자동으로 똑같은 이름의 빈을 찾아서 주입해준다.
+   <3> @Qualifier("name") : bean설정에 <qualifier> 태그를 이용한 수식어로 특정 빈 지정시 사용
+   <4> @Resource(name="testBean") : 특정 bean 이름을 지정 (JDK6,JEE5 이상)- 가져와서 쓸수 있다.
+   <5> @PostConstruct, @PreDestroy : 초기화, 소멸시 사용될 메소드 지정
+   ---- 이하는 <context:component-scan /> 태그로 사용 가능--bean를 등록한다.
+   <6> @Component : XML 설정없이 자동 빈 등록 @Component("name") 이름 지정 가능
+   <7> @Service : @Component 와 현재 다를 바가 없으나 차후 세부화 예정.  (클래스 이름을 지정한다.)
+   <8> @Repositary : 퍼시스턴스 영역의 Exception 을 번역해주는 기능 제공
+   <9> @Controller : Spring MVC 사용시 Controller에 설정 Spring MVC 파트에서 자세히 설명
+   <10> @Scope("prototype") : 싱글톤이 아닌 것으로 scope 지정시 사용
+
+
+3. AOP (Aspect Oriented Programming)
+ (1) 용어 정리
+  1) Aspect
+   관점이란 뜻으로 트랜젝션, 보안, 로깅 처럼 공통적으로 쓰이는 부분들에 개입하는 것을 모듈화한 것
+  2) Join point
+   클래스의 객체 생성 시점, 메소드 호출 시점, Exception 발생 시점 등 AOP가 개입되는 시점을 말한다.
+  3) Advice
+   특정한 join point에서 interceptor 형태로써 다양한 기능을 제공하는 것을 뜻한다.
+   <1> Before advice : 메소드 호출전의 기능 제공
+   <2> After returning advice : 모든 메소드 실행이 다 끝나고 난 뒤 기능 제공(익셉션 발생하지 않음)
+   <3> After throwing advice : 익셉션이 던져졌을때 기능 제공
+   <4> After (finally) advice : 익셉션 발생이 됐던 안됐던 간에 기능 제공
+   <5> Around advice : 가장 강력한 advice 로써 메소드 시작부터 마지막까지 두루 기능을 제공하는 것이 가능
+  4) Pointcut
+   정규 표현식이나 AspectJ의 문법 등으로 실제로 적용되는 join point 를 선언하는 것을 뜻한다.
+  5) Weaving
+   실제 aspect 객체와 대상 객체를 컴파일시나, 로딩시나, 실행시에 합쳐주는 것을 뜻한다.
+  6) Target
+   실제 advice를 받는 객체로써 대상을 뜻한다.
+ (2) Spring AOP
+  1) Spring 에서 지원하는 AOP로써 proxy 기반이다. AspectJ 라는 AOP 툴이 있지만, Spring AOP 만으로도
+   Bean에게 거는 AOP 기능은 충분히 활용 가능하다. 단, 메소드의 실행에 관해서만 Pointcut 을 걸 수 있다.
+  2) Advice 작성을 위한 Advice interface
+   <1> MethodBeforeAdvice : 메소드 실행 전
+   <2> AfterReturningAdvice : 메소드 실행 후
+   <3> ThrowsAdvice : 메소드 실행 중 익셉션 발생시
+   <4> MethodInterceptor : 메소드 실행 전, 후 예외 발생시점에 적용
+  3) AOP XML 설정
+   <1> Annotation 을 이용한 @AspectJ 방식 (Spring 개발팀 추천)
+    a. 설정 파일(applicationContext.xml등)에 다음의 구문을 먼저 추가한다.
+    <beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:aop="http://www.springframework.org/schema/aop"
+     xsi:schemaLocation="
+     <http://www.springframework.org/schema/beans> <http://www.springframework.org/schema/beans/spring-beans-2.5.xsd>
+     <http://www.springframework.org/schema/aop> <http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">>
+
+     <aop:aspectj-autoproxy/>
+    b. aspectjweaver.jar, aspectjrt.jar 파일 두개를 lib 에 추가한다.
+    c. class 선언부 위에 @Aspect 를 추가한다.
+    d. 메소드위에 @Pointcut("execution()") 을 추가한다.(메소드는 private void 의 가명 메소드)
+    ※ Pointcut execution 설정방법
+     execution(modifiers-pattern? ret-type-pattern declaring-type-pattern?
+                 name-pattern(param-pattern) throws-pattern?)
+      (?는 생략가능)
+     형식 execution(제한자? 리턴타입 패키지? 메소드명(파라미터) throws선언?)
+
+    e. Pointcut 의 종류 : execution, within, bean 등 스프링 레퍼런스 문서 참조
+    f. Advice 의 종류 : @Before, @AfterReturning, @AfterThrowing, @After, @Around
+     @Around 사용시 첫번째 인자로 ProceedingJoinPoint 가 있어야 하며 proceed() 메소드가 호출되어야
+     한다. 그리고 return type 도 Object 로 맞추거나 void 로 맞춰준다.
+   <2> XML 스키마를 이용한 설정방식
+    a. 위의 <1> 의 a처럼 schema 설정이 잡혀있어야 한다.
+    b. xml 설정을 잡는다.
+     <aop:config> : 이 태그 안에 설정을 잡아준다.
+     <aop:aspect> : POJO 방식의 빈으로 aspect 를 설정할때 사용한다.
+     <aop:pointcut>,<aop:advisor> : Spring API 인터페이스를 상속 받아서 만들 경우 사용한다.
+     ※ <aop:aspect> 안쪽의 advice 태그 종류
+      <aop:before>, <aop:after-returning>, <aop:after-throwing>, <aop:after>, <aop:around>
+    c. 관련 Bean 을 만들어 주는데 Spring API 인터페이스를 이용한 경우 다음과 같은 interface 를 이용할 수 있다.
+     - MethodBeforeAdvice
+     - AfterReturningAdvice
+     - ThrowsAdvice
+     - MethodInterceptor : around 와 같은 기능
+
+4.  Spring MVC
+ (1) 구성요소
+  1) DispatcherServlet : 클라이언트 요청을 받아서, 컨트롤러에 요청을 전달하고 컨트롤러가 리턴한
+   결과 값을  View 에 전달하여 응답을 생성한다. (Struts 의 ActionServlet)-프론트 콘트롤러 패턴이라고 부른다.
+  2) HandlerMapping : 클라이언트 요청 URL 을 어떤 컨트롤러가 처리할지를 결정한다. (struts-config.xml 의 역할)
+  3) Controller : 요청을 처리하고 결과를 리턴한다 (Struts 의 Action)
+  4) ModelAndView : 컨트롤러가 처리한 결과 정보 및 뷰에 관련한 정보를 담는 객체 (struts의 forward 기능 포함)
+         어디로갈때 전달해주는 데이터를 저장
+  5) ViewResolver : 컨트롤러 처리 결과를 생성할 뷰를 결정
+
+  6) View : 컨트롤러 처리 결과 화면을 생성하는 객체
+ (2) 기본적인 Spring MVC 설정 잡기
+  1) web.xml 에 DispatcherServlet 의 설정을 잡는다. (여기서 잡은 이름-servlet.xml 파일이 설정파일이 된다)
+  2) HandlerMapping 을 이용 URL 과 Bean의 name 속성을 같은 것으로 설정한다.
+   <bean id="beanName" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+   c.f.) 만약 이 설정을 넣지 않으면 자동으로 이 HandlerMapping 이 적용된다.
+  3) Spring 설정 파일에 name에 URL 을 입력하고 class에 Controller 를 지정한 뒤 작성한다.
+  4) Controller 에서는 ModelAndView 객체를 생성해서 직접 갈 곳을 지정해준다.
+ (3) HandlerMapping 구현 클래스
+  1) SimpleUrlHandlerMapping : 패턴과 컨트롤러 이름을 비교하여, URL 이 패턴에 매칭될 경우 지정 컨트롤러 사용
+  2) BeanNameUrlHandlerMapping(default) : URL 과 일치하는 bean 이름의 컨트롤러 사용
+  3) ControllerClassNameHandlerMapping : URL 과 매칭되는 클래스 이름을 갖는 빈을 컨트롤러 사용
+  4) DefaultAnnotationHandlerMapping : @RequestMapping 어노테이션을 이용 컨트롤러 사용
+  참고) web.xml에 <url-pattern> 을 '/path/*'  같이 설정을 할 경우 전체 경로를 다 사용하고 싶으면 HandlerMapping
+   설정시 <property name="alwaysUseFullPath" value="true" /> 를 넣어서 설정을 잡는다.
+  참고2) 복수개의 HandlerMapping 구현시 property 로 order 를 넣어서 순서를 정해줄 수도 있다.
+ (4) Controller 구현 클래스
+  1) Controller, AbstractController : 단순 처리용
+  2) AbstractCommandController : 요청 파라미터를 객체에 자동으로 저장해 주고 검증기능 제공한다.
+  3) SimpleFormController : 폼을 출력하고 폼에 입력한 데이터를 처리할때 사용
+  4) AbstractWizardFormController : 여러 페이지에 걸쳐 데이터 입력시 사용
+  5) ParameterizableViewController, UrlFilenameViewController : 단순히 뷰로 바로 전달할때 사용
+  6) MultiActionController : 비슷한 로직을 수행하는 기능들을 하나의 컨트롤러로 구현할때 사용
+ (5) ViewResolver 구현 클래스
+  1) InteralResourceViewResolver(default) : JSP 나 tiles(1.x) 연동 위한 View 객체를 리턴
+  2) VelocityViewResolver : Velocity 연동을 위한 View 객체를 리턴
+  3) BeanNameViewResolver : 뷰 이름과 똑같은 이름의 Bean 객체를 View 로 이용
+  4) UrlBasedViewResolver : tiles 2.x 를 쓸 경우 View 로 Tiles viewname 을 이용
+  5) ResourceBundleViewResolver : 뷰 이름과 View 객체간 매핑 정보를 특정 자원 파일에 저장해서 사용
+  6) XmlViewResolver : 뷰 이름과 View 객체간 매핑 정보를 XML 파일에 저장해서 사용
+
+  c.f.) Tiles 2.x 연동 방법
+   1> TilesConfigurer 를 bean으로 등록 definitions 로 tiles xml 을 등록한다.
+    <bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+     <property name="definitions">
+      <list>
+       <value>/WEB-INF/tiles-def.xml</value>
+      </list>
+     </property>
+    </bean>
+   2> ViewResolver로써 UrlBasedViewResolver를 등록하고, viewClass 로 TilesView 를 등록한다.
+   3> 일반적인 JSP 로의 경로를 막지 않기 위해 viewName으로 .* 값을 줘서 tiles 는 .으로 시작하는 이름,
+    다른 이름이 들어오면 다른 viewResolver가 작동하도록 선언한다.
+    <bean id="viewResolver1" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+     <property name="order" value="1"></property>
+     <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"></property>
+     <property name="viewNames" value=".*"></property>
+    </bean>
+    <bean id="viewResolver2" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+     <property name="order" value="2"></property>
+     <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
+    </bean>
+ (6) Validator 와 Errors
+  1) Validator 인터페이스를 상속받은 클래스로써 command(form)에 들어오는 값들에 대한 검증이 가능하다
+  2) 주요 메소드 (Validator 인터페이스를 상속받는 클래스에서 구현해야 하는 메소드)
+   <1> boolean supports(Class clazz) : 인자값으로 들어오는 클래스가 검증대상인지 확인하는 메소드
+   <2> void validate(Object target, Errors errors) : 실제 검증 메소드 (target 은 command 객체이다)
+    a. ValidationUtils 클래스를 통해서 데이터의 검증을 한다. 혹은 Errors 를 이용해 에러를 저장한다.
+    b. 이렇게 저장된 오류는 jsp 화면에서 <form:errors> 를 이용해 오류를 보여주는 것이 가능하다.
+    c. Errors 에는 전체적인 오류를 저장하기 위한 reject 메소드와 특정 필드에 대한 오류를 저장하기 위한
+     rejectValue 메소드가 있다.
+  3) command 가 쓰이는 Controller xml 설정에 프로퍼티로써 validator 를 적용시켜야 한다.
+   ex) <property name="validator" ref="reboardValidator"></property>
+ (7) HandlerInterceptor
+  컨트롤러에서 요청을 처리하기 전이나 후에 뭔가를 수행하고 싶을때 사용한다.
+  1) 주요 메소드
+   <1> boolean preHandle() : 컨트롤러에서 요청이 처리되기 전 실행
+   <2> void postHandle() : 컨트롤러가 요청을 처리한 후에 실행
+   <3> void afterCompletion() : 응답이 완전히 끝난 뒤 실행되는 메소드
+  2) 사용방식
+   HandlerInterceptor 를 상속받거나 원하는 메소드만 구현할 수 있는
+   HandlerInterceptorAdaptor 를 상속받은 클래스를 xml 에서 HandlerMapping 설정에
+   <property name="interceptors"> 로 등록할 수 있다.
+ (8) Annotation 을 이용한 Controller 세팅
+  1) XML 세팅
+   <context:component-scan base-package="" />
+  2) 종류
+   <1> @Controller : 대상 컨트롤러 클래스의 위에 선언
+   <2> @RequestMapping : 처리할 주소(value) 및 HTTP METHOD 지정(method)
+    ex) @RequestMapping(value="/index.spring", method=RequestMethod.GET)
+   <3> @RequestParam("parameterName") : 요청 파라미터를 인자값으로 선언시 사용
+   <4> @ModelAttribute("commandName") : 인자값에 선언시 요청 파라미터들을 받는 커맨드 객체로 사용,
+    메소드 위에 선언시 뷰에 세팅될 커맨드객체로 사용
+   <5> @SessionAttributes("commandName") : 클래스 위에 선언하여 세션에 커맨드 객체 저장
+    SessionStatus 를 메소드에 인자값으로 선언하여 sessionStatus.setComplete() 를 통해
+    세션에서 최종적으로 객체 삭제가 가능
+  3) Controller 클래스의 메소드 선언
+   <1> 인자타입(parameter type)으로 사용 가능한 타입
+    a. HttpServletRequest, HttpServletResponse, HttpSession
+    b. java.util.Locale : 현재 지역정보
+    c. InputStream, Reader : 요청 컨텐츠에 직접 접근
+    d. OutputStream, Writer : 응답 컨텐츠로 사용
+    e. @RequestParam 을 이용한 파라미터 명시
+    f. Map, ModelMap : 뷰에 전달할 데이터 저장용
+    g. Command Class : @ModelAttribute 를 사용시 이름이 지정되고, 지정하지 않으면 클래스명이 지정됨(앞글자 소문자)
+    h. Errors, BindingResult : 커맨드 클래스 바로 뒤에 위치해야함. 유효성 체크 위해 사용
+    i. SessionStatus : 폼 처리 완료시 호출하기 위해 사용 @SessionAttributes 와 같이 사용
+   <2> 리턴타입(return type)으로 사용 가능한 타입
+    a. ModelAndView : 일반적인 컨트롤러 메소드의 리턴객체
+    b. Map : 뷰에 전달할 데이터의 집합체, view 이름은 요청 URL로 결정(RequestToViewNameTranslator)
+    c. String : view 이름으로 처리
+    d. void : 직접 응답 처리시
+
+5. Spring WebFlow
+ 스프링 MVC를 기본적으로 이용하면서 대화형 웹 어플리케이션을 만들고 싶을때 사용
+ 직접다운로후 사용 가능하다.
+ 흐름을 지정이 가능하다. 페이지이동시 흐름을 지정할 수 있다.(예 페이지 0-1-2-3-4순이아니라 1-3-2-4식으로 순서를 지정이 가능하다)
+
+6. Spring Security
+ 스프링 시큐리티는 웹에서의 요청이나 메소드 호출 수준의 인증(Authentication), 보안(Authorization)을
+ 처리하는 보안 솔루션이다. (요청별, 메소드별 또한 여러가지 인증 방식과 보안을 동시에 적용 가능하고 처리할 수 있다.)
+ 메소드 단위 보안이 가능하다.
+ 3.대 버전부터를 셋팅하는 방법이 많이 변했음
+
+7. transaction (트랜젝션)
+ (1) ACID : 트랜젝션에서 추구했던 기본 4요소 (다 수행되던가 없던일 하던가)
+  2) Consistency : 일관성  DB가 트랜젝션 작업중 일관된 데이터를 유지해야 한다
+  3) Isolation : 독립성   다른 트랜젝션과 독립적으로 작업이 수행되어야 한다.
+  4) Durability : 내구성  일단 커밋된 데이터는 계속해서 유지되어야 한다. 시스템 오류라 할지라도...
+ (2) 프로그램적인 트랜젝션
+  1) TransactionTemplate을 사용하거나 PlatformTransactionManager를 직접 상속받아서 쓰는 방법이 있다.
+  2) RuntimeException 이 던져지면 rollback 이 된다. (그 외의 exception 은 기본적으로 무시)
+ (3) 선언적인 트랜젝션
+  1) Propagation (트랜젝션의 전파)
+   <1> PROPAGATION_REQUIRED : 이미 있는 트랜젝션이 있다면 그걸 쓰고, 없다면 새로 만들어 낸다.
+   <2> PROPAGATION_MANDATORY : 이미 있는 트랜젝션이 있다면 그걸 쓰고, 없다면
+    TransactionRequiredException 을 발생시킨다.
+   <3> PROPAGATION_REQUIRES_NEW : 이미 있는 트랜젝션을 잠시 멈추고
+    새로운 트랜젝션을 만들어서 수행한다. 새로운 트랜젝션 종료후 기존 트랜젝션이 계속 실행된다.
+   <4> PROPAGATION_NESTED : 트랜젝션은 하나만 쓰지만 중간에 savepoint 를 저장하는 방식을 말한다.
+    (JDBC 매니져 방식에서만 적용 가능 Hibernate 나 JDO 같은 ORM 에서는 사용불가)
+   <5> PROPAGATION_SUPPORTS : 트랜젝션이 없어도 되지만 트랜젝션이 실행되는 중에는 적용을 받는다
+    ex) 일일 이체 한도액이 100만원이라고 한다면
+     1. 50만원을 이체하는 트랜젝션이 시작
+     2. 70만원을 이체하는 SUPPORTS 트랜젝션 시작
+     3. 이체한도를 넘기는 결과가 되어 2번의 과정은 롤백이 된다.
+     4. 50만원만 이체가 된다.
+   <6> PROPAGATION_NOT_SUPPORTED : 트랜젝션이 필요없기 때문에 기존 트랜젝션이 있을 경우
+    기존 트랜젝션을 멈추었다가 메소드 실행이 끝난 뒤 트랜젝션을 다시 시작한다.
+   <7> PROPAGATION_NEVER : 이미 트랜젝션이 있다면 익셉션을 던져서 메소드 실행을 중지한다.
+  2) Isolation (독립성) : 문서 참고
+   독립성이 증가하면 동시성은 감소하고, 데이터의 일관성은 증가한다.
+   <1> READ_UNCOMMITTED : 트랜젝션 중 다른 트랜젝션에 의한 커밋되지 않은 데이터도 읽어들일 수 있다.
+   <2> READ_COMMITTED : 커밋된 데이터만 읽을 수 있다.
+         (다른 트랜젝션에 의한 커밋으로 일어난 변화는 읽어들인다)
+   <3> REPEATABLE_READ : 트랜젝션 진행중에는 어떠한 변화점도 읽어들일 수 없다.
+         (다른 트랜젝션에 의한 커밋도 상관없이 못 읽어들인다)
+   <4> SERIALIZABLE : DB에 하나의 트랜젝션만 허용하는 것으로 하나의 트랜젝션이 실행중에
+    다른 트랜젝션이 접근한다면 잠시 중지했다가 기존 트랜젝션이 끝나고 나면 다시 시작한다.
+    단, 오라클은 트랜젝션이 중지했다가 시작되는 것이 아니라 ORA-08177 오류를 발생시킨다.
+   <5> DEFAULT : DB가 사용하는 isolation 정책 따름
+   ※ 문제점 정리
+    - Dirty read: 어떤 트랜잭션 T1이 다른 트랜잭션 T2가 아직 커밋하지 않은 데이타를 읽었는데
+     T2가 롤백 되는 경우. T1이 읽은 데이타는 dirty.
+    - Nonrepeatable read: 어떤 트랜잭션 T1이 계속 해서 같은 데이터를 읽어들이는데 그 사이에
+     다른 트랜잭션 T2가 데이타를 수정하면 T1은 같은 데이터를 얻을 수 없게 된다.
+    - Phantom read: 어떤 트랜잭션 T1이 계속 데이터를 읽어들이는데 그 사이 다른 트랜잭션 T2가
+     새로운 데이타를 추가하면 T1은 전혀 새로운 데이터를 읽어들이게 된다. 마치 귀신처럼.

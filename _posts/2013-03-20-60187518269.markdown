@@ -1,0 +1,16 @@
+---
+title: "jQuery .data() 사용 예"
+date: 2013-03-20 16:47:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60187518269"
+---
+
+시계다.
+
+근데 뭐 꾸민건 없고 동작이 이렇게 된다.
+
+.data() 메서드에 좋은 예(?) 인것 같다.
+
+
+
+![]()

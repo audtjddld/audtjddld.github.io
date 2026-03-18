@@ -1,0 +1,71 @@
+---
+title: "패스워드 초기화 난수 구하기"
+date: 2014-09-05 15:03:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/220114157489"
+---
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+ /**
+
+  * 패스워드 초기화 난수 구하기
+
+  * @param length
+
+  * @return
+
+  */
+
+ public String getRandomPassword(int length) {
+
+  String data="";
+
+  String charset ="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+  Random random = new Random();
+
+
+
+  for(int i =0; i<length; i++){
+
+   int index = random.nextInt(charset.length());
+
+   data += charset.substring(index, index+1);
+
+  }
+
+  return data;
+
+ }

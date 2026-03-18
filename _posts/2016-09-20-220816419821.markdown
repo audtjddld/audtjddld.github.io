@@ -1,0 +1,7 @@
+---
+title: "properties 한글 깨짐"
+date: 2016-09-20 15:11:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220816419821"
+---
+

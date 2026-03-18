@@ -1,0 +1,53 @@
+---
+title: "Java 22 release"
+date: 2024-04-07 23:52:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223408719924"
+---
+
+[**Hello, Java 22!**](https://spring.io/blog/2024/03/19/hello-java-22?mkt_tok=NjI1LUlVSi0wMDkAAAGSJRaJeyLrSZk3W9h4mLmG1FE_BARyN6ynvpEf69FAHpToiNVaKMfRuo2PJk73Gn04UQ8lnUnNpis_-FQyqEDVHY_NGnOb31Lv3vM582q7LQRxc9Q)
+
+**​**
+> [**Hello, Java 22!**](https://spring.io/blog/2024/03/19/hello-java-22?mkt_tok=NjI1LUlVSi0wMDkAAAGSJRaJeyLrSZk3W9h4mLmG1FE_BARyN6ynvpEf69FAHpToiNVaKMfRuo2PJk73Gn04UQ8lnUnNpis_-FQyqEDVHY_NGnOb31Lv3vM582q7LQRxc9Q)
+>
+> Level up your Java code and explore what Spring can do for you.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+외부 라이브러리를 불러오는 부분을 자바에서 손쉽게 할 수 있도록 개선
+
+- x86 칩셋만 가능함
+
+암시적으로 선언된 클래스 및 인스턴스 Main 메서드
+
+-
+Spring에서는 불가
+
+super class 호출 방식 변경
+
+클래스 파싱 API
+
+Stream API 개선 관련
+
+- Gatherers
+
+String template 개선
+
+​
+
+한눈에 정리해줘서 좋은 것 같다.

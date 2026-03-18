@@ -1,0 +1,7 @@
+---
+title: "spring data base read/write 분리 관련"
+date: 2018-11-15 12:30:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221398950490"
+---
+

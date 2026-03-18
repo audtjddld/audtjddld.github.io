@@ -1,0 +1,20 @@
+---
+title: "mongo DB index"
+date: 2014-05-19 11:18:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220003949283"
+---
+
+생성
+
+db.collection.ensureIndex( { a: 1, b: 1 }, { unique: true } )
+
+db.collection.ensureIndex( { a: 1, b: 1 }, { unique: true ,background : true} )
+
+﻿
+
+삭제
+
+db.collection.dropIndex({a:1,b:1})﻿
+
+**[출처]** [인덱스](http://blog.naver.com/atoz333/120192401332)|**작성자** [June](http://blog.naver.com/atoz333)

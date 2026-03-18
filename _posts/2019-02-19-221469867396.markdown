@@ -1,0 +1,29 @@
+---
+title: "redis 정보"
+date: 2019-02-19 20:36:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221469867396"
+---
+
+<http://redisgate.kr/redis/server/memory.php>
+> [**MEMORY Redis**](http://redisgate.kr/redis/server/memory.php)
+>
+> Redis MEMORY << MONITOR Persistence Introduction >> Redis MEMORY 키가 사용중인 메모리량, 레디스 서버의 메모리 현황 정보를 볼 수 있습니다. 이 문서는 버전 4.0.0을 기준으로 만들었습니다. 서브커맨드 리스트 help: 도움말을 보여준다. usage: 키의 메모리 사용량 정보를 보여준다. stats: 레디스 서버 메모리 사용량 정보를 보여준다. doctor: 메모리 사용 정보를 체크해서 권고사항을 문자으로 보여준다. malloc-stats: 메모리 정보를 자세하게 보여준다. pu...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

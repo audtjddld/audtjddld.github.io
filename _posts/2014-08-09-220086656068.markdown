@@ -1,0 +1,70 @@
+---
+title: "before study"
+date: 2014-08-09 14:43:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220086656068"
+---
+
+sudo scp /etc/hosts/ ubibio -ssc@192.168.30.15:/etc/hosts
+
+
+
+file send~!
+
+
+
+
+
+--------------------------------------------------------
+
+hangul
+
+--------------------------------------------------------
+
+sudo apt-get nabi
+
+
+
+yes~
+
+
+
+reboot
+
+
+
+shift + space key!!
+
+---------------------------------------------------------
+
+
+
+
+
+conf file change
+
+---------------------------------------------------------
+
+source .bashrc
+
+
+
+or
+
+
+
+. .bashrc
+
+
+
+terminal is restart
+
+
+
+
+
+hdfs-site.xml
+
+
+
+reflication count 3

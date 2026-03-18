@@ -1,0 +1,14 @@
+---
+title: "EntityGraph를 알아보자."
+date: 2021-08-29 18:38:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222488042516"
+---
+
+참고 문서,
+
+<https://medium.com/swlh/jpa-entity-graphs-with-spring-boot-30cb110ba4f8>
+
+​
+
+n+1 쿼리도 개선이 가능한 것 같다.

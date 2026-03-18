@@ -1,0 +1,42 @@
+---
+title: "Intellij JPQL PLUGIN으로 작성하기"
+date: 2021-08-29 18:11:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222488021828"
+---
+
+intellij IDEA에서 플러그인으로 JPQL 작성하는 것을 Support 해주는 것 같다.
+
+​
+
+별도의 코딩 없이 작업이 가능한 것으로 보이므로, JPQL 작성할 때 나도 이용해서 작성해보면 좋을 것 같다.
+
+​
+
+참고 문서
+
+​
+
+<https://medium.com/@SlackBeck/intellij%EC%97%90%EC%84%9C-%EC%BD%94%EB%93%9C-%ED%95%9C-%EC%A4%84-%EC%95%88-%EC%A7%9C%EA%B3%A0-jpql-%EC%8B%A4%ED%96%89%ED%95%98%EA%B8%B0-44629ff0179f>
+> [**IntelliJ에서 코드 한 줄 안 짜고 JPQL 실행하기**](https://medium.com/@SlackBeck/intellij%EC%97%90%EC%84%9C-%EC%BD%94%EB%93%9C-%ED%95%9C-%EC%A4%84-%EC%95%88-%EC%A7%9C%EA%B3%A0-jpql-%EC%8B%A4%ED%96%89%ED%95%98%EA%B8%B0-44629ff0179f)
+>
+> 관계형 데이터베이스를 사용하는 애플리케이션을 개발할 때 SQLStructured Query Language을 짜는 것은 피할 수 없는 일이다. Java 표준 ORMObject-Relational Mapping인 JPAJava Persistence…
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

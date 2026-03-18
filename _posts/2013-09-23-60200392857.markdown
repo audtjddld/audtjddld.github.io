@@ -1,0 +1,578 @@
+---
+title: "구글 지도 (gogle map ) API 연동 2"
+date: 2013-09-23 14:26:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60200392857"
+---
+
+2015.06.03 추가
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+55
+
+56
+
+57
+
+58
+
+59
+
+60
+
+61
+
+62
+
+63
+
+64
+
+65
+
+66
+
+67
+
+68
+
+69
+
+70
+
+71
+
+<!-- 구글 맵 API -->
+
+<link href="https://developers.google.com/maps/documentation/javascript/examples/default.css" rel="stylesheet">
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
+
+
+
+
+                <script type="text/javascript">
+
+                    var geocoder;
+
+                    var map;
+
+                    function initialize() {
+
+                      geocoder = new google.maps.Geocoder();
+
+                      var latlng = new google.maps.LatLng(37.5665, 126.9780);
+
+                      var mapOptions = {
+
+                        zoom: 12,
+
+                        center: latlng,
+
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+
+                      }
+
+                      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+                    }
+
+
+
+                    google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+                    // 테스트 바인딩
+
+                    function textArry(){
+
+                        // 경도 위도 값
+
+                        var posArry = new Array();
+
+                            posArry.push(setLatLng(37.5665, 126.9780));
+
+                            posArry.push(setLatLng(37.5665, 126.9680));
+
+                            posArry.push(setLatLng(37.5665, 126.9580));
+
+
+
+                        // 콘텐츠 쪽
+
+                        var conArr = new Array();
+
+                            conArr.push({title:'aaa',contents:'123'});
+
+                            conArr.push({title:'bbb',contents:'456'});
+
+                            conArr.push({title:'ccc',contents:'789'});
+
+
+
+                        // 팝업 template;
+
+                        var divTemplate =     "<div style='width:300px;height:150px;' class='googlePopup'>"
+
+                                            +"<span><b>$title$</b></span>"
+
+                                            +"<p>$contents$</p>"
+
+                                            +"</div>";
+
+
+
+
+
+                        // marker 입력
+
+                        $.each(posArry, function(i,value){
+
+
+
+                          var marker = new google.maps.Marker({
+
+                              map: map,
+
+                              position: value
+
+                              //,animation: google.maps.Animation.DROP
+
+                          });
+
+
+
+                             var infowindow = new google.maps.InfoWindow({
+
+                                    //DIV 내용 등록
+
+                                    content: divTemplate
+
+                                                   .replace('$title$',conArr[i].title)
+
+                                                   .replace('$contents$',conArr[i].contents)
+
+                             });
+
+
+
+                            // 상세정보 셋팅
+
+                             google.maps.event.addListener(marker, 'click', function() {
+
+                                infowindow.open(map, marker);
+
+                              });
+
+                        })
+
+                    }
+
+                        // 경도 위도 셋팅
+
+                        function setLatLng(lat, lng){
+
+                            return new google.maps.LatLng(lat, lng);
+
+                        }
+
+
+
+</script>
+
+<!-- 구글 맵 API 끝 -->
+
+[Colored by Color Scripter](http://colorscripter.com/info#e)
+[cs](http://colorscripter.com/info#e)
+
+--------------------------------------------------------------------------------------------------------
+
+아래껀 auto complite 사용해서 한거고
+
+이건 검색으로 하는 것
+
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+55
+
+56
+
+57
+
+58
+
+59
+
+60
+
+61
+
+62
+
+63
+
+64
+
+65
+
+66
+
+67
+
+68
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+
+    <meta charset="utf-8">
+
+    <title>Geocoding service</title>
+
+    <link href="https://developers.google.com/maps/documentation/javascript/examples/default.css" rel="stylesheet">
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
+    <script>
+
+var geocoder;
+
+var map;
+
+function initialize() {
+
+  geocoder = new google.maps.Geocoder();
+
+  var latlng = new google.maps.LatLng(37.5665, 126.9780);
+
+  var mapOptions = {
+
+    zoom: 12,
+
+    center: latlng,
+
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+
+  }
+
+  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+}
+
+
+
+function codeAddress() {
+
+  var address = document.getElementById('address').value;
+
+  var x ='';
+
+  var y ='';
+
+
+
+  geocoder.geocode( { 'address': address}, function(results, status) {
+
+    if (status == google.maps.GeocoderStatus.OK) {
+
+      map.setCenter(results[0].geometry.location);
+
+
+
+      x = results[0].geometry.location.lat().toFixed(4);
+
+      y = results[0].geometry.location.lng().toFixed(4);
+
+
+
+      alert(" x = " + x +" y = " + y );
+
+      var marker = new google.maps.Marker({
+
+          map: map,
+
+          position: results[0].geometry.location
+
+      });
+
+    } else {
+
+      alert('Geocode was not successful for the following reason: ' + status);
+
+    }
+
+  });
+
+}
+
+
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+    </script>
+
+  </head>
+
+  <body>
+
+
+
+      <input id="address" type="text" value="">
+
+      <input type="button" value="검색" onclick="codeAddress()">
+
+
+
+    <table>
+
+        <tr>
+
+            <td>
+
+                asdfasd
+
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>
+
+                <div id="map-canvas" style="width:600px;height:300px;"></div>
+
+            </td>
+
+        </tr>
+
+    </table>
+
+  </body>
+
+</html>

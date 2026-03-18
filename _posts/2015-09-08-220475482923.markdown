@@ -1,0 +1,197 @@
+---
+title: "보안교육 2일차"
+date: 2015-09-08 17:28:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220475482923"
+---
+
+**Xpath 인젝션**
+
+<http://demo.testfire.com>
+
+Xml 문서의 특정 엘리머트 속성에 접근하기 위해 경로를 지정하는 언어.
+
+google에서 사이트에 해당되는 내용 검색할땐
+
+site: 검색어 이렇게 검색한다.
+
+**login page 에서 아이디 패스워드 없이 로그인하기
+
+Syntax error (missing operator) in query expression 'username = '1'' AND password = '1'''.
+
+id : 1' or '1=1
+
+PW : 1' or '1=1
+
+----------------------------------------------------------------------------------------------
+
+인증과 세션관리 취약**
+
+cooxie download
+
+**cookie 를 이용하여 세션아이디를 가로채는 경우
+
+owasp httponly 설정을 이용하여 방어 할수있다.
+
+<https://www.owasp.org/index.php/HTTPOnly>
+
+참고하여 방어 할 수 있다.
+
+( java, .net, c# ) 등을 방어 할 수 있다.
+
+base64 는 인코딩 이기 때문에 암호화 할 수 없다.
+디코딩이 가능하기 때문에
+
+---------------
+
+WebGoat 를 실행 시켜서
+
+좌측 메뉴에
+Session Management Flaws -> Spoof an Authentication Cookie
+
+계정은
+
+1. webgoat / webgoat
+로그인 후 show Cookies 상단 메뉴를 누르면 정보가 나온다.
+
+> 인증정보는 아래와 같다.
+
+JSESSIONID  E5E2D526B275117332C31B977C809528
+AuthCookie  65432ubphcfx
+
+2. aspect / aspect
+
+> 인증정보는 아래와 같다.
+
+JSESSIONID  E5E2D526B275117332C31B977C809528
+AuthCookie  65432udfqtb
+
+cooxie 를 이용하여 AuthCookie 값을 변조하면 사용자가 변경된 걸 확인 할 수 있다.
+
+좌측 메뉴에서
+XSS -> HTTPOnly test 클릭
+
+--------------------------------------------------
+CSRF**
+
+WebGoat 실행 후 좌측 메뉴 CSRF 실행
+
+<img src="http://localhost:8080/WebGoat/attack?Screen=52&menu=900&Num=2&transferFunds=4000" width="1" height="1"/>
+
+입력 후 저장.
+
+좌측 메뉴에 녹색으로 버튼이 생기면 성공한 것.
+
+--------------------------------------------------
+
+**파일 업로드 공격**
+
+WebGoat 실행 후 좌측메뉴 중 Malicious Execution 메뉴 선택 후
+
+<http://cafe.naver.com/sec>
+
+유틸모음 에서**new_upload.jsp 다운로드 후 업로드 시킨다.
+
+업로드가 안되면 직접 tomcat 하위 디렉토리 WebGoat 폴더 upload 폴더 안에다가 파일을 넣는다.
+C:\보안코딩실무\04. WebGoat\WebGoat-5.4-OWASP_Standard_Win32\WebGoat-5.4\tomcat\webapps\WebGoat\uploads
+
+<http://localhost:8080/WebGoat/uploads/new_upload.jsp>
+
+직접 url 호출 후
+
+id / password 입력한다.
+
+kj021320 / kj021320 입력한다.
+
+파일을 웹서버로 업로드 시켜 디렉토리를 업로드 한 페이지로 해서 확인해 볼수있다.
+
+-----------------------------------------------------
+
+파일 다운로드 공격**
+
+파일 다운로드시 php와 java 둘다 c로 구현이 되어있기 때문에
+
+c/c++ 에서 널바이트 문자열 (%00, 0x00) 은 문자열의 끝을 의마하는데,
+
+이 값을 파일 중간에 넣어 '파일이름%00.확장자' 이런식으로 넣어서 확장자 체크
+
+String fileName = reuqest.getParameter("fileName");
+
+if( file.endsWith(".dat")){** File f = new File(fileName);
+}
+
+if문의 확장자 체크는 넘어가고
+* new File에서 파일 이름에서는 문자열 종료이기 때문에 원하는 파일명으로 접근이 가능하다.
+
+Scan-Ray를 켜고 해당 프록시를 건 상태에서 해당 도메인 url수집을 눌러 파일다운로드 되는 url을 찾아본다.
+
+<http://aspnet.testsparker.com/process.aspx?file=> 로 윈도우의 호스트 파일 다운로드 한다.
+
+C:\Windows\System32\drivers\etc\hosts
+
+<http://aspnet.testsparker.com/process.aspx?file=C:/Windows/System32/drivers/etc/hosts>
+
+<http://aspnet.testsparker.com/process.aspx?file=../../WINDOWS/System32/drivers/etc/hosts>
+
+하면 호스트 파일 내용이 나온다.
+
+<http://demo.testfire.net> 에서도 가능하다.
+
+<http://demo.testfire.net/default.aspx?content=../../../../WINDOWS/System32/drivers/etc/hosts%00.htm>
+
+이런식으로 널바이트 (%00) 을 이용하면 windows 에 있는 hosts 파일을 읽어 올 수 있다.
+
+폴더 디렉토리 확인하기
+
+리눅스 / 유닉스
+기반은 site:도메인 Index Of /
+윈도우는 site:도메인 Parent directory
+
+검색하면 취약점을 확인 할 수 있다.
+
+/////////////////////////////////////
+
+현재 진행중인 프로젝트에서 fotify 에서 검출 된 프로퍼티 가져오는 구문도 확인하였는데.
+
+ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 아니라고 고객사한테 알려줬는데 한없이 부끄러워진다.
+
+프로퍼티에서 가져온 값들이 정확하게 가져온 것인지 한번더 검증이 필요하다.
+
+-> 널 체크, 공백 체크, 체인지 디렉토리 '../' , '\\' 등등 한번 더 체크하고 진행하자!
+
+>> 웹서버와 클라이언트 간 암호화
+
+SSL / TLS 프로토콜을 이용한 암호화
+
+>> 개인정보처리 시스템간 암호화
+
+VPN, SSH , IPsec 등
+
+이메일로 전송되는 메시지를 보호하기 위해 PGP 또는 S/MIME 을 이용하여 암호화 한다.
+
+john the ripper <<-- 사이트 이동하면 크랙툴을 제공해준다.
+
+쉐도우 크랙툴을 이용하여 패스워드 설정 파일 내용들을 복호화해서 볼 수 있다.
+
+######### 추가적으로 cookie 에서 session id 가져와서 사용자 인증정보 변경하기 ############
+
+ㅋㅋ 점검시 같은 pc에서 점검하면 아무 의미가 없다. 따라서 다른 pc에서 공격 할 수 있도록 만들어 놓고 해야 된다.
+
+프록시를 이용하면 서버쪽에서 넘어오는 DOM 까지 수정해서 해킹 할 수 있다.
+
+기본 dom에서 validation을 우회하여 공격할 때는 클라이언트 쪽을 가로채서 변경할 수 있다.
+
+-------------------------------------------------------
+
+안전하지 않은 리다이렉트 코드**
+
+>> 이번 프로젝트 진행 중에 했던 진입한 페이지 확인할 때 url 파라미터로 받아서 redirect하도록 해놨었는데 해당 부분에
+검증 부분이 필요하다.
+
+http 응답분할 = CRLF 인젝션 = HTTP Splitting
+
+같은 의미다.
+
+redirect 시키는 페이지에다가 scan_ray를 켜서 proxy 를 건 상태에서 url에 CRLF를 걸어서 이상한 페이지로 이동하도록 하는 것.
+
+각각 넘어온 url에 검증 로직을 심어서 한번더 확인하도록 한다!

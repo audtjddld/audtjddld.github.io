@@ -1,0 +1,215 @@
+---
+title: "gRPC Test Code 작성 및 Interceptor 작성"
+date: 2024-04-21 17:48:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223422476692"
+---
+
+이번에 보고 있는 코드에서 gRPC를 적용하는 작업을 진행했다.
+
+​
+
+grpc-spring-boot 를 사용하면 간편하게 작성이 가능할 것 같았는데, 라이브러리 버전 이슈로 생 gRPC를 적용했다.
+
+​
+
+변경하는 대상은 Rest API를 gRPC로 변경하는 것이다.
+
+​
+
+이와 관련해서 몇가지 사항을 남겨보려고 한다.
+
+​
+
+Request Header 관련
+
+​
+
+Rest API를 gRPC로 변경하기 위해서는 몇가지 다른 부분이 있었다. Protobuf 명세서에는 gpc Service 및 request, response data를 modeling 하지만, Rest API에서 사용하는 Header 정보는 protobuf로 작성할 수가 없다.
+
+​
+
+이와 관련해서는 protobuf document를 작성할 때 Header 정보를 필수로 넣어줘야 한다고 작성해야 했다.
+
+​
+
+이런 부분을 살펴보다보니 이전에 buf 라이브러리를 적용하면 간편하게 Document가 markdown 문서로 생성되는 것을 알고 있었기 때문에, 바로 buf와 함께 작성했다.
+
+​
+
+Buf 관련
+
+​
+
+<https://github.com/bufbuild/buf>
+
+​
+
+최근에 알게 되었지만 상당히 유용한 라이브러리라고 생각한다. protobuf의 lint부터 document 생성, Java, Kotlin 코드 생성도 같이 진행해준다. 예전에는 로컬에서 protobuf 생성 명령어를 작성하거나, gradle에서 설정해서 java 코드를 생성하곤 했었는데, buf를 사용하니 편리했다.
+
+​
+
+생각보다 lint 설정이 까다롭다.
+
+(1) gRPC service의 네이밍부터, (2)Request, Response 가 중복으로 사용되는 경우도 나눠서 작성하도록 가이드 하는 것 (3) protobuf 명세서의 코드 format 규칙 등등 다양하게 나를 괴롭혔다. 하지만 적용하고 나면 꽤 설득력있었다.
+
+​
+
+**gRPC Interceptor 관련**
+
+​
+
+gRPC Interceptor Basic Token을 불러오는 예제
+
+
+
+
+
+
+
+
+
+
+```
+package com.example.grpc.server
+
+import io.grpc.*
+import org.apache.commons.codec.binary.Base64
+import org.slf4j.LoggerFactory
+
+class BasicAuthInterceptor : ServerInterceptor {
+    private val logger = LoggerFactory.getLogger(BasicAuthInterceptor::class.java)
+
+    override fun  interceptCall(
+        call: ServerCall, headers: Metadata, next: ServerCallHandler
+    ): ServerCall.Listener {
+        val basicAuthHeader = headers.get(Metadata.Key.of("authorization", Metadata.ASCII_STRING_MARSHALLER))
+
+        if (basicAuthHeader == null || !basicAuthHeader.startsWith("Basic ")) {
+            logger.warn("No Basic Auth header provided")
+            call.close(Status.UNAUTHENTICATED.withDescription("Authorization token is missing"), headers)
+            return object : ServerCall.Listener() {}
+        }
+
+        try {
+            val token = basicAuthHeader.substring(6) // Remove "Basic " prefix
+            val decodedBytes = Base64.decodeBase64(token)
+            val credentials = String(decodedBytes).split(":")
+
+            if (credentials.size != 2 || !authenticate(credentials[0], credentials[1])) {
+                throw IllegalArgumentException("Invalid authentication credentials")
+            }
+
+            logger.info("Authentication successful for user: ${credentials[0]}")
+        } catch (e: Exception) {
+            logger.error("Failed to authenticate", e)
+            call.close(Status.UNAUTHENTICATED.withDescription("Invalid authorization token"), headers)
+            return object : ServerCall.Listener() {}
+        }
+
+        return next.startCall(call, headers)
+    }
+
+    private fun authenticate(username: String, password: String): Boolean {
+        // Implement your authentication logic here
+        // For example:
+        return username == "admin" && password == "password"
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+gRPC Service별 interceptor를 지정하는 예제
+
+
+
+
+
+
+
+
+
+```
+package com.example.grpc.server
+
+import io.grpc.ServerBuilder
+import io.grpc.ServerServiceDefinition
+import io.grpc.util.TransmitStatusRuntimeExceptionInterceptor
+
+fun main() {
+    val port = 50051
+    val server = ServerBuilder.forPort(port)
+        .addService(
+            ServerInterceptors.intercept(
+                HelloServiceImpl().bindService(),
+                BasicAuthInterceptor()
+            )
+        )
+        // 다른 서비스 추가 예시 (인터셉터 없이)
+        .addService(AnotherServiceImpl().bindService())
+        .build()
+
+    server.start()
+    println("Server started, listening on $port")
+    server.awaitTermination()
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+grpc spring boot를 사용할 수 있었으면 좀더 간편하게 할 수 있으니 해당 내용은 아래 링크를 참고하면 좋다.
+
+<https://www.baeldung.com/spring-boot-grpc>
+> [**Introduction to gRPC with Spring Boot | Baeldung**](https://www.baeldung.com/spring-boot-grpc)
+>
+> A quick and practical guide to gRPC with Spring Boot.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

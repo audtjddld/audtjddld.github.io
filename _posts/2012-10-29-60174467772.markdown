@@ -1,0 +1,18 @@
+---
+title: "javascript replaceAll 쓰는법~"
+date: 2012-10-29 17:17:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60174467772"
+---
+
+```
+function replaced(str){
+            var data = str.replace(/>/gi,'>');
+            data = data.replace(/</gi,'<');
+            return data;
+        }
+```
+
+
+
+/abc/gi, / /안에 글짜를 문자 끝까지 가면서 '>' 바꿔준다 뭐 이런 내용인듯.

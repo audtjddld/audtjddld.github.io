@@ -1,0 +1,29 @@
+---
+title: "브라우져벌 한글 깨짐 해결 하는 방법 ㅡㅡ;"
+date: 2014-01-02 14:42:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60206491001"
+---
+
+아래에 설명한 엑셀인데
+
+IE에서 한글로 된 파일명일때 제대로 나오지 않는다 따라서 해당 내용 수정한거 공유한다.
+
+```
+String fileName = request.getParameter("excelName");
+
+String userAgent = request.getHeader("User-Agent");
+if (userAgent != null && userAgent.indexOf("MSIE 5.5") > -1) { // MS IE 5.5 이하
+    response.setHeader("Content-Disposition", "filename=" + URLEncoder.encode(fileName, "UTF-8") + ";");
+} else {
+    if (userAgent != null && userAgent.toLowerCase().indexOf("firefox") > -1) {
+     fileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+    } else {
+     fileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+    }
+    response.setHeader("Content-Disposition", "inline; filename="+ fileName +".xls");
+}
+response.setHeader("Content-Transfer-Encoding", "binary");
+response.setContentType("application/vnd.ms-excel");
+```

@@ -1,0 +1,8 @@
+---
+title: "디자인패턴 참고 사이트"
+date: 2016-03-13 20:59:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220653874281"
+---
+
+<http://wiki.gurubee.net/pages/viewpage.action?pageId=1507407>

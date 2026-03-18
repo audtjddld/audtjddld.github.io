@@ -1,0 +1,24 @@
+---
+title: "안드로이드 푸쉬서버~"
+date: 2015-02-02 09:57:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220259992714"
+---
+
+<https://www.youtube.com/watch?v=08lTMcannvk>
+
+[동영상](http://www.youtube.com/watch?v=08lTMcannvk)
+
+[ㄹㅇㅇㄹㅇㅇwww.youtube.com](http://www.youtube.com/watch?v=08lTMcannvk)
+
+조기다가 연동해보쟈
+
+
+
+<http://blog.saltfactory.net/216>
+
+<http://blog.saltfactory.net/216>
+
+[Node.js로 푸시서비스 구현하기 2. 안드로이드(android) 푸시서버 구현하기(Google P...이번 사내 프로젝트는 아이폰, 안드로이드 푸시 프로바이더를 springframework에서 Node.js로 마이그레이션하는 작업이 진행되었다. 첫번째 포스...blog.saltfactory.net](http://blog.saltfactory.net/216)
+
+참고해서 한번 해보쟝~​

@@ -1,0 +1,264 @@
+---
+title: "Gradle Version Catalog"
+date: 2023-09-18 16:00:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223214793635"
+---
+
+gradle version 관리 할 수 있는 version catalog라는 것을 이제 알게 되었다.
+
+도입된 버전은 gradle 7.4 버전 때이고, 그 이전 버전에서는 buildSrc 경로에서 코드로 작성해서 관리했던 것 같다.
+
+어느게 더 편리할까 생각해봤을 때, toml 파일 형식으로 관리하는 것이 좋겠다고 생각했다.
+
+​
+
+왜 확장자가 toml 이냐고 해서 알아봤더니 또 요 양식이 따로 있었다.
+
+<https://toml.io/en/>
+
+​
+
+Gradle version catalog 관련 문서
+
+<https://docs.gradle.org/current/userguide/platforms.html>
+> [**Sharing dependency versions between projects**](https://docs.gradle.org/current/userguide/platforms.html)
+>
+> Sharing dependency versions between projects Contents Central declaration of dependencies Sharing catalogs Using a platform to control transitive versions Importing Maven BOMs Should I use a platform or a catalog? Central declaration of dependencies Using a version catalog A version catalog is a lis...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+toml 관련
+
+<https://docs.gradle.org/current/userguide/platforms.html#sub:conventional-dependencies-toml>
+> [**Sharing dependency versions between projects**](https://docs.gradle.org/current/userguide/platforms.html#sub:conventional-dependencies-toml)
+>
+> Sharing dependency versions between projects Contents Central declaration of dependencies Sharing catalogs Using a platform to control transitive versions Importing Maven BOMs Should I use a platform or a catalog? Central declaration of dependencies Using a version catalog A version catalog is a lis...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+정리해봤던 toml 파일
+
+
+
+
+
+
+
+
+
+
+```
+[versions]
+kotlin = "1.9.10"
+jib = "3.1.4"
+springBoot = "3.1.1"
+springDependencyManagement = "1.0.11.RELEASE"
+springCloud = "4.0.3"
+springMock = "3.1.1"
+swaggerUI = "2.2.0"
+springOpenApi = "1.7.0"
+springCloudKubernetes = "3.0.4"
+springCloudOpenFeign = "4.0.4"
+springCloudDependencies = "2022.0.4"
+springBootAdmin = "3.1.6"
+jackson = "2.15.2"
+envers = "6.2.7.Final"
+springFramework = "6.0.11"
+mockk-jvm = "1.13.8"
+
+# kotest
+kotest = "5.5.4"
+kotestExtensionsSpring = "1.1.2"
+mockk = "1.12.4"
+kotlinLoggerVersion = "3.0.2"
+
+#netty
+nettyForMacos = "4.1.79.Final:osx-aarch_64"
+
+gradleGitProperties = "2.4.1"
+ktlint = "11.5.0"
+mysql = "8.0.32"
+jasypt = "3.0.5"
+
+[libraries]
+spring-boot-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "springBoot" }
+spring-boot-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "springBoot" }
+spring-boot-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springBoot" }
+spring-boot-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "springBoot" }
+spring-boot-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
+spring-boot-admin-server = { module = "de.codecentric:spring-boot-admin-starter-server", version.ref = "springBootAdmin" }
+spring-boot-admin-client = { module = "de.codecentric:spring-boot-admin-starter-client", version.ref = "springBootAdmin" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+spring-cloud-starter-kubernetest-fabric8-all = { module = "org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8-all", version.ref = "springCloudKubernetes" }
+spring-cloud-open-feign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign", version.ref = "springCloudOpenFeign" }
+spring-cloud-dependencies = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "springCloudDependencies" }
+spring-context = { module = "org.springframework:spring-context", version.ref = "springFramework" }
+spring-context-tx = { module = "org.springframework:spring-tx", version.ref = "springFramework" }
+springdoc-openapi-start-webmvc-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "swaggerUI" }
+
+hibernate-envers = { module = "org.hibernate:hibernate-envers", version.ref = "envers" }
+#querydsl-apt-jakarta = { module = "com.querydsl:querydsl-apt", version.ref = "queryDsl"  }
+#querydsl-jpa-jakarta = { module = "com.querydsl:querydsl-jpa", version.ref = "queryDsl"}
+
+jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
+mysql-connector-java = { module = "mysql:mysql-connector-java", version.ref = "mysql" }
+
+jasypt-spring-boot-starter = { module = "com.github.ulisesbocchio:jasypt-spring-boot-starter", version.ref = "jasypt" }
+kotlin-logging-jvm = { module = "io.github.microutils:kotlin-logging-jvm", version.ref = "kotlinLoggerVersion" }
+kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotest-extensions-spring = { module = "io.kotest.extensions:kotest-extensions-spring", version.ref = "kotestExtensionsSpring" }
+kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk-jvm = { module = "io.mockk:mockk-jvm", version.ref = "mockk-jvm" }
+
+[plugins]
+kotlin = { id = "kotlin", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
+kotlin-noarg = { id = "org.jetbrains.kotlin.plugin.noarg", version.ref = "kotlin" }
+kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
+
+jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }
+gradle-git-properties = { id = "com.gorylenko.gradle-git-properties", version.ref = "gradleGitProperties" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+springboot = { id = "org.springframework.boot", version.ref = "springBoot" }
+spring-dependencyManagement = { id = "io.spring.dependency-management", version.ref = "springDependencyManagement" }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+// 23.11.16
+
+​
+
+version catalog에 등록한 라이브러리를 찾기 위해서, dependencies에 libs... 연결해서 찾았었는데, 펑션이 존재했다.
+
+**findLibrary**
+
+**​**
+
+글 작성했을 때 당시
+
+
+
+
+
+
+
+
+
+```
+dependencies {
+    implementation(libs.spring.boot.starter.actuator)
+    implementation(libs.spring-boot.starter.validation)
+    implementation(libs.logstash.logback.encoder)
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+알아낸 것
+
+
+
+
+
+
+
+
+
+```
+dependencies {
+    implementation(libs.findLibrary("spring-boot-starter-actuator").get())
+    implementation(libs.findLibrary("spring-boot-starter-validation").get())
+    implementation(libs.findLibrary("logstash-logback-encoder").get())
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

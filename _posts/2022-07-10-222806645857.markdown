@@ -1,0 +1,42 @@
+---
+title: "Understanding Hexagonal Architecture with spring boot"
+date: 2022-07-10 23:00:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222806645857"
+---
+
+<https://betterprogramming.pub/hexagonal-architecture-with-spring-boot-74e93030eba3>
+> [**Understanding Hexagonal Architecture With a Spring Boot Implementation**](https://betterprogramming.pub/hexagonal-architecture-with-spring-boot-74e93030eba3)
+>
+> An example using Spring Boot to detail the different layers of the application.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+spring boot를 이용해서 hexagonal architecture 패키지나 설정 부분을 좀더 상세하게 안내해주는 것 같다.
+
+​
+
+domain 내부에 service 패키지를 만들고, 비즈니스 로직을 구현해 놓는 것이 좀 색달라 보인다.
+
+​
+
+application 레이어에서 usecase 구현체인 service를 관리하고 있을 것이라 생각되었는데, 그런 부분이 아니라 다른 형태로 관리되고 있는 것 같아서 이 부분도 한번 생각해보면 좋을 것 같다.
+
+​
+
+​

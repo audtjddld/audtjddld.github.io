@@ -1,0 +1,12 @@
+---
+title: "eval 대체 함수 [펌]"
+date: 2013-05-27 15:41:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60192786625"
+---
+
+<http://www.taeyo.pe.kr/Forum/Content.aspx?SEQ=1467&TBL=KNOWHOW>
+
+
+
+요렇게 됩니다.

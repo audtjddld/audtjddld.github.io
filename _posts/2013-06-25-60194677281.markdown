@@ -1,0 +1,170 @@
+---
+title: "Spring 3.0 Mail 발송 [펌]"
+date: 2013-06-25 16:16:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60194677281"
+---
+
+<http://blog.saltfactory.net/58>
+
+# 스프링 프레임워크에서 JavaMailSender를 이용해서 메일발송
+
+# ﻿(Spring framework - JavaMailSender )﻿
+
+2011/11/09 13:18
+
+
+
+![](http://cfile2.uf.tistory.com/image/1842F6344EB9FDCC24B9CC)
+
+
+Spring framework를 사용하면 복잡한 기능을 간단하게 모듈로 구현해서 Injection하여 사용할 수 있다. 프로젝트를 진행하면서 특정 서비스가 종료되면 자동으로  메일을 발송하는 서비스 객체가 필요해서 JavaMailSender로 메일 발송시키는 간단한 메일서비스 객체를 만들었다. 이번 포스팅은 스프링 프레임워크에서 메일을 발송할 수 있는 예제를 준비했다.**
+
+간단한 예제를 위해서  MailService 인터페이스와 MailServiceImpl 서비스 객체를 만들고 테스트를 하는 방법을 준비했다.
+
+메일 제목, 내용, 보내는사람, 받는사람, 수진자들을 파라미터를 받아서 메일을 전송하는 sendMail 메소드를 인터페이스에 정의한다.
+
+```
+```
+
+MailService 인터페이스를 MailServiceImpl 클래스에서 구현한다.
+
+
+
+MailService 인터페이스를 MailServiceImpl 클래스에서 구현한다.
+JavaMailSender는 MimMessage를 발송시킬수 있는데 이 메세지를 만드는 것을 도와주는 helper 클래스가 MimeMessageHelper 클래스이다.
+
+이 클래스들을 사용하기 위해서 com.springsource.javax.mail-1.4.0.jar 가 필요하다. 더 최근 라이브러리가 업데이트 되었을 수도 있다. 이 javax.mail 라이브러리를 프로젝트 클래스패스에 추가하면 클래스를 임포트한다.
+
+
+
+
+1
+
+2
+
+3
+
+4
+
+import org.springframework.mail.javamail.JavaMailSender;
+
+import org.springframework.mail.javamail.MimeMessageHelper;
+
+import javax.mail.MessagingException;
+
+import javax.mail.internet.MimeMessage;
+
+
+
+```
+이 클래스는 @Service 어노테이션을 사용하여 이 클래스가 서비스 객체임을 스트레오 어노테이션으로 지시한다. 다음은 JavaMailSender를 Injection 시키고 properties 파일에 있는 내용들을 읽어오기 위해서 MessageSource도 함께 @Autowired로 지시한다. 헬퍼클래스의 생성자에는 여러가지 파리미터가 들어갈수 있는데 여기서는 MimeMessageHelper(MimeMessage mimeMessage, boolean multipart, String encoding)를 사용했다.MessageHelper는 여러가지를 설정할 수 있는데, setSubject는 제목을, setTo는 수신자를, setFrom은 발신자를, setCc는 공동수진자를 그리고 setText는 내용을 넣을수 있는데 HTML 여부 설정을 할 수 있다. 그리고 send 메소드를 사용해서 message를 발송한다.
+```
+
+```
+```
+
+```
+다음은 Spring bean에 mailSender를 등록한다. 호스트명과 smtp 계정과 비밀번호, 포트번호 인증설정등 property로 설정한다. property 파일에서 관리하기 위해서 설정은 외부 property 파일로 따로 관리했다. property 파일을 따로 관리하지 않으려면 그냥 String 값을 value에 넣어도 상관없다.
+```
+
+```
+
+
+
+
+
+
+${mail.smtp.auth}
+${mail.host}
+```
+
+이렇게 외부에 mail.properties 라는 property 파일로 따로 관리할 수 있다.
+
+mail.host=메일서버주소
+
+mail.port=포트번호
+
+mail.username=계정
+
+mail.password=비밀번호
+
+mail.smtp.auth=true
+
+mail.toUser=수신자 메일 주소
+
+mail.fromUser=발산자 메일 주소
+
+mail.toCC=공동 수진자 메일 주소들 (","로 구분)
+
+```
+서비스 객체를 만들었으니 단위테스트를 해보자.단위 테스트는 위에서 만든 MailService를 @Autowired를 이용하여 Injection하여 mailService.sendMail 메소드를 트하하였다.
+```
+
+
+
+
+
+﻿
+
+```
+```
+
+
+
+
+
+이용한 소스
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+    @Resource(name = "mailService")
+
+    private MailService mail;
+
+
+
+    @RequestMapping(value="/hangtag/test.do")
+
+    public String test (HttpServletRequest request, ModelMap modelMap) throws Exception{
+
+        //sendMail(String subject, String text, String fromUser, String toUser, String[] toCC)throws Exception{
+
+        mail.sendMail("테스트 메일 메일", "발송 발송",
+
+                            "보내는 메일주소",
+
+                                "받는 메일 주소",
+
+                                    1개 이상일때.
+
+        return "redirect:/write.do";
+
+    }

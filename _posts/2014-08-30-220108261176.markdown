@@ -1,0 +1,158 @@
+---
+title: "bigdata study 5"
+date: 2014-08-30 16:52:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220108261176"
+---
+
+일단 처음오자마자 apache-maven을 설치했다.
+
+
+
+그런뒤 .bashrc 로 들어가서 설정 부분을
+
+
+
+MONGO_HOME=/home/junev/mongo
+
+PATH=$PATH:$MONGO_HOME/bin:$JAVA_HOME/bin:$M2
+
+# Java
+JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+export MONGO_HOME
+export PATH
+export JAVA_HOME
+
+# Maven
+export M2_HOME=/home/junev/maven
+export M2=$M2_HOME/bin
+export MAVEN_OPTS="-Xms512 -Xmx 1024m -XX:PermSize=256m -XX:MaxPermSize=512m"
+
+
+
+추가하였다.
+
+
+
+그리고  git 설치
+
+sudo apt-get install git
+
+
+
+그리고 git에 올라가있는
+
+ git clone <https://git-wip-us.apache.org/repos/asf/flume.get> flume-dev
+
+
+
+그럼 ~ home 안에 flume 이 생성된다
+
+
+
+그리고 나서
+
+cd flume-dev
+mvn install -DskipTests
+
+
+
+이후 설치 후 Build Sucess  뜨면 설치 완료
+
+
+
+
+
+cp flume-ng-dist/target/apache-flume-1.6.0-SNAPSHOT-bin.tar.gz ~
+
+
+
+tar xvfz apache-flume-1.6.0-SNAPSHOT-bin.tar.gz
+
+
+
+폴더명을 flume으로 변경 후
+
+
+
+vi .bashrc 로 이동
+
+flume_home을 등록시켜준다
+
+
+
+flume/conf/
+
+에서
+
+cp flume-env.sh.template flume-env.sh
+
+
+
+vi flume-env.sh
+
+에서 java_home을 설정해줌.
+
+
+
+
+
+flume/bin
+
+안에 start, stop 있음.
+
+
+
+현재 상태를 볼려면
+
+<http://192.168.30.16:12346>
+
+를하게되면 상태가 나타나게 된다.
+
+
+
+flume 쪽 로그를 보기위해서는
+
+/flume/logs/flume.log 를 보게되면된다.
+
+
+
+flume
+
+-> log
+
+-> spool
+
+
+
+
+
+flume 설정 간 개념에 대한 설명 블로그들
+
+
+
+<http://mimul.com/pebble/default/2012/02/10/1328851289297.html>
+
+
+
+<http://wawoops67.blogspot.kr/2013/05/flume-flume.html>
+
+​
+
+<http://pacino.tistory.com/14>
+
+
+
+
+
+으로 됨
+
+
+
+
+
+이건 스터디와 다른 과부하 테스트 관련 jmeter
+
+
+
+<http://opennaru.tistory.com/archive/20140813>

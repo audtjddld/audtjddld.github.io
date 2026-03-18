@@ -1,0 +1,10 @@
+---
+title: "Query DSL에서 Entity 에러 발생시 해결방법"
+date: 2016-04-06 17:21:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220676086449"
+---
+
+<http://stackoverflow.com/questions/10827012/querydsl-query-exception>
+
+각 도메인 클래스에 선언된 이름을 찾아서 Predicate쪽에서 선언한 변수명대로 작성해야된다.

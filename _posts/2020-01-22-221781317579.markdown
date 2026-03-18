@@ -1,0 +1,30 @@
+---
+title: "DDD Sample code"
+date: 2020-01-22 11:16:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221781317579"
+---
+
+<https://github.com/VaughnVernon/IDDD_Samples>
+> [**VaughnVernon/IDDD_Samples**](https://github.com/VaughnVernon/IDDD_Samples)
+>
+> These are the sample Bounded Contexts from the book "Implementing Domain-Driven Design" by Vaughn Vernon:  <http://vaughnvernon.co/?page_id=168> - VaughnVernon/IDDD_Samples
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

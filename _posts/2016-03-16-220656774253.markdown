@@ -1,0 +1,10 @@
+---
+title: "ubuntu mongodb 설치"
+date: 2016-03-16 18:07:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220656774253"
+---
+
+<https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/>
+
+따라하면 잘됨

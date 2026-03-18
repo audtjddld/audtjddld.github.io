@@ -1,0 +1,126 @@
+---
+title: "Domain-Driven Hexagonal"
+date: 2022-07-28 12:39:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222832421623"
+---
+
+![](https://miro.medium.com/max/1400/0*Rg4n-AdiSBwJaTJR.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+출처: <https://njkhanh.com/domain-driven-hexagon-architecture-for-javascript-typescript-developers-p5f34373037>
+
+​
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+존재하지 않는 이미지입니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+<https://masne.medium.com/hexagonal-architecture-part-1-b8357d3ee17d>
+> [**Hexagonal Architecture (Part#1)**](https://masne.medium.com/hexagonal-architecture-part-1-b8357d3ee17d)
+>
+> Adaptable and flexible software.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+​
+
+기타//
+
+clean code
+
+<https://masne.medium.com/clean-code-52ac0b9d5887>
+> [**Clean Code**](https://masne.medium.com/clean-code-52ac0b9d5887)
+>
+> Code is all about communication and communication is the professional developer’s first order of business
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

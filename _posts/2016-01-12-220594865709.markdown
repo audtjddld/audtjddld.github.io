@@ -1,0 +1,233 @@
+---
+title: "Java APNS Push 구현"
+date: 2016-01-12 11:09:00 +0900
+categories: [경험 및 정보 공유]
+tags: [JAVA, APNS]
+original_url: "https://blog.naver.com/kkforgg/220594865709"
+---
+
+JDK 1.6 에서 적용 후 진행하였다.
+
+많은 삽질 끝에 적용 ㅡㅡ;
+
+기본적인 App push 서비스 설정 및 방법은 아래링크를 참조해서 작성하면 된다. 매우 잘나와있다.
+
+<http://lab.anybuild.co.kr/page/basic_app2#Introduce>
+
+[Basic - APP 만들기 (iOS){GROUP_nav_basic3} 개요 iOS앱은 개발이 어려운편은 아니지만 밑준비인 인증서작업이 생소하고 대단히 어렵게 느껴집니다. 그래서 설명이 ...lab.anybuild.co.kr](http://lab.anybuild.co.kr/page/basic_app2)
+
+Google APNs library 를 이용하여 구현하였다.
+
+<https://github.com/notnoop/java-apns> 를 이용하여 구현하였다.
+
+예제는 아래 링크를 참조하면 된다.
+
+<http://blog.kondratev.pro/2015/03/sending-ios-push-notifications-from-java.html>
+
+[Dev notes: Sending iOS push notifications from JAVAblog.kondratev.pro](http://blog.kondratev.pro/2015/03/sending-ios-push-notifications-from-java.html)
+
+결국 헤매고 헤매다가 결국 해냈다 -_-;;
+
+```
+@RequestMapping(value="/push/test")
+    public String pushTest() throws Exception {
+        String token = "토큰값";
+
+
+        String type ="dev"; // 개발, 운영인지 TODO 추가적으로 적용 예정
+        String message = "hello";
+
+        String certPath7 = "cert.p12";
+
+        pushMessage(certPath7, message, token);
+
+
+        System.out.println("호출 ");
+        return "push/index";
+    }
+
+    public void pushMessage (String certPath, String message, String token) {
+        ApnsServiceBuilder serviceBuilder = APNS.newService();
+        serviceBuilder.withCert(certPath, "비밀번호")
+        .withSandboxDestination();
+
+        ApnsService service = serviceBuilder.build();
+        Long timeout = 60*60L;
+        String payload = APNS.newPayload()
+                .badge(3)
+                .alertBody(message)
+                .alertTitle("push test")
+                .sound("default")
+                .customField("messageFrom", "안녕하세유").build();
+
+        System.out.println("payload: "+payload);
+        service.push(token, payload);
+    }
+```
+
+Google Javapns 예제 이다
+
+라이브러리
+
+  <dependency>**
+
+**   <groupId>com.github.fernandospr</groupId>**
+
+**   <artifactId>javapns-jdk16</artifactId>**
+
+**   <version>2.2.1</version>**
+
+**  </dependency>**
+
+```
+@Controller
+public class PushTwoController {
+    final static String KEY_STORE  = "인증키위치";
+    final static String TOKEN      = "토큰값";
+    final static String CERT_KEY   = "비밀번호";
+
+    @RequestMapping(value="/push2.do")
+    public void pushTestController() throws Exception{
+           /* Build a blank payload to customize */
+        PushNotificationPayload payload = PushNotificationPayload.complex();
+
+
+       /* Customize the payload */
+        payload.addAlert("얼럿창 입니다.");
+        payload.addCustomDictionary("mykey1", "My Value 1");
+        /* Push your custom payload */
+        //List notifications = Push.payload(payload, KEY_STORE, CERT_KEY, false, "토큰값");
+
+        // etc.
+        // 아래는 badge랑 같이 보내는 법
+        Push.combined("안내안내", 1, "default", KEY_STORE, CERT_KEY, false, TOKEN);
+
+    }
+
+}
+```
+
+그 밖에 설정 부분들
+
+참고 : <http://www.programkr.com/blog/MAzN5ADMwYTw.html>
+
+다충 보내는 방법 : <https://code.google.com/p/javapns/wiki/PushNotificationAdvanced>
+
+푸쉬 에러 관리   : <https://code.google.com/p/javapns/wiki/ManagingPushErrors>
+
+
+
+### Apple Push Service 규격
+
+<http://www.informit.com/articles/article.aspx?p=1433733&seqNum=5>
+
+APNs 포멧 1
+Icon
+
+#### Table 16-1. JSON Payload Samples
+
+Sample Type
+
+JSON
+
+Hello message, displays with two buttons.
+
+{"aps":{"alert":"hello"}}
+
+Hello message, displays with two buttons, but built using JSON with an alert dictionary.
+
+{"aps":{"alert":{"body":"hello"}}}
+
+Hello message with one OK button.
+
+{"aps":{"alert":{"action-loc-key":null,"body":"hello"}}}
+
+Hello message with two buttons, Close and Open, the latter being a custom replacement for View.
+
+{"aps":{"alert":{"action-loc-key":"Open","body":"hello"}}}
+
+Hello message that adds an application badge of 3.
+
+{"aps":{"badge":3,"alert":{"body":"hello"}}}
+
+Play a sound without an alert.
+
+{"aps":{"sound":"ping2.caf","alert":{}}}
+
+Play sound, display badge, display alert, use a custom button.
+
+{"aps":{"sound":"ping2.caf","badge":2,"alert":{"action-loc-key":"Open","body":"Hello"}}}
+
+Add a custom payload including an array.
+
+APNs 형식 2
+Icon
+
+### Payload 작성 양식
+
+다음의 애플문서를 보면 아주아주 자세하게 나와있습니다. 영어가 되시는 분은 [애플에서 제공하는 원문](http://developer.apple.com/library/ios/#documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/ApplePushService.html#//apple_ref/doc/uid/TP40008194-CH100-SW9)을 보시는게 더 좋을 것 같네요!
+기본적으로 Payload는 JSON 형식으로 전달되며 형식은 다음과 같습니다.
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+{
+
+    "aps" : { "alert" : {
+
+            "body" : "내용을 적어넣으세요",
+
+            "action-loc-key" : "PLAY",
+
+            "loc-key" : "CONTENT",
+
+            "loc-args" : [ "Jenna", "Frank" ]
+
+        },
+
+    "badge" : 5,
+
+    },
+
+    "acme1" : "bar",
+
+    "acme2" : [ "bang", "whiz" ]
+
+}
+
+
+
+여기서 aps 키값은 Dictionary 형태로 만들어지며 각각의 키들은 다음과 같은 역할을 합니다.
+
+- alert : 스트링 혹은 딕셔너리 형태로 값이 들어갈 수 있으며 스트링으로 할 경우 보내고자하는 메시지를 적어 넣어주시면 됩니다.
+body : 전달할 내용을 입력합니다.
+- action-loc-key : LocalizedString의 키값을 참조해 AlertView의 View Detail이라는 버튼을 언어에 맞게 변경시켜줍니다.
+- loc-key : LocalizedString의 키값을 참조해 내용을 채워줍니다.
+
+- badge : 배지의 숫자를 입력합니다.
+- acme1 or acme2 : 커스터마이징 변수값으로 임의의 문자열로 키와 값을 만들어 스트링 혹은 배열의 형태로 전달 할 수 있습니다.
+
+출처 : <http://qnibus.com/blog/how-to-develop-service-provider/>

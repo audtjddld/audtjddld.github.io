@@ -1,0 +1,67 @@
+---
+title: "kafka record filter"
+date: 2021-09-08 14:16:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222499200465"
+---
+
+카프카 container 설정에서 메시지를 filter를 걸 수 있다는 것을 알게 되었다.
+
+​
+
+자세한 내용은 아래 링크를 참고하면 좋을 것 같다.
+
+<https://reflectoring.io/spring-boot-kafka/>
+
+​
+
+​
+
+대략적인 설정 방법은 아래 예시와 같다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+class KafkaConsumerConfig {
+
+  @Bean
+  KafkaListenerContainerFactory>
+  kafkaListenerContainerFactory() {
+    ConcurrentKafkaListenerContainerFactory factory =
+      new ConcurrentKafkaListenerContainerFactory<>();
+    factory.setConsumerFactory(consumerFactory());
+    factory.setRecordFilterStrategy(record ->
+      record.value().contains("ignored"));
+    return factory;
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ignore가 포함된 메시지를 제거한다.
+
+​

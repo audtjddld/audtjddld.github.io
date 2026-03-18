@@ -1,0 +1,1260 @@
+---
+title: "전자정부프레임웍 기반 파일 다운로드 컨트롤러"
+date: 2013-12-10 09:57:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60205112350"
+---
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+55
+
+56
+
+57
+
+58
+
+59
+
+60
+
+61
+
+62
+
+63
+
+64
+
+65
+
+66
+
+67
+
+68
+
+69
+
+70
+
+71
+
+72
+
+73
+
+74
+
+75
+
+76
+
+77
+
+78
+
+79
+
+80
+
+81
+
+82
+
+83
+
+84
+
+85
+
+86
+
+87
+
+88
+
+89
+
+90
+
+91
+
+92
+
+93
+
+94
+
+95
+
+96
+
+97
+
+98
+
+99
+
+100
+
+101
+
+102
+
+103
+
+104
+
+105
+
+106
+
+107
+
+108
+
+109
+
+110
+
+111
+
+112
+
+113
+
+114
+
+115
+
+116
+
+117
+
+118
+
+119
+
+120
+
+121
+
+122
+
+123
+
+124
+
+125
+
+126
+
+127
+
+128
+
+129
+
+130
+
+131
+
+132
+
+133
+
+134
+
+135
+
+136
+
+137
+
+138
+
+139
+
+140
+
+141
+
+142
+
+143
+
+144
+
+145
+
+146
+
+147
+
+148
+
+149
+
+150
+
+151
+
+152
+
+153
+
+154
+
+155
+
+156
+
+157
+
+158
+
+159
+
+160
+
+161
+
+162
+
+163
+
+164
+
+165
+
+166
+
+167
+
+168
+
+169
+
+170
+
+171
+
+172
+
+173
+
+174
+
+175
+
+176
+
+177
+
+178
+
+179
+
+180
+
+181
+
+182
+
+183
+
+184
+
+185
+
+186
+
+187
+
+188
+
+189
+
+190
+
+191
+
+192
+
+193
+
+194
+
+195
+
+196
+
+197
+
+198
+
+199
+
+200
+
+201
+
+202
+
+203
+
+204
+
+205
+
+206
+
+207
+
+208
+
+209
+
+210
+
+211
+
+212
+
+213
+
+214
+
+215
+
+216
+
+217
+
+218
+
+219
+
+220
+
+221
+
+222
+
+223
+
+224
+
+225
+
+226
+
+227
+
+228
+
+229
+
+230
+
+231
+
+232
+
+233
+
+234
+
+235
+
+236
+
+237
+
+238
+
+239
+
+240
+
+241
+
+242
+
+243
+
+244
+
+245
+
+246
+
+247
+
+248
+
+249
+
+250
+
+251
+
+252
+
+253
+
+254
+
+255
+
+256
+
+257
+
+258
+
+259
+
+260
+
+261
+
+262
+
+263
+
+264
+
+265
+
+266
+
+267
+
+268
+
+269
+
+270
+
+271
+
+272
+
+273
+
+274
+
+275
+
+276
+
+277
+
+278
+
+279
+
+280
+
+281
+
+282
+
+283
+
+284
+
+285
+
+286
+
+287
+
+288
+
+289
+
+290
+
+291
+
+292
+
+293
+
+294
+
+295
+
+296
+
+297
+
+298
+
+299
+
+300
+
+301
+
+302
+
+303
+
+304
+
+305
+
+306
+
+307
+
+308
+
+309
+
+310
+
+311
+
+312
+
+313
+
+314
+
+package egovframework.com.cmm.web;
+
+
+
+import java.io.BufferedInputStream;
+
+import java.io.BufferedOutputStream;
+
+import java.io.File;
+
+import java.io.FileInputStream;
+
+import java.io.FileNotFoundException;
+
+import java.io.IOException;
+
+import java.net.URLEncoder;
+
+
+
+import javax.annotation.Resource;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+
+
+
+import org.apache.log4j.Logger;
+
+import org.springframework.stereotype.Controller;
+
+import org.springframework.util.FileCopyUtils;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import org.springframework.web.bind.annotation.RequestParam;
+
+
+
+import egovframework.com.cmm.EgovWebUtil;
+
+import egovframework.com.cmm.service.EgovFileMngService;
+
+import egovframework.com.cmm.service.EgovProperties;
+
+import egovframework.com.cmm.service.FileVO;
+
+import egovframework.com.utl.fcc.service.EgovFormBasedFileUtil;
+
+import egovframework.com.utl.fcc.service.EgovStringUtil;
+
+
+
+
+
+/**
+
+ * 파일 다운로드를 위한 컨트롤러 클래스
+
+ * @author 공통서비스개발팀 이삼섭
+
+ * @since 2009.06.01
+
+ * @version 1.0
+
+ * @see
+
+ *
+
+ * <pre>
+
+ * << 개정이력(Modification Information) >>
+
+ *
+
+ *   수정일      수정자           수정내용
+
+ *  -------    --------    ---------------------------
+
+ *   2009.3.25  이삼섭          최초 생성
+
+ *
+
+ * Copyright (C) 2009 by MOPAS  All right reserved.
+
+ * </pre>
+
+ */
+
+@Controller
+
+public class EgovFileDownloadController {
+
+
+
+     /** 첨부파일 위치 지정 */
+
+    private final String uploadDir = EgovProperties.getProperty("Globals.docFileStorePath");
+
+
+
+    /** Buffer size */
+
+    public static final int BUFFER_SIZE = 8192;
+
+
+
+    public static final String SEPERATOR = File.separator;
+
+
+
+    /**첨부파일 위치 지정 */
+
+    private final String docDir = EgovProperties.getProperty("Globals.docFileStorePath");
+
+
+
+    @Resource(name = "EgovFileMngService")
+
+    private EgovFileMngService fileService;
+
+
+
+    private static final Logger LOG = Logger.getLogger(EgovFileDownloadController.class.getName());
+
+
+
+    /**
+
+     * 브라우저 구분 얻기.
+
+     *
+
+     * @param request
+
+     * @return
+
+     */
+
+    private String getBrowser(HttpServletRequest request) {
+
+        String header = request.getHeader("User-Agent");
+
+        if (header.indexOf("MSIE") > -1) {
+
+            return "MSIE";
+
+        } else if (header.indexOf("Chrome") > -1) {
+
+            return "Chrome";
+
+        } else if (header.indexOf("Opera") > -1) {
+
+            return "Opera";
+
+        }
+
+        return "Firefox";
+
+    }
+
+
+
+    /**
+
+     * Disposition 지정하기.
+
+     *
+
+     * @param filename
+
+     * @param request
+
+     * @param response
+
+     * @throws Exception
+
+     */
+
+    private void setDisposition(String filename, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+    String browser = getBrowser(request);
+
+
+
+    String dispositionPrefix = "attachment; filename=";
+
+    String encodedFilename = null;
+
+
+
+    if (browser.equals("MSIE")) {
+
+        encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+
+    } else if (browser.equals("Firefox")) {
+
+        encodedFilename = "\"" + new String(filename.getBytes("UTF-8"), "8859_1") + "\"";
+
+    } else if (browser.equals("Opera")) {
+
+        encodedFilename = "\"" + new String(filename.getBytes("UTF-8"), "8859_1") + "\"";
+
+    } else if (browser.equals("Chrome")) {
+
+        StringBuffer sb = new StringBuffer();
+
+        for (int i = 0; i < filename.length(); i++) {
+
+        char c = filename.charAt(i);
+
+        if (c > '~') {
+
+            sb.append(URLEncoder.encode("" + c, "UTF-8"));
+
+        } else {
+
+            sb.append(c);
+
+        }
+
+        }
+
+        encodedFilename = sb.toString();
+
+    } else {
+
+        //throw new RuntimeException("Not supported browser");
+
+        throw new IOException("Not supported browser");
+
+    }
+
+
+
+    response.setHeader("Content-Disposition", dispositionPrefix + encodedFilename);
+
+
+
+    if ("Opera".equals(browser)){
+
+        response.setContentType("application/octet-stream;charset=UTF-8");
+
+    }
+
+    }
+
+
+
+    /*
+
+     * 파일을 뷰한다.
+
+     */
+
+    @RequestMapping(value="/cmm/fms/fileView.do", method=RequestMethod.GET)
+
+    public void downloadFile(
+
+                             @RequestParam(value="fileid", required=true) String fileid,
+
+                             @RequestParam(value="fileSn", required=true) int fileSn,
+
+                             HttpServletRequest request,
+
+                             HttpServletResponse response) throws Exception {
+
+
+
+        fileid = fileid.replace("../", "");
+
+        FileVO filevo = new FileVO();
+
+        filevo.setAtchFileId(fileid.trim());
+
+        filevo.setFileSn(Integer.toString(fileSn));
+
+        filevo = fileService.selectFileInf(filevo);
+
+        setDisposition(URLEncoder.encode(filevo.getOrignlFileNm(), "utf-8"), request, response);
+
+        try
+
+        {
+
+            EgovFormBasedFileUtil.viewFile(response, filevo.getFileStreCours(), "", filevo.getStreFileNm(), filevo.getFileExtsn());
+
+        }
+
+        catch(Exception e)
+
+        {
+
+            System.out.println(e.getMessage());
+
+        }
+
+    }
+
+
+
+    /**
+
+     * 첨부파일로 등록된 파일에 대하여 다운로드를 제공한다.
+
+     *
+
+     * @param commandMap
+
+     * @param response
+
+     * @throws Exception
+
+     */
+
+    @RequestMapping(value = "/cmm/fms/FileDown.do")
+
+    public void cvplFileDownload(
+
+                                @RequestParam(value="fileid", required=true) String atchFileId,
+
+                                @RequestParam(value="fileSn", required=true) int fileSn,
+
+                                HttpServletRequest request,
+
+                                HttpServletResponse response) throws Exception
+
+    {
+
+
+
+//    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+
+
+
+//    if (isAuthenticated) {
+
+        atchFileId = atchFileId.replace("../", "");
+
+        FileVO fileVO = new FileVO();
+
+        fileVO.setAtchFileId(atchFileId);
+
+        fileVO.setFileSn(Integer.toString(fileSn));
+
+        FileVO fvo = fileService.selectFileInf(fileVO);
+
+        if(fvo == null || EgovStringUtil.nvl(fvo.getFileStreCours(), "").equals(""))
+
+        {
+
+            //dispatch-servlet.xml에 정의되어잇는 Exception으로 매핑
+
+            throw new FileNotFoundException("파일이 없습니다.");
+
+        }
+
+        File uFile = new File(fvo.getFileStreCours(), fvo.getStreFileNm());
+
+        int fSize = (int)uFile.length();
+
+        if (fSize > 0)
+
+        {
+
+            String mimetype = "application/x-msdownload";
+
+
+
+            //response.setBufferSize(fSize);    // OutOfMemeory 발생
+
+            response.setContentType(mimetype);
+
+            //response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(fvo.getOrignlFileNm(), "utf-8") + "\"");
+
+            setDisposition(fvo.getOrignlFileNm(), request, response);
+
+            response.setContentLength(fSize);
+
+            /*
+
+             * FileCopyUtils.copy(in, response.getOutputStream());
+
+             * in.close();
+
+             * response.getOutputStream().flush();
+
+             * response.getOutputStream().close();
+
+             */
+
+            BufferedInputStream in = null;
+
+            BufferedOutputStream out = null;
+
+
+
+            try {
+
+                in = new BufferedInputStream(new FileInputStream(uFile));
+
+                out = new BufferedOutputStream(response.getOutputStream());
+
+
+
+                FileCopyUtils.copy(in, out);
+
+                out.flush();
+
+            } catch (Exception ex) {
+
+                //ex.printStackTrace();
+
+                // 다음 Exception 무시 처리
+
+                // Connection reset by peer: socket write error
+
+                LOG.debug("IGNORED: " + ex.getMessage());
+
+            } finally {
+
+                if (in != null) {
+
+                try {
+
+                    in.close();
+
+                } catch (Exception ignore) {
+
+                    // no-op
+
+                    LOG.debug("IGNORED: " + ignore.getMessage());
+
+                }
+
+                }
+
+                if (out != null) {
+
+                try {
+
+                    out.close();
+
+                } catch (Exception ignore) {
+
+                    // no-op
+
+                    LOG.debug("IGNORED: " + ignore.getMessage());
+
+                }
+
+                }
+
+            }
+
+        }
+
+        else
+
+        {
+
+            System.out.println("파일이 없습니다.");
+
+            throw new FileNotFoundException("파일이 없습니다.");
+
+        }
+
+    }
+
+
+
+    /*
+
+     * 미디어 파일을 다운로드 한다.
+
+     * 페이지에서 직접 다운로드 파일을 url로 태워서 가져오기 위한
+
+     * 컨트롤러이다.
+
+     */
+
+    @RequestMapping(value="/cmm/page/FileDown.do",method=RequestMethod.GET)
+
+    public void downloadMediaFile(@RequestParam("subpath") String subpath,
+
+                             HttpServletResponse response,
+
+                             HttpServletRequest request) throws Exception {
+
+
+
+        String downFileName = uploadDir + subpath;
+
+        String filename = subpath;
+
+        String downloadUrl = "";
+
+        String[] arrFilename;
+
+        arrFilename = filename.split("/");
+
+        filename = arrFilename[arrFilename.length - 1];
+
+        downloadUrl = arrFilename[1];
+
+
+
+        //파일 경로중 첫번째가 download여야 한다.
+
+        if(!downloadUrl.equals("download")){
+
+            response.sendRedirect("/error/500.do");
+
+            return;
+
+        }
+
+
+
+        //System.out.println("----------------- downloadurl " + downloadUrl + " downFileName " + downFileName);
+
+        File file = new File(EgovWebUtil.filePathBlackList(downFileName));
+
+
+
+        if (!file.exists()) {
+
+            throw new FileNotFoundException(downFileName);
+
+        }
+
+
+
+        if (!file.isFile()) {
+
+            throw new FileNotFoundException(downFileName);
+
+        }
+
+
+
+
+
+        String refilename = new String(filename.getBytes("MS949"),"8859_1");
+
+        System.out.println("refilename = " + refilename);
+
+        response.setContentType("application/octet-stream");
+
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + refilename + "\";");
+
+        response.setHeader("Content-Transfer-Encoding", "binary");
+
+        response.setHeader("Pragma", "no-cache");
+
+        response.setHeader("Expires", "0");
+
+
+
+        BufferedInputStream fin = null;
+
+        BufferedOutputStream outs = null;
+
+        byte[] b = new byte[BUFFER_SIZE];
+
+        try {
+
+            fin = new BufferedInputStream(new FileInputStream(file));
+
+            outs = new BufferedOutputStream(response.getOutputStream());
+
+
+
+            int read = 0;
+
+
+
+            while ((read = fin.read(b)) != -1) {
+
+                outs.write(b, 0, read);
+
+            }
+
+        } finally {
+
+            if (outs != null) {
+
+                try {    // 2012.11 KISA 보안조치
+
+                    outs.close();
+
+                } catch (Exception ignore) {
+
+                    // no-op
+
+                }
+
+            }
+
+
+
+            if (fin != null) {
+
+                try {    // 2012.11 KISA 보안조치
+
+                    fin.close();
+
+                } catch (Exception ignore) {
+
+                    // no-op
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+
+}

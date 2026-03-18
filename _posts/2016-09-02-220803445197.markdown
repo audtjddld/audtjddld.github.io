@@ -1,0 +1,7 @@
+---
+title: "1차 캐시 와 2차 캐시"
+date: 2016-09-02 23:18:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220803445197"
+---
+

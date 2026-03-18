@@ -1,0 +1,48 @@
+---
+title: "fatal: refusing to merge unrelated histories"
+date: 2019-04-23 17:43:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221520813833"
+---
+
+<https://stackoverflow.com/questions/37937984/git-refusing-to-merge-unrelated-histories-on-rebase>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <https://stackoverflow.com/questions/37937984/git-refusing-to-merge-unrelated-histories-on-rebase>
+                                [**Git refusing to merge unrelated histories on rebase**
+
+                                        During git rebase origin/development the following error message is shown from git:
+
+fatal: refusing to merge unrelated histories
+Error redoing merge 1234deadbeef1234deadbeef
+My git version is 2.9...
+                                        stackoverflow.com](https://stackoverflow.com/questions/37937984/git-refusing-to-merge-unrelated-histories-on-rebase)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

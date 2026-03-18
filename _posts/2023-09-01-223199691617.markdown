@@ -1,0 +1,14 @@
+---
+title: "소프트웨어 엔지니어가 알아야 할 로그에 대한 모든 것 | Apache Kafka 탄생 배경"
+date: 2023-09-01 15:44:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223199691617"
+---
+
+[**소프트웨어 엔지니어가 알아야 할 로그에 대한 모든 것 | Apache Kafka 탄생 배경**](https://news.hada.io/topic?id=10627&utm_source=slack&utm_medium=bot&utm_campaign=T02NGV77Z43)
+
+Linkedin에서 Apache Kafka를 개발한 [Jay Kreps가 2013년에 쓴 글](https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying)을 번역 및 해석한 아티클
+
+
+
+- 로그(Log) : 가장 단순하게 추상화된 저장소이며 Append-only만 가능하고, ...

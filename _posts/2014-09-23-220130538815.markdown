@@ -1,0 +1,150 @@
+---
+title: "auto resizing 관련 오토리사이징"
+date: 2014-09-23 18:44:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220130538815"
+---
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+<script language="javascript">
+
+ //<![CDATA[
+
+        function popupAutoResize() {
+
+            var thisX = $(".popWrap").width();
+
+            var thisY = $(".popWrap").height();
+
+            var maxThisX = screen.width - 50;
+
+            var maxThisY = screen.height - 50;
+
+            var marginY = 0;
+
+            //alert(thisX + "===" + thisY);
+
+            //alert("임시 브라우저 확인 : " + navigator.userAgent);
+
+            // 브라우저별 높이 조절. (표준 창 하에서 조절해 주십시오.)
+
+            if (navigator.userAgent.indexOf("MSIE 6") > 0) marginY = 45;        // IE 6.x
+
+            else if(navigator.userAgent.indexOf("MSIE 7") > 0) marginY = 75;    // IE 7.x
+
+            else if(navigator.userAgent.indexOf("Firefox") > 0) marginY = 50;   // FF
+
+            else if(navigator.userAgent.indexOf("Opera") > 0) marginY = 30;     // Opera
+
+            else if(navigator.userAgent.indexOf("Netscape") > 0) marginY = -2;  // Netscape
+
+
+
+            if (thisX > maxThisX) {
+
+                window.document.body.scroll = "yes";
+
+                thisX = maxThisX;
+
+            }
+
+            if (thisY > maxThisY - marginY) {
+
+                window.document.body.scroll = "yes";
+
+                thisX += 19;
+
+                thisY = maxThisY - marginY;
+
+            }
+
+            window.resizeTo(thisX+10, thisY+marginY);
+
+
+
+            // 센터 정렬
+
+            // var windowX = (screen.width - (thisX+10))/2;
+
+            // var windowY = (screen.height - (thisY+marginY))/2 - 20;
+
+            // window.moveTo(windowX,windowY);
+
+        }
+
+   //]]>
+
+ </script>
+
+
+
+바디 온로드에 걸어주면 된다.

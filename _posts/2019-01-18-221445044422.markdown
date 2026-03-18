@@ -1,0 +1,131 @@
+---
+title: "크롤링 2"
+date: 2019-01-18 11:52:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221445044422"
+---
+
+**응답헤더 관련**
+
+**​**
+
+2xx 또는 3xx 처럼 일반적인 상태 코드를 응답했다면 처리를 진행한다.
+
+404처럼 콘텐츠가 존재하지 않는 경우. 예외 목록에 추가하는 등의 처리가 필요하다.
+
+그리고 다음회에 크롤링 하지 않는다.
+
+5xx 등 서버 오류가 발생한 경우 처리를 중지한다.
+
+​
+
+302 redirect url에 관련한 이슈가 발생될 수 도 있다.
+
+​
+
+**크롤링 매너**
+
+HTTP header 에 User-agent 값을 크롤러라는 것을 식별 할 수 있도록 설정하라.
+
+-> 정보, 연락처
+
+​
+
+**쿠키가 없으면 크롤링 할 수 없는 웹사이트**
+
+최초 요청시 Cookie의 JSESSIONID의 값을 추출하여 다음 요청에 활용하라.
+
+​
+
+**크롤링 코드에 Proxy 서버 설정**
+
+Jsoup에 설정할 수 있고, System 속성으로도 설정이 가능하다.
+
+
+
+
+
+
+
+```
+// HTTP/HTTPS Proxy
+        System.setProperty("http.proxyHost", getHTTPHost());
+        System.setProperty("http.proxyPort", getHTTPPort());
+        System.setProperty("https.proxyHost", getHTTPHost());
+        System.setProperty("https.proxyPort", getHTTPPort());
+        if (isUseHTTPAuth()) {
+            String encoded = new String(Base64.encodeBase64((getHTTPUsername() + ":" + getHTTPPassword()).getBytes()));
+            con.setRequestProperty("Proxy-Authorization", "Basic " + encoded);
+            Authenticator.setDefault(new ProxyAuth(getHTTPUsername(), getHTTPPassword()));
+        }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+출처 :** **https://stackoverflow.com/questions/120797/how-do-i-set-the-proxy-to-be-used-by-the-jvm
+
+​
+
+**SSL 관련 이슈 발생 될 수 있다**
+
+올바르지 않은 인증서 사용시 발생 될 수 있다.
+
+Jsoup 옵션에서 해당 값을 무시하도록 설정할 수 있다.
+
+​
+
+**정규화 새니타이즈**
+
+​
+
+정규화
+
+정규화란 시각적으로 다르게 작성된 문자 (예: ① 과 1) 하나의 문자로 통힐 하는 것
+
+정규화를 제대로 해야 데이터를 쉽게 재사용할 수 있다,
+
+​
+
+새니타이즈
+
+위험한 데이터를 위험하지 않게 변환하는 작업을 의미
+
+일반적으로 정규화 이후 새니타이즈 하는 것이 정석이다.
+
+​
+
+ex) java.text.normalizer
+
+​
+
+**문자열 추정 라이브러리**
+
+**​**
+
+ICU4J
+
+juniversalchardet
+
+​
+
+문자열 추정 라이브러리등이 있지만 완전히 정확하지는 않다.
+
+​
+
+​
+
+​

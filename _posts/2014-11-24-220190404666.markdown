@@ -1,0 +1,18 @@
+---
+title: "날짜 계산"
+date: 2014-11-24 14:46:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220190404666"
+---
+
+<http://shonm.tistory.com/category/JAVASCRIPT/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%EB%82%A0%EC%A7%9C%20%EA%B3%84%EC%82%B0>
+
+출처 :
+
+
+
+<script>var input1  =  "20100518";var input2  =  "20101118";var date1  =  new Date(input1.substr(0,4),input1.substr(4,2),input1.substr(6,2));var date2  =  new Date(input2.substr(0,4),input2.substr(4,2),input2.substr(6,2));var interval =  date2 - date1;var day   =  1000*60*60*24;var month  =  day*30;var year  =  month*12;alert("기간 날짜수"+parseInt(interval/day));alert("기간 개월수"+parseInt(interval/month));
+[재생하기 바로보기가 지원되지 않는 파일입니다. 클릭하여 팝업창으로 플레이 해보세요.](http://blog.naver.com/EmbedHttpView.naver?blogId=kkforgg&logNo=220190404666&hashKey=c2f6b561a4c76a84a408f222d9a22413)
+alert("기간 년수"+parseInt(interval/year));</script>//날짜들을 이렇게 러프하게 계산이 가능하다.//http://blog.naver.com/ypaulsin?Redirect=Log&logNo=110020749103 를 참조하였음//잘 만들어진 오픈 API 를 사용하고자 한다면date.jshttp://code.google.com/p/datejs/wiki/APIDocumentation
+
+time.jshttp://ditrw.com/time-dot-js/이것들을 참고하면 된다.

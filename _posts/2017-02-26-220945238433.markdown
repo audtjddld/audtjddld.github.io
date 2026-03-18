@@ -1,0 +1,7 @@
+---
+title: "DB를 사용하면서 발생 가능한 문제점들"
+date: 2017-02-26 21:30:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220945238433"
+---
+

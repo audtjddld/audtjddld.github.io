@@ -1,0 +1,1107 @@
+---
+title: "jQuery를 이용한 xml 크로스 도메인 해결 방법."
+date: 2012-10-28 23:41:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60174424616"
+---
+
+으으..
+
+jQeury $.ajax를 이용하여 xml 파싱하는 걸 했었다. 하지만 갑자기 다른 도메인에 있는 xml을 파싱하는게 원래 위치라하여, 크로스 도메인으로 인하여 error 알람이 뜨기 시작하였다.
+
+
+
+크로스 도메인이란? --------> 출처 <http://argethero.springnote.com/pages/6336159>
+
+
+
+-------------------------------------------------------------------------------------------
+
+**Cross Domain(크로스 도메인)**
+
+자바스크립트(Javascript) 보안 정책 중에 하나인 동일 근원 정책(Same-Origin Policy) 정책에 걸리는 부분이
+
+
+
+바로 크로스 도메인을 할때 일어난다.
+
+
+
+다시 말하면 서로 다른 도메인에서 자바스크립트로 접근하려 했을 때 혹은 다른 서버에 Ajax통신의 결과를 받을 때
+
+
+
+보안상 접근을 거부한다.
+
+
+
+자바스크립트는 같은 도메인 내에서만 작동하는 것을 원칙으로 한다. 이게 동일 근원 정책(Same-Origin Policy) 정책 다시 말해 샌드박스(SandBox) 정책이다.
+
+이하 내용 생략.
+
+-------------------------------------------------------------------------------------------
+
+
+
+ cross domain을 해결 하기 위해서는 java단에서 그냥 IO로 읽어서 해결하는 방법도 있다.
+
+하지만 IO를 이용하면 현재 xml을 생성시키는 .net쪽에서는 UTF-8로 만들어지는데
+
+BOM이라는 문자가 들어가져있어서 파싱을 방해한다.
+
+아래 내용 참조.
+
+<http://blog.wystan.net/2007/08/18/bom-byte-order-mark-problem>
+
+
+
+위와 같은 방법을 해결하기 위해서는 xml 파일을 문서 편집기로 오픈 후에 (edit plus, note++) 문서 형식을 UTF-8(BOM미포함) 이걸로 해주면 된다.
+
+
+
+또는 위에서 말한 내용과 같이 IO에서 첫줄을 읽어 온뒤에
+
+<http://omnibuscode.com/xe/index.php?mid=pg_java&category=240&document_srl=412>
+
+아래와 같이하여 BOM을 제거해주면 된다.
+
+
+
+하지만 이미 jQeury로 파싱하기 위해 삽을 펏기 때문에 이걸 고집하여 하였다.
+
+
+
+나는 이 해결 방법을 **이모군 동생이** plugin을 찾아주어 해결하게 되었다..  (very 감사..)
+
+<http://www.isgoodstuff.com/2012/07/22/cross-domain-xml-using-jquery/>
+
+해당 url에 나와있는 내용을 확인하면 이해하기 쉽다.
+
+
+
+“How do you parse a cross domain xml, using jquery ajax?”
+
+
+
+Many would have answered try “jsonp”, which is a json like cross domain solution then, later you tried it and the xml returned is giving you an error of illegal token.  Why? This is because, jsonp is only meant to process and parse incoming json data. It cannot be used to parse xml especially cross domain ones (It cant process the “<” and “>” from xml) .
+
+
+
+위의 내용을 대략 내 해석 능력으로 해석해보자면...
+
+
+
+크로스 도메인 xml을 jQuery ajax를 이용하여 어떻게 파싱할까?
+
+대부분은 jsonp라고 대답할 것이다. 하지만 jsonp는 json data만 파싱하기 때문에 illeagal token error가 발생한다. ~~~
+
+
+
+따라서 첨부한 스크립트를 이용하여 해결한다.
+
+단, xml2Json은 xml을 파싱 후에 Json으로 변경하겠다는 거니까 바꿀 사람만 그걸 적용하여 하면 된다.
+
+url에 있는 소스를 보자면
+
+
+
+1**2
+function xmlLoader(){
+ $.ajax({
+       url: 'http://examples.oreilly.com/9780596002527/examples/first.xml', //<- xml 위치
+       dataType: "xml", // xml 형식
+       type: 'GET',
+     success: function(res) {
+ var myXML = res.responseText; // xml을 text형식으로 가져온 것이다. alert을 찍어보면 알수 있다.
+     // This is the part xml2Json comes in.
+ var JSONConvertedXML = $.xml2json(myXML); // xml 파싱하여 가져온 text를 json형태로 바꿔주는 것이다.
+
+     $('#myXMLList').empty();
+    for(var i = 0; i < JSONConvertedXML.book.character.length; i++){
+           $('#myXMLList').append('<li><a href="#">'
+                            +JSONConvertedXML.book.character[i].name+'</a></li>');
+    }
+      $('#myXMLList').listview('refresh');
+      $.mobile.hidePageLoadingMsg();
+     }
+   });
+ }
+
+$( document ).delegate("#home", "pageshow", function() {
+ $.mobile.showPageLoadingMsg();
+   xmlLoader();
+ });
+
+쭈욱 아래내용은 대충 이해 갈것이다.
+
+
+
+여기서 json형식으로 바꾸지 않고
+
+xml형식으로 바꾸기 위해서는
+
+<http://api.jquery.com/jQuery.parseXML/> 방법을 사용하면 된다.
+
+위해서 보자면 myXML을 $.parseXML(안에 넣으면 된다.)
+
+xmlDoc = $.parseXML( xml ), // xml형태의 text를 xml로 파싱
+    $xml = $( xmlDoc ), //xml 파싱된 내용의 시작점.
+    $title = $xml.find( "title" ); // xml 안에 노드 위치를 정해주는 곳.
+
+﻿﻿﻿
+
+﻿﻿﻿간단하게 말해서 xml에 노드 부분을 따로 정해주지 않은 위치에서 부터 시작하겠다 하면
+
+$xml 부터 시작하면 되고
+
+﻿﻿﻿$title 부분에 정해준 위치부터 하겠다하면 $title부터 하면 된다.
+
+﻿﻿﻿
+
+﻿﻿﻿$title.children().eq(i).children().eq(j).text() 이렇게 접근해도 되고
+
+﻿﻿﻿
+
+﻿﻿﻿$title.find('노드이름').text() 하면 해당 노드의 text를 가져오게 된다.
+
+﻿﻿﻿
+
+ 으 부족하지만 ﻿﻿﻿이상으로 마친다.
+
+﻿﻿﻿
+
+﻿﻿﻿
+
+﻿﻿﻿
+
+﻿﻿﻿
+
+-- 2013.01.16 --﻿﻿﻿
+
+﻿﻿﻿
+
+
+  $(document).ready(function() {
+
+            var menuNum='${user.svcMenu}';
+            var lessonNum = '${user.svcLesson}';
+            var fileNames='';
+
+            if(menuNum<10){
+                menuNum = '0'+menuNum;
+            }
+            if(lessonNum<10){
+                lessonNum = '0'+lessonNum;
+            }
+
+            fileNames = "http://cms.****.com/xml/data/***/****.xml";
+
+            /**/
+             $.ajax({
+             type :"GET",
+             url : fileNames,
+             dataType: "xml", // xml 타입
+             success : function(res) {
+
+                     var myXML = res.responseText;
+
+                 xmlDoc = $.parseXML( myXML ), $xml = $( xmlDoc ), $title = $xml.find("dialogue");
+
+                 var startXML= $xml;
+
+                 //alert(startXML.find('dialogue').find('e1').find('talk1').text())
+
+                 var idx =startXML.find("dialogue").children().length+1; // 자식 elements 갯수
+
+                 var engIdx=0; // 영어 문장 갯수
+                 var korIdx=0; // 국어 문장 갯수
+                 var lineIdx=0; // 가로줄 갯수
+                 var level = '${user.level}'; // 레벨 값. xml 분기선 때문에 필요함.
+
+             var htmlSrc = new Array();
+
+             if(level<3){
+
+                 for(var i =1; i<idx;i++){
+
+                  engIdx=startXML.find("e"+i).children().length+1;
+
+                     for(var j=1; j<engIdx; j++ ){
+                        htmlSrc.push(converted(startXML.find("e"+i).find("talk"+j).text()));
+                    }
+
+                korIdx=startXML.find("k"+i).children().length+1;
+
+                for(var h=1; h<korIdx; h++){
+
+                        htmlSrc.push(converted(startXML.find("k"+i).find("talk"+h).text()));
+                    }
+
+             if(lineIdx==0){ htmlSrc.push("<tr><td colspan='2'><hr></td></tr>"); lineIdx++;}
+
+                    $("#xmlGrid tbody").html(htmlSrc);
+                }
+             }
+
+             if(level>2){
+
+             for(var i =1; i<idx;i++){
+
+                    engIdx =startXML.find("e"+i).children().length+1;
+
+                 for(var j=1; j<engIdx; j++ ){
+                     htmlSrc.push(converted(startXML.find("e"+i).find("talk"+j).text()));
+                 }
+
+                 korIdx=startXML.find("k"+i).children().length+1;
+
+                    for(var h=1; h<korIdx; h++){
+                    htmlSrc.push(converted(startXML.find("k"+i).find("talk"+h).text()));
+                 }
+
+                    $("#xmlGrid tbody").html(htmlSrc);
+                }
+             }
+
+             }, error:function (jqXHR, textStatus, errorThrown) {
+                     alert(textStatus + ", " + errorThrown);
+                 }
+             });
+             /**/
+        });
+
+$( document ).delegate("#home", "pageshow", function() {
+ $.mobile.showPageLoadingMsg();
+   xmlLoader();
+ });
+
+
+
+--------------------------- 2013.12.10 ------------------------------------------
+
+
+
+위의 스크립트를 이용하여 공공 데이터 우편번호 연동도 만들어보았다.
+
+
+
+
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+55
+
+56
+
+57
+
+58
+
+59
+
+60
+
+61
+
+62
+
+63
+
+64
+
+65
+
+66
+
+67
+
+68
+
+69
+
+70
+
+71
+
+72
+
+73
+
+74
+
+75
+
+76
+
+77
+
+78
+
+79
+
+80
+
+81
+
+82
+
+83
+
+84
+
+85
+
+86
+
+87
+
+88
+
+89
+
+90
+
+91
+
+92
+
+93
+
+94
+
+95
+
+96
+
+97
+
+98
+
+99
+
+100
+
+101
+
+102
+
+103
+
+104
+
+105
+
+106
+
+107
+
+108
+
+109
+
+110
+
+111
+
+112
+
+113
+
+114
+
+115
+
+116
+
+117
+
+118
+
+119
+
+120
+
+121
+
+122
+
+123
+
+124
+
+125
+
+126
+
+127
+
+128
+
+129
+
+130
+
+131
+
+132
+
+133
+
+134
+
+135
+
+136
+
+137
+
+138
+
+139
+
+140
+
+141
+
+142
+
+143
+
+144
+
+145
+
+146
+
+147
+
+148
+
+149
+
+150
+
+151
+
+152
+
+153
+
+154
+
+155
+
+156
+
+157
+
+158
+
+159
+
+160
+
+161
+
+162
+
+163
+
+164
+
+165
+
+166
+
+167
+
+168
+
+169
+
+170
+
+171
+
+172
+
+173
+
+174
+
+175
+
+176
+
+177
+
+178
+
+179
+
+180
+
+181
+
+182
+
+183
+
+184
+
+185
+
+186
+
+187
+
+188
+
+189
+
+190
+
+191
+
+192
+
+193
+
+194
+
+195
+
+196
+
+197
+
+198
+
+199
+
+200
+
+201
+
+// JavaScript Code
+
+
+
+
+
+            $(function(){
+
+                if("${code}"!=""){
+
+                    selectZip("${code}");
+
+                }
+
+            });
+
+
+
+            var serviceKey ="ㅋㅣㅇㅣㅂㄹㅕㄱ";
+
+
+
+            // 도로 주소 검색
+
+            function searchDoro(){
+
+                var teee="http://openapi.epost.go.kr/postal/retrieveNewAdressService/retrieveNewAdressService/getNewAddressList?ServiceKey="
+
+                    +encodeURIComponent(serviceKey)+"&searchSe=road&srchwrd="+ encodeURIComponent($("input[name='doro']").val());
+
+
+
+                //document.write(teee);
+
+                $.ajax({
+
+                    type : "GET" //"POST", "GET"
+
+                    , url : "http://openapi.epost.go.kr/postal/retrieveNewAdressService/retrieveNewAdressService/getNewAddressList?ServiceKey="
+
+                        +encodeURIComponent(serviceKey)+"&searchSe=road&srchwrd="+ encodeURIComponent($("input[name='doro']").val())
+
+                    , dataType : "xml" //전송받을 데이터의 타입
+
+                    , contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+
+                    , error : function(request, status, error) {
+
+                        alert("code : " + request.status + "\r\nmessage : " + request.reponseText +" \r\n status : " + status);
+
+                    }
+
+                    , success : function(res) {
+
+
+
+                        var myXML = res.responseText;
+
+                        var JSONConvertedXML = $.xml2json(myXML);
+
+                        var data = JSONConvertedXML;    // 변수 간략화
+
+                        var htmlSrc = new Array();
+
+                        //alert(data.cmmMsgHeader.successYN);
+
+                        if(data.cmmMsgHeader.successYN=='N'){
+
+                            htmlSrc.push("<tr> <td colspan='2'>");
+
+                            htmlSrc.push(data.cmmMsgHeader.errMsg);
+
+                            htmlSrc.push("</td></tr> ");
+
+                        }else if(data.cmmMsgHeader.successYN=='Y'){
+
+
+
+                            var size = data.newAddressList.length;
+
+
+
+                            if(size==null) size = 1;
+
+
+
+                            if(size == 1 ){
+
+
+
+                                var target = data.newAddressList;
+
+                                htmlSrc.push("<tr class=\"fir\" onclick=\"selectDoro('"+target.zipNo+"','"+target.lnmAdres+"')\" style=\"cursor:pointer;\">");
+
+                                htmlSrc.push("<td>" + target.zipNo + "</td>");
+
+                                htmlSrc.push("<td>" + target.lnmAdres + "</td>");
+
+                                htmlSrc.push("</tr>");
+
+
+
+                            }else if(size > 1){
+
+                                for(var i =0; i < size; i++){
+
+                                    var target = data.newAddressList[i];
+
+                                    if(i==0){
+
+                                        htmlSrc.push("<tr class=\"fir\" onclick=\"selectDoro('"+target.zipNo+"','"+target.lnmAdres+"')\" style=\"cursor:pointer;\">");
+
+                                        htmlSrc.push("<td>" + target.zipNo + "</td>");
+
+                                        htmlSrc.push("<td>" + target.lnmAdres + "</td>");
+
+                                        htmlSrc.push("</tr>");
+
+                                    }else{
+
+                                        htmlSrc.push("<tr onclick=\"selectDoro('"+target.zipNo+"','"+target.lnmAdres+"')\" style=\"cursor:pointer;\">");
+
+                                        htmlSrc.push("<td>" + target.zipNo + "</td>");
+
+                                        htmlSrc.push("<td>" + target.lnmAdres + "</td>");
+
+                                        htmlSrc.push("</tr>");
+
+                                    }
+
+
+
+                                }
+
+                            }
+
+                        }
+
+                        //alert(htmlSrc.join(""));
+
+                        $("#newDoro tbody").html(htmlSrc.join(""));
+
+
+
+                    }
+
+                });
+
+                /*
+
+                var frm = document.doroForm;
+
+                if(!validate(frm))
+
+                {
+
+                    return;
+
+                }
+
+                frm.action="/common/pop/zip/doroSearch.do";
+
+                frm.submit();
+
+                */
+
+            }
+
+
+
+
+
+            // 도로 주소 선택
+
+            function selectDoro(zipCode , address){
+
+
+
+                var fName="${fName}";
+
+                var zip = zipCode.split("-");
+
+
+
+                var action ="window.opener."+fName+"('"+zip[0]+"','"+zip[1]+"','"+address+"')";
+
+                eval(action);
+
+                self.close();
+
+            }
+
+
+
+            // 지번 주소 선택
+
+            function selectOld(zipCode, address){
+
+
+
+                var fName="${fName}";
+
+                var zip = zipCode.split("-");
+
+
+
+                var action ="window.opener."+fName+"('"+zip[0]+"','"+zip[1]+"','"+address+"')";
+
+                eval(action);
+
+                self.close();
+
+            }
+
+
+
+            // 지번 검색
+
+            function searchOld(){
+
+
+
+                $.ajax({
+
+                    type : "GET" //"POST", "GET"
+
+                    , url : "http://openapi.epost.go.kr/postal/retrieveLotNumberAdressService/retrieveLotNumberAdressService/getDetailList?ServiceKey="
+
+                        +encodeURIComponent(serviceKey)+"&searchSe=dong&srchwrd="+encodeURIComponent($("input[name='address']").val())
+
+                    , dataType : "xml" //전송받을 데이터의 타입
+
+                    , contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+
+                    , error : function(request, status, error) {
+
+                        alert("code : " + request.status + "\r\nmessage : " + request.reponseText +" \r\n status : " + status);
+
+                    }
+
+                    , success : function(res) {
+
+                        var myXML = res.responseText;
+
+                        var JSONConvertedXML = $.xml2json(myXML);
+
+                        var data = JSONConvertedXML;    // 변수 간략화
+
+                        var htmlSrc = new Array();
+
+
+
+
+
+                        if(data.cmmMsgHeader.successYN=='N'){
+
+                            htmlSrc.push("<tr> <td colspan='2'>");
+
+                            htmlSrc.push(data.cmmMsgHeader.errMsg);
+
+                            htmlSrc.push("</td></tr> ");
+
+                        }else if(data.cmmMsgHeader.successYN=='Y'){
+
+                            var size = data.detailList.length;
+
+
+
+                            if(size==null) size=1;
+
+
+
+                            if(size==1){
+
+                                var target  = data.detailList;
+
+
+
+                                htmlSrc.push("<tr class=\"fir\" onclick=\"selectOld('"+target.zipNo+"','"+target.adres+"')\" style=\"cursor:pointer;\">");
+
+                                htmlSrc.push("<td>" + target.zipNo + "</td>");
+
+                                htmlSrc.push("<td>" + target.adres + "</td>");
+
+                                htmlSrc.push("</tr>");
+
+
+
+                            }else if(size > 1){
+
+
+
+                                for(var i =0; i < size; i++){
+
+                                    var target  = data.detailList[i];
+
+                                    if(i==0){
+
+                                        htmlSrc.push("<tr class=\"fir\" onclick=\"selectOld('"+target.zipNo+"','"+target.adres+"')\" style=\"cursor:pointer;\">");
+
+                                        htmlSrc.push("<td>" + target.zipNo + "</td>");
+
+                                        htmlSrc.push("<td>" + target.adres + "</td>");
+
+                                        htmlSrc.push("</tr>");
+
+                                    }else{
+
+                                        htmlSrc.push("<tr onclick=\"selectOld('"+target.zipNo+"','"+target.adres+"')\" style=\"cursor:pointer;\">");
+
+                                        htmlSrc.push("<td>" + target.zipNo + "</td>");
+
+                                        htmlSrc.push("<td>" + target.adres + "</td>");
+
+                                        htmlSrc.push("</tr>");
+
+                                    }
+
+
+
+                                }
+
+                            }
+
+
+
+                        }
+
+
+
+                        //alert(htmlSrc.join(""));
+
+
+
+                        $("#old tbody").html(htmlSrc.join(""));
+
+
+
+                    }
+
+                });
+
+                /*
+
+                var frm = document.oldForm;
+
+                if(!validate(frm))
+
+                {
+
+                    return;
+
+                }
+
+                frm.action="/common/pop/zip/oldSearch.do";
+
+                frm.submit();
+
+                */
+
+            }
+
+
+
+            function selectZip(code){
+
+
+
+                var tap = $(".popTab li");
+
+                var popTap = $(".popTabMenu");
+
+
+
+                if(code=="old"){
+
+                    $(tap).eq(0).addClass("on");
+
+                    $(tap).eq(1).removeClass("on");
+
+                    $(popTap).eq(0).show();
+
+                    $(popTap).eq(1).hide();
+
+
+
+                }else if(code=="doro"){
+
+                    $(tap).eq(0).removeClass("on");
+
+                    $(tap).eq(1).addClass("on");
+
+                    $(popTap).eq(0).hide();
+
+                    $(popTap).eq(1).show();
+
+
+
+                }
+
+            }
+
+
+
+요로케했음~
+
+
+
+개념은 팝업창 오픈시 부모창에서 실행시킬 펑션 이름도 같이 보냄.
+
+
+
+주소 검색 후 선택시 부모창 펑션으로 파라미터값 셋팅 후 클로즈 해서 사용한다.

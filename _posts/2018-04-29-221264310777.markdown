@@ -1,0 +1,325 @@
+---
+title: "spring application event"
+date: 2018-04-29 23:24:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221264310777"
+---
+
+앞서 회사에서는 spring reactor library를 이용하여 개발을 했었는데, 이미 event driven 방식이 spring 4부터 들어있었다.
+
+​
+
+아래 내용을 살펴 보자.
+
+​
+
+Application Event는 아주 초창기 스프링 프레임워크 부터 약한 결합도를 위한 정보 교환 컴포넌트로사용 가능 했었다. 가장 잘 사용방법으로 알려진 application event는 아래와 같다.
+
+​
+
+
+
+
+
+
+
+```
+@Component
+public class MyListener
+        implements ApplicationListener {
+
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        ...
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+MyListener같이 콘텍스트의 갱신이 있을 때 그리고 임의의코드로 실행하도록 할 수 있을 때 application context가 정상적으로 구동될 때 알려지게 되어진다.
+
+​
+
+spring framework 4.2 안에서 우리는 재방문 되어지는 이벤트 인프라스트럭처를 가질 수 있다. 세개의 메인 영역에 대해서 알려주겠다.
+
+​
+
+Generics support
+
+​
+
+당신의 ApplicationListner에 generics 정보와 함께 이벤트 타입으로 구현할 수 있습니다. 아래와 같이
+
+
+
+
+
+
+
+```
+public class MyListener
+        implements ApplicationListener> { ... }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+event가 배정될 때 당신의 listener의 서명은 결정되는데 유용하다 .
+
+​
+
+유형 삭제로 인해 필터링 할 generics 매개 변수를 해결하는 이벤트를 게시해야합니다.
+
+MyOrderEvent extends MyEvent<Order>. 이것은 아마도 다른 해결책이 있을 수 있고, 우리는 재방문을 시그니처 매칭 알고리즘으로 인하여 행복할 것입니다.
+
+​
+
+Annotation-driven event listener
+
+​
+
+가장 큰 새로운 형태 애노테이션 드리븐 이벤트 리스너의 지원이다.
+
+spring 4.1 에서 최근 JMS 와 AMQP endpoints들과 유사하게 동작한다.
+
+​
+
+지금 단순하게 @EventLinster라는 애노테이션이 설정이 되어 자동적으로 ApplicationLinstner로 등록 되어져 method의 서명이 매칭된다. 아래와 같은 형태로 작성된다.
+
+
+
+
+
+
+
+```
+@Component
+public class MyListener {
+
+    @EventListener
+    public void handleContextRefresh(ContextRefreshedEvent event) {
+        ...
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@EventListener는 @Autowired 및 다른 것과 비슷한 방식으로 투명하게 처리되는 핵심 주석입니다. Java 구성에서 추가 구성이 필요하지 않으며 기존 <context : annotation-driven /> 요소가이를 완벽하게 지원합니다.
+
+​
+
+이벤트 게시
+
+​
+
+void주석이 달린 모든 메소드에 대해 리턴되지 않는 유형을 정의 할 수 있습니다 @EventListener.
+
+ null 특정 이벤트를 처리 한 결과로 가치 가 아닌 값 을 반환하면 해당 결과가 새 이벤트로 전송됩니다.
+
+당신은 우리 OrderCreatedEvent가 연장되지 않는다는 것을 알아 차렸을 것입니다.
+
+ ApplicationEvent. 우리는 당신에게 임의의 사건을 게시 할 수있는 유연성을 부여하고 당신이 연장하도록 강요하지 않을 것이라고 생각했습니다 ApplicationEvent. ApplicationEventPublisher인터페이스는 당신이 어떤 물체를 게시 할 수 있도록 확장되었다; 그 물건이 아니라면 ApplicationEvent, 우리 PayloadApplicationEvent는 너를 위해 포장한다 . 규칙적인 ApplicationListener구현을 사용하여 그러한 임의의 이벤트를 듣고 싶다면 이것을 기억하십시오 .
+
+다음 샘플에서는 ApplicationEventPublisher보내는 데 사용할 수있는 방법을 보여줍니다 OrderCreatedEvent.
+
+​
+
+트랜잭션 바운드 이벤트
+
+​
+
+이벤트 리스너를 트랜잭션 단계에서 바인딩 할 수 있다. 일반적으로는 트랜잭션이 성공적으로 완료되었을 때 이벤트를 처리하는 것이다. 이렇게 하면 현재 트랜잭션의 결과가 리스너에게 실제로 중요한 경우 이벤트를 보다 유연하게 사용할 수 있다.
+
+​
+
+Spring framework는 현재 컨텍스트가 트랜잭션 지원을 인식하지 못하도록 하는 방식으로 구조화 되어 있다. 따라서 추가 구성요소를 등록하고 영향을 줄 수 있는 개방형 인프라를 구축하여 이벤트 리스너가 만들어진다.
+
+​
+
+트랜잭션 모듈 EventListenerFactory는 새로운 @TransactionalEventListener 주석을 찾는 메소드를 구현한다. 이 매개 변수가 있으면 트랜잭션을 인식하는 확장 이벤트 수신기가 기본 값 대신에 등록 된다.
+
+​
+
+아래 예제를 다시 사용하고 성공적으로 완료 될 때만 주문 생성 처리가 되도록 같이 만들어 본다
+
+​
+
+
+
+
+
+
+
+```
+@Component
+public class MyComponent {
+
+  @TransactionalEventListener(condition = "#creationEvent.awesome")
+  public void handleOrderCreatedEvent(CreationEvent creationEvent) {
+    ...
+  }
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+기본적으로 트랜잭션이 실횡되고 있지 않으면 요청한 단계를 분명히 지킬 수 없으므로 이벤트가 전혀 전송되지 않지만 트랜잭션이 없으면 spring이 리스너를 즉시 호출하도록 하는 fallbackExecution속성 @TransactionalEventListener 가 있다.
+
+​
+
+​
+
+Event Multicaster 설정
+
+
+
+
+
+
+
+```
+@Configuration
+public class EventConfig {
+
+    @Bean
+    ApplicationEventMulticaster applicationEventMulticaster() {
+        SimpleApplicationEventMulticaster eventMulticaster = new SimpleApplicationEventMulticaster();
+        eventMulticaster.setTaskExecutor(new SimpleAsyncTaskExecutor());
+        eventMulticaster.setErrorHandler(TaskUtils.LOG_AND_SUPPRESS_ERROR_HANDLER);
+        return eventMulticaster;
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2019.07.17
+
+<https://github.com/devsejong/live-stream/blob/master/src/main/java/net/chandol/study/livestream/common/event/ApplicationEventPublisherProvider.java>
+> [**devsejong/live-stream**](https://github.com/devsejong/live-stream/blob/master/src/main/java/net/chandol/study/livestream/common/event/ApplicationEventPublisherProvider.java)
+>
+> Contribute to devsejong/live-stream development by creating an account on GitHub.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+하나 배워간다 -_-; 스테틱으로 빼버릴까 말까 고민을 좀 했었는데, 이미 사용하고 계심.. 존경

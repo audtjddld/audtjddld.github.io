@@ -1,0 +1,14 @@
+---
+title: "팝업창 안겹치게 뜨게 하기"
+date: 2013-03-26 17:01:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60188262036"
+---
+
+if ( getCookie('${popup.cookieVal}') != "off" ) {
+    var xValue=${idx.count-1}*${popup.width};
+    window.open("${popup.fileName}","${popup.cookieVal}", "width=${popup.width},height=${popup.height},toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,top=0,left="+xValue);
+}
+
+
+x좌표만 설정해주면 된다는 점~

@@ -1,0 +1,7 @@
+---
+title: "JPA Entity type, value type 의 특징"
+date: 2016-08-25 10:33:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220796191677"
+---
+

@@ -1,0 +1,426 @@
+---
+title: "롤링~"
+date: 2014-12-11 15:50:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220207062251"
+---
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+55
+
+56
+
+57
+
+58
+
+59
+
+60
+
+61
+
+62
+
+63
+
+64
+
+65
+
+66
+
+67
+
+68
+
+69
+
+70
+
+71
+
+72
+
+73
+
+74
+
+75
+
+76
+
+77
+
+78
+
+79
+
+80
+
+81
+
+82
+
+83
+
+84
+
+85
+
+86
+
+87
+
+88
+
+89
+
+90
+
+91
+
+92
+
+93
+
+94
+
+95
+
+96
+
+97
+
+98
+
+99
+
+100
+
+101
+
+102
+
+103
+
+104
+
+105
+
+        <script type="text/javascript">
+
+                var visualInterval;                    //비주얼 인터벌
+
+                var visualNum = 0;                //비주얼 넘버
+
+                var visualMax;                        //비주얼 최대개수
+
+                var visualDuration = 5000;    //비주얼 간격
+
+
+
+                var mainRollInterval;                        //롤링배너 인터벌
+
+                var mainRollNum = 0;                    //롤링배너 넘버
+
+                var mainRollMax;                            //롤링배너 최대개수
+
+                var mainRollDuration = 3000;        //롤링배너 간격
+
+                $(function(){
+
+                    //메인 비주얼
+
+
+
+                    visualMax = $(".visualCon").children("div").size()-1;        // 총 갯수
+
+
+
+                    if(visualMax != 0) visualInterval = setInterval("visualMove()", visualDuration);    // 갯수가 0이 아니면 비쥬얼 무브 펑션 ㄱㄱ
+
+
+
+                    jQuery(".visualCon>a.bt").each(function(q){
+
+                        jQuery(this).click(function(){
+
+                            if(visualNum != q) {
+
+                                jQuery(".imgDiv").eq(visualNum).stop().animate({left:"-100%"}, 250, "easeOutCubic");
+
+                                jQuery(".visualCon>a.bt").eq(visualNum).removeClass("on");
+
+
+
+                                var imgSrc = jQuery(".visualCon>a.bt").find("img").eq(visualNum).attr("src");
+
+                                if(imgSrc.indexOf("_on") > 0){
+
+                                    jQuery(".visualCon>a.bt").eq(visualNum).find("img").attr("src", imgSrc.replace("_on",""));
+
+                                }
+
+
+
+                                visualNum = q;
+
+                                jQuery(".imgDiv").eq(visualNum).stop().animate({left:"100%"}, 0, "easeOutCubic");
+
+                                jQuery(".imgDiv").eq(visualNum).stop().animate({left:"0%"}, 250, "easeOutCubic");
+
+                                jQuery(".visualCon>a.bt").eq(visualNum).addClass("on");
+
+
+
+                                imgSrc = jQuery(".visualCon>a.bt").find("img").eq(visualNum).attr("src");
+
+
+
+                                if(imgSrc.indexOf("_on") < 0){
+
+                                    jQuery(".visualCon>a.bt").eq(visualNum).find("img").attr("src", imgSrc.replace(".","_on."));
+
+                                }
+
+                            }
+
+                        }).hover(function(){
+
+                            if(visualMax != 0) clearInterval(visualInterval);
+
+                        }, function(){
+
+                            if(visualMax != 0) {
+
+                                if(!isVstop) {
+
+                                    clearInterval(visualInterval);
+
+                                    visualInterval = setInterval("visualMove()", visualDuration);
+
+                                }
+
+                            }
+
+                        })
+
+                    })
+
+
+
+                    // 시작 정지
+
+                    var isVstop = false;
+
+                    jQuery(".visualCon>a.play").click(function(e){
+
+                        if(!isVstop) {
+
+                            isVstop = true;
+
+                            clearInterval(visualInterval);
+
+
+
+                            var imgSrc = jQuery(".visualCon>a.play").find("img").attr("src");
+
+                            if(imgSrc.indexOf("_on")<0){
+
+                                jQuery(".visualCon>a.play").find("img").attr("src",imgSrc.replace(".","_on."));
+
+                            }
+
+                        } else {
+
+                            isVstop = false;
+
+
+
+                            clearInterval(visualInterval);
+
+                            visualInterval = setInterval("visualMove()", visualDuration);
+
+
+
+                            var imgSrc = jQuery(".visualCon>a.play").find("img").attr("src");
+
+                            if(imgSrc.indexOf("_on")>0){
+
+                                jQuery(".visualCon>a.play").find("img").attr("src",imgSrc.replace("_on",""));
+
+                            }
+
+                        }
+
+                    });
+
+                })
+
+
+
+
+
+                // 비주얼 이미지 이동
+
+                function visualMove()
+
+                {
+
+                    jQuery(".imgDiv").eq(visualNum).stop().animate({left:"-100%"}, 250, "easeOutCubic");
+
+                    jQuery(".visualCon>a.bt").eq(visualNum).removeClass("on");
+
+                    var imgSrc = jQuery(".visualCon>a.bt").find("img").eq(visualNum).attr("src");
+
+                    if(imgSrc.indexOf("_on") > 0){
+
+                        jQuery(".visualCon>a.bt").eq(visualNum).find("img").attr("src", imgSrc.replace("_on",""));
+
+                    }
+
+                    visualNum++;    // 다음번 img로 index 증가
+
+
+
+                    if(visualNum > visualMax) visualNum = 0;
+
+
+
+                    jQuery(".imgDiv").eq(visualNum).stop().animate({left:"100%"}, 0, "easeOutCubic");
+
+                    jQuery(".imgDiv").eq(visualNum).stop().animate({left:"0%"}, 250, "easeOutCubic");
+
+                    jQuery(".visualCon>a.bt").eq(visualNum).addClass("on");
+
+
+
+                    imgSrc = jQuery(".visualCon>a.bt").find("img").eq(visualNum).attr("src");
+
+
+
+                    if(imgSrc.indexOf("_on") < 0){
+
+                        jQuery(".visualCon>a.bt").eq(visualNum).find("img").attr("src", imgSrc.replace(".","_on."));
+
+                    }
+
+                }
+
+
+
+
+
+
+
+
+
+        </script>

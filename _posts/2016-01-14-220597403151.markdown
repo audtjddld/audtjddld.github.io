@@ -1,0 +1,41 @@
+---
+title: "심심한 프로그래스"
+date: 2016-01-14 15:50:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220597403151"
+---
+
+부트스트랩 이용
+
+bootbox 이용
+
+```
+
+  Bootstrap Example
+
+
+
+
+
+
+
+
+
+
+
+      70% Complete
+
+
+
+
+    로딩
+
+
+        var percent = 0;
+        var progress;
+
+        function setProgressBar() {
+           var $pro = $(".progress-bar:visible");
+           if(percent
+
+```

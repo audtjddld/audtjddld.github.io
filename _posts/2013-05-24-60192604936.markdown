@@ -1,0 +1,178 @@
+---
+title: "메뉴 관리 관련되서 Multi Select 박스를 이용한거 한번 만들어봤음."
+date: 2013-05-24 17:00:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60192604936"
+---
+
+<html>
+<head>
+<script type="text/javascript">
+
+ function Up(obj){
+  var list = document.getElementById(obj);
+  var index = list.selectedIndex;
+  var saveText, saveValue;
+
+  if(index<0){
+   alert("메뉴를 선택하세요");
+  }else if(index==0){
+   alert("더이상 위로 이동이 불가합니다");
+  }else{
+   saveText  = list[index].text;
+   saveValue = list[index].value;
+
+   list[index]=null;
+
+   var item = new Option(saveText, saveValue);
+
+   list.options.add(item,index - 1);
+   list.selectedIndex=index - 1;
+  }
+ }
+
+ function Down(obj){
+  var list = document.getElementById(obj);
+  var index = list.selectedIndex;
+  var maxLength = list.length;
+  var saveText, saveValue;
+
+  if(index<0){
+   alert("메뉴를 선택하세요");
+  }else if(index==maxLength-1){
+   alert("더이상 내릴 수 없습니다.");
+  }else{
+   saveText  = list[index].text;
+   saveValue = list[index].value;
+
+   list[index]=null;
+
+   var item = new Option(saveText, saveValue);
+
+   list.options.add(item,index + 1);
+   list.selectedIndex=index + 1;
+  }
+ }
+</script>
+</head>
+<body>
+
+ <div id="상단(대메뉴)">
+  <table border="0">
+   <thead>
+    <th>
+     1 depth
+    </th>
+   </thead>
+   <tbody>
+    <tr>
+     <td>
+       <select name="cars" id="cars" multiple="true" style="width:150px;height:200px">
+         <option value="volvo">Volvo</option>
+         <option value="saab" >Saab</option>
+         <option value="opel" >Opel</option>
+         <option value="audi" >Audi</option>
+       </select>
+     </td>
+    </tr>
+    <tr>
+     <td align="center">
+       <input type="button" value="위로" onclick="Up('cars')">
+       <input type="button" value="아래로" onclick="Down('cars')">
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+  <div id="1depth">
+  <table border="0">
+   <thead>
+    <th>
+     1 depth
+    </th>
+   </thead>
+   <tbody>
+    <tr>
+     <td>
+       <select name="cars" id="cars" multiple="true" style="width:150px;height:200px">
+         <option value="volvo">Volvo</option>
+         <option value="saab" >Saab</option>
+         <option value="opel" >Opel</option>
+         <option value="audi" >Audi</option>
+       </select>
+     </td>
+    </tr>
+    <tr>
+     <td align="center">
+       <input type="button" value="위로" onclick="Up('cars')">
+       <input type="button" value="아래로" onclick="Down('cars')">
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+  <div id="2depth">
+  <table border="0">
+   <thead>
+    <th>
+     1 depth
+    </th>
+   </thead>
+   <tbody>
+    <tr>
+     <td>
+       <select name="cars" id="cars" multiple="true" style="width:150px;height:200px">
+         <option value="volvo">Volvo</option>
+         <option value="saab" >Saab</option>
+         <option value="opel" >Opel</option>
+         <option value="audi" >Audi</option>
+       </select>
+     </td>
+    </tr>
+    <tr>
+     <td align="center">
+       <input type="button" value="위로" onclick="Up('cars')">
+       <input type="button" value="아래로" onclick="Down('cars')">
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+  <div id="3depth">
+  <table border="0">
+   <thead>
+    <th>
+     1 depth
+    </th>
+   </thead>
+   <tbody>
+    <tr>
+     <td>
+       <select name="cars" id="cars" multiple="true" style="width:150px;height:200px">
+         <option value="volvo">Volvo</option>
+         <option value="saab" >Saab</option>
+         <option value="opel" >Opel</option>
+         <option value="audi" >Audi</option>
+       </select>
+     </td>
+    </tr>
+    <tr>
+     <td align="center">
+       <input type="button" value="위로" onclick="Up('cars')">
+       <input type="button" value="아래로" onclick="Down('cars')">
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+
+
+ <div id="inputDataField">
+  <table>
+   <tr>
+   </tr>
+  </table>
+ </div>
+
+</body>
+</html>

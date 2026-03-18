@@ -1,0 +1,28 @@
+---
+title: "[펌] JQuery .attr() 와 .prop() 의 차이에 대한 소소한 팁"
+date: 2014-01-05 11:31:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60206666635"
+---
+
+출처 : <http://www.okjsp.net/seq/230491>
+
+
+
+예전에 ㅡㅡ; radio, check 박스 체크 하는 로직을 자바스크립트로 짯을때
+
+$(obj).attr("checked",true); 한 뒤에 체크 된 객체를 찾는 로직을 했더니
+
+체크가 되었지만 표시가 되지 않아서 애를 먹은 적이 있었다.
+
+
+
+그때 자바스크립트로해서 다행이 해결하였지만
+
+
+
+prop로 $(obj).prop("checked",true); 하면 된다는 내용이다.
+
+
+
+나중에 다시 해볼일 있으면 해봐야지~

@@ -1,0 +1,32 @@
+---
+title: "Architecture Modernization Enabling Teams (AMET)"
+date: 2023-06-28 12:03:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223140971275"
+---
+
+[Architecture Modernization Enabling Teams (AMET)](https://medium.com/nick-tune-tech-strategy-blog/architecture-modernization-enabling-teams-amet-23a7f867b284)
+
+아키텍처 최신화 활성화 팀 이라는 것이 있었다.
+
+낡은 아키텍처를 최신화 할 수 있도록 서포팅 해주는 팀으로 역할을 하는 것 같았다.
+
+Enabling Team이 무엇인가 봤더니 Team Topologies 라는 곳에서 어느정도 구조화가 되어 있는 모습으로 보인다.
+
+-
+Stream-aligned team
+
+-
+Enabling team
+
+-
+Complicated Subsystem team
+
+-
+Platform team
+
+BAU(Business as usual) 란 단어가 자주 등장하는데, 대충 찾아보니 일상적인 업무 인거 같다.
+
+​
+
+[Enabling team](https://www.linkedin.com/pulse/what-enabling-teams-marcel-koert/) 용어 정리된 곳

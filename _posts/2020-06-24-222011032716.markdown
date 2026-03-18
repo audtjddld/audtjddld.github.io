@@ -1,0 +1,36 @@
+---
+title: "YAGNI"
+date: 2020-06-24 18:04:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222011032716"
+---
+
+**YAGNI**[[1]](https://ko.wikipedia.org/wiki/YAGNI#cite_note-OOC-1)(You aren't gonna need it[[2]](https://ko.wikipedia.org/wiki/YAGNI#cite_note-XPi-2)[[3]](https://ko.wikipedia.org/wiki/YAGNI#cite_note-XPe-3))는 [프로그래머](https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8)가 필요하다고 간주할 때까지 기능을 추가하지 않는 것이 좋다는 [익스트림 프로그래밍](https://ko.wikipedia.org/wiki/%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%A6%BC_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D)(XP)의 원칙이다.[[4]](https://ko.wikipedia.org/wiki/YAGNI#cite_note-XPA-4) 익스트림 프로그래밍의 공동 설립자 [론 제프리스](https://ko.wikipedia.org/w/index.php?title=%EB%A1%A0_%EC%A0%9C%ED%94%84%EB%A6%AC%EC%8A%A4&action=edit&redlink=1)는 다음과 같이 썼다: "실제로 필요할 때 무조건 구현하되, 그저 필요할 것이라고 예상할 때에는 절대 구현하지 말라."[[5]](https://ko.wikipedia.org/wiki/YAGNI#cite_note-RJef-5) "You aren't going to need it"[[6]](https://ko.wikipedia.org/wiki/YAGNI#cite_note-Ref-6)[[7]](https://ko.wikipedia.org/wiki/YAGNI#cite_note-LSD-7)와 "You ain't gonna need it"의 준말로도 인용된다.[[8]](https://ko.wikipedia.org/wiki/YAGNI#cite_note-DPiR-8)
+
+​
+
+​
+
+출처 : <https://ko.wikipedia.org/wiki/YAGNI>
+> [**YAGNI - 위키백과, 우리 모두의 백과사전**](https://ko.wikipedia.org/wiki/YAGNI)
+>
+> 2020 위키뉴스 기고 프로젝트 의 우수 기사 투표가 6월 29일까지 진행됩니다. YAGNI YAGNI [1] (You aren't gonna need it [2] [3] )는 프로그래머 가 필요하다고 간주할 때까지 기능을 추가하지 않는 것이 좋다는 익스트림 프로그래밍 (XP)의 원칙이다. [4] 익스트림 프로그래밍의 공동 설립자 론 제프리스 는 다음과 같이 썼다: "실제로 필요할 때 무조건 구현하되, 그저 필요할 것이라고 예상할 때에는 절대 구현하지 말라." [5] "You aren't going to need it" [6] [7...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

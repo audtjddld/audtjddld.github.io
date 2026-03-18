@@ -1,0 +1,59 @@
+---
+title: "ubuntu sudo user add"
+date: 2014-08-09 15:43:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/220086701903"
+---
+
+url : <http://sarghis.com/blog/856/>
+
+
+
+
+
+이 글은 우분투 12.04 LTS, 12.10 기준으로 작성하였다.
+
+
+
+우분투는 기본적으로 root 계정을 사용하지 못하게 하고, root 계정이 필요한 경우 “sudo” 명령을 통해서 root가 아닌 계정에서 명령을 실행할 수 있도록 되어있다.
+
+그런데 아무 계정에서나 sudo 명령을 실행할 수 있는 것은 아니다. 기본적으로는 “admin” 이라는 group에 계정이 속해있어야 가능하다.
+
+이 글에서는 “admin”이 아닌 다른 그룹에 계정을 생성했을 때, sudo 명령어를 사용할 수 있도록 설정하는 법을 적었다.
+
+
+
+### 1. 설정 파일 접근
+
+1
+
+`$ ``sudo` `visudo`
+
+[다음과 같은 명령어를 통해서도 동일한 설정파일에 접근 가능하다.](http://sarghis.com/blog/856/#1)
+
+$ sudo vi /etc/sudoers
+
+
+
+### 2. 관리자 계정으로 로그인
+
+“admin” 그룹 아래에 sudo 권한을 부여하고자 하는 그룹을 추가한다.
+
+예시 화면에서는 “newgroup” 에 sudo 권한을 부여하는 문장을 적었다.
+
+1
+
+`%그룹이름 ALL=(ALL) ALL`
+
+![](http://sarghis.com/blog/wp-content/uploads/2013/01/11.png)
+
+
+
+### 3. 파일 저장
+
+Ctrl+X 를 누른후 Y를 눌러 저장한다.
+
+이 때 파일명을 “sudoers.tmp”가 아닌 “sudoers”로 저장해야한다.
+
+![](http://sarghis.com/blog/wp-content/uploads/2013/01/21.png)

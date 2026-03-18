@@ -1,0 +1,58 @@
+---
+title: "oracle 중복제거 다중 컬럼 중복제거 관련된 값은 이걸로"
+date: 2014-03-10 09:18:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60210741324"
+---
+
+출처 : <http://blog.daum.net/lkflower/15559413>
+
+
+
+DISTINCT 사용 - 간단히 SELECT 절에 추가만 하면된다.
+
+
+
+SELECT DISTINCT *
+
+  FROM EMP
+
+;
+
+
+
+BUT, CLOB데이타가 있어서 중복제거가 안된단다.;;;
+
+
+
+그래서
+
+
+
+ROWID 사용 - SUB QUERY 사용으로 중복을 제거한다.
+
+
+
+SELECT *
+
+  FROM EMP
+
+ WHERE ROWID IN (SELECT MAX(ROWID)
+
+                               FROM EMP
+
+                             GROUP BY ID)
+
+;
+
+
+
+ID는 중복제거하고자 하는 필드..
+
+
+
+
+
+추가 ..
+
+다중컬럼 중복제거는 이걸로하니 잘된다~ 참고~

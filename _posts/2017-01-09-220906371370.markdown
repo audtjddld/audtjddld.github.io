@@ -1,0 +1,7 @@
+---
+title: "Mybatis Dao 구현체 없이 interface로 셋팅"
+date: 2017-01-09 11:57:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220906371370"
+---
+

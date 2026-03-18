@@ -1,0 +1,50 @@
+---
+title: "addToSet"
+date: 2014-05-18 16:00:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220003208156"
+---
+
+db.test.find()
+
+ { "_id" : ObjectId("51dfb4f18591f90cbb889429"), "A" : 1, "B" : 2 }**{ "_id" : ObjectId("51dfb4f58591f90cbb88942a"), "A" : 3, "B" : 2 }
+{ "_id" : ObjectId("51dfb4f68591f90cbb88942b"), "A" : 3, "B" : 4 }
+{ "_id" : ObjectId("51dfb4f88591f90cbb88942c"), "A" : 5, "B" : 4 }
+{ "_id" : ObjectId("51dfb4fa8591f90cbb88942d"), "A" : 7, "B" : 4 }
+ db.test.aggregate({"$group":{"_id":"$A","cnt":{"$sum":1},"B":{"$addToSet":"$B"}}})
+{
+        "result" : [
+                {
+                        "_id" : 7,
+                        "cnt" : 1,
+                        "B" : [
+                                4
+                        ]
+                },
+                {
+                        "_id" : 5,
+                        "cnt" : 1,
+                        "B" : [
+                                4
+                        ]
+                },
+                {
+                        "_id" : 3,
+                        "cnt" : 2,
+                        "B" : [
+                                4,
+                                2
+                        ]
+                },
+                {
+                        "_id" : 1,
+                        "cnt" : 1,
+                        "B" : [
+                                2
+                        ]
+                }
+        ],
+        "ok" : 1
+}
+
+[출처]** [addToSet](http://blog.naver.com/atoz333/120194215898)|**작성자** [June](http://blog.naver.com/atoz333)

@@ -1,0 +1,131 @@
+---
+title: "템플릿 메소드 패턴"
+date: 2016-02-12 13:22:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220624703984"
+---
+
+템플릿 메소드 패턴
+
+템플릿
+
+템플릿(template)은 어떤 목적을 위해 미리 만들어둔 모양이 있는 틀을 가리킨다. 프로그래밍에서는 고정된 틀 안에 바꿀 수 있는 부분을 넣어서 사용하는 경우에 템플릿이라고 부른다. JSP는 HTML이라는 고정된 부분에 EL과 스크립트릿이라는 변하는 부분을 넣은 일종의 템플릿 파일이다. 템플릿 메소드 패턴은 고정된 틀의 로직을 가진 템플릿 메소드를 슈퍼클래스에 두고, 바뀌는 부분을 서브클래스에 두는 구조로 이루어진다.
+
+ **
+
+콜백
+
+콜백(callback)은 실행되는 것을 목적으로 다른 오브젝트의 메서드에 전달되는 오브젝트를 말한다. 파라미터로 전달되지만 값을 참조하기 위한 것이 아니라 특정 로직을 담은 메소드를 실행시키기 위해 사용한다. 자바에서는 메소드 자체를 파라미터로 전달할 방법은 없기 때문에 메소드가 담긴 오브젝트를 전달해야 한다. 그래서 펑셔널 오브젝트(functional object)라고도 한다.
+
+ **
+
+![](https://lh3.googleusercontent.com/kpGg3LhSQ9LAuwid6831mJWti05sMI32YEC0j-LmndRCvd2-zzzfxtaiDovFOw6OSq9X4utSMDSPWGZ1_3csDJeHdjfkxqUniPaUAdMYa_4gLyHfWqhqWZSNCbcrhxO8amU3XhCu)
+
+참고 :**
+
+**토비의 스프링**
+
+--------------------------- 2016. 11 . 14 ------------------------------
+
+템플릿 메서드 패턴의 callback method의 예 callee2 class를 보면 된다.
+
+```
+interface Incrementable {
+    void increment();
+}
+
+class Callee1 implements Incrementable {
+    private int i = 0;
+
+    @Override
+    public void increment() {
+        // TODO Auto-generated method stub
+        i++;
+        System.out.println(i);
+    }
+}
+
+class MyIncrement {
+    public void increment() {
+        System.out.println("Other operation");
+    }
+
+    static void f(MyIncrement mi) {
+        mi.increment();
+    }
+}
+
+class Callee2 extends MyIncrement {
+    private int i = 0;
+
+    public void increment() {
+        super.increment();
+        i++;
+        System.out.println(i);
+    }
+
+    private class Closure implements Incrementable {
+
+        @Override
+        public void increment() {
+            // TODO Auto-generated method stub
+            Callee2.this.increment();
+        }
+    }
+
+    Incrementable getCallbackRefernce() {
+        return new Closure();
+    }
+}
+
+class Caller {
+    private Incrementable callbackReference;
+
+    Caller(Incrementable cbh) {
+        callbackReference = cbh;
+    }
+
+    void go() {
+        callbackReference.increment();
+    }
+}
+
+public class Callbacks {
+    public static void main(String[] args) {
+        Callee1 c1 = new Callee1();
+        Callee2 c2 = new Callee2();
+        MyIncrement.f(c2);
+
+        Caller caller1 = new Caller(c1);
+        Caller caller2 = new Caller(c2.getCallbackRefernce());
+        caller1.go();
+        caller1.go();
+
+        caller2.go();
+        caller2.go();
+    }
+}
+```
+
+```
+
+```
+
+```
+/* 출력 결과
+```
+
+```
+Other operation
+1
+1
+2
+Other operation
+2
+Other operation
+3
+```
+
+```
+*/
+```

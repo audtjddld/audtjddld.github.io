@@ -1,0 +1,15 @@
+---
+title: "ERMaster ER-Diagram"
+date: 2016-03-17 10:44:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220657265540"
+---
+
+이클립스 plugin 으로 class diagram을 찾던 중 ERMaster를 찾게 되었는데.
+
+한글화도 되어있고 좋은 것 같다.
+
+출처 : <http://clien.net/cs2/bbs/board.php?bo_table=useful&wr_id=243251>
+
+[클리앙 > 유용한사이트 > Open Source ERD도구인 ERMaster 한글(Eclipse Plug...농협정보시스템에서 Open Source ERD도구인 ERMaster를 한글화 및 국산DBMS(Tibero, CUBRID) 지원 기능 추가하여 Github를 통...clien.net](http://clien.net/cs2/bbs/board.php?bo_table=useful&wr_id=243251)
+

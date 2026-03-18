@@ -1,0 +1,285 @@
+---
+title: "QueryDSL Web Support"
+date: 2021-02-22 17:08:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222252504726"
+---
+
+For those stores that have [QueryDSL](http://www.querydsl.com/) integration, you can derive queries from the attributes contained in a Request query string.
+
+Consider the following query string:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+?firstname=Dave&lastname=Matthews
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Given the User object from the previous examples, you can resolve a query string to the following value by using the QuerydslPredicateArgumentResolver, as follows:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+QUser.user.firstname.eq("Dave").and(QUser.user.lastname.eq("Matthews"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The feature is automatically enabled, along with @EnableSpringDataWebSupport, when Querydsl is found on the classpath.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Adding a @QuerydslPredicate to the method signature provides a ready-to-use Predicate, which you can run by using the QuerydslPredicateExecutor.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Type information is typically resolved from the method’s return type. Since that information does not necessarily match the domain type, it might be a good idea to use the root attribute of QuerydslPredicate.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The following example shows how to use @QuerydslPredicate in a method signature:
+
+​
+
+
+
+
+
+
+
+
+
+```
+@Controller
+class UserController {
+
+  @Autowired UserRepository repository;
+
+  @RequestMapping(value = "/", method = RequestMethod.GET)
+  String index(Model model, @QuerydslPredicate(root = User.class) Predicate predicate,
+          Pageable pageable, @RequestParam MultiValueMap parameters) {
+
+    model.addAttribute("users", repository.findAll(predicate, pageable));
+
+    return "index";
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+The default binding is as follows:
+
+Object on simple properties as eq.
+
+Object on collection like properties as contains.
+
+Collection on simple properties as in.
+
+​
+
+You can customize those bindings through the bindings attribute of @QuerydslPredicate or by making use of Java 8 default methods and adding the QuerydslBinderCustomizer method to the repository interface, as follows:
+
+​
+
+
+
+
+
+
+
+
+
+```
+interface UserRepository extends CrudRepository,
+                                 QuerydslPredicateExecutor,
+                                 QuerydslBinderCustomizer {
+
+  @Override
+  default void customize(QuerydslBindings bindings, QUser user) {
+
+    bindings.bind(user.username).first((path, value) -> path.contains(value))
+    bindings.bind(String.class)
+      .first((StringPath path, String value) -> path.containsIgnoreCase(value));
+    bindings.excluding(user.password);
+  }
+}
+
+QuerydslPredicateExecutor provides access to specific finder methods for Predicate.
+QuerydslBinderCustomizer defined on the repository interface is automatically picked up and shortcuts @QuerydslPredicate(bindings=…​).
+Define the binding for the username property to be a simple contains binding.
+Define the default binding for String properties to be a case-insensitive contains match.
+Exclude the password property from Predicate resolution.
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

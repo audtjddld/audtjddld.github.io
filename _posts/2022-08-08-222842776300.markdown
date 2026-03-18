@@ -1,0 +1,30 @@
+---
+title: "gradle jib"
+date: 2022-08-08 12:52:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222842776300"
+---
+
+<https://alden-kang.tistory.com/1>
+> [**jib를 이용한 자바 앱 컨테이너화**](https://alden-kang.tistory.com/1)
+>
+> 오늘은 구글 클라우드 도구 중 하나인 jib를 이용한 자바 애플리케이션 컨테이너화 과정에 대해 살펴보려고 합니다. jib가 무엇인지 궁금하신 분들을 위해 간단한 설명과 예제 애플리케이션을 만드는 과정을 통..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

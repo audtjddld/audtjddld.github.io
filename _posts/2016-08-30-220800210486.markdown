@@ -1,0 +1,7 @@
+---
+title: "nginx wordpress용 setting 방법"
+date: 2016-08-30 11:33:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220800210486"
+---
+

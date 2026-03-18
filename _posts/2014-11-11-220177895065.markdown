@@ -1,0 +1,8 @@
+---
+title: "톰캣 설정 중 sessionCookieName"
+date: 2014-11-11 11:51:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220177895065"
+---
+
+세션이 겹쳐서 로그인이 풀릴때 사용하면 된다.

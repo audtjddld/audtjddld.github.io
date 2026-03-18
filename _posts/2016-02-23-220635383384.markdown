@@ -1,0 +1,308 @@
+---
+title: "포털사이트 사이트 등록"
+date: 2016-02-23 10:15:00 +0900
+categories: [경험 및 정보 공유]
+tags: [포털사이트, 사이트등록]
+original_url: "https://blog.naver.com/kkforgg/220635383384"
+---
+
+****
+
+포스팅이 일기로 남는 것을 피하기 위해 최우선으로 해야 할 일은 검색엔진에 사이트의 존재를 알리는 일입니다.
+
+트래픽은 많을수록 좋습니다. 여기저기 자신의 사이트로 향하는 적절한 링크를 많이 만드는 데에 많은 노력을 기울여야 합니다.
+
+이전 블로그 [http://kameo.biz](http://kameo.biz/)의 경우 네이버, 구글, 다음, 네이트 네 검색엔진에서 대부분의 유입이 일어났었습니다.
+
+필수라 생각하는 곳입니다.
+
+<https://submit.naver.com/>
+
+<http://www.google.co.kr/addurl/>
+
+<https://register.search.daum.net/index.daum>
+
+<http://add.nate.com/>
+
+<http://www.bing.com/toolbox/webmaster>
+
+여기에 추가로,
+
+<http://www.rankey.com/site/site_reg.php>
+
+<http://blogs.yandex.ru/add.xml>
+
+<http://www.baidu.com/search/url_submit.html>
+
+<http://help.zum.com/submit/>
+
+<http://request.dreamwiz.com/BIN/register.cgi?cmd=t&sub=20>
+
+<http://dir.chol.com/service/request/reqregister.php>
+
+구글과 네이트는 등록을 하지 않더라도 먼저 사이트의 글들을 읽어갑니다.
+
+네이버 블로그라면 네이버에서, 티스토리는 다음에서 자동으로 글들을 긁어갑니다.
+
+그중 네이버가 국내 검색 점유율의 상당한 부분을 차지하고 있기에 네이버 검색등록이 가장 중요합니다.
+
+네이버는 구글과는 달리 트래픽을 자기 안으로 돌리려는 경향을 보이고 외부 사이트에 까다롭습니다.
+
+또 외부사이트가 검색등록 심사를 통과했다 하더라도 네이버 블로그가 검색 상위노출에 유리합니다. 이는 네이버 블로그의 강점이죠.
+
++야후는 11년 11월 17일 부로, 마이크로소프트 빙에 검색을 위탁합니다: [참고](http://help.yahoo.com/l/kr/yahoo/search/faq/faq03.html)
+
++파란닷컴의 검색서비스는 12년 7월 31일 부로 종료되었습니다.
+
+![](https://lh3.googleusercontent.com/kZ8HCYw5l8TvB96zhS6gmldX__Aj-36UHtsjk3Clixqf9D3cEKL0-is9qBFCM5c3B0ceANo0k9GLD_tiL4IBZTrAVu-YnKI98l50pksnUSUsqcSVHI9z2_I92Ok7H_DmU9x-a-gh)
+
+홈페이지나 블로그를 만들었으면 여기저기 알리는 일이 필요하다.
+
+물론 내 블로그가 유명해지면 검색사이트들이 알아서 자기들한테 등록해놓겠지만...
+
+나는 급하니 직접 등록을 해보기로 했다
+
+등록할곳은 "네이버, 다음 , 줌, 구글, 빙, 야후, MSN, 바이두"  까지 8곳이다.
+
+여기서 네이트는 다음검색을 이용하고, 국내야후는 철수,  MSN은 빙의 검색결과를 공유하므로
+
+네이트, 야후, MSN은 따로 등록안한다. (=못한다)
+
+ㅁ각 포털별 등록하는 곳 URL
+
+ 사이트명
+
+  RSS 등록 URL
+
+웹마스터 URL
+
+ 네이버
+
+ <https://submit.naver.com/regist.nhn>
+
+ <http://webmastertool.naver.com/>
+
+ 다음
+
+ <https://register.search.daum.net/index.daum>
+
+ 없음
+
+ 줌
+
+ <http://help.zum.com/submit/register>
+
+ 없음
+
+ 구글
+
+ <http://blogsearch.google.co.kr/ping>
+
+ <http://www.google.com/webmasters/>
+
+ 빙
+
+ <http://www.bing.com/toolbox/submit-site-url>
+
+ <http://www.bing.com/toolbox/webmaster>
+
+ 바이두
+
+ <http://ping.baidu.com/ping.html>
+
+ <http://zhanzhang.baidu.com/>
+
+일단 RSS 등록URL을 통해 내 블로그(사이트) RSS URL을 등록하고
+
+웹마스터 URL에 접속해 웹마스터에도 등록을 하자.. 포털의 사이트등록은 등록이 느리거나 검색데이터 수집이 안될수가 있어서.
+
+웹마스터 등록을 통해 검색에 노출되도록 조정이 필요하다.
+
+단 빙과 줌은 웹마스터에 등록하지 않아도 검색이 잘 등록되었고, 구글은 사이트맵을 등록해야 블로그 글이 검색에 많이 노출됐다.
+
+다음과 줌은 별도의 웹마스터 페이지가 없는것 같다.
+
+다음은 등록만 하면 하루만에 사이트항목에 노출이 되었고
+
+블로그 항목으로는 등록되지 않아 고객센터에 문의했지만. 시간이 걸릴것 같다.. 답변으로는 자기들 자체 판단후 검색 등록해준다고 한다.
+
+--- 최근에 답을 받았는데. 스팸사이트로 등록이 안됬다고 하여 고객센터에 문의해 해결했다
+
+     등록이 오래걸리면 고객센터에 문의(메일+전화) 해보자.
+
+네이버는 현재까지 등록이 잘 안된다.
+
+다른 검색엔진은 모든 글이 검색이 되고 있는데 네이버는 포스팅내용이 좀 좋은 것만 골라 검색되는 느낌이다..
+
+어떤 포스팅은 내가보기에는 괜찮은 내용임에도 검색이 안되는걸로 봐선.. 네이버 자체 판단이 있는것 같다.
+
+또한 RSS에 영향을 받는 느낌이다.
+
+티스토리 RSS건수를 꼭 최대치인 50건으로 조정하자.
+
+검색엔진에 등록이 다 되었다고 안심하지 말고
+
+포스팅을 한 후 각 검색엔진에 검색노출을 항상 체크하자. 혹 검색이 잘되는지 점검이 필요하다
+
+티스토리에 관리자중
+
+유입경로를 확인할수 있는 메뉴가 있다.
+
+![](https://lh6.googleusercontent.com/stE8EhJlsTwiUWHs4O4ecB7_cDQQ9wUnNM4SxtO48gNxh3_6sbeSarsYzUYBYV30x88T_KHXQL1_j10Aztz0_nwCEIlMt_2RrsCWumtHVA5z4z3Rmepr52DkZqqLk2kHUoXhUMJl)
+
+이렇게 각 포털에서 유입이 되는것을 확인하자
+
+이상 끝
+
+바이두에서 가입할때 전화번호 인증이 나오는데 피하는 방법을 찾았다.
+
+대륙의 실수 는 그냥 농담삼아 했었는대 땅이 넓어서 그런지 정말 제공하는 서비스도 남다른거 같습니다. 최근 다음에서 서비스를 종료한다고 하여 많은 사람들이 굉장히 아쉬워 했는대 이런서비스가 있는지 저도 최근에 알았습니다. 오늘은 막강한 저장공간을 제공하지만 한가지 난관이 있는 바이두 전화번호 인증 에 대한 몇가지 방법을 알려드릴려 합니다.
+
+
+
+
+
+최근에 까지도 바이두 클라우드 서비스 에 가입을 하게 되면 아주 쉽게 인증 을 우회 할수가 있었지만 가입자수를 감당못해서 그런건지 이제는 가입하는 과정에서 전화번호 인증을 피해가기 가 굉장히 어렵게 되었습니다.
+
+
+
+일단은 가입이 정상적으로 진행이 되야 용량을 늘리기 위한 시도를 해볼텐데 말입니다. 참고로 바이두는 개인당 2테라 의 용량확장을 제공하고 있습니다. 말이 2T 지 제가 볼땐 이거 다쓰지도 못합니다. 용량큰 동영상 파일 이런건 올린다면 모르겠지만요.
+
+생각을 달리해보죠 인증을 을 받기 위해서 가장 좋은 방법은 전화번호 인증을 안받는 방법이 가장 깔끔한 방법 입니다.
+
+
+
+우선 먼저 가입을 해야겠죠? 이글을 쓰기위해서 글작성자가 지금 실시간으로 가입을 하고 가입완료후 전화번호 인증을 안하는 화면을 보여드리도록 하겠습니다.
+
+
+
+여기서 꼭 체크하셔야 하는게 있습니다. 네트워크를 우회해야 하는데 관련프로그램 을 이용해서 하셔야 합니다. 크롬은 Browsc 이라는 확장프로그램 이 있어서 저는 그걸 사용하였습니다. 다른 브라우저 에서도 가능하다면 사용하시면 됩니다.
+
+
+
+우리나라 네트워크는 체크를 하는거 같습니다. 아마도 그냥 브라우저를 실행 시켜서 가입을 하시게 되면 진행이 안돼실겁니다.
+
+
+
+
+
+![](https://lh3.googleusercontent.com/bkfnojXAcum0LkQ9VQX7MPrl2ZwP-6sWBUzrWxlsHE9xBRRTibm0Yl7NWzFoRSc22TDI7uFcYIYdu8gkyoTRPXpg0zIOHFQOzoNu2nDrSBYq3xFCE-Wn5Zis94TiZtsl594WCSeC)
+
+
+
+
+
+순서는 이렇습니다. 가입시에는 크롬브라우저를 사용합니다. 주소창에 <http://motu.baidu.com/register.html> 입력합니다. 그럼 아래와 같은 화면이 보이실 겁니다.
+
+
+
+아까도 말씀드렸듯이 지메일 계정으로 가입을 하셔야 합니다.
+
+
+
+![](https://lh3.googleusercontent.com/1yyMztwRQPEp_PuX_8P9SFUFuszjQ_0frsnBPkKge8FmgWd6k_iLVZPEr6wGldv_XxSWzanZ2tHYgaOOlk2ogNValf-ChvvlnFFArUoHXcbBk1OFkf-N389F8GVvLLT_mpgG_d-k)
+
+
+
+이건 우회를 하지 않고 그냥 브라우저를 실행 시켜서 입력을 해본 모습입니다.
+
+바로 시스템 오류 메세지가 보이네요. 미워..
+
+![](https://lh6.googleusercontent.com/KzN0YzlqJl74UCkqMaGEAOEWFbhyc6Mk5nySebmuehTbJrHCrXYrW7EKl13u6MNa-hNj0DWHQT0c1WKqDzyUpJVy3DvYc6x_yMZpR7c43VKndS1bTwyyBZ53JebwGGE9XgUiqXD3)
+
+
+
+
+
+정상적으로 입력을 하셨다면 인증메일을 보냈으니
+
+확인해서 인증을 완료하라는 화면이 보이게 됩니다.
+
+
+
+![](https://lh4.googleusercontent.com/QHDC-WQwCKQSv0wScYj0HdYeHB8TelY8sn_lpY77BB5MmxOQVvNYgjHAMRX0yjuw-DPEGzxmWW1mFU44pUyAtmoishQowiU4nVBZk-Hn5kxNgnX-2x16U28h7YqgHpLxA0IjCdNb)
+
+
+
+
+
+지메일 의 메일함을 확인해 보시면 아래와 같은 메일이 한통 와있을거에요. 중간에 링크부분을 클릭해주시면 됩니다.
+
+이제 인증 피하는 방법에 반정도 온거 같네요. 그리 어렵지 않습니다 따라오세요 ^^
+
+
+
+
+
+![](https://lh3.googleusercontent.com/nqElT3bhAOKpdUl2tl0iQiNBRgUp9PAhlN_SFUgbiSdFx2YOlRLvnhskQHX6DNZUGzst1p0dA7e1xIndBLcTQ9PuehFczHzO8GbMmeuIE-mCotyqr0uTSUVpH3riyhoa1JLn-72e)
+
+
+
+
+
+자 이제 마지막 인증 단계 입니다. 한자를 잘입력하셔야 합니다.
+
+다른건 찾아서 마우스 클릭해서 해결이 가능하지만 중간에 영어로 써있는 단어를 찾아야 합니다.
+
+중국어 발음을 저렇게 쓴다고 하더라구요.
+
+
+
+우리에겐 이걸 해결해줄수 있는 네이버중국어사전 이 있습니다.
+
+
+
+![](https://lh3.googleusercontent.com/XSmFGw9S14g826dSoy_WoS51fZpTLPWErAjVH-Wp-GgI7TZcSURju8eUbI5miGbdewIMy38vFsJBo58DL2lqa9rOUs-yhU02OKL8qYJHLPnBoI5v9ZLLsdFlF9vFHgNBMyVRAVJR)
+
+
+
+한자를 찾기 너무 어려우면 위화면에 맨오른쪽에 새로고침이 있으니 계속 새로고침을 하다보면 찾기 쉬운 한자가 나올겁니다.
+
+저도 이렇게 하느라 5섯번은 새로고침을 한거 같네요.
+
+
+
+이것만 정확히 하시면 가입은 완료가 된상태 입니다.
+
+자 여러분들이 원하는건 클라우드 의 용량 확보 아닌가요? ^^
+
+
+
+그럼 이제 로그인을 해야 하는대 바이두 포탈로 로그인을
+
+하면 전화번호 인증이 뜨는경우가 있습니다.
+
+
+
+![](https://lh3.googleusercontent.com/2eiEXLQhXBhsI5gzzW-ECaVH-b_KGYa2pmDPqfnvKCLCUNKnAIeRw6QLs-20PG1MORUsP3MUf-K2sdTwbfU2IHYUK6tGST8-_3_HHoydBc6-jCF1rAN0I1Uy0l1fBq-OQ1FeMC9V)
+
+
+
+
+
+혹시나 해서 로그인을 해보니 바이두 전화번호 인증 을 하라고 팝업창이 뜨더군요.
+
+여기가 난관이죠 하지만 방법이 있습니다.
+
+
+
+![](https://lh4.googleusercontent.com/cFVCgtVuF0ufLUraE6LX6rR5oZhHXxBwUy-g5MMMXKLZimF3Kp-sx53_AUY5cASA_F224jYv_mUPzS0CZhGLoIrYxj-a6nMNL69b9w94dYJuiBQliGVQFXBfYj7KdkSfRojB94GD)
+
+
+
+![](https://lh5.googleusercontent.com/EXwDi5Daz9i_iGcF9YmFdbrrmz9rkYAO27XK3GAind_0OtIx1lIU2XoTJnBll5qcng3pJhLpNKeoOVrIOqyUWYHDdG9sr4EJx3AyWNgEn6Fj7AWaZPoOsOoSsGKVMbyI3X88QHqL)
+
+출처 :
+
+<http://penda.tistory.com/73>
+
+<http://place1.tistory.com/107>
+
+<http://www.ihee.com/35>
+
+
+
+<http://www.ihee.com/35>
+
+[[블로그운영] 포털사이트(검색엔진)에 내 블로그 등록하기홈페이지나 블로그를 만들었으면 여기저기 알리는 일이 필요하다. 물론 내 블로그가 유명해지면 검색사이트들이 알아서 자기들한테 등록해놓겠지만...www.ihee.com](http://www.ihee.com/35)
+

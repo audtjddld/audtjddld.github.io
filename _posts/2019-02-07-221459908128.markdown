@@ -1,0 +1,729 @@
+---
+title: "도커 설치 및 실행"
+date: 2019-02-07 12:13:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221459908128"
+---
+
+​
+
+도커를 실행하는 명령어는 다음과 같습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+다음은 자주 사용하는 옵션들입니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**옵션**
+
+
+**설명**
+
+
+-d
+
+
+detached mode 흔히 말하는 백그라운드 모드
+
+
+-p
+
+
+호스트와 컨테이너의 포트를 연결 (포워딩)
+
+
+-v
+
+
+호스트와 컨테이너의 디렉토리를 연결 (마운트)
+
+
+-e
+
+
+컨테이너 내에서 사용할 환경변수 설정
+
+
+–name
+
+
+컨테이너 이름 설정
+
+
+–rm
+
+
+프로세스 종료시 컨테이너 자동 제거
+
+
+-it
+
+
+-i와 -t를 동시에 사용한 것으로 터미널 입력을 위한 옵션
+
+
+–link
+
+
+컨테이너 연결 [컨테이너명:별칭]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**컨테이너 목록 확인하기 (ps)**
+
+컨테이너 목록을 확인하는 명령어는 다음과 같습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+docker ps [OPTIONS]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+일단 기본옵션과 -a, --all 옵션만 살펴봅니다.
+
+​
+
+​
+
+**컨테이너 중지하기 (stop)**
+
+실행중인 컨테이너를 중지하는 명령어는 다음과 같습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+docker stop [OPTIONS] CONTAINER [CONTAINER...]
+
+
+
+
+
+
+
+
+
+
+
+```
+docker ps # get container ID
+docker stop ${TENSORFLOW_CONTAINER_ID}
+docker ps -a # show all containers
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**컨테이너 제거하기 (rm)**
+
+종료된 컨테이너를 완전히 제거하는 명령어는 다음과 같습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+docker rm [OPTIONS] CONTAINER [CONTAINER...]
+
+
+
+
+
+
+
+
+
+
+
+```
+docker ps -a # get container ID
+docker rm ${UBUNTU_CONTAINER_ID} ${TENSORFLOW_CONTAINER_ID}
+docker ps -a # check exist
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**이미지 목록 확인하기 (images)**
+
+도커가 다운로드한 이미지 목록을 보는 명령어는 다음과 같습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+docker images [OPTIONS] [REPOSITORY[:TAG]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**이미지 다운로드하기 (pull)**
+
+이미지를 다운로드하는 명령어는 다음과 같습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+docker pull [OPTIONS] NAME[:TAG|@DIGEST]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ubuntu:14.04를 다운받아보겠습니다.
+
+
+
+
+
+
+
+```
+docker pull ubuntu:14.04
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**이미지 삭제하기 (rmi)**
+
+이미지를 삭제하는 방법은 다음과 같습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+docker rmi [OPTIONS] IMAGE [IMAGE...]
+
+
+
+
+
+
+
+
+
+
+
+```
+docker images # get image ID
+docker rmi ${TENSORFLOW_IMAGE_ID}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**컨테이너 로그 보기 (logs)**
+
+컨테이너가 정상적으로 동작하는지 확인하는 좋은 방법은 로그를 확인하는 것 입니다. 로그를 확인하는 방법은 다음과 같습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+docker logs [OPTIONS] CONTAINER
+
+
+
+
+
+
+
+
+
+
+
+```
+docker ps
+docker logs ${WORDPRESS_CONTAINER_ID}
+
+docker logs --tail 10 ${WORDPRESS_CONTAINER_ID}
+
+docker logs -f ${WORDPRESS_CONTAINER_ID}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**컨테이너 명령어 실행하기 (exec)**
+
+컨테이너를 관리하다 보면 실행중인 컨테이너에 들어가보거나 컨테이너의 파일을 실행하고 싶을 때가 있습니다. 컨테이너에 SSH를 설치하면 되지 않을까? 라고 생각할 수 있지만 SSH는 권장하지 않습니다. 하지 말라고 하면 꼭 하는 분들이 있던데 제발.. 예전에는 [nsenter](https://github.com/jpetazzo/nsenter)라는 프로그램을 이용하였는데 docker에 exec라는 명령어로 흡수되었습니다.
+
+컨테이너 명령어를 실행하는 방법은 다음과 같습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+run 명령어와 유사해 보입니다. 차이는 run은 새로 컨테이너를 만들어서 실행하고 exec는 실행중인 컨테이너에 명령어를 내리는 정도입니다.
+
+
+
+
+
+
+
+```
+docker exec -it mysql /bin/bash
+
+# MySQL test
+$ mysql -uroot
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| wp                 |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> quit
+exit
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+데이터 볼륨을 사용하는 방법은 몇가지가 있는데 여기서는 호스트의 디렉토리를 마운트해서 사용하는 방법에 대해 알아봅니다. run명령어에서 소개한 옵션중에 -v 옵션을 드디어 사용해 보겠습니다. MySQL이라면 /var/lib/mysql디렉토리에 모든 데이터베이스 정보가 담기므로 호스트의 특정 디렉토리를 연결해주면 됩니다.
+
+​
+
+
+
+
+
+
+
+```
+# before
+docker run -d -p 3306:3306 \
+  -e MYSQL_ALLOW_EMPTY_PASSWORD=true \
+  --name mysql \
+  mysql:5.7
+
+# after
+docker run -d -p 3306:3306 \
+  -e MYSQL_ALLOW_EMPTY_PASSWORD=true \
+  --name mysql \
+  -v /my/own/datadir:/var/lib/mysql \ #
+위 샘플은 호스트의 /my/own/datadir디렉토리를 컨테이너의 /var/lib/mysql디렉토리로 마운트 하였습니다. 이제 데이터베이스 파일은 호스트의 /my/own/datadir디렉토리에 저장되고 컨테이너를 삭제해도 데이터는 사라지지 않습니다. 최신버전의 MySQL 이미지를 다운받고 다시 컨테이너를 실행할 때 동일한 디렉토리를 마운트 한다면 그대로 데이터를 사용할 수 있습니다. 만세!
+
+​
+
+**Docker Compose**
+
+지금까지 도커를 커맨드라인에서 명령어로 작업했습니다. 지금은 간단한 작업만 했기 때문에 명령이 길지 않지만 컨테이너 조합이 많아지고 여러가지 설정이 추가되면 명령어가 금방 복잡해집니다.
+
+도커는 복잡한 설정을 쉽게 관리하기 위해 [YAML](https://en.wikipedia.org/wiki/YAML)방식의 설정파일을 이용한 [Docker Compose](https://docs.docker.com/compose/)라는 툴을 제공합니다. 깊게 파고들면 은근 기능이 많고 복잡한데 이번에는 아주 가볍게 다루고 지나가도록 하겠습니다.
+
+
+
+
+
+
+
+```
+curl -L "https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+# test
+docker-compose version
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+이거나 mac에서는 homebrew를 이용해서 설치 할 수 있다.
+
+​
+
+빈디렉토리를 만들고 아래와 같이 docker-compose.yml 생성한다.
+
+
+
+
+
+
+
+```
+version: '2'
+
+services:
+   db:
+     image: mysql:5.7
+     volumes:
+       - db_data:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: wordpress
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD: wordpress
+
+   wordpress:
+     depends_on:
+       - db
+     image: wordpress:latest
+     volumes:
+       - wp_data:/var/www/html
+     ports:
+       - "8000:80"
+     restart: always
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_PASSWORD: wordpress
+volumes:
+    db_data:
+    wp_data:
+```
+
+
+
+
+
+
+
+
+
+
+```
+docker-compose up
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+​
+
+출처: <https://subicura.com/2017/01/19/docker-guide-for-beginners-2.html>

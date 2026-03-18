@@ -1,0 +1,115 @@
+---
+title: "java Object Compression"
+date: 2019-11-01 14:59:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221695024408"
+---
+
+```
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.Objects;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+
+public class ObjectCompressUtils {
+
+  public byte[] compressObject(CollectResult o) throws IOException {
+    ObjectOutputStream objectOut = null;
+    ByteArrayOutputStream baos = null;
+    GZIPOutputStream gzipOut = null;
+    try {
+      baos = new ByteArrayOutputStream();
+      gzipOut = new GZIPOutputStream(baos);
+      objectOut = new ObjectOutputStream(gzipOut);
+      objectOut.writeObject(o);
+    } finally {
+      if (Objects.nonNull(objectOut)) {
+        objectOut.close();
+      }
+      if (Objects.nonNull(baos)) {
+        baos.close();
+      }
+      if (Objects.nonNull(gzipOut)) {
+        gzipOut.close();
+      }
+    }
+    return baos.toByteArray();
+  }
+
+  public T decompressObject(byte[] data) throws IOException, ClassNotFoundException {
+    ByteArrayInputStream bais = null;
+    GZIPInputStream gzipIn = null;
+    ObjectInputStream objectIn = null;
+    try {
+      bais = new ByteArrayInputStream(data);
+      gzipIn = new GZIPInputStream(bais);
+      objectIn = new ObjectInputStream(gzipIn);
+      return (T) objectIn.readObject();
+    } finally {
+      if (Objects.nonNull(bais)) {
+        bais.close();
+      }
+      if (Objects.nonNull(gzipIn)) {
+        gzipIn.close();
+      }
+      if (Objects.nonNull(objectIn)) {
+        objectIn.close();
+      }
+    }
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Class binary를 압축하는 방법에 대해서 고민 하던 도중 위와 같은 방법이 있는걸 확인.
+
+​
+
+하지만 몇가지 -_-; 위치에 따라서 발생되는 문제들은 있음.
+
+​
+
+​
+
+<https://examples.javacodegeeks.com/core-java/util/zip/compress-objects-example/>
+> [**Compress Objects example**](https://examples.javacodegeeks.com/core-java/util/zip/compress-objects-example/)
+>
+> With this example we are going to demonstrate how to compress and expand an Object. We have implemen...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

@@ -1,0 +1,527 @@
+---
+title: "CSRF prevention 관련 설정 내용 입니다."
+date: 2013-08-20 21:46:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60198418692"
+---
+
+웹 보안 툴? 인지 어떤 건지 아무튼 돌려서
+
+CSRF 에 관련된 웹 취약점이 발생되었습니다.
+
+
+
+그래서 구글에서 검색하던 중 소스를 발견해서 적용해보았습니다.
+
+
+
+Csfr 공격이란?
+
+<http://ko.wikipedia.org/wiki/%EC%82%AC%EC%9D%B4%ED%8A%B8_%EA%B0%84_%EC%9A%94%EC%B2%AD_%EC%9C%84%EC%A1%B0>
+
+
+
+
+
+
+
+**사이트 간 요청 위조**(또는 **크로스 사이트 요청 위조**, [영어](http://ko.wikipedia.org/wiki/%EC%98%81%EC%96%B4): Cross-site request forgery, **CSRF**, **XSRF**)는 [웹사이트](http://ko.wikipedia.org/wiki/%EC%9B%B9%EC%82%AC%EC%9D%B4%ED%8A%B8) [취약점 공격](http://ko.wikipedia.org/wiki/%EC%B7%A8%EC%95%BD%EC%A0%90_%EA%B3%B5%EA%B2%A9)의 하나로, 사용자가 자신의 의지와는 무관하게 공격자가 의도한 행위(수정, 삭제, 등록 등)를 특정 웹사이트에 요청하게 하는 공격을 말한다.
+
+유명 경매 사이트인 [옥션](http://ko.wikipedia.org/wiki/%EC%98%A5%EC%85%98_(%EC%9B%B9%EC%82%AC%EC%9D%B4%ED%8A%B8))에서 발생한 개인정보 유출 사건에서 사용된 공격 방식 중 하나다.
+
+[사이트 간 스크립팅](http://ko.wikipedia.org/wiki/%EC%82%AC%EC%9D%B4%ED%8A%B8_%EA%B0%84_%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8C%85)(XSS)을 이용한 공격이 사용자가 특정 웹사이트를 신용하는 점을 노린 것이라면, 사이트간 요청 위조는 특정 웹사이트가 사용자의 [웹 브라우저](http://ko.wikipedia.org/wiki/%EC%9B%B9_%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80)를 신용하는 상태를 노린 것이다. 즉, 일단 사용자가 웹사이트에 [로그인](http://ko.wikipedia.org/wiki/%EB%A1%9C%EA%B7%B8%EC%9D%B8)한 상태에서 사이트간 요청 위조 공격 코드가 삽입된 페이지를 열면 이후에는 사용자의 행동과 관계 없이 사용자의 웹 브라우저와 공격 대상 웹사이트 간의 상호작용이 이루어진다. (공격자의 의도에 따라 제 3의 웹사이트가 추가될 수도 있다.)
+
+
+
+이런 내용 입니다.
+
+
+
+구글에서 검색했을 때 외국 개발자 블로그였는데 못찾겠네요;;
+
+
+
+아무튼 내용은 이렇습니다.
+
+form에서 action 부분으로 보낼시 생성된 session 값과 파라미터로 날라오는 토큰 값과 비교해서 다르면 공격으로 인지하고 error 페이지나 이런데로 분기해버린다는 내용 입니다.
+
+(지식이 달려서 대충 이렇게 해석했습니다.)
+
+
+
+말하자면 일단 loadCsrfPrevetion에서는 세션 값을 생성하는 부분으로 이해하시면 됩니다.
+
+
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+public class loadCsrfPrevention implements Filter{
+
+
+
+        public void doFilter(ServletRequest request, ServletResponse response,
+
+                FilterChain chain) throws IOException, ServletException {
+
+
+
+            //2013.08.09 추가 세션값 생성
+
+
+
+            HttpServletRequest httpReq = (HttpServletRequest) request;
+
+
+
+           Cache<String, Boolean> csrfPreventionSaltCache = (Cache<String, Boolean>) httpReq.getSession().getAttribute("csrfPreventionSaltCache");
+
+
+
+
+
+            if(csrfPreventionSaltCache == null ){
+
+                csrfPreventionSaltCache = CacheBuilder.newBuilder()
+
+                                            .maximumSize(5000)
+
+                                            .expireAfterWrite(20, TimeUnit.MINUTES)
+
+                                            .build();
+
+                httpReq.getSession().setAttribute("csrfPreventionSaltCache", csrfPreventionSaltCache);
+
+
+
+            }
+
+
+
+            String salt = RandomStringUtils.random(20, 0, 0, true, true, null, new SecureRandom());
+
+
+
+            csrfPreventionSaltCache.put(salt, Boolean.TRUE);
+
+
+
+            httpReq.setAttribute("csrfPreventionSalt", salt);
+
+            chain.doFilter(request, response);
+
+        }
+
+
+
+        public void init(FilterConfig filterConfig) throws ServletException {
+
+        // TODO Auto-generated method stub
+
+
+
+        }
+
+
+
+        public void destroy() {
+
+        // TODO Auto-generated method stub
+
+
+
+        }
+
+}
+
+
+
+
+
+
+
+그리고 validation check 부분 입니다.
+
+
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+public class validationCsrf implements Filter {
+
+    public void doFilter(ServletRequest request, ServletResponse response,
+
+            FilterChain chain) throws IOException, ServletException {
+
+        // TODO Auto-generated method stub
+
+
+
+        HttpServletRequest httpReq = (HttpServletRequest) request;
+
+
+
+        String salt = (String) httpReq.getParameter("csrfPreventionSalt");
+
+
+
+        Cache<String, Boolean> csrfPreventionSaltCache = (Cache<String, Boolean>) httpReq.getSession().getAttribute("csrfPreventionSaltCache");
+
+
+
+        System.out.println("------> csrfPreventionSaltCache : " + csrfPreventionSaltCache + " salt : " +
+
+                                            salt );
+
+
+
+        if(csrfPreventionSaltCache != null &&
+
+                                salt != null &&
+
+                                csrfPreventionSaltCache.getIfPresent(salt) != null){
+
+            chain.doFilter(request,  response);
+
+        }else{
+
+            throw new ServletException("Potential CSRF detected!! Informm a scary sysadmin ASAP.");
+
+        }
+
+    }
+
+
+
+    public void init(FilterConfig config) throws ServletException {
+
+        // TODO Auto-generated method stub
+
+
+
+    }
+
+
+
+    public void destroy() {
+
+        // TODO Auto-generated method stub
+
+
+
+    }
+
+
+
+
+
+위 세션값을 생성하는 부분을
+
+web.xml에서
+
+
+
+ <filter>
+
+  <filter-name>loadCsrf</filter-name>
+
+  <filter-class>easyframework.common.security.loadCsrfPrevention</filter-class>
+
+ </filter>
+
+ <filter-mapping>
+
+  <filter-name>loadCsrf</filter-name>
+
+  <url-pattern>/*</url-pattern>
+
+ </filter-mapping>
+
+
+
+아래와 같이 선언해 놉니다.
+
+
+
+※ 그 개발자 블로그에는 url-pattern 이 *로 되어있었지만 jeus에서는 에러나서 저리 바꿨습니다.
+
+
+
+그리고 interceptor 부분에서
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+     <mvc:interceptors>
+
+        <!-- CROSS SITE REQUEST FORGERY 방지 -->
+
+          <mvc:interceptor>
+
+            <mvc:mapping path="url 입력1"/>
+
+            <mvc:mapping path="url 입력2"/>
+
+            <mvc:mapping path="url 입력3"/>
+
+            <bean class="벨리데이션을 할 클래스 위치.ValidationRequestInterceptor" />
+
+        </mvc:interceptor>
+
+    </mvc:interceptors>
+
+
+
+벨리데이션 체크할 클래스 내용
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+public class ValidationRequestInterceptor extends HandlerInterceptorAdapter {
+
+    @Override
+
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+         boolean result = true;
+
+         ValidationRequest.isCsrf(request, response);
+
+         return result;
+
+    }
+
+}
+
+
+
+
+
+그리고 해당 action이 일어나는 form 태그 마다
+
+
+
+1
+
+<input type="hidden" name="csrfPreventionSalt" value="${csrfPreventionSalt}"/>
+
+
+
+넣어줍니다.
+
+
+
+그리고 창을 하나 켜신뒤에
+
+로컬 톰켓을 초기화 하시고 켜진 창에서 데이터 입력시에 에러가 발생 되는걸 확인 할 수 있습니다.
+
+
+
+multipart 나 https:에서는 어찌되는지 그 개발자 블로그에 내용이 있었지만, 현재 진행 중인 곳에서 mutipart 부분 따로 이상 없는 것 같습니다.
+
+
+
+혹여 내용이 부족한 부분이 있다면 채워주셨으면 합니다.
+
+
+
+// -------------------
+
+
+
+2014.03.27
+
+
+
+해당 csrf 관련된 사항은 취약점 점검툴에서는 잡히지만 저걸 막는다 치면
+
+포털 사이트나 이런데서 검색해서 들어오게 될때는  접속을 할 수 없게 되어서 적용 안했었다.
+
+
+
+spring 3.2 에서 부터는 아에 프레임워크 단에서 제공해주는 기능이 있으니 나중에 다시 한번 이 취약점에 대해서 내가 보게된다면
+
+적용하면 될 것 같다.

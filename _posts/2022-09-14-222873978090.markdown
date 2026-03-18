@@ -1,0 +1,20 @@
+---
+title: "jvm options 일부"
+date: 2022-09-14 00:06:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222873978090"
+---
+
+jvm --server option을 적용하는 것이 newRatio 수치를 지정하는 값에 영향을 준다.
+
+​
+
+ young: Tunered(old generation) 비율을 1:n 으로 할 때,
+
+- server의 경우 default = 2,
+
+- client 는 default = 8
+
+​
+
+intel 계열의 cpu를 사용하면 default = 12

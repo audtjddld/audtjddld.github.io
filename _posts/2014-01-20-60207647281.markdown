@@ -1,0 +1,274 @@
+---
+title: "전자정부프레임워크 파일 업로드 관련된 내용 정리"
+date: 2014-01-20 12:24:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60207647281"
+---
+
+기존 프로젝트 진행시에
+
+controller - service - dao 를 무시하고 진행하는 경우가 있었는데
+
+
+
+차츰 사내 프레임웍이 다듬어져가면서 위 내용을 준수하게 되고있다.
+
+
+
+package 구조는
+
+
+
+해당패키지.web            <- controller
+
+해당패키지.service        <- service interface 및 vo
+
+해당패키지.service.impl  <- serviceImpl, DAO
+
+
+
+위와 같이 정의하고 현재 프레임워크 진행 중이다.
+
+
+
+기존에 Controller에서 파일 업로드 등을 처리하고 그랬었는데
+
+이제는 서비스단으로 해당 임무를 넘기니 뭐 파일 업로드시에 익셉션등에 대한 처리가 필요해졌다.
+
+
+
+내가 아직 기초 지식이 모자람에 따라서 서비스단에서 어떤 방법으로 처리해서 컨트롤러로 보내서
+
+결과를 처리해야될지 애메했었다. (진심 ..)
+
+간단한 문제인데 어렵게 생각했던 것 같다.
+
+
+
+이번에도 후배 도움을 받아서 처리했다. (나도 일단 생각은 했지만 기존 코드를 고치는 거에 대한 반감? 이 상당했었다.)
+
+
+
+기존에는 service단에서 로직수행중 error라던지 문제가 발생할 시에 따로 처리 없이 void로했었다. <-- 가장 큰 나의 실수
+
+
+
+mybatis로 했을때 insert나 update시에 return 으로 성공되면 1 안되면 0 뭐 이런식으로 넘어왓었는데
+
+
+
+ibatis에서는 insert시에는 selectKey 값을 리턴시켜서 잘되었는지 확인할 수 밖에 없다고 하여..
+
+
+
+귀차니즘을 느낀 나는 insert와 update시에 service단을 void로 만들어서 에러 발생되면 걍 error페이지로 떤져버렷다.
+
+
+
+하지만 점점 프로젝트 진행하면서 바쁜 일정속에서도 어느 정도 규정이 발생되어 그 부분을 처리하는 로직을 만들게되어 이렇게 남긴다.
+
+
+
+현재 전자정부 프레임워크에서 제공해주는 file핸들링하는 모듈 **'EgovFileMngUtil'**을 사용하였다.
+
+
+
+
+
+파일 업로드 부분 로직
+
+
+
+변경된 방법은 서비스단에서 정상처리가 되면 1로 return 시킨다 하지만 문제가 발생시에 0을 보낸다.
+
+기타 예외 사항이 추가적으로 있으면 더 많은 코드들로하여 return 시키면 될 것 같다.
+
+전자정부 EgovFileMngUtil 안에서는 파일 업로드시에 key생성 후 파일 복사 실행 후 -> db입력 순으로 되는데,
+
+용량초과로 인하여 업로드 실패시에는  atchFileId = 0 으로 넘어온다.
+
+
+
+이때 서비스단에서 Exception을 발생시킨다.
+
+
+
+그럼 Exception 부분에서 0으로 컨트롤러 쪽으로 리턴시킨다.
+
+
+
+(현재 파일을 1개만 올리기 때문에 count 수를 0으로 맞춘거다)
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+            //첨부파일 업로드
+
+            final Map<String, MultipartFile> files = multiRequest.getFileMap();
+
+            if(!files.isEmpty()){
+
+                List<FileVO> atchFileId = null;
+
+                String attach_file_id = null;
+
+                int limitFileSize = Integer.parseInt(EgovProperties.getProperty("Globals.SurveyImageSize"));
+
+                atchFileId = fileUtil.parseFileInf(files, "", 0, "", "Globals.fileStorePath", "attfile", limitFileSize);    // 파일 아이디
+
+
+
+                if(atchFileId.size() > 0)
+
+                {
+
+                    attach_file_id = fileMngService.insertFileInfs(atchFileId);
+
+                }
+
+ **               if(atchFileId.size()==0){**
+
+**                    throw new Exception("파일 용량 초과");**
+
+**                }**
+
+                if(attach_file_id != null){
+
+                    FileVO vo = new FileVO();
+
+
+
+                    vo.setFileCn(param.getFILE_CN());
+
+                    // FILE_CN 대체 텍스트 업데이트 실시.
+
+                    fileDAO.updateImageFileCn(vo);    // 대체 텍스트 업데이트
+
+                }
+
+            }
+
+
+
+1
+
+2
+
+3
+
+4
+
+        }catch(Exception e){
+
+            e.printStackTrace();
+
+           ** return 0;**
+
+        }
+
+
+
+컨트롤러 단에서는
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+        int result = service.updateSurveyInfo(multiRequest, modelMap);
+
+
+
+        if(result==0){
+
+            return "redirect:/mngwserc/customer/survey/write.do?flag=N";
+
+        }
+
+
+
+flag값을 작성페이지로 넘겨서 떤져준다.
+
+
+
+view 단에서는
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+    <c:if test="${param.flag eq 'N'}">
+
+         var maxSize = <fmt:message key="Globals.ImageSize" />/1024;
+
+        alert("파일 용량 "+maxSize+"KB가 초과되었습니다.\n다시 등록해주세요.");
+
+        history.back();
+
+    </c:if>
+
+이렇게 하여
+
+alert창으로 메시지를 띄우고 history.back()을 시켜준다.
+
+
+
+이상으로 마친다.

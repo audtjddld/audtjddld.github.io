@@ -1,0 +1,12 @@
+---
+title: "[공유] 마이바티스 3.0 메뉴얼 입니다."
+date: 2013-02-27 13:06:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60184988938"
+---
+
+스터디 시간에 말이 나온거같아서
+
+혹시나 필요하신분이 있을까 올립니다.
+
+출처는 <http://mybatis.org/> 입니다.

@@ -1,0 +1,174 @@
+---
+title: "Jeus jndi 설정"
+date: 2013-10-24 10:37:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60202272438"
+---
+
+JEUSMain.xml 에서
+
+
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+
+
+
+
+  <resource>
+
+        <data-source>
+
+            <database>
+
+                <vendor>oracle</vendor>
+
+                <export-name> JNDI 이름 </export-name>
+
+                <data-source-class-name>oracle.jdbc.pool.OracleConnectionPoolDataSource</data-source-class-name>
+
+                <data-source-type>ConnectionPoolDataSource</data-source-type>
+
+                <database-name> 데이터 베이스 이름  </database-name>
+
+                <data-source-name>oracle.jdbc.pool.OracleConnectionPoolDataSource</data-source-name>
+
+                <port-number>1521</port-number>
+
+                <server-name> 아이피 </server-name>
+
+                <user>계정 </user>
+
+                <password> 비밀번호 </password>
+
+                <driver-type>thin</driver-type>
+
+                <connection-pool>
+
+                    <pooling>
+
+                        <min>4</min>
+
+                        <max>4</max>
+
+                        <step>0</step>
+
+                        <period>3600000</period>
+
+                    </pooling>
+
+                </connection-pool>
+
+            </database>
+
+        </data-source>
+
+    </resource>
+
+
+
+
+
+
+
+
+
+
+
+전자정부 context-datasource.xml
+
+
+
+      <!--  jndi  -->
+
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+
+        <property name="jndiName">
+
+            <value> JNDI 이름 </value>
+
+        </property>
+
+    </bean>

@@ -1,0 +1,186 @@
+---
+title: "ULID (Universally Unique Lexicographically Sortable Identifier)"
+date: 2024-03-12 10:38:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223380732094"
+---
+
+최근 PR 내용 중 ULID를 이용하여 데이터베이스 내에 정보를 저장하는 PR이 올라와서 ULID에 대해 찾아보고 남겨본다.
+
+​
+
+우선 ULID를 사용해야되는 이유는 다음과 같다.
+
+​
+
+Primary Key를 Auto Increase 방식으로 사용할 경우
+
+​
+
+**장점**
+
+순차적으로 데이터베이스 내에 key값이 생성되므로 코드를 개발하는 개발자 입장에서는 별도로 신경쓸 필요가 없다.
+
+순서대로 번호가 증가되기 때문에, 정렬하기 쉽다.
+
+​
+
+​
+
+**단점**
+
+Auto Increase 컬럼은 결국 길이 제한이 생긴다.
+
+Int나 Big int 역시 최대값 길이 차이가 있을 뿐이지, 최대값을 넘길 경우 더이상 표현할 방법이 없다. (물론 그런일이 생길 가능성이 매우 낮다고 생각되지만..)
+
+​
+
+mysql 기준으로하면
+
+- int : -2147483648 ~ 2147483647 ( 4 바이트 )
+
+- bigint -9223372036854775808 ~ 9223372036854775807 (8바이트) 의 값을 가진다.
+
+​
+
+외부 노출값을 고민하지 않아도 된다.
+
+- 시퀀스 값으로 표현될 경우 앞으로 생성될 key들을 유츄할 수 있으며, SQL Injection과 같은 보안문제가 발생될 수 있다.
+
+​
+
+이럴 경우 사용되는 방식이 몇가지 있었는데, 내가 기존에 알던 방식은 UUID로 작성하는 것이였다.
+
+​
+
+하지만 이 부분도 꽤 부딪힘이 많이 있었다.
+
+​
+
+키 길이가 길어진다는 것과, 검색 성능이 떨어질 수 있다는 점들이 있어서 여러 논란들이 있었다.
+
+​
+
+결국엔 사용하긴 했다.
+
+​
+
+ULID는 이러한 UUID와 유사한 방식으로 사용하기 위해 나온 것으로 보인다.
+
+(좀더 개선된 버전으로 나온 것 같음)
+
+​
+
+**UUID의 장점을 보면 아래와 같다.**
+
+UUID는 다음과 같은 이유로 많은 사용 사례에서 최적이 아닐 수 있습니다.
+
+-
+128비트 임의성을 인코딩하는 가장 문자 효율적인 방법은 아닙니다.
+
+-
+UUID v1/v2는 고유하고 안정적인 MAC 주소에 대한 액세스가 필요하므로 많은 환경에서 실용적이지 않습니다.
+
+-
+UUID v3/v5에는 고유한 시드가 필요하며 무작위로 분산된 ID를 생성하므로 많은 데이터 구조에서 조각화가 발생할 수 있습니다.
+
+-
+UUID v4는 많은 데이터 구조에서 조각화를 일으킬 수 있는 무작위성 외에 다른 정보를 제공하지 않습니다.
+
+**​**
+
+-
+UUID와의 128비트 호환성
+
+-
+밀리초당 1.21e+24개의 고유 ULID
+
+-
+사전순으로 정렬 가능!
+
+-
+36자 UUID와 달리 26자 문자열로 정규적으로 인코딩됩니다.
+
+-
+더 나은 효율성과 가독성을 위해 Crockford의 base32를 사용합니다(문자당 5비트).
+
+-
+대소문자를 구분하지 않음
+
+-
+특수 문자 없음(URL 안전)
+
+-
+단조로운 정렬 순서(동일한 밀리초를 올바르게 감지하고 처리함)
+
+<https://github.com/ulid/spec>
+> [**GitHub - ulid/spec: The canonical spec for ulid**](https://github.com/ulid/spec)
+>
+> The canonical spec for ulid. Contribute to ulid/spec development by creating an account on GitHub.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+그 밖의 전략들도 꽤 있는 것으로 보인다.
+
+​
+
+**트위터 스노플레이크**
+
+[**https://blog.twitter.com/engineering/en_us/a/2010/announcing-snowflake**](https://blog.twitter.com/engineering/en_us/a/2010/announcing-snowflake)
+
+**​**
+
+**TSID(****Time-Sorted Unique Identifiers)**
+
+<https://velog.io/@ssssujini99/%EA%B0%9C%EB%B0%9C-idPK-%EC%A7%81%EC%A0%91%ED%95%A0%EB%8B%B9-%EC%A0%84%EB%9E%B5-Random-UUID-TSID-%EA%B0%81%EA%B0%81-%EB%B9%84%EA%B5%90%EB%B6%84%EC%84%9D>
+
+​
+
+​
+
+​
+
+출처 :
+
+<https://findstar.pe.kr/2022/10/14/resource-id-generation/>
+
+<https://way-code.tistory.com/entry/GeneratedValue-IDENTITY%EB%A5%BC-%EB%B2%97%EC%96%B4%EB%82%98-UUIDULID-%EC%A0%84%EB%9E%B5-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0>
+
+<https://ssdragon.tistory.com/162>
+> [**분산환경에서 DB 기본키(PK)는 어떤 ID 생성 전략으로 만들어야할까? (UUID,ULID,TSID...)**](https://ssdragon.tistory.com/162)
+>
+> 보통 개발 편의성을 위해 Oracle의 Sequence, MySQL의 auto_increment 로 숫자를 1씩 증가시키는 것으로 만든다. 이것은 어떤 문제점이 있을까? 외부에서 해당 시스템 PK를 예측하기 쉬워져서 SQL Injection 문제 Sequence, auto_increment는 중앙 집중식으로 값을 생성하는 방식이므로 DB에 의존적이게 되어 확장성이 제한되는 문제 서비스 폭풍성장 시, ID 고갈되는 문제 (BIGINT 최댓값은 4,294,967,295 이고, unsigned BIGINT라면 18,446,744,073,...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

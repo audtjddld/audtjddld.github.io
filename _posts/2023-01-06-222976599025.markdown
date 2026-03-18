@@ -1,0 +1,420 @@
+---
+title: "mapstruct"
+date: 2023-01-06 12:38:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222976599025"
+---
+
+Multi-layered applications often require to map between different object models (e.g. entities and DTOs)
+
+​
+
+<https://mapstruct.org/>
+
+​
+
+DTO와 Entity class의 변수값을 mapping해줄 때 사용하는 것 같다.
+
+​
+
+gradle
+
+
+
+
+
+
+
+
+
+```
+dependencies {
+    ...
+    implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+reference guide
+
+<https://mapstruct.org/documentation/stable/reference/html/>
+> [**MapStruct 1.5.3.Final Reference Guide**](https://mapstruct.org/documentation/stable/reference/html/)
+>
+> Preface This is the reference documentation of MapStruct, an annotation processor for generating type-safe, performant and dependency-free bean mapping code. This guide covers all the functionality provided by MapStruct. In case this guide doesn’t answer all your questions just join the MapStruct Gi...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@Mapping 애노테이션을 사용해서 작성하는 것으로 보이고, build-time에 구현체가 생성되는 것 같다.
+
+
+
+
+
+
+
+
+
+```
+@Mapper
+public interface CarMapper {
+
+    @Mapping(target = "manufacturer", source = "make")
+    @Mapping(target = "seatCount", source = "numberOfSeats")
+    CarDto carToCarDto(Car car);
+
+    @Mapping(target = "fullName", source = "name")
+    PersonDto personToPersonDto(Person person);
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+구현 코드는 다음과 같이 만들어지는 것 같다.
+
+
+
+
+
+
+
+
+
+
+```
+// GENERATED CODE
+public class CarMapperImpl implements CarMapper {
+
+    @Override
+    public CarDto carToCarDto(Car car) {
+        if ( car == null ) {
+            return null;
+        }
+
+        CarDto carDto = new CarDto();
+
+        if ( car.getFeatures() != null ) {
+            carDto.setFeatures( new ArrayList( car.getFeatures() ) );
+        }
+        carDto.setManufacturer( car.getMake() );
+        carDto.setSeatCount( car.getNumberOfSeats() );
+        carDto.setDriver( personToPersonDto( car.getDriver() ) );
+        carDto.setPrice( String.valueOf( car.getPrice() ) );
+        if ( car.getCategory() != null ) {
+            carDto.setCategory( car.getCategory().toString() );
+        }
+        carDto.setEngine( engineToEngineDto( car.getEngine() ) );
+
+        return carDto;
+    }
+
+    @Override
+    public PersonDto personToPersonDto(Person person) {
+        //...
+    }
+
+    private EngineDto engineToEngineDto(Engine engine) {
+        if ( engine == null ) {
+            return null;
+        }
+
+        EngineDto engineDto = new EngineDto();
+
+        engineDto.setHorsePower(engine.getHorsePower());
+        engineDto.setFuel(engine.getFuel());
+
+        return engineDto;
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+그 밖의 설정들은 많이 있는 것으로 보인다. reference 문서를 참고해보자.
+
+​
+
+product class
+
+
+
+
+
+
+
+
+
+
+```
+public class Product {
+    private int productId;
+    private String name;
+    private int weight;
+    private String serviceAddress;
+
+    public Product() {
+        productId = 0;
+        name = null;
+        weight = 0;
+        serviceAddress = null;
+    }
+
+    public Product(int productId, String name, int weight, String serviceAddress) {
+        this.productId = productId;
+        this.name = name;
+        this.weight = weight;
+        this.serviceAddress = serviceAddress;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public String getServiceAddress() {
+        return serviceAddress;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public void setServiceAddress(String serviceAddress) {
+        this.serviceAddress = serviceAddress;
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+product mapper class
+
+
+
+
+
+
+
+
+
+```
+@Mapper(componentModel = "spring")
+public interface ProductMapper {
+
+    @Mappings({
+        @Mapping(target = "serviceAddress", ignore = true)
+    })
+    Product entityToApi(ProductEntity entity);
+
+    @Mappings({
+        @Mapping(target = "id", ignore = true),
+        @Mapping(target = "version", ignore = true)
+    })
+    ProductEntity apiToEntity(Product api);
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+product entity class
+
+
+
+
+
+
+
+
+
+```
+@Document(collection="products")
+public class ProductEntity {
+
+    @Id
+    private String id;
+
+    @Version
+    private Integer version;
+
+    @Indexed(unique = true)
+    private int productId;
+
+    private String name;
+    private int weight;
+
+    public ProductEntity() {
+    }
+
+    public ProductEntity(int productId, String name, int weight) {
+        this.productId = productId;
+        this.name = name;
+        this.weight = weight;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

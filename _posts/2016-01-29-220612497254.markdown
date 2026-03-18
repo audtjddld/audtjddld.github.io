@@ -1,0 +1,246 @@
+---
+title: "Spring-Test-MVC 프로젝트 소개"
+date: 2016-01-29 15:54:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220612497254"
+---
+
+추가 내용.
+
+<http://jdm.kr/blog/165>
+
+출처 : <http://d2.naver.com/helloworld/1341>
+2011.12.22|36296
+
+NHN 표준 웹개발 프레임워크로 사용하고 있는 Spring MVC, 좀 더 멋지고 짜임있게 테스트를 하고 싶었다면 이 Spring-Test-MVC 프로젝트에 관심을 가져야 합니다. 이 글에서는 Builder 패턴을 사용해서 스프링 MVC 테스트 코드를 작성하는 방법을 알아봅니다.
+
+## Spring-Test-MVC프로젝트는 무엇일까
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-1341-1.jpg)
+
+그림 1 Rod Johnson의 "Expert One-on-One J2EE Design and Development"
+
+Rod Johnson이 그의 저서 "Expert One-on-One J2EE Design and Development"(2002)에서 Spring 프레임워크의 모태가 된 소스를 소개한 이후로 약 10여 년간 Spring 프레임워크는 Java 개발 환경에서 실질적인 표준(de facto) 프레임워크로 자리 잡았다. 또한 Spring 프레임워크를 바탕으로 Spring Security, Spring Batch, Spring DM, Spring Data, Spring Social 등과 같은 여러 파생 프레임워크가 생겼고 아직도 활발하게 개발되고 있다.
+
+SpringSource 프로젝트([http://www.springsource.org](http://www.springsource.org/)) 중 비교적 최근에 시작한 프로젝트로 Spring-Test-MVC 프로젝트(https://github.com/SpringSource/spring-test-mvc) 가 있다. 평소에도 손쉽게 테스트하는 방법에 관심이 많았고 Spring MVC 역시 관심이 있는 주제라서 프로젝트 홈페이지를 유심히 살펴보다 굉장히 흥미로운 코드를 발견했다..
+
+```
+MockMvcBuilders.standaloneMvcSetup(
+  new TestController()).build()
+    .perform(get("/form"))
+     .andExpect(status().isOk())
+     .andExpect(content().type("text/plain"))
+     .andExpect(content().string("hello world")
+);
+```
+
+별다른 설명이 없어도 Java에 익숙한 개발자라면 이 코드가 무슨 일을 하는지 이해할 수 있다. TestController를 바탕으로 MockMvc 타입의 객체를 만들고 "/form" 요청을 보내서 그 응답을 받아 HttpStatus 코드가 "200"이고, 콘텐츠 타입이 "text/plain"이고, 응답 본문에 "context"라는 값이 있는지 확인한다.
+
+위와 같은 작업을 기존의 Spring에서 제공하는 MockHttpRequest와 MockHttpResponse로 작성한다면 다음과 같을 것이다.
+
+```
+TestController controller = new TestController();
+MockHttpServletRequest req = new MockHttpRequest();
+MockHttpSerlvetResponse res = new MockHttpResponse();
+ModelAndView mav = controller.form(req, res);
+assertThat(res.getStatus(), is(200));
+assertThat(res.getContentType(),
+             is(“text/plain”));
+assertThat(res.getContentAsString (),
+             is(“content”));
+```
+
+코드의 줄 수는 비슷하거나 조금 더 많다. 연결형 메서드 스타일을 좋아하지 않는 개발자에게는 이 코드가 더 매력적으로 느껴질 수도 있다.
+
+하지만 이 테스트 코드에서는 너무도 많은 걸 가정하고 있다. 우선 form() 메서드의 매개변수가 HttpServletRequest와 HttpServletResponse라고 가정한다. 그러나 이 두 매개변수는 Spring 애노테이션 기반의 MVC, 즉 @MVC에서는 자주 사용하지 않는 매개변수이다. 오히려 @RequestMapping과 @ModelAttribute 그리고 Model 타입을 더 자주 사용하기 때문에 더 다양한 테스트 픽스처를 만들어야 한다. 그리고 이 메서드의 결과 타입으로 ModelAndView를 가정하는데, 이것 역시 @MVC에서는 보통 View 이름만 반환하도록 String 타입을 사용한다. 그마저도 View 이름 생성기를 사용하도록 void 타입을 사용하는 경우도 많다. 따라서 위와 같은 테스트는 극히 제한적인 경우에만 사용할 수 있는 코드에 지나지 않는다.
+
+Spring-Test-MVC 프로젝트의 목표는 Servlet 컨테이너를 사용하지 않아도 MockHttpServletRequest와 MockHttpServletResponse를 사용해서 Spring 컨트롤러를 쉽고 편하게 테스트하는 방법을 제공하는 것이다.
+
+하지만 안타깝게도 이 프로젝트의 홈페이지에서 살펴본 테스트 코드를 실무에 그대로 적용할 수는 없다. 당장 저 코드와 비슷하게 테스트 코드를 작성하면 분명히 NullpointerException이 발생할 것이다. ItemController에서 참조하는 ItemService 등 모든 객체 레퍼런스가 null이기 때문에 그렇게 될 수밖에 없다. 물론, 다른 의존성이 없는 아주 독립적인 컨트롤러라면 무사히 테스트할 수 있겠지만, 그런 경우는 드물 것이다.
+
+## 스프링 TestContext
+
+평범한 계층 구조 아키텍처를 사용한다면 보통은 다음과 같은 구조로 컨트롤러와 서비스, DAO(Data Access Object)가 연결되어 있다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-1341-2.jpg)
+
+그림 2 계층 구조의 객체 의존성.
+
+컨트롤러에서는 서비스를 사용하고 그 서비스에서는 다시 DAO를 사용한다. 이런 상황에서 컨트롤러를 테스트할 때에는 테스트하는 범위를 기준으로 테스트를 크게 두 가지로 나눌 수 있다.
+
+- 컨트롤러 클래스 단위 테스트
+- 컨트롤러 클래스 통합 테스트
+
+컨트롤러 클래스 단위 테스트를 할 때에는 작업이 비교적 간단하다. 테스트하려는 컨트롤러가 참조하는 모든 객체의 Mock 객체를 만들어서 컨트롤러에 주입하고 테스트하면 된다.
+
+반대로 통합 테스트를 한다면 작업이 조금 복잡해진다. Spring Bean 설정을 사용해서 테스트용 ApplicationContext를 만들어 빈(Bean) 주입 기능을 사용해야 한다. 물론 Spring에는 TestContext라는 기능으로 그런 작업을 지원할 뿐 아니라, 그보다 더 중요한 기능으로 테스트용 ApplicationContext 공유 기능을 제공한다.
+
+예를 들어 테스트 클래스가 TestClassA, TestClassB, TestClassC와 같이 세 개가 있다고 가정하자. 만약 이 세 테스트 클래스에서 사용하는 빈 설정이 모두 같다면 테스트할 때마다 ApplicationContext를 새로 만드는 것은 불필요한 작업일 뿐 아니라 테스트 성능에 많은 부하를 줄 수 있다. 그렇기 때문에 테스트 클래스에서 동일한 빈 설정 파일을 사용한다면, ApplicationContext를 한 번만 만들어서 TestContext에 캐시하여 사용한다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-1341-3.jpg)
+
+그림 3 TestContext와 ApplicationContext
+
+Spring 프레임워크에서 기본으로 제공하는 SpringJUnit4ClassRunner를 사용하여 다음 예제와 같이 ApplicationContext 공유 기능을 사용할 수 있다.
+
+```
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/testContext.xml")
+public class TestClassA{
+// 테스트 코드
+}
+```
+
+@RunWith 메서드는 JUnit에서 제공하는 테스트 러너 확장 지점이고, 그 확장 지점을 사용해서 TestContext 기능을 사용하도록 Spring이 SpringJUnit4ClasRunner를 제공한다. 그리고 SpringJUnit4ClassRunner는 @ContextConfiguration에 설정한 빈 설정으로 테스트에 사용할 ApplicationContext를 만들고 빈을 관리한다. 이렇게 하면 테스트에서는 @Autowired나 @Inject를 사용해서 테스트할 빈을 주입받아 사용할 수 있다.
+
+## Spring-Test-MVC와 TestContext 연동
+
+그럼 Spring-Test-MVC 프로젝트를 TestContext 기능과 어떻게 연동할 수 있을까?
+
+우선, 테스트에서 공통으로 사용할 다음과 같은 빈 설정 파일이 있다고 가정하자. 파일 이름은 "ApplicationContextSetupTests-context.xml"이다.
+
+```
+
+
+
+
+
+
+```
+
+mvc 네임스페이스를 기본 네임스페이스로 사용해서 애노테이션 기반 Spring MVC에 필요한 빈을 등록하고, 컨트롤러 클래스를 하나 등록했다. 테스트 코드와 테스트용 컨트롤러 코드는 다음과 같다.
+
+```
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration
+public class ApplicationContextSetupTests {
+    @Autowired ApplicationContext context;
+
+    @Test
+    public void responseBodyHandler(){
+        MockMvc mockMvc = MockMvcBuilders.applicationContextMvcSetup(context)
+                .configureWarRootDir("src/test/webapp", false).build();
+        mockMvc.perform(get("/form"))
+            .andExpect(status().isOk())
+            .andExpect(status().string("hello"));
+        mockMvc.perform(get("/wrong"))
+            .andExpect(status().isNotFound());
+    }
+   @Controller
+    static class TestController {
+        @RequestMapping("/form")
+        public @ResponseBody String form(){
+            return "hello";
+        }
+    }
+}
+```
+
+이 테스트 클래스에 들어있는 TestController 클래스가 위의 Spring 설정 파일에 빈으로 등록한 컨트롤러다. "/form"이라는 URL로 들어오는 요청을 public String form() 메서드가 처리하도록 매핑하고 결과로 "hello"라는 메시지를 반환한다.
+
+이 컨트롤러를 테스트하는 코드를 하나씩 살펴보자.
+
+#### TestContext 설정
+
+```
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration
+```
+
+위의 두 줄은 앞서 말했듯이 Spring의 TestContext 기능을 사용하는데 필요하다. 다만 다른 점은 @ContextConfiguration에 빈 설정 파일의 이름을 입력하지 않았다는 것이다. 빈 설정 파일의 이름을 입력하지 않으면 테스트 클래스 이름과 "-context.xml"로 이루어진 설정 파일을 찾아서 빈 설정 파일로 사용한다. 즉, 위에서 만든 "ApplicationContextSetupTests-context.xml" 파일을 이 테스트 클래스의 빈 설정 파일로 사용하게 된다.
+
+#### ApplicationContext 주입
+
+```
+@Autowired ApplicationContext context;
+```
+
+그런 다음, 테스트에서 사용하는 ApplicationContext를 주입 받는다. 여기서 ApplicationContext를 주입받는 이유는 MockMvc 객체를 만들 때 필요하기 때문이다.
+
+#### 테스트 메서드 작성
+
+```
+@Test
+public void responseBodyHandler(){
+...
+}
+```
+
+이제 테스트 메서드를 만들고 테스트를 시작한다. 우선 아래와 같이 MockMvc 객체를 만들어야 한다.
+
+```
+MockMvc mockMvc = MockMvcBuilders.applicationContextMvcSetup(context).configureWarRootDir("src/test/webapp", false).build();
+```
+
+여기서는 TestContext의 ApplicationContext를 사용해서 MockMvc 객체를 만들었다. 하지만, SpringSource에서 제공하는 Spring-Test-MVC는 ApplicationContext 타입의 객체로 MockMvc 객체를 만드는 메서드를 제공하지 않는다. WebApplicationContext 타입의 객체로 MockMvc 객체를 만들도록 할 뿐이다.
+
+이 기사에서는 TestContext는 그대로 유지한 채 Spring-Test-MVC를 확장하는 방법을 사용했다. Spring-Test-MVC에서 MockMVC 객체를 ApplicationContext로도 생성할 수 있도록 코드를 추가한 것이다.
+
+하지만 이러한 방법 외에 TestContext를 확장하는 방법도 있다. 즉, TestContext에서 ApplicationContext가 아닌 WebApplicationContext를 생성하도록 확장할 수 있다. 다음의 코드(https://github.com/spring-projects/spring-test-mvc/blob/731ce1ca9cd64e2220dbe5f5dbe59b78e6b14b04/src/test/java/org/springframework/test/web/server/samples/context/TestContextTests.java) 가 TestContext를 확장한 예이다.
+
+```
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(
+        loader=TestGenericWebXmlContextLoader.class,
+        locations={"/org/springframework/test/web/server/samples/servlet-context.xml"})
+public class TestContextTests {
+
+    @Autowired
+    private WebApplicationContext wac;
+
+    private MockMvc mockMvc;
+
+    @Before
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.webApplicationContextSetup(this.wac).build();
+    }
+
+    @Test
+    public void tilesDefinitions() throws Exception {
+        this.mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("/WEB-INF/layouts/standardLayout.jsp);
+    }
+
+}
+
+class TestGenericWebXmlContextLoader extends GenericWebXmlContextLoader {
+
+    public TestGenericWebXmlContextLoader() {
+        super("src/test/resources/META-INF/web-resources", false);
+    }
+
+}
+```
+
+@ContextConfiguration에서 loader 속성을 확장하여 WebApplicationContext를 생성하는 로더(Loader)를 설정하면, TestContext에서 ApplicationContext가 아닌 WebApplicationContext를 생성한다. 따라서, 이 WebApplicationContext를 @Autowired로 주입받아서 Spring-Test-MVC에서 사용하면 Spring-Test-MVC는 아무것도 수정하지 않아도 된다.
+
+실제 테스트 코드는 단순하다. MockMvc 객체의 perform() 메서드를 사용해서 "/form" 요청을 보내고 reponse().isOk() 메서드로 응답 받은 상태 코드가 "200"인지 확인한다.
+
+```
+mockMvc.perform(get("/form"))
+  .andExpect(status().isOk())
+  .andExpect(content()
+             .string("hello"));
+```
+
+실제로 SpringSource의 Spring-Test-MVC 프로젝트에는 isOk()라는 메서드가 없었다. 대신 status(HttpStatus) 메서드를 제공해서 status(HttpStatus.OK)처럼 Enum을 사용해서 테스트할 수 있었다. 하지만 Enum을 사용하는 것 보다는 위와 같이 isXXX() 류의 메서드는 제공하는 것이 편하다고 생각해서 코드를 추가했다.
+
+그리고 컨트롤러가 처리할 수 없는 "/wrong" 요청을 보내서 status().isNotFound()를 확인했다.
+
+```
+mockMvc.perform(get("/wrong"))
+            .andExpect(status().isNotFound());
+```
+
+## 마치며
+
+isXyz() 메서드를 추가한 코드는 SpringSouce의 Spring-Test-MVC 프로젝트로 Pull Request 요청을 보냈다. 그리고 프로젝트의 커미터인 Rossen Stoyanchev가 승인(Accept)하여 2011년 11월 현재 Spring-Test-MVC 프로젝트에 필자의 코드가 추가됐다. 다음 URL에서 필자가 추가한 코드와 Spring-Test-MVC 개발자 사이에 주고받은 의견을 확인할 수 있다.
+
+- <https://github.com/SpringSource/spring-test-mvc/pull/6>
+
+아직 스냅샷 단계의 코드라서 소스 코드가 계속 바뀌고 있다. 실제로 소스 코드가 배포됐을 때에는 테스트하는 방법이 조금 바뀔 수 있지만, 큰 그림은 많이 변하지 않을 것이다.
+
+2011년 10월에 있었던 Spring 콘퍼런스 "Spring One 2GX 2011"의 마지막날 Rossen Stoyanchev는 Spring-Test-MVC 프로젝트를 주제로 발표했다. 이 기사에서 살펴본 내용 중에 TestContext를 확장하여 Spring-Test-MVC와 연동하는 부분은 필자가 이 콘퍼런스에서 Rossen을 만나 질문한 내용에 대한 대답으로 Rossen이 필자에게 보여 준 내용이다.
+
+Spring-Test-MVC 프로젝트는 Spring 3.2에 Spring 코어 프레임워크로 통합될 예정이다. 그렇게 되면 더 많은 개발자가 편한 방법으로 컨트롤러 테스트를 작성할 수 있을 것이다. 이것으로 Spring-Test-MVC 프로젝트에 대한 간단한 소개를 마치겠다.

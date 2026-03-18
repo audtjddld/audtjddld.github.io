@@ -1,0 +1,45 @@
+---
+title: "Effective microservices"
+date: 2019-11-25 14:09:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221717846803"
+---
+
+<https://towardsdatascience.com/effective-microservices-10-best-practices-c6e4ba0c6ee2>
+> [**Effective Microservices: 10 Best Practices**](https://towardsdatascience.com/effective-microservices-10-best-practices-c6e4ba0c6ee2)
+>
+> 10 Tips to implement Microservice Architecture the right way
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ MSA의 탄생
+
+​
+
+오늘날, 애자일 방법론과 CI/CD(컨테이너, 클라우드), NoSQL 데이터베이스, 모던 브라우저 렌더링, 스마트폰의 초고속 네트워크 연결 등의 결과로 2012년에 Micro Service Actichetures가 탄생했다.
+
+​
+
+Cargo-cult
+
+-> 실제 목적이 아닌 코든 또는 프로그래밍 구조를 의식적으로 포함 하는 것을 특징으로 하는 프로그래밍
+
+​
+
+Hyper Driven Development
+
+-> 설레발 주도 개발, 과대 광고 개발. 이라 불린다.

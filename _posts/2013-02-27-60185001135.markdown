@@ -1,0 +1,48 @@
+---
+title: "jQuery 라디오 버튼~"
+date: 2013-02-27 14:31:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60185001135"
+---
+
+1. JQuery
+
+
+
+A. 1개 이상 체크해야하는 경우 확인
+
+
+
+if (jQuery("input[name=inputSite]:radio:checked").length == 0)
+ {
+  alert(!"선택해주세요.");
+  return false;
+ }
+
+
+
+B. 체크된것 값 불러오기
+
+jQuery("input[name=inputSite]:radio:checked").val();
+
+
+
+C. 스크립트로 체크 시키기
+
+jQuery('input:radio[name="inputSite"]:input[value="visang"]').attr("checked", true);
+
+
+
+2. Prototype
+
+
+
+A. 체크된것 값 불러오기
+
+$$('input:checked[type="checkbox"][name="FKPoll"]').pluck('value');
+
+
+
+B. 체크된 것 중 특정 값 가져오기(배열로)
+
+$$('input:checked[type="checkbox"][name="FKPoll"]')[0].value;

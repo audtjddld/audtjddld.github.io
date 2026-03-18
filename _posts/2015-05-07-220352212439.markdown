@@ -1,0 +1,645 @@
+---
+title: "[펌] AngularJS Service 종류 이해하기"
+date: 2015-05-07 09:25:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220352212439"
+---
+{% raw %}
+
+출처 : <http://mobicon.tistory.com/329>
+
+[*](http://mobicon.tistory.com/329)
+
+[[AngularJS] Service 종류 이해하기AngularJS의 서비스 종류는 여러가지가 있습니다. Factory만 알았다면 Costant, Value, Provider 그리고 서비스의 확장 방법등에 대해 알아...mobicon.tistory.com](http://mobicon.tistory.com/329)
+
+AngularJS의 서비스 종류는 여러가지가 있습니다. Factory만 알았다면 Costant, Value, Provider 그리고 서비스의 확장 방법등에 대해 알아보자. "A****ngularJS Service is an Application Brain*"**
+
+*
+
+1. 개념**
+
+  - 서비스는 여러 종류가 있다
+
+  - 항시 Singleton 이다. 즉, 하나의 Instance만 존재한다
+
+2. Constant**
+
+  - 공통으로 사용하는 환경값을 지정할 때 상수를 지정한다
+
+  - 사용자 정의 Directive에서 환경값을 가져다 쓰고 싶을 때 유용하다
+
+**// script **
+
+app = angular.module("app", []);
+
+app.controller('MainCtrl', function($scope, fooConfig) {
+
+  $scope.fooConfig = fooConfig;
+
+});
+
+app.constant('fooConfig', {
+
+  config1: true,
+
+  config2: "Default config2"
+
+
+
+});
+
+// html**
+
+<!DOCTYPE html>
+
+<html ng-app="app">
+
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+<meta charset=utf-8 />
+
+<title>JS Bin</title>
+
+</head>
+
+  <body ng-controller="MainCtrl">
+
+    config1: {{fooConfig.config1}}
+
+    <br />
+
+    config2: {{fooConfig.config2}}
+
+  </body>
+
+</html>
+
+3. Value**
+
+  - Value Service는 Constant Service와 유사하지만 최초 한번은 변경을 할 수 있다. Factory 서비스의 작은 동생뻘이다
+
+  - Directive에서 사용하기 유용하다
+
+  - Value를 가지고 계산할 수는 없다
+
+**// script **
+
+app = angular.module("app", []);
+
+app.controller('MainCtrl', function($scope, fooConfig) {
+
+  $scope.fooConfig = fooConfig;
+
+  // 최초 한번의 변경이 가능
+
+  angular.extend(fooConfig, {config3: "I have been extended"});
+
+});
+
+app.value('fooConfig', {
+
+  config1: true,
+
+  config2: "Default config2 but it can changes"
+
+});
+
+// html **
+
+<!DOCTYPE html>
+
+<html ng-app="app">
+
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+<meta charset=utf-8 />
+
+<title>JS Bin</title>
+
+</head>
+
+  <body ng-controller="MainCtrl">
+
+    config1: {{fooConfig.config1}}
+
+    <br />
+
+    config2: {{fooConfig.config2}}
+
+    <br />
+
+    config3: {{fooConfig.config3}}
+
+  </body>
+
+</html>
+
+4. Factory**
+
+  - 가장 일반적으로 사용하는 서비스 종류이다
+
+  - 팩토리는 어떤 형태의 데이터타입이라도 리턴할 수 있다. 리턴된 오브젝트를 가지고 작업을 한다
+
+  - 단, 리턴된 오브젝트의 값을 변경하면 해당 팩토리의 인스턴스를 사용하는 모든 곳에 변경값이 반영된다
+
+  - [Revealing Module Pattern](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#revealingmodulepatternjavascript) 식으로 작성을 한다
+
+**// script **
+
+app = angular.module("app", []);
+
+app.controller('MainCtrl', function($scope, foo) {
+
+  $scope.foo = foo;
+
+});
+
+// revealing module pattern 방식의 팩토리 서비스
+
+app.factory('foo', function() {
+
+  var thisIsPrivate = "Private";
+
+  function getPrivate() {
+
+    return thisIsPrivate;
+
+  }
+
+  return {
+
+    variable: "This is public",
+
+    getPrivate: getPrivate
+
+  };
+
+});
+
+// html**
+
+<!DOCTYPE html>
+
+<html ng-app="app">
+
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+<meta charset=utf-8 />
+
+<title>JS Bin</title>
+
+</head>
+
+  <body ng-controller="MainCtrl">
+
+    public variable: {{foo.variable}}
+
+    <br />
+
+    private variable (through getter): {{foo.getPrivate()}}
+
+  </body>
+
+</html>**
+
+5. Service **
+
+  - "service" service는 Factory service와 유사사지만 생성자명칭(== 서비스명칭)을 넘기면 자동으로 new를 통하여 생성된다
+
+    즉, Factory 처럼 오브젝트의 리턴이 필요없다
+
+  - 하기 예는 완전히 동일하다. 주의 할 것은 factory안에서 또는 service사용시 new을 여러번 하여도 반드시 한번만 인스턴스화 한다
+
+    즉, Singleton 패턴으로 객체 하나만이 생성된다
+
+**// script **
+
+app = angular.module("app", []);
+
+// Service를 통해서 생성
+
+app.controller('MainCtrl', function($scope, foo) {*
+
+*  $scope.foo = foo;*
+
+*});*
+
+app.service('foo', function() {
+
+  var thisIsPrivate = "Private";
+
+  this.variable = "This is public";
+
+  this.getPrivate = function() {
+
+    return thisIsPrivate;
+
+  };
+
+});
+
+// Factory를 통해서 생성 : MainCtrl 에서 foo 파라미터 값과 하위 로직을 foo2로 바꿔도 동일 결과
+
+*app.controller('MainCtrl', function($scope, foo2) {*
+
+*  $scope.foo = foo2;*
+
+*});*
+
+app.factory('foo2', function() {
+
+  return new Foobar();
+
+});
+
+function Foobar() {
+
+  var thisIsPrivate = "Private";
+
+  this.variable = "This is public";
+
+  this.getPrivate = function() {
+
+    return thisIsPrivate;
+
+  };
+
+}
+
+// 또는 펑션을 넘길 수도 있다 : : MainCtrl 에서 foo 파라미터 값과 하위 로직을 foo3로 바꿔도 동일 결과
+
+*app.controller('MainCtrl', function($scope, foo3) {*
+
+*  $scope.foo = foo3;*
+
+*});*
+
+app.service('foo3', Foobar);
+
+// html**
+
+<!DOCTYPE html>
+
+<html ng-app="app">
+
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+<meta charset=utf-8 />
+
+<title>JS Bin</title>
+
+</head>
+
+  <body ng-controller="MainCtrl">
+
+    public variable: {{foo.variable}}
+
+    <br />
+
+    private variable (through getter): {{foo.getPrivate()}}
+
+  </body>
+
+</html>
+
+
+
+6. Provider**
+
+  - Provider는 factory의 큰형님 뻘이다
+
+  - $get fuction을 가지고 있어야 한다. 만일 Provider 명칭이 foo이고 controller에 inject될 때 실제는 $get function의 결과값이 inject되는 것이다. 왜 factory로 사용하면 간편한데 굳이 이렇게 할까?
+
+  - 이유인즉슨, config function을 통해서 provide에 대한 환경설정을 할 수 있기 때문이다
+
+  - 예를 보자
+
+    1) thisIsPrivate 변수가 $get 펑션 밖에 위치한다
+
+    2) 따라서 setPrivate 메소드를 통하여 thisIsPrivate 변수값을 변경할 수 있다
+
+    3) 이런게 하는 이유는 우리가 필요로 하는 다양한 환경값을 바꾸어서 환경설정을 하고 싶기 때문이다
+
+    4) Provider명칭이 'foo' 이므로 app.config 에서 'fooProvider' 명을 준다
+
+**// script **
+
+app = angular.module("app", []);
+
+app.controller('MainCtrl', function($scope, foo) {
+
+  $scope.foo = foo;
+
+});
+
+app.provider('foo', function() {
+
+  var thisIsPrivate = "Private";
+
+  return {
+
+    setPrivate: function(newVal) {
+
+      thisIsPrivate = newVal;
+
+    },
+
+
+
+    $get: function() {
+
+      function getPrivate() {
+
+        return thisIsPrivate;
+
+      }
+
+      return {
+
+        variable: "This is public",
+
+        getPrivate: getPrivate
+
+      };
+
+    }
+
+  };
+
+});
+
+app.config(function(fooProvider) {
+
+  fooProvider.setPrivate('New value from config');
+
+});
+
+// html **
+
+<!DOCTYPE html>
+
+<html ng-app="app">
+
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+<meta charset=utf-8 />
+
+<title>JS Bin</title>
+
+</head>
+
+  <body ng-controller="MainCtrl">
+
+    public variable: {{foo.variable}}
+
+    <br />
+
+    private variable (through getter): {{foo.getPrivate()}}
+
+  </body>
+
+</html>
+
+7. Decorator (보너스1)**
+
+  - 기존 서비스에 새로운 펑션을 넣고 싶을 경우 사용한다
+
+  - 예를 보자
+
+    1) $provide는 모든 서비스들을 내부적으로 생성할 때 사용한다
+
+    2) $provide.decorator 를 통해서 서비스를 확장할 수 있다.
+
+        첫번째 인자는 서비스 명칭, 두번째는 콜백으로 서비스 인스턴스인 $delegate을 받는다
+
+    3) $delegate에 greet 라는 메소드를 확장 정의 한다
+
+    4) 만일 3rd party 라이브러리 사용시 확장하고 싶을 경우 decorator를 사용한다
+
+// script
+
+app = angular.module("app", []);
+
+app.controller('MainCtrl', function($scope, foo) {
+
+  $scope.foo = foo;
+
+});
+
+app.factory('foo', function() {
+
+  var thisIsPrivate = "Private";
+
+  function getPrivate() {
+
+    return thisIsPrivate;
+
+  }
+
+  return {
+
+    variable: "This is public",
+
+    getPrivate: getPrivate
+
+  };
+
+});
+
+app.config(function($provide) {
+
+  $provide.decorator('foo', function($delegate) {
+
+    $delegate.greet = function() {
+
+      return "Hello, I am a new function of 'foo'";
+
+    };
+
+
+
+    return $delegate;
+
+  });
+
+});
+
+// html
+
+<!DOCTYPE html>
+
+<html ng-app="app">
+
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+<meta charset=utf-8 />
+
+<title>JS Bin</title>
+
+</head>
+
+  <body ng-controller="MainCtrl">
+
+    public variable: {{foo.variable}}
+
+    <br />
+
+    private variable (through getter): {{foo.getPrivate()}}
+
+    <br />
+
+    greet: {{foo.greet()}}
+
+  </body>
+
+</html>
+
+8. 새로운 인스턴스 생성하기 (보너스2)**
+
+
+
+  - 팩토리 메소드를 두어서 호출시 마다 무언가 새로 생성하고 싶을 경우 사용한다
+
+  - 예를 보자
+
+    1) Function 1급 class인 Person을 만든다
+
+    2) MainCtrl, SecondCtrl 각각 getById(1) 을 호출하지만 서로 다른 인스턴스가 전달되었다
+
+    3) "Update It" 버튼을 클릭하면 두번째 열만 "Dave - Canada" 로 바뀜을 확인 할 수 있다
+
+**// script **
+
+app = angular.module('app', []);
+
+app.controller('MainCtrl', function($scope, personService) {
+
+  $scope.aPerson = Person.getById(1);
+
+});
+
+app.controller('SecondCtrl', function($scope, personService) {
+
+  $scope.aPerson = Person.getById(1);
+
+  $scope.updateIt = function() {
+
+    $scope.aPerson.update();
+
+  };
+
+});
+
+// Our class
+
+function Person( json ) {
+
+  angular.extend(this, json);
+
+}
+
+Person.prototype = {
+
+  update: function() {
+
+    // Update it (With real code :P)
+
+    this.name = "Dave";
+
+    this.country = "Canada";
+
+  }
+
+};
+
+Person.getById = function( id ) {
+
+  // Do something to fetch a Person by the id
+
+  return new Person({
+
+    name: "Jesus",
+
+    country: "Spain"
+
+  });
+
+};
+
+// Our factory
+
+app.factory('personService', function() {
+
+  return {
+
+    getById: Person.getById
+
+  };
+
+});
+
+// html ****
+
+<!DOCTYPE html>
+
+<html ng-app="app">
+
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+<meta charset=utf-8 />
+
+<title>JS Bin</title>
+
+</head>
+
+  <body>
+
+    <p ng-controller="MainCtrl">{{aPerson.name}} - {{aPerson.country}}</p>
+
+    <div ng-controller="SecondCtrl">
+
+      {{aPerson.name}} - {{aPerson.country}}
+
+      <button ng-click="updateIt()">Update it</button>
+
+    </div>
+
+  </body>
+
+</html>
+
+  - 위의 script 코드를 CoffeeScript로 하면 class 표현을 쉽게 할 수 있다
+
+app.controller 'MainCtrl', ($scope, personService) -> $scope.aPerson = personService.getById(1) app.controller 'SecondCtrl', ($scope, personService) -> $scope.aPerson = personService.getById(2) $scope.updateIt = () -> $scope.aPerson.update() class Person constructor: (json) -> angular.extend @, json update: () -> @name = "Dave" @country = "Canada" @getById: (id) -> new Person name: "Jesus" country: "Spain" app.factory 'personService', () -> { getById: Person.getById
+
+}
+
+<참조>**
+
+  - 원문 : [Understanding Service Types](http://angular-tips.com/blog/2013/08/understanding-service-types/)
+
+  - 가장 잘 설명된 글 : <http://stackoverflow.com/questions/15666048/angular-js-service-vs-provider-vs-factory> (강추)
+
+  - 관련글 : [GDG Korea WebTech 고재도님 링크](https://plus.google.com/111326406112009421991/posts/aaK6ZZdMbqF)
+
+  - [AngularJS Creating Service 매뉴얼](http://docs.angularjs.org/guide/dev_guide.services.creating_services)
+
+  - 이미지 : [AngularJS Large Scale Architecture](http://shairez.com/2013/03/angular-js-large-scale-architecture-starcraft/)
+
+  - [JavaScript에서 객체를 만드는 3가지 방법](http://www.phpied.com/3-ways-to-define-a-javascript-class/)
+
+<script src="http://mobicon.tistory.com/plugin/CallBack_bootstrapper?&src=http://s1.daumcdn.net/cfs.tistory/resource/548/blog/plugins/CallBack/callback&id=329&callbackId=mobicontistorycom3296066&destDocId=callbacknestmobicontistorycom3296066&host=http://mobicon.tistory.com&float=left&random=802"></script>{% endraw %}

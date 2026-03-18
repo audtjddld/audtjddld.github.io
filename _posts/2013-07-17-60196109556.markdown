@@ -1,0 +1,231 @@
+---
+title: "jstl을 이용한 xml 파싱 된 값과 기존 el값 비교하기"
+date: 2013-07-17 11:44:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60196109556"
+---
+
+방법은 출처 :  <http://waltzrang.blog.me/108926823>
+
+보고나서 응용해서 했다
+
+
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+<%@ page contentType="text/html;charset=KSC5601" %>
+
+<%@   taglib  prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%@   taglib  prefix="x" uri="http://java.sun.com/jsp/jstl/xml"   %>
+
+<html>
+
+<body>
+
+ <c:import url="books.xml" var="url"/>
+
+ <x:parse xml="${url}" var="doc"/>
+
+ -----------------------------------------------<br>
+
+<c:set var="id" value="1"/>
+
+<x:if var="result" select="$doc/books/book[@id=$id]"/>
+
+<c:choose>
+
+ <c:when test="${result}">
+
+  <x:set var="b" select="$doc/books/book[@id=$id]"/>
+
+  <x:out select="$b/title"/><br>
+
+  <x:out select="$b/author"/><br>
+
+ </c:when>
+
+ <c:otherwise>
+
+  그런 책 없음<br>
+
+ </c:otherwise>
+
+</c:choose>
+
+</body>
+
+</html>
+
+[출처] JSTL for XML|작성자 wR
+
+
+
+
+
+이곳에서 처럼
+
+el <c:set var ='이름' value="값"> 한 것을
+
+<x 쪽에서는 $으로 받을 수 있더라
+
+
+
+이걸 모르고 ㅡㅡ; 엄청난 삽질과 시간낭비를 했다.
+
+
+
+
+
+저 방법대로 응용해서 하게되면
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+                        <c:forEach begin="0" end="${length-1 }" varStatus="idx">
+
+                            <c:set var="varStatus" value="1" />
+
+                                <x:forEach select="$adminXml/root/navi[$menuone]/navi" var ="left">
+
+                                 <c:set var="cValue" value="${adminMenu[idx.count-1] }"/>
+
+                                    <x:if select="$left/id=$cValue">
+
+                                        <c:set var="varthree" value="1" />
+
+                                        <tr>
+
+                                            <td>
+
+                                                <a href="<x:out select="link" />" class="<c:if test="${varStatus == menutwo}">On</c:if>">
+
+                                                    <x:out select="label" />
+
+                                                </a>
+
+                                                <x:forEach select="navi">
+
+                                                <p>
+
+                                                    <a href="<x:out select="link" />" class="dep<c:if test="${varthree == menuthree}">On</c:if>">- <x:out select="label" /></a>
+
+                                                </p>
+
+                                                <c:set var="varthree" value="${varthree+1}" />
+
+                                                </x:forEach>
+
+                                            </td>
+
+                                        </tr>
+
+                                    </x:if>
+
+                                <c:set var="varStatus" value="${varStatus+1}" />
+
+                                </x:forEach>
+
+                        </c:forEach>
+
+
+
+
+
+<x:if select="xml/id=$비교할값"> </x:if> 해주면 된다.
+
+
+
+앞은 xml에서 엘리먼트 값이고 $는 el에서 비교할 값이다.

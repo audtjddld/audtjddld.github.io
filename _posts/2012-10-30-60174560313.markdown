@@ -1,0 +1,9 @@
+---
+title: "MyBatis 이놈은 Null 허용된 컬럼이라도 널 집어 넣으면 에러난다."
+date: 2012-10-30 20:38:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60174560313"
+---
+
+참고 . 삽을 엄청펐다. ㅋㅋ

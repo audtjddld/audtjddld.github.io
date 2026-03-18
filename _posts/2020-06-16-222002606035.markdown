@@ -1,0 +1,18 @@
+---
+title: "Cargo cult programming"
+date: 2020-06-16 15:26:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222002606035"
+---
+
+**카고 컬트 프로그래밍** 은 실제 목적이 아닌 코드 또는 프로그램 구조를 의식적으로 포함하는 것을 특징으로하는 [컴퓨터 프로그래밍](https://en.wikipedia.org/wiki/Computer_programming) 스타일입니다 . 카고 컬트 프로그래밍은 프로그래머가 해결하려는 버그 나 명백한 해결책 ( [샷건 디버깅](https://en.wikipedia.org/wiki/Shotgun_debugging) , [딥 매직](https://en.wikipedia.org/wiki/Deep_magic) 비교)을 이해하지 못하는 프로그래머의 증상입니다 . [[1]](https://en.wikipedia.org/wiki/Cargo_cult_programming#cite_note-1)* 화물 컬트 프로그래머* 라는 용어 는 비 숙련 또는 초보 컴퓨터 프로그래머 (또는 현재 문제가있는 경험이없는 사람) 가 작동 방식 또는 필요 여부에 대한 이해가 거의없는 한 장소에서 다른 장소로 [일부 프로그램 코드](https://en.wikipedia.org/wiki/Copy_and_paste_programming) 를 [복사](https://en.wikipedia.org/wiki/Copy_and_paste_programming) 할 때 적용될 수 있습니다 .
+
+카고 컬트 프로그래밍은 또한 그 디자인 원칙의 이유를 이해하지 않고 맹목적으로 [디자인 패턴](https://en.wikipedia.org/wiki/Software_design_pattern) 을 적용 하거나 스타일을 코딩 하는 관행을 참조 할 수 있습니다 . 자체 설명 코드에 불필요한 주석을 추가하거나 [프로그래밍 패러다임](https://en.wikipedia.org/wiki/Programming_paradigm) 의 규칙을 지나치게 준수 하거나 [가비지 수집이](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)) 자동으로 수집하는 객체에 대한 삭제 코드를 추가 하는 예제
+
+null 값에 대한 강박적이고 중복 검사 또는 값을 반복하기 전에 컬렉션이 비어 있는지 테스트하는 것은화물 컬트 프로그래밍의 표시 일 수 있습니다. 이러한 강박적인 검사는 코드를 읽을 수 없게 만들고, 종종 오류 프로그램의 실제 원인을 모호하게하여 적절한 오류 메시지의 출력을 방지합니다. [ [*원래 연구? *](https://en.wikipedia.org/wiki/Wikipedia:No_original_research)]
+
+​
+
+링크 : <https://en.wikipedia.org/wiki/Cargo_cult_programming>
+
+​

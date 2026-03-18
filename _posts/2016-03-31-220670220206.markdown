@@ -1,0 +1,12 @@
+---
+title: "mongo db 쿼리 -_-;; 계속해서 올리는 중"
+date: 2016-03-31 10:15:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220670220206"
+---
+
+컬럼이 존재하는지 여부
+
+db.table.find({'a':{$exists:true}}) = a가 존재하면 나옴
+
+db.table.find({'a':{$exists:false}}) = a가 없는 애들 나옴

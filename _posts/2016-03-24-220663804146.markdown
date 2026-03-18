@@ -1,0 +1,42 @@
+---
+title: "mysql 테이블 대소문자 구분"
+date: 2016-03-24 10:23:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220663804146"
+---
+
+varchar() = 대소문자 구분 안함
+
+varbinary() = 대소문자 구분
+
+mysql> SELECT * FROM TOKEN_DIC WHERE token_name  = 'icon';
+
++------------+
+
+| token_name |
+
++------------+
+
+| icon       |
+
+| ICON       |
+
++------------+
+
+2 rows in set (0.51 sec)
+
+mysql> SELECT * FROM TOKEN_DIC WHERE token_name  = binary( 'icon' );
+
++------------+
+
+| token_name |
+
++------------+
+
+| icon       |
+
++------------+
+
+1 row in set (0.52 sec)
+
+출처 : <http://ra2kstar.tistory.com/38>

@@ -1,0 +1,263 @@
+---
+title: "xparser를 이용한 xml 파싱"
+date: 2013-07-02 14:14:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60195117560"
+---
+
+출처  : <http://stove99.tistory.com/106>
+
+<http://stove99.tistory.com/106>
+
+[xpath 를 이용할수 있다는 걸 알기전에는 무식하게도 Document 클래스의 getElementById() 나 getElementsByTagName() 메소드를 이용해서 상당히 무식하게 난해한 코드로 xml 을 파싱하곤 했었다 -_-어느날 문득 xpath 에 대해서 살짝 알게되고 나서 부터는 전에 쓰던 방법에 비해서는 아주 간결하고 이해하기 쉬운 코드로 xml 에서 원하는 데이터를 땡겨다 쓰는게 훨씬 수월해 졌다.※ xpath 문법에 대해서 왠만한걸 쉽게 파악하기 위해서는 요 사이트에 가면 된다.](http://stove99.tistory.com/106)http://www.zvon.org/xxl/XPathTutorial/General/examples.htmlhttp://www.zvon.org/xxl/XPathTutorial/General/examples.html요기 가서 보면 알겠지만 쉽게 쉽게 설명되있다. xpath 만 어느정도 쓸 수 있으면 xml 에서 원하는 데이터를 땡겨오는건 매우 쉬워지니 살짝 한번 연구해 보는걸 추천한다.xpath를 이용해서 xml 에서 원하는 데이터를 파싱하는 예제코드를 작성해 보았다. xpath 를 사용하기 위해서 별다로 다른 라이브러리를 classpath 에 추가 안해도 된다.예제 코드에서 사용된 xml
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+``
+
+`    ```
+
+`        ``값1`
+
+`        ``값2`
+
+`    ```
+
+`    ```
+
+`        ``값3`
+
+`        ``값4`
+
+`    ```
+
+``
+
+[예제 코드는 다음과 같다.](http://stove99.tistory.com/106)
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+55
+
+56
+
+57
+
+58
+
+59
+
+`import` `java.io.StringReader;`
+
+
+
+`import` `javax.xml.parsers.DocumentBuilderFactory;`
+
+`import` `javax.xml.xpath.XPath;`
+
+`import` `javax.xml.xpath.XPathConstants;`
+
+`import` `javax.xml.xpath.XPathFactory;`
+
+
+
+`import` `org.w3c.dom.Document;`
+
+`import` `org.w3c.dom.Node;`
+
+`import` `org.w3c.dom.NodeList;`
+
+`import` `org.xml.sax.InputSource;`
+
+
+
+
+
+`public` `class` `XPathTest{`
+
+`    ``public` `static` `void` `main(String[] args) ``throws` `Exception {`
+
+`        ``String xml = ``"값1값2"` `+ `
+
+`                             ``"값3값4"``;`
+
+`        `
+
+`        ``// XML Document 객체 생성`
+
+`        ``InputSource is = ``new` `InputSource(``new` `StringReader(xml));`
+
+`        ``Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);`
+
+
+
+`        ``// 인터넷 상의 XML 문서는 요렇게 생성하면 편리함.`
+
+`        ``//Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder()`
+
+`        ``//                               .parse("http://www.example.com/test.xml");`
+
+`        `
+
+`        `
+
+`        `
+
+`        ``// xpath 생성`
+
+`        ``XPath xpath = XPathFactory.newInstance().newXPath();`
+
+`        `
+
+
+
+`        `
+
+`        `
+
+`        ``// NodeList 가져오기 : row 아래에 있는 모든 col1 을 선택`
+
+`        ``NodeList cols = (NodeList)xpath.evaluate(``"//row/col1"``, document, XPathConstants.NODESET);`
+
+`        ``for``( ``int` `idx=``0``; idx
+
+[전에 getElementById(), getElementsByTagName() 요걸 쓰던 코드에 비하면 코드도 쉽게 읽히고 심플하기도 서울역에 그지없다.앞으로 xml 파싱할때는 xpath 를 주로 써야겠다.※ evalueate() 메소드 맨 끝에 들어가는 파라메터로](http://stove99.tistory.com/106)
+
+XPathConstants.NODESET
+
+XPathConstants.NODE
+
+XPathConstants.BOOLEAN
+
+XPathConstants.NUMBER
+
+<http://stove99.tistory.com/106>
+
+XPathConstants.STRING
+
+요런걸 쓸 수 있다. 변수 이름을 보면 대충 어떨때 써야 할지 알 수 있을것이라 생각한다.

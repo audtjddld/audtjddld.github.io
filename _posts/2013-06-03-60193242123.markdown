@@ -1,0 +1,42 @@
+---
+title: "전자정부프레임워크 적용 기준"
+date: 2013-06-03 14:05:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60193242123"
+---
+
+내가 직접 물어봄 ㅋㅋ
+
+<http://www.egovframe.go.kr/uss/olh/faq/FaqInqireCoUpdt.do?faqId=FAQ_0000000000000514&pageIndex=1>
+
+
+
+ Q :
+
+안녕하세요..
+
+표준프레임워크를 적용하였다는 기준이 있나요?
+
+감사합니다.
+
+
+
+A :
+
+안녕하세요..
+
+다음과 같은 조건이 만족하면 적용되었다고 판단할 수 있습니다.
+
+- Annotation 기반 Spring MVC 적용 및 Layered architecture 준수
+  => @Controller, @Service, @Repository를 통해 화면처리, 비지니스처리, 데이터처리를 구현하고 @Controller에서는 @RequestMapping을 활용
+- 관련하여 @Service는 표준프레임워크의 AbstractServiceImpl 상속, @Repository는 EgovAbstractDAO 상속)
+- 데이터 처리에 부분에 iBatis 또는 Hibernate 적용
+
+이상입니다.
+
+나머지 부분에 대해서는 선택적으로 적용하실 수 있으며 보다 자세한 내용은 다음 호환성 점검 도구 가이드의 "호환성 점검 기본 룰셋" 부분을 참조하십시오.
+
+<http://www.egovframe.org/wiki/doku.php?id=egovframework:compa>
+
+그럼.. 즐거운 하루되십시오.
+감사합니다.

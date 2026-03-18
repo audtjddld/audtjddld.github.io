@@ -1,0 +1,36 @@
+---
+title: "mysql export , import 하는 방법"
+date: 2015-11-18 20:00:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220543191779"
+---
+
+출처 : <http://messi09.tistory.com/216>
+
+1. exportmysqldump -u[user_id] -p [database_name] > [path][file_name].sql
+
+
+
+2. importmysql -u[user_id] -p [database_name] < [path][file_name].sql
+
+Mysql Data 만 Export**
+
+
+
+select * into outfile "/temp/file.dump" fields terminated by '\t' optionally enclosed by '"' lines terminated by '\n' from [dababase.tablename];
+
+
+
+
+
+
+
+
+
+
+
+Mysql Data Import
+
+
+
+LOAD DATA INFILE 'file.dump' INTO TABLE [dababase.tablename] FIELDS TERMINATED BY '\t' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\n';

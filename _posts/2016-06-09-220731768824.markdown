@@ -1,0 +1,10 @@
+---
+title: "angularjs 개행 관련"
+date: 2016-06-09 15:13:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220731768824"
+---
+
+-_-; 필터를 만들어서 <br />로 바꿔줘도 html로 인식이 안되기 때문에
+
+style="white-space:pre;" 을 속성으로 줘서 줄바꿈을 시켰다.

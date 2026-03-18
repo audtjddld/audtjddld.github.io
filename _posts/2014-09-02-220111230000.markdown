@@ -1,0 +1,107 @@
+---
+title: "rss 형식"
+date: 2014-09-02 17:59:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/220111230000"
+---
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<rss version="2.0">
+
+<channel>
+
+<title> ㅌㅏㅇㅣㅌㅡㄹ </title>
+
+<link> ㅈㅜㅅㅗ</link>
+
+<language>ko</language>
+
+<description><![CDATA[ rss ]]></description>
+
+    <c:forEach items="${resultList}" var="list">
+
+        <item>
+
+            <title><![CDATA[${list.title}]]> </title>
+
+            <link>ㅇㅠㅇㅏㄹㅇㅔㄹ</link>
+
+            <author>ㅈㅏㄱㅅㅓㅇㅈㅏauthor>
+
+            <category>ㅋㅏㅌㅔㄱㅗㄹㅣ</category>
+
+            <description>
+
+                <![CDATA[ㄴㅐㅇㅛㅇ]]>
+
+            </description>
+
+            <pubDate>ㅈㅏㄱㅅㅓㅇㅇㅣㄹ</pubDate>
+
+        </item>
+
+     <!---->
+
+    </c:forEach>
+
+<copyright>Copyright 2014</copyright>
+
+</channel>
+
+</rss>

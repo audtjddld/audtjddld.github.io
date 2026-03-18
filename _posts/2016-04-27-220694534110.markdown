@@ -1,0 +1,18 @@
+---
+title: "entityManager 와 entityManagerFactory"
+date: 2016-04-27 09:53:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220694534110"
+---
+
+entityManager는 데이터를 저장하고, 수정하고, 삭제하고, 조회하는 등 엔티티와 관련된 모든 일을 처리한다. 이름 그대로 엔티티를 관리하는 관리자다. 개발자 입장에서 EntityManager는 Entity를 저장하는 가상의 데이터베이스로 생각하면 된다.
+
+데이터베이스를 하나만 사용하는 애플리케이션은 일반적으로 EntityManagerFactory를 하나만 생성한다.
+
+ex)
+
+EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
+
+EntityManagerFactory 는 EntityManager를 생성하는 공장이다.
+
+엔티티매니저 팩토리는 여러 스레드가 동시에 접근해도 안전하므로 서로 다른 스레드 간에 공유해도 되지만, 엔티티 매니저는 여러 스레드가 동시에 접근하면 동시성 문제가 발생하므로 스레드 간에 절대 공유하면 안된다.

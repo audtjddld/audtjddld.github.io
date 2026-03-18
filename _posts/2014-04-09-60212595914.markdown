@@ -1,0 +1,1352 @@
+---
+title: "프로젝트 진행 중 고민"
+date: 2014-04-09 16:01:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60212595914"
+---
+
+**1. 서비스 Impl에 대한 고민**
+
+
+
+ 요근래 프로젝트를 하다보면서 느낀점이지만
+
+자주쓰이는 component 들을 매번 Service단에 선언하는 것들이 많이 있었습니다.
+
+(DI 주입 관련)
+
+
+
+@Resource(name="메일서비스")
+
+@Resource(name="sms발송 서비스")
+
+@Resource(name="파일관련")
+
+
+
+등등 이 있었는데
+
+매번 클래스에 정의해 두고 했었습니다.
+
+
+
+그런데 차라리 저렇게 선언할꺼면 따로 클래스에 protected로 정의해놓고
+
+extends 받아서 사용하면 어떨까 생각이 문득 들었습니다.
+
+(물론 매번 컨씨 컨브이로 붙이긴 하지만 그런 귀차니즘 해소용으로도..)
+
+
+
+이렇게 작성하게 되면 오히려 개발할때 좀더 개발자를 어렵게(?) 하거나,
+
+파일 관련 부분만 사용하는건데 메일이나 sms발송 쪽도 같이 따라오기 때문에
+
+성능상 문제가 있는지 궁금하네요.
+
+
+
+개념도는 아래와 같습니다.
+
+
+
+![](http://cafeptthumb1.phinf.naver.net/20140409_79/kkforgg_1397007335245aa5ye_PNG/%B1%D7%B8%B21.png?type=w740)
+
+![](http://cafeptthumb2.phinf.naver.net/20140409_239/kkforgg_1397007335577Jg1Nn_PNG/%B1%D7%B8%B22.png?type=w740)
+
+ex) 소스 코드 예
+
+**컴포넌트 클래스 (가정)**
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+package mngwserc.com.customer.service;
+
+
+
+import javax.annotation.Resource;
+
+
+
+import egovframework.com.cmm.service.EgovFileMngService;
+
+import egovframework.com.cmm.service.EgovFileMngUtil;
+
+import egovframework.com.cmm.service.MailService;
+
+import egovframework.com.cmm.service.SMSService;
+
+import egovframework.com.cmm.service.impl.FileManageDAO;
+
+
+
+public class CommonService {
+
+
+
+    /** 파일정보 **/
+
+    @Resource(name = "EgovFileMngService")
+
+    protected EgovFileMngService fileMngService;
+
+
+
+    /** 파일 전용 객채 **/
+
+    @Resource(name = "EgovFileMngUtil")
+
+    protected EgovFileMngUtil fileUtil;
+
+
+
+    // 파일 DAO 선언
+
+    @Resource(name="FileManageDAO")
+
+    protected FileManageDAO fileDAO;
+
+
+
+    // 메일 발송
+
+    @Resource(name="mailService")
+
+    protected MailService mailService;
+
+
+
+    // SMS 발송
+
+    @Resource(name="smsService")
+
+    protected SMSService smsService;
+
+
+
+
+
+}
+
+
+
+
+
+**상속받는 serviceImpl 클래스**
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+50
+
+51
+
+@Service("unsuitableService")
+
+public class UnsuitableServiceImpl extends CommonService implements UnsuitableService {
+
+
+
+    // DAO 선언
+
+    @Resource(name="unsuitableDAO")
+
+    private UnsuitableDAO dao;
+
+
+
+    // INDEX값 선언
+
+    @Resource(name="UnsuitableIdgen")
+
+    private EgovIdGnrService IDX;
+
+
+
+
+
+
+
+    public void insertUnsuitableInfo(Map<String, MultipartFile> files, UnsuitableVO vo) throws Exception{
+
+
+
+        try{
+
+
+
+            if(!files.isEmpty()){
+
+                List<FileVO> atchFileId = null;
+
+                String attach_file_id = null;
+
+
+
+                int limitFileSize = Integer.parseInt(EgovProperties.getProperty("Globals.atchfileSize"));
+
+                atchFileId = fileUtil.parseFileInf(files, "", 0, "", "Globals.fileStorePath", limitFileSize);    // 파일 아이디
+
+
+
+                if(atchFileId.size() > 0)
+
+                {
+
+                    attach_file_id = fileMngService.insertFileInfs(atchFileId);
+
+                }
+
+                if(files.size() != atchFileId.size()){
+
+                    throw new MaxUploadSizeExceededException(10485760);
+
+                }
+
+                if(attach_file_id != null){
+
+                    vo.setATCH_FILE_ID(attach_file_id);
+
+                }
+
+            }
+
+            // 첨부 파일 끝
+
+
+
+            vo.setIDX(IDX.getNextIntegerId());    // PK 값 셋팅
+
+
+
+            dao.insertUnsuitableInfo(vo);        // 정보 입력
+
+
+
+        }catch(MaxUploadSizeExceededException me){
+
+            System.out.println(me.getMessage());
+
+            throw new MaxUploadSizeExceededException(10485760);
+
+        }
+
+        catch(Exception e){
+
+            e.printStackTrace();
+
+            throw new UnknownErrorException(" Error");
+
+        }
+
+
+
+    }
+
+
+
+
+
+위와 같이 하는 것 입니다.
+
+
+
+**2. 컨트롤러 -> 서비스 간 고민**
+
+****
+
+기존 프로젝트 진행중 Controller 와 ServiceImpl 간 경계가 좀 모호했었습니다.
+
+예를 들자면
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+55
+
+56
+
+57
+
+58
+
+59
+
+60
+
+61
+
+62
+
+63
+
+64
+
+65
+
+66
+
+67
+
+68
+
+69
+
+70
+
+71
+
+72
+
+73
+
+74
+
+75
+
+76
+
+    @RequestMapping(value = "/mngwserc/customer/clientIdea/put.do", method = RequestMethod.POST)
+
+
+
+    public String insertClientIdea(final MultipartHttpServletRequest multiRequest, ModelMap modelMap,
+
+                                   @Valid @ModelAttribute("clientIdea") ClientIdeaVO clientIdeaVO,
+
+                                   BindingResult biresult) throws Exception {
+
+        String url = "";
+
+
+
+
+
+        if (biresult.hasErrors())
+
+        {
+
+            System.out.println("BindingResult ERROR : "+ multiRequest.getRequestURI());
+
+            modelMap.addAttribute("commandName", clientIdeaVO);
+
+            return "error/error.error";
+
+        }
+
+
+
+        try
+
+        {
+
+            HttpSession session = multiRequest.getSession(false);
+
+
+
+            if (session != null) {
+
+                LoginVO loginVO = (LoginVO) session.getAttribute("loginVO");
+
+
+
+
+
+                clientIdeaVO.setIDEAIDX(idgnService.getNextIntegerId());
+
+
+
+
+
+                clientIdeaVO.setREGID(loginVO.getId());
+
+
+
+
+
+                clientIdeaVO.setREGNAME(loginVO.getName());
+
+
+
+
+
+                clientIdeaVO.setREGIP(multiRequest.getRemoteAddr());
+
+
+
+
+
+                clientIdeaVO.setPROCESS_RESULT("A");
+
+
+
+**                // 첨부파일 업로드**
+
+**                final Map<String, MultipartFile> files = multiRequest.getFileMap();**
+
+**                if (!files.isEmpty()) **
+
+**                {**
+
+**                    List<FileVO> atchFileId = null;**
+
+**                    String atch_file_id = null;**
+
+** **
+
+**                    atchFileId = fileUtil.parseFileInf(files, "", 0, "", "Globals.fileStorePath", Integer.parseInt(FileSize));**
+
+** **
+
+**                    if (atchFileId.size() > 0) {**
+
+**                        atch_file_id = fileMngService.insertFileInfs(atchFileId);**
+
+**                    }**
+
+**                    if (files.size() != atchFileId.size()) {**
+
+**                        throw new MaxUploadSizeExceededException(10485760);**
+
+**                    }**
+
+**                    if (atch_file_id != null) {**
+
+**                        // ATTACH_FILE_ID 삽입**
+
+**                        clientIdeaVO.setATCH_FILE_ID(atch_file_id);**
+
+**                    }**
+
+**                }**
+
+
+
+
+
+                service.insertClientIdea(clientIdeaVO);
+
+            }
+
+        }
+
+        catch (MaxUploadSizeExceededException me)
+
+        {
+
+            System.out.println(me.getMessage());
+
+            throw new MaxUploadSizeExceededException(10485760);
+
+        }
+
+        catch (Exception e)
+
+        {
+
+            e.printStackTrace();
+
+            throw new UnknownErrorException("Error!!");
+
+        }
+
+
+
+        url = "redirect:/mngwserc/customer/clientIdea/list.do";
+
+        return url;
+
+    }
+
+
+
+위와 같이 컨트롤러 단에 file업로드 처리를 하는가 하면, serviceImpl 쪽에서 처리하는 그런 것 내용도 있었습니다.
+
+
+
+따라서 생각해보았는데요.
+
+
+
+Controller 단에서 MultipartRequest 로 넘어오면 multirequest 객체 안에 getFileMap(); 함수를 이용해서 얻은
+
+파일 정보들만 service 단으로 넘겨주는 겁니다.
+
+기본적인 필요한 정보(parameter) 들은 VO에 저장되기 때문에 파일 정보만 따로 빼서 넣으면 될 것 같습니다.
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+    @RequestMapping(value="/mngwserc/customer/unsuitable/insert.do")
+
+    public String insertUnsuitableInfo(final MultipartHttpServletRequest multiRequest,
+
+                                        ModelMap modepMap,
+
+                                        @ModelAttribute("UnsuitableVO") UnsuitableVO vo,
+
+                                        BindingResult biresult,
+
+                                        ModelMap modelMap) throws Exception{
+
+        // 유효성 체크
+
+        if(biresult.hasErrors())
+
+        {
+
+            modelMap.addAttribute("commandName", vo);
+
+            return "error/validerror.error";
+
+        }
+
+        // 작성 (내용 입력)
+
+        HttpSession session = multiRequest.getSession(false);
+
+        if(session != null){
+
+            LoginVO user = (LoginVO)session.getAttribute("loginVO");
+
+            vo.setREGIP(user.getIp());
+
+            vo.setREGNAME(user.getName());
+
+            vo.setREGID(user.getId());
+
+        }
+
+
+
+       ** final Map<String, MultipartFile> files = multiRequest.getFileMap();**
+
+
+
+        **service.insertUnsuitableInfo(files, vo);**
+
+
+
+        return "ㅁㅣㄱㅗㅇㄱㅐ";
+
+    }
+
+서비스 impl 단에서는 아래와 같이 사용합니다.
+
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+
+
+    public void insertUnsuitableInfo(**Map<String, MultipartFile> files, UnsuitableVO vo**) throws Exception{
+
+
+
+        try{
+
+
+
+            if(!**files**.**isEmpty()**){
+
+                List<FileVO> atchFileId = null;
+
+                String attach_file_id = null;
+
+
+
+                int limitFileSize = Integer.parseInt(EgovProperties.getProperty("Globals.atchfileSize"));
+
+                atchFileId = fileUtil.parseFileInf(**files**, "", 0, "", "Globals.fileStorePath", limitFileSize);    // 파일 아이디
+
+
+
+                if(atchFileId.size() > 0)
+
+                {
+
+                    attach_file_id = fileMngService.insertFileInfs(atchFileId);
+
+                }
+
+                if(files.size() != atchFileId.size()){
+
+                    throw new MaxUploadSizeExceededException(10485760);
+
+                }
+
+                if(attach_file_id != null){
+
+                    vo.setATCH_FILE_ID(attach_file_id);
+
+                }
+
+            }
+
+            // 첨부 파일 끝
+
+
+
+            vo.setIDX(IDX.getNextIntegerId());    // PK 값 셋팅
+
+
+
+            dao.insertUnsuitableInfo(vo);        // 정보 입력
+
+
+
+        }catch(MaxUploadSizeExceededException me){
+
+            System.out.println(me.getMessage());
+
+            throw new MaxUploadSizeExceededException(10485760);
+
+        }
+
+        catch(Exception e){
+
+            e.printStackTrace();
+
+            throw new UnknownErrorException(" Error");
+
+        }
+
+
+
+    }
+
+
+
+위와 같이 하면 컨트롤러단에서 비즈니스 로직처리 부분이 빠지고 깔끔하게 진행되고
+
+또한 현재 프레임워크에서 serviceImpl에 transaction을 걸어 놓은 상태이기 때문에 service단에서 에러가 발생하면
+
+db insert된 정보가 롤백되고, 또한 트렌젝션을 어디다가 걸지 고민하지 않고 클래스명에 serviceImpl 로 끝나는 메소드마다 걸어주면 되니
+
+관리 또한 편할 것 같습니다.
+
+
+
+
+
+**3. 프로퍼티 관련 고민.**
+
+
+
+현재 전자정부프레임워크 내에 fileMngUtil.java를 살펴보던 도중에 Globals 라는 클래스를 사용하는걸 보게되었습니다.
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+    /**
+
+     * 첨부로 등록된 파일을 서버에 업로드한다.
+
+     *
+
+     * @param file
+
+     * @return
+
+     * @throws Exception
+
+     */
+
+    public static HashMap<String, String> uploadFile(MultipartFile file) throws Exception {
+
+
+
+    HashMap<String, String> map = new HashMap<String, String>();
+
+    //Write File 이후 Move File????
+
+    String newName = "";
+
+    String stordFilePath = EgovProperties.getProperty("Globals.fileStorePath");
+
+    String orginFileName = file.getOriginalFilename();
+
+
+
+    int index = orginFileName.lastIndexOf(".");
+
+    //String fileName = orginFileName.substring(0, _index);
+
+    String fileExt = orginFileName.substring(index + 1);
+
+    long size = file.getSize();
+
+
+
+    //newName 은 Naming Convention에 의해서 생성
+
+    newName = getTimeStamp();    // 2012.11 KISA 보안조치
+
+    writeFile(file, newName, stordFilePath);
+
+    //storedFilePath는 지정
+
+    map.put(Globals.ORIGIN_FILE_NM, orginFileName);
+
+    map.put(Globals.UPLOAD_FILE_NM, newName);
+
+    map.put(Globals.FILE_EXT, fileExt);
+
+    map.put(Globals.FILE_PATH, stordFilePath);
+
+    map.put(Globals.FILE_SIZE, String.valueOf(size));
+
+
+
+    return map;
+
+    }
+
+
+
+
+
+저게 뭔가해서 안을 열어보니 globals.property에 선언한 공통으로 쓰여질 값들을 static 변수로 담아놓고 사용하는 것을 확인 했습니다.
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+
+
+public class Globals {
+
+    //OS 유형
+
+    public static final String OS_TYPE = EgovProperties.getProperty("Globals.OsType");
+
+    //DB 유형
+
+    public static final String DB_TYPE = EgovProperties.getProperty("Globals.DbType");
+
+    //메인 페이지
+
+    public static final String MAIN_PAGE = EgovProperties.getProperty("Globals.MainPage");
+
+    //ShellFile 경로
+
+    public static final String SHELL_FILE_PATH = EgovProperties.getPathProperty("Globals.ShellFilePath");
+
+    //퍼로퍼티 파일 위치
+
+    public static final String CONF_PATH = EgovProperties.getPathProperty("Globals.ConfPath");
+
+    //Server정보 프로퍼티 위치
+
+    public static final String SERVER_CONF_PATH = EgovProperties.getPathProperty("Globals.ServerConfPath");
+
+    //Client정보 프로퍼티 위치
+
+    public static final String CLIENT_CONF_PATH = EgovProperties.getPathProperty("Globals.ClientConfPath");
+
+    //파일포맷 정보 프로퍼티 위치
+
+    public static final String FILE_FORMAT_PATH = EgovProperties.getPathProperty("Globals.atchFileExt");
+
+
+
+    //파일 업로드 원 파일명
+
+    public static final String ORIGIN_FILE_NM = "originalFileName";
+
+    //파일 확장자
+
+    public static final String FILE_EXT = "fileExtension";
+
+    //파일크기
+
+    public static final String FILE_SIZE = "fileSize";
+
+    //업로드된 파일명
+
+    public static final String UPLOAD_FILE_NM = "uploadFileName";
+
+    //파일경로
+
+    public static final String FILE_PATH = "filePath";
+
+
+
+    //메일발송요청 XML파일경로
+
+    public static final String MAIL_REQUEST_PATH = EgovProperties.getPathProperty("Globals.MailRequestPath");
+
+    //메일발송응답 XML파일경로
+
+    public static final String MAIL_RESPONSE_PATH = EgovProperties.getPathProperty("Globals.MailRResponsePath");
+
+
+
+    // G4C 연결용 IP (localhost)
+
+    public static final String LOCAL_IP = EgovProperties.getProperty("Globals.LocalIp");
+
+
+
+
+
+
+
+}
+
+
+
+따라서 저희가 자주 사용하는 파일 경로라던지 메일 경로들을 저 클래스 안에 추가적으로 선언하고
+
+사용하면 좋지 않을까 하는 생각이 들어서
+
+앞으로 프로젝트 진행시에 한번 이용해봤으면 했습니다.

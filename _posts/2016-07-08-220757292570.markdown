@@ -1,0 +1,7 @@
+---
+title: "spring boot를 이용한 batch 작성 중 문제?"
+date: 2016-07-08 21:04:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220757292570"
+---
+

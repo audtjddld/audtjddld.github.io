@@ -1,0 +1,120 @@
+---
+title: "sonarqube 지표"
+date: 2019-03-06 17:20:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221481750270"
+---
+
+아래 링크를 보고 확인할 수 있다.
+
+​
+
+<https://sonarqubekr.atlassian.net/wiki/spaces/SON/pages/395311>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                [**SonarQube KR Documentation**
+
+
+                                        sonarqubekr.atlassian.net](https://sonarqubekr.atlassian.net/wiki/spaces/SON/pages/395311)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+​
+
+<http://blog.naver.com/genycho/60068626587?viewType=pc>
+
+​
+> [**테스트 커버리지의 종류와 간단한 정의(statement coverage, decision coverage, condition coverage, path coverage)**](http://blog.naver.com/genycho/60068626587?viewType=pc)
+>
+> Code Coverage(*)란 프로그램의 소스 코드가 얼마만큼 테스트가 되었는가를 나타내는 지표 커버리지 측정...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+<https://brunch.co.kr/@leehosung/43>
+> [**코드 커버리지 80% 넘긴 썰**](https://brunch.co.kr/@leehosung/43)
+>
+> 테스팅을 잘 하기 위한 8퍼센트 개발팀의 삽질기 | 첫 번째 테스트 코드를 짜기까지  2015년 1월이었던 것으로 기억해. 당시 전 회사에서 테스트를 정착시키기 위해서 노력을 하고 있었는데, 사실 잘 되지 않았어. 그래서 혼자 ‘Testing Goat’를 따르며 공부를 하고 있었어. 그때 8퍼센트 이효진 대표와 연락이 닿았고, 초기 개발을 좀 도와 달라는 요청을 받았어. 옳다구나! 실전에 적용해 볼 수 있겠
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+<https://m.blog.naver.com/PostView.nhn?blogId=suresofttech&logNo=220842159146&proxyReferer=https%3A%2F%2Fwww.google.com%2F>
+> [**커버리지란 무엇인가**](https://m.blog.naver.com/PostView.nhn?blogId=suresofttech&logNo=220842159146&proxyReferer=https%3A%2F%2Fwww.google.com%2F)
+>
+> 생활 속에서 얼마나 많은 소프트웨어를 사용하고 있는지 생각해 본 적 있나요? 소프트웨어의 사용이 많아지...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

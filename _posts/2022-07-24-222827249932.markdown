@@ -1,0 +1,295 @@
+---
+title: "Spring test @DataJpaTest"
+date: 2022-07-24 21:54:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222827249932"
+---
+
+Sping repository를 테스트 하고 싶은 경우 @DataJpaTest 애노테이션을 이용해서 test code를 작성할 수 있다.
+
+​
+
+Spring context loading을 축소하기 위한 방법으로 매우 유용한 것 같다.
+
+​
+
+관련 reference:
+
+<https://www.baeldung.com/spring-boot-testing>
+
+​
+
+​
+
+**7. *****@DataJpaTest를 이용한 *****통합테스트  **
+
+​
+
+Employee이름의 entity 클래스를 이용하여 테스트를 작성한 예제이다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+@Entity
+@Table(name = "person")
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @Size(min = 3, max = 20)
+    private String name;
+
+    // standard getters and setters, constructors
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+Repository 예제
+
+
+
+
+
+
+
+
+
+
+```
+@Repository
+public interface EmployeeRepository extends JpaRepository {
+
+    public Employee findByName(String name);
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+테스트 코드의 골격은 아래와 같다.
+
+
+
+
+
+
+
+
+
+```
+@RunWith(SpringRunner.class)
+@DataJpaTest
+public class EmployeeRepositoryIntegrationTest {
+
+    @Autowired
+    private TestEntityManager entityManager;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    // write test cases here
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@RunWith(SpringRunner.class) 애노테이션은 Spring Boot Test와 Junit Test를 연결 시켜준다. Spring boot Test에서 Junit을 사용할 경우 이 애노테이션을 붙여줘야 한다.
+
+​
+
+​
+
+@DataJpaTest는  Persistence layer의 test 셋업을 지원해준다.
+
+h2(in-memory database)
+
+Hibernate, Spring Data와 DataSource
+
+@EntityScan을 수행한다.
+
+그리고 SQL Logging을 튜닝해준다.
+
+​
+
+테스트를 하기 위해서는 테스트 database에 테스트 record가 필요한데, testEntityManager를 사용할 수 있다.
+
+​
+
+Spring boot TestEntityManager는 일반적인 JPA와는 다르게, Test를 작성할 수 있도록 도와준다.
+
+*​*
+
+​
+
+*EmployeeRepository* 의 test를 작성해보면 다음과 같다.
+
+
+
+
+
+
+
+
+
+
+```
+@Test
+public void whenFindByName_thenReturnEmployee() {
+    // given
+    Employee alex = new Employee("alex");
+    entityManager.persist(alex);
+    entityManager.flush();
+
+    // when
+    Employee found = employeeRepository.findByName(alex.getName());
+
+    // then
+    assertThat(found.getName())
+      .isEqualTo(alex.getName());
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+위 test code에서는 TestEntityManager를 이용하여 Employee record를 DB에 저장할 수 있다.
+
+​
+
+이렇게 작서할 경우 persist가 동작하지 않는 경우가 있다.
+
+​
+
+entity 정보가 존재한다거나 insert를 할 수 없다는 등의 내용을 나오는데, 이러한 경우 회피할 수 있는 방법은 entityManager.merge(clazz) 하는 것이다.
+
+​
+
+또한, Entity Class에 Id에     @GeneratedValue(strategy = GenerationType.AUTO) 애노테이션이 붙어 있거나, @SequenceGenerator 애노테이션이 붙어 있어 원하는 아이디를 입력할 수 없는 경우에는 [@Sql 애노테이션](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/test/context/jdbc/Sql.html)을 이용하여 Sql Script를 이용하여 테스트를 작성할 수 있다.
+
+​
+
+참고 링크 :
+
+<https://www.baeldung.com/spring-boot-data-sql-and-schema-sql#sqlannotation>
+
+​
+
+test 코드의 resources 폴더 안에 작성한 sql을 가져올 경우 @Sql("classpath:파일명.sql") 형태로 테스트 코드에 작성해주면 test가 수행 될 때 sql이 실행되는 것을 확인할 수 있다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+@RunWith(SpringRunner.class)
+@DataJpaTest
+@Sql("classpath:예제.sql")
+public class EmployeeRepositoryIntegrationTest {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    // write test cases here
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

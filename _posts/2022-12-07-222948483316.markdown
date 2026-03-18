@@ -1,0 +1,390 @@
+---
+title: "네트워크 성능 측정 (iperf3)"
+date: 2022-12-07 10:29:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222948483316"
+---
+
+네트워크 망이 여러 platform을 통해서 전달되다보니, 의외의 현상이 발생되었다. read timeout이 정상적으로 동작하지 않는다던지, 네트워크 지연이 발생된다던지 이런 문제들이 생겼는데, 내부 지표를 확인했을 때는 문제를 식별할 수 없었다.
+
+​
+
+지연이 발생되는 부분이 어떤 이유로 발생하고 있는지, 어떻게 측정할 수 있는지를 살펴보던 중 iperf를 알게되서 잘 정리된 blog 내용을 퍼왔습니다.
+
+​
+
+이후에 성과가 있으면 이 문서에 추가로 업데이트 할 예정 입니다.
+
+​
+
+**​**
+
+**iperf3 란**
+
+iperf3 는 네트워크 처리량을 측정할 수 있는 툴입니다. TCP와 UDP 모두 테스트할 수 있습니다.
+
+iperf3 를 테스트하려면 서버 클라이언트 모두 설정해야 합니다.
+
+​
+
+**iperf3 설치**
+
+
+
+
+
+
+
+
+
+```
+/* Ubuntu 에 iperf3 설치 */
+
+# sudo apt-get install iperf3
+
+/* CentOS 에 iperf3 설치 */
+
+# sudo yum install iperf3
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+**iperf3 옵션**
+
+
+
+
+
+
+
+
+
+
+```
+GENERAL OPTIONS
+       -p, --port n
+              리슨하는 서버 포트를 지정하거나 connect 하려는 포트를 설정합니다.
+              (기본값 5201)
+
+       -f, --format
+              [kmKM]   출력 포멧: Kbits, Mbits, KBytes, MBytes
+
+       -i, --interval n
+              n 초마다 결과를 출력합니다. 기본값을 1초이고 0을 사용하면 매 주기 리포트를 끕니다.
+
+       -F, --file name
+              클라이언트 : 랜덤 데이터를 전송하지 않고, 특정 파일을 전송합니다.
+              서버 : 받은 데이터를 버리지 않고, 네트워크에서 데이터를 읽어서 해당 파일에 씁니다.
+
+       -A, --affinity n/n,m
+              설정이 가능하면 CPU affinity를 설정합니다 (linux only).
+              서버 클라이언트 모두 affinity를 설정할수 있습니다.
+
+       -V, --verbose
+              로그를 더 자세히 출력합니다.
+
+       -J, --json
+              JSON format으로 결과를 출력합니다.
+
+       -d, --debug
+              디버깅 정보를 출력합니다.
+
+       -v, --version
+              버전정보를 보여줍니다.
+
+       -h, --help
+              사용법을 출력합니다.
+
+SERVER SPECIFIC OPTIONS
+       -s, --server
+              서버 모드로 실행합니다.
+
+       -D, --daemon
+              데몬모드로 서버를 실행합니다.
+
+       -1, --one-off
+              클라이언트가 한번 접속하고 처리한후 서버를 종류합니다.
+
+CLIENT SPECIFIC OPTIONS
+       -c, --client host
+              서버에 접속하기 위에 클라이언트 모드로 실행합니다.
+
+       -u, --udp
+              UDP를 사용합니다.
+
+       -b, --bandwidth n[KM]
+              대역폭을 n bits/sec로 설정합니다. (UDP의 경우는 기본값은 1Mbit/sec이고,
+              TCP는 unlimited 입니다.)
+
+       -t, --time n
+              전송 시간을 설정합니다. (기본값 10 초)
+
+       -n, --bytes n[KM]
+              전송할 바이트를 설정합니다. (-t 대신 사용합니다.)
+
+       -k, --blockcount n[KM]
+              전송할 블럭(packets)수를 설정합니다. (-t, -n 대신 사용합니다.)
+
+       -l, --length n[KM]
+              버퍼 읽고 쓰는 크기를 설정합니다. (TCP 기본값 128KB, UDP 기본값 8KB)
+
+       -P, --parallel n
+              몇개의 커넥션을 연결할지 설정합니다.
+
+       -R, --reverse
+              리버스 모드로 동작합니다. (서버는 데이터를 전송하고 클라이언트는 수신합니다)
+
+       -w, --window n[KM]
+              소켓버퍼 사이즈를 설정합니다. (이 데이터는 서버로 전송되고 같은값을 사용하게 됩니다.)
+
+       -B, --bind n[KM]
+              특정 interface를 바인드 하거나 멀티캐스트 어드레스를 사용합니다.
+
+       -M, --set-mss n
+              TCP Maximum segment size를 설정합니다.
+
+       -N, --no-delay
+              Nagle's Algorithm을 끕니다.
+              set TCP no delay, disabling Nagle's Algorithm
+
+       -4, --version4
+              IPv4 를 사용합니다.
+
+       -6, --version6
+              IPv6 를 사용합니다.
+
+       -C, --linux-congestion algo
+              TCP congestion control 알고리즘을 지정할수 있습니다. (linux only).
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**iperf3 사용 예**
+
+서버 실행 (IPv4)
+
+
+
+
+
+
+
+
+
+```
+test@test-VirtualBox:~$ iperf3 -s
+-----------------------------------------------------------
+Server listening on 5201
+-----------------------------------------------------------
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+클라이언트 실행 (IPv4)
+
+
+
+
+
+
+
+
+
+```
+test@test-VirtualBox:~$ iperf3 -c 127.0.0.1
+Connecting to host 127.0.0.1, port 5201
+[  4] local 127.0.0.1 port 38540 connected to 127.0.0.1 port 5201
+[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+[  4]   0.00-1.00   sec  5.64 GBytes  48.5 Gbits/sec    0   6.43 MBytes
+[  4]   1.00-2.00   sec  5.35 GBytes  45.9 Gbits/sec    0   6.43 MBytes
+[  4]   2.00-3.00   sec  5.31 GBytes  45.6 Gbits/sec    0   6.43 MBytes
+[  4]   3.00-4.00   sec  5.19 GBytes  44.5 Gbits/sec    0   6.43 MBytes
+[  4]   4.00-5.00   sec  5.39 GBytes  46.3 Gbits/sec    0   6.43 MBytes
+[  4]   5.00-6.00   sec  5.53 GBytes  47.5 Gbits/sec    0   6.43 MBytes
+[  4]   6.00-7.00   sec  5.50 GBytes  47.2 Gbits/sec    0   6.43 MBytes
+[  4]   7.00-8.00   sec  5.37 GBytes  46.1 Gbits/sec    0   6.43 MBytes
+[  4]   8.00-9.00   sec  5.42 GBytes  46.5 Gbits/sec    0   6.43 MBytes
+[  4]   9.00-10.00  sec  5.61 GBytes  48.0 Gbits/sec    0   6.43 MBytes
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-10.00  sec  54.3 GBytes  46.6 Gbits/sec    0             sender
+[  4]   0.00-10.00  sec  54.3 GBytes  46.6 Gbits/sec                  receiver
+
+iperf Done.
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+서버 실행 (IPv6)
+
+
+
+
+
+
+
+
+
+```
+test@test-VirtualBox:~$ iperf3 -s -6
+-----------------------------------------------------------
+Server listening on 5201
+-----------------------------------------------------------
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+클라이언트 실행 (IPv6)
+
+
+
+
+
+
+
+
+
+```
+test@test-VirtualBox:~$ iperf3 -c fe80::b346:2a33:d986:27d6%enp0s3
+Connecting to host fe80::b346:2a33:d986:27d6%enp0s3, port 5201
+[  4] local fe80::b346:2a33:d986:27d6 port 38052 connected to fe80::b346:2a33:d986:27d6 port 5201
+[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+[  4]   0.00-1.00   sec  5.60 GBytes  48.1 Gbits/sec    0   3.12 MBytes
+[  4]   1.00-2.00   sec  5.35 GBytes  45.9 Gbits/sec    0   3.12 MBytes
+[  4]   2.00-3.00   sec  5.35 GBytes  46.0 Gbits/sec    0   3.12 MBytes
+[  4]   3.00-4.00   sec  5.38 GBytes  46.1 Gbits/sec    0   3.12 MBytes
+[  4]   4.00-5.00   sec  5.59 GBytes  48.2 Gbits/sec    0   3.12 MBytes
+[  4]   5.00-6.00   sec  5.28 GBytes  45.3 Gbits/sec    0   3.12 MBytes
+[  4]   6.00-7.00   sec  5.56 GBytes  47.8 Gbits/sec    0   3.12 MBytes
+[  4]   7.00-8.00   sec  5.32 GBytes  45.7 Gbits/sec    0   3.12 MBytes
+[  4]   8.00-9.00   sec  5.61 GBytes  48.2 Gbits/sec    0   3.12 MBytes
+[  4]   9.00-10.00  sec  5.64 GBytes  48.3 Gbits/sec    0   3.12 MBytes
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-10.00  sec  54.7 GBytes  47.0 Gbits/sec    0             sender
+[  4]   0.00-10.00  sec  54.7 GBytes  47.0 Gbits/sec                  receiver
+
+iperf Done.
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**​**
+
+​
+
+출처: <https://hand-over.tistory.com/30>
+> [**iperf3 사용법 (서버 클라이언트 속도측정)**](https://hand-over.tistory.com/30)
+>
+> 안녕하세요. 오늘은 서버 클라이언트 간 네트워크 속도를 테스트하는 툴인 iperf3에 대해서 포스팅하겠습니다. iperf3 란 iperf3 는 네트워크 처리량을 측정할 수 있는 툴입니다. TCP와 UDP 모두 테스트할 수 있습니다. iperf3 를 테스트하려면 서버 클라이언트 모두 설정해야 합니다. iperf3 설치 /* Ubuntu 에 iperf3 설치 */ # sudo apt-get install iperf3 /* CentOS 에 iperf3 설치 */ # sudo yum install iperf3 iperf3 옵션 GENERA...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

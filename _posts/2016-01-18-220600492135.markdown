@@ -1,0 +1,12 @@
+---
+title: "java 속도체크"
+date: 2016-01-18 00:32:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220600492135"
+---
+
+long start = System.currentTimeMillis();
+
+long end = System.currentTimeMillis();
+
+System.out.println( "시간  : " + ( end - start )/1000.0 );

@@ -1,0 +1,68 @@
+---
+title: "[우분투 ubuntu] 우분투 14.04 server에 Mysql 설치, 외부 권한 주기, db 생성"
+date: 2016-02-11 15:12:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220623737901"
+---
+
+- Mysql 검색
+
+- #apt-cache search mysql-server
+
+- Mysql 설치
+
+- #apt-get install mysql-server-5.5
+- #apt-get install mysql-client-5.5
+-사실 클라이언트는 필요없다. 근데 우선 나는 설치함.
+
+<blockquote class="tr_bq "></blockquote>- Mysql 외부 접속 권한 부여
+-설치할 당시에는 localhost만 접속할 수 있게 설정되어 있다.
+
+- mysql database에 로그인
+
+- #mysql -u root -p
+-우선 root 로 로그인한다. 패스워드는 설치할때 설정한 패스워드 입력
+- #mysql -h 우분투ip -P 3306 -u root -p
+
+- default db 변경
+
+- use mysql;
+
+- 권한 부여
+
+- GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '패스워드 입력';
+- mysql에서는 sql 문을 사용할수 있다
+- root@모든 아이피로 접속된 사용자에게 모든 권한을 준다는 뜻
+- flush privileges;
+- 권한 즉시 적용
+- .my.cnf 설정 파일 변경
+
+- #sudo vi /etc/mysql/my.cnf  에 들어가서
+
+- bind-address = 127.0.0.1 이 부분 주석
+
+- mysql server 재시작
+
+- #sudo /etc/init.d/mysql restart
+
+- mysql db 생성
+mysql 에서는 sql문 사용이 가능하다
+
+- mysql 접속 : #mysql -u root -p
+- 현재 database 보기: show databases;
+- database 만들기 : create database 데이터베이스명;
+- database 사용 : use 데이터베이스명'
+- table 만들기 : create table 테이블명 (
+칼럼명 데이타형식 ~~~~
+);
+원래 mysql create 문과 같다.
+- 예를들면, 나는 TODO라는 이름의 테이블을 만들때,
+
+CREATE TABLE TODO (
+TODO_ID int(11) NOT NULL AUTO_INCREMENT,
+CONTENT varchar(200) DEFAULT NULL,
+HASDONE varchar(10) DEFAULT NULL,
+DATE datetime DEFAULT NULL,
+PRIMARY KEY (TODO_ID)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+-

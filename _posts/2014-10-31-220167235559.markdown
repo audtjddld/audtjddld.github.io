@@ -1,0 +1,64 @@
+---
+title: "[펌] spring Bean에서 ServletContext 얻어내기"
+date: 2014-10-31 11:53:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/220167235559"
+---
+
+## Spring Bean에서 ServletContext 얻어내기
+
+[출처 : cyberhp.egloos.com/1277162](http://cyberhp.egloos.com/1277162)
+
+Spring Bean을 만들때 다음과 같이 만듭니다.
+
+
+
+public class TestBean implements ServletContextAware {
+   public void setFileFullPath(String fileFullPath) {
+      // fileFullPath에 '/WEB-INF/conf/ubicontext.xml'이 들어온다고 가정합니다.
+   }
+
+
+
+   public void setServletContext(ServletContext ctx) {
+      this.ctx = ctx;
+   }
+
+   public void init() {
+      ctx.getRealPath(fileFullPath);
+      // 위의 결과가 절대경로로 나옵니다.
+   }
+
+}
+
+
+
+Bean의 설정은
+
+<bean id="xxxBean" class="xx.xx.xxxx" init-method="init">
+    <property name="fileFullPath" value="${ubi.context.filPath}"/>
+</bean>
+
+
+
+수행되는 순서를 살펴보면,
+
+1. 생성자 호출
+2. setFileFullPath() 호출(아마도 setProperty들이 먼저 호출되는 거 같습니다.)
+3. setServletContext() 호출
+4. init() 호출
+
+입니다.
+
+
+
+/WEB-INF/ 밑에 있는 파일들의 절대 경로를 얻고자 할 때 필요해서 찾아냈다.
+
+흠흠..
+
+
+
+---------------------------------------------------------------------------------------------
+
+이걸 모르고 맨날 풀패스를 적어줬던 나.. ㅠㅠ

@@ -1,0 +1,44 @@
+---
+title: "gradle cache refresh 하는 방법"
+date: 2020-01-07 17:52:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221763132040"
+---
+
+명령어
+
+​
+
+gradle  --refresh-dependencies
+
+​
+
+​
+
+관련 정보는 아래 링크를 통해 확인
+
+​
+
+<https://kwonnam.pe.kr/wiki/gradle/dependencies>
+> [**gradle:dependencies [권남]**](https://kwonnam.pe.kr/wiki/gradle/dependencies)
+>
+> Gradle Dependencies Dependency Management Basic Dependency Management 의존성 소개 Gradle은 이행적(transitive) 의존성 관리를 지원한다. Maven 과 Ivy 를 지원한다. 이행적 의존성이 아닌 일반 파일로 저장된 외부 라이브러리도 지원한다. 빌드 스크립트에서 직접 의존성을 지정한다. 의존성 설정 기본 group, name, version 순서로 써줄 수 있다. dependencies { compile group: 'org.hibernate' , name: 'hib...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

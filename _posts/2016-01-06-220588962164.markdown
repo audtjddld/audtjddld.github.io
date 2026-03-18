@@ -1,0 +1,12 @@
+---
+title: "eUML Tool"
+date: 2016-01-06 08:31:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220588962164"
+---
+
+UML을 작성할 수 있는 오픈소스 라이브러리다.
+
+이클립스에서 설치하고 사용할 수 있다고 한다.
+
+<http://prosigi.tistory.com/155>

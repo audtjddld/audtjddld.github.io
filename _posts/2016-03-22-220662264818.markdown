@@ -1,0 +1,24 @@
+---
+title: "JAVA STOMP"
+date: 2016-03-22 17:53:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220662264818"
+---
+
+###
+
+@annotationdescription@MessageMappingSTOMP client의 send에 대한 target url입니다.@SendToSTOMP client의 subscribe에 대한 target url을 지정합니다. (지정되지 않은 경우, @MessageMapping에 지정된 URL + @Configuration에서 설정된 prefix URL을 이용합니다. )@SubscribeEvent
+client에서 subscribe 할 수 있는 url을 지정합니다. 특정 message가 발생하거나 event가 발생했을 때, Client에 값을 전송하는데 사용합니다.
+
+출처 : <http://netframework.tistory.com/entry/Spring-4x%EC%97%90%EC%84%9C%EC%9D%98-WebSocket-SockJS-STOMP>
+
+<http://netframework.tistory.com/entry/Spring-4x에서의-WebSocket-SockJS-STOMP>
+
+[Spring 4.x에서의 WebSocket, SockJS, STOMPWebSocket, SockJS, STOMP " style="clear: both; font-size: 2.2em; margin: 0px 0px 1em; color: rgb(34, 34, 34); font-family: 'Ro...netframework.tistory.com](http://netframework.tistory.com/entry/Spring-4x에서의-WebSocket-SockJS-STOMP)
+
+기타 설명들
+
+<http://www.egovframe.go.kr/wiki/doku.php?id=egovframework:rte3.5:ptl:stmp>
+
+[egovframework:rte3.5:ptl:stmp    [eGovFrame]www.egovframe.go.kr](http://www.egovframe.go.kr/wiki/doku.php?id=egovframework:rte3.5:ptl:stmp)
+

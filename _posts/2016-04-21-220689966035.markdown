@@ -1,0 +1,154 @@
+---
+title: "Angular Material 을 이용한 개발"
+date: 2016-04-21 23:51:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220689966035"
+---
+
+Material 디자인이란 무엇인가?
+
+구글이 처음 모바일 디바이스를 만들었을 때, 모바일에는 부족한 것이 많았습니다. 화면 크기도 작았고, 네트워크 연결 속도도 빠르지 않았고, 기능도 별로 없었습니다. 사용하기에 그다지 편리한 환경은 아니었죠. 하지만, 모바일 디바이스는 빠르게 진화했습니다. 성능은 훨씬 더 강력해졌고, 속도는 빨라졌고, 보다 직관적으로 사용할 수 있도록 발전하였습니다. 이제 모바일 디바이스를 위한 UX를 디자인할 때도 이런한 발전을 염두해 두어야 합니다. 더군다나, 이번 I/O 에서 안드로이드는 새로운 폼팩터를 지원할 수 있도록 확장되었습니다. 이러한 변화에 발맞추어, 구글은 모바일과 데스크탑 그리고 그 외 다양한 디바이스들을 아우르는 하나의 일관된 디자인 가이드라인을 공개하였습니다. 바로 머티리얼 디자인 (material design) 입니다. 머티리얼 디자인은 질감이 느껴지는 표면 (tactile surfaces) 과 대담하고 선명한 그래픽 디자인 (bold graphic design), 그리고 아름답고 직관적인 사용자 경험을 위한 자연스러운 애니메이션을 특징으로 합니다.
+
+출처 : <http://googledevkr.blogspot.kr/2014/07/this-is-material-design.html>
+
+ **
+
+도입 동기
+
+<https://almsaeedstudio.com/preview>
+
+우선 과장님이 사내 관리시스템을 adminLTE 처럼 ui를 만들어서 구축하실 계획이셨는데 이번에
+
+내가 입사하면서 개편할 겸 해서 선택한 것이 Angular Material UI 이다.
+
+ui에 관심이 많으시다
+
+따라서, 프로젝트 진행 하면서 angular material을 도입해서 개발하고 있다.
+
+<https://material.angularjs.org/latest/>
+
+angular material은 기존 angular 1을 사용하고 있으며, 계속해서 개발되고 릴리즈 되는 상태다.
+
+( 2 버전도 개발 중이라고 한다.)
+
+사용하면서 느낀점
+
+부족한 기능들도 많이 있다. 아직 릴리즈 되고 있는 상태이고 업데이트는 빠른 상태로 되어지고 있는 상태지만
+
+그에 따라서 생각한 UI대로 기능을 구현할때 막히는 부분이 있다.
+
+예를 들면 material 에서 제공하는 Datepicker를 이용해서 사용자의 생년월일을 입력한다고 할때,
+
+현재는 년월일을 따로 컨트롤 할 수가 없다.
+
+우선 Matrial ui 컨셉을 확인할 수 있는 사이트 <http://www.material-ui.com/#/components/date-picker>
+
+를 이동해서 확인하면 아래와 같이 년도나 월을 클릭해서 손쉽게 선택이 가능해야 하지만 현재
+
+Angular Matrial에서는 불가능하다.
+
+![](https://lh4.googleusercontent.com/rKDrITtOlL0ojmc3onpIws2NSv-3E-9vIJvyp3n7-kJc6X6Wvo-8_WrnDxo4Ot9G23GVnaq9Jc9mgNEH3iK7rqGDZmmAUk2d__NXYW01ux81K6N2GTAwzKZVqAVcGexNQ64a8eNE)
+
+ **
+
+![](https://lh3.googleusercontent.com/HLUvFd4d-Lw38Mip1JJXL0cfRmHCTizAXg-kUmAepgdXi6Dlhpvg_MfytOT4GMIbl8RrGVsR0HoRdHSIQcDTTH8vk5OVB8L36GBFP3KNblDIqwuwStOWw2NG8owGZf0jTuVZMU2X)
+
+휠로 조절이 가능한데 70년도 생년월일 선택하다가 마우스 휠이 나갈판이다. -_-;;
+
+아무튼 이런 이유 때문에 현재 github에서는 서로 의논중이고 대한으로 만들어놓은 여러 플러그인들을
+
+소개하며 의견을 주고 받고 있다.
+
+<https://github.com/angular/material/issues/4251>
+
+우리는 대안으로 사용한 라이브러리는 md-pickers 를 사용하였다.
+
+<https://github.com/alenaksu/mdPickers>
+
+물론 mdPickers 도 완벽하지는 않다.. 그래도 년월일을 좀더 자유롭게 컨트롤이 가능하다는 점에서 선택했다.
+
+ **
+
+살펴보기
+
+<https://material.angularjs.org/latest/>
+
+우선 기본적인 컴포넌트 들이나 layout 설정 및 데모들을 확인할 수 있다.
+
+깔끔한 ui, Input 및 List, Checkbox, Dialog 등등 좋은 컴포넌트들이 많이 있다.
+
+![](https://lh6.googleusercontent.com/Dm_ZDDB1Ch718bZtnWblwkRv2tHHgPNNyxDq9LnowGHwX_Fjzg-NdDt0hrV6PxTr4htU3bZN-W0cC7NIawutSGGFFEA4AQaqW4hz2lTdCj8WJoyh3P2Or9pqjjiLjq5SlmNCTpDX)
+
+ **
+
+![](https://lh4.googleusercontent.com/dkF4Z1c2IHwOuWDIUM4zdpPXReAMvil-d20c26nph7cb6wHEBXQ6gsbYaFdvkYhLJ1ScK1yq7NTKoRLwD6HuDunwpyXx3XZsyi8io-Fal2nDq1bfSxkA2zPNY4fmIrjfe5Bmrfqk)
+
+버튼 UI
+
+![](https://lh6.googleusercontent.com/L_FEGxYgk2coEzSMakOGUo3pRHrFEfuY71vSOIfkD0U9gfHTgQ_H-tYkazAVidkTqhM95t62AER4vXcXWv_kBhDpfNHKCwmc6OV2OQHNtlyXcUAkZnhRS95PV-3hmn-0shXnaJt5)
+
+CHECK BOX
+
+![](https://lh6.googleusercontent.com/aIdF54K17xjYUDRKIvwVoPGMFxPB0ZkiByRBeEqod5HYHGXEauTMwMvU4h2W-oY4bCqr58jgiUz5FACbgBLGLzvfzkl0-fEv0sw_DchUQ29aJVaU6NhyppFxPSwQoSTdzqt9Q_6l)
+
+INPUT UI
+
+위에서 캡쳐해놓은 것과 같이 ui가 알록 달록 이쁘게 만들어 지는 것이 특징이다.
+
+ **
+
+장점
+
+앱에서도 Material UI를 적용해서 개발한 화면을 봣기 때문에 통일성? 잘되는 것 같다.
+
+그리고 컴포넌트들을 이용해서 멋진 UI 효과를 나타낼 수 있으며, 별도의 Directive를 생성하지 않고도
+
+여러 기능들을 어려움 없이 만들 수 있다.
+
+그리고 기본으로 제공되는 button들이 많이 있어서 사용하기 좋다.
+
+<https://design.google.com/icons/>
+
+여러 종류의 아이콘들이 계속해서 업데이트 되고 있기 때문에 필요한 부분에 적절하게 사용하면 된다.
+
+toastr (http://codeseven.github.io/toastr/demo.html) 등의 여러기능들도 같이 포함되어있다.
+
+여러 라이브러리들을 잘 활용해서 UI를 꾸밀 수 있다.
+
+UI 작성시 어느정도 복잡하지 않으면 빠르게 작성이 가능해진다.
+
+단점
+
+기능들이 가끔 부족한 부분이 나타난다. ex) list 페이지는 있지만 view 페이지의 형식은 어떻게
+
+나타낼 것인지 sample이 없다..
+
+벤치 마킹하는 <https://plus.google.com> 을 보시면서 많이 활용하지만 부족하다.
+
+모던 웹 (최신 브라우저, 특히 크롬 or 사파리? 오페라?) 에 특정된 브라우저에서 잘 동작한다.
+
+IE는...
+
+IE에서 돌리는 순간 -_-;; 엄청난 버벅임..? 이건 현재 개발중인 사이트에 참조하고 있는 스크립트가
+
+많아서 그런 것일 수도 있다..
+
+이 부분은 우리가 기존에 사용하던 레거시 웹 사이트 처럼 리스트, 상세 view가 있는 경우를 말하는 것이니
+
+오해하지 않았으면 좋겠다.
+
+다행인 부분은 bootstrap도 동시에 사용 가능하기 때문에 부족한 부분은 bootstrap을 이용해서
+
+보완할 수 있다.
+
+ **
+
+그 밖에도 많은 ui들이 존재한다.
+
+METRO UI <http://metroui.org.ua/>
+
+angular 2가 나오고 react가 있다고 하지만 아직 angular 1도 어느정도 수준급도 아니라서 좀 많이 고민이 된다.
+
+더욱이 영어의 필요성이 강조되는 상황이라서, 영어도 동시에 공부를 꾸준히 해야 될 것 같다.
+
+부디 angular material 을 적용하시려는 분들에게 어느정도 도움이 되었으면 한다.

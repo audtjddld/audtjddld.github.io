@@ -1,0 +1,153 @@
+---
+title: "jstl 만지기"
+date: 2012-05-15 12:12:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터, jstl, replace]
+original_url: "https://blog.naver.com/kkforgg/60162470808"
+---
+
+게시글 내용 보기 할때 jstl replace 쓰는 방법 입니다.
+
+상단에
+
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
+
+                            <jsp:scriptlet>
+                                pageContext.setAttribute("cr", "\r");
+                                pageContext.setAttribute("lf", "\n");
+                                pageContext.setAttribute("crlf", "\r\n");
+                            </jsp:scriptlet>
+
+                      ${fn:replace(해당 변수 값, lf ,"<br/>")}  <-- 이렇게 해야지 정상으로 된다.
+
+                     ${fn:replace(해당 변수 값,"\n","<br/>")} <-- 이렇게는 죽어도 안됨
+
+
+
+trim도 있음
+
+${fn:trim(String)}
+
+
+
+-------------------------------- 12.09.12 ---------------------------------
+
+추가적으로
+
+
+
+jstl이 적용이 안되는 부분도 있다.
+
+그럴때는
+
+
+
+<%@ page isELIgnored="false" %>      <%-- 테스트서버나 운영서버에서 el tag가 읽히기 위해 --%>
+
+
+
+사용한다.
+
+
+
+자세한 내용은
+
+<http://dongchimi.unfix.net/v2/?p=112>
+
+참조
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------- 2014.02.07 ---------------------------------------------
+
+출처 : <http://blog.daum.net/kimslovehouse/8239530>
+
+eq <> ne 요게 있는지 몰랐다.
+
+
+
+연산자
+
+예제
+
+결과
+
+== 또는 eq<?XML:NAMESPACE PREFIX = "O" />
+
+${5 == 5} 또는 ${5 eq 5}
+
+true
+
+!= 또는 ne
+
+${5 != 5} 또는 ${5 ne 5}
+
+false
+
+< 또는 lt
+
+${5 < 7} 또는 ${5 lt 7}
+
+true
+
+> 또는 gt
+
+${5 > 7} 또는 ${5 gt 7}
+
+false
+
+<= 또는 le
+
+${5 <= 5} 또는 ${5 le 5}
+
+true
+
+>= 또는 ge
+
+${5 >= 6} 또는 ${5 ge 6}
+
+false
+
+&& 또는 and
+
+${true && false} 또는 ${true and false}
+
+false
+
+|| 또는 or
+
+${true || false} 또는 ${true or false}
+
+true
+
+! 또는 not
+
+${!true} 또는 ${not true}
+
+false
+
+empty
+
+${empty name}
+
+name이 null이거나 빈 문자열이면 true
+
+not empty
+
+${not empty name}
+
+name이 null도 아니고 빈 문자열도 아니면 true
+
+                                                                                                                                          표 5.    EL 비교 및 논리 연산자

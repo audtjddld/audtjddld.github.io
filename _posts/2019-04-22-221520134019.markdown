@@ -1,0 +1,94 @@
+---
+title: "Spring OAuth2 테스트 코드 작성"
+date: 2019-04-22 22:28:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221520134019"
+---
+
+인증 관련 내용 중 OAuth2 로 된 부분을 설명한 적이 있었다.
+
+ <http://kkforgg.blog.me/220609133931>
+
+개인적으로 한번 spring boot + angularjs 조합으로 샘플코드를 만들려고 했었는데,
+
+Spring.io 에서 가이드해주는 문서에는 OAuth2.0 을 적용하고 있는 상태였다.
+
+따라서, OAuth2.0을 구현하고 API서버를 만든 뒤 작업을 하기로 방향을 정했다.
+
+​
+
+Spring OAuth2.0 구현은 쉽지 않았다. 많은 내용들을 알고 있어야 했으며, 안쪽에 디버깅 하는 것도 나에겐 쉽지 않았다. github를 통해서 /oauth/token 부분을 살펴보았고 나머지 부분을 좀더 자세히 알고 싶었지만 쉽게 쉽게 이해할 수 있지 않았다.
+
+​
+
+현재 그남아 정보글로 알아 볼 수 있는 곳이 spring.io와
+
+이수홍님이 작성중이신 브런치 내용 정도 있다.
+
+<https://brunch.co.kr/@sbcoba/6#comments>
+
+일단 내가 현재 구상한 프로젝트 구성은 다음과 같다.
+
+​
+
+core (service, repository, entity)
+
+api (RESTFul, controller, vo)
+
+web(controller, html, js, css 등)
+
+​
+
+각 api, web 프로젝트는 core를 참조한다.
+
+​
+
+따라서 api 프로젝트에서는 oauth library가 필요하고.
+
+web 프로젝트에서는 security login이 필요하다.
+
+​
+
+entity는 같은 core를 바라보기 때문에 웹과 api는 서로 같은 테이블을 보며 동작한다.
+
+​
+
+OAuth2.0 와 security login은 같은 Spring Security에 포함되어 있기 때문에,
+
+같은 설정이 중복되는 부분이 있는데 이 부분을 두벌을 만들 수 없어서 Core로 뽑아놓고 사용했다.
+
+​
+
+특히 UserDetails 와 UserDetailsService때문에 좀 힘들었다.
+
+이해도 잘 안되었고, 내부에서 어떻게 동작하는지도 몰랏기 때문에 .. 그리고 내가 생각한 구조와 스프링에서 정해논 구조가 다르고 커스터마이징 하기 위해서는 일련의 작업이 필요했다.
+
+​
+
+Spring Security with AngularJS :
+
+<https://spring.io/guides/tutorials/spring-security-and-angular-js/>
+
+​
+
+Spring Security OAuth :
+
+<https://github.com/spring-projects/spring-security-oauth>
+
+​
+
+​
+
+​
+
+​
+
+​
+
+OAuth2.0 을 적용시 외부에서 API를 호출해야되기 때문에 그에 따른 CORS를 해결할 수 있는 Filter가 필요하다.
+
+<https://gist.github.com/zeroows/80bbe076d15cb8a4f0ad>
+
+​
+
+​

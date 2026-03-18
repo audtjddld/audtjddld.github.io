@@ -1,0 +1,74 @@
+---
+title: "셀렉트 박스 만들어 보기 01"
+date: 2013-02-14 17:37:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60183586246"
+---
+
+```
+
+
+ jQuery_Sample
+
+$(document).ready(function(){
+ setGridTag();
+});
+/* 그리드의 뿌려질 ROW태그 저장 */
+function setGridTag(){
+ var gridId = $("[gridTag='true']").attr("id");  //그리드가 표현될 태그의 ID
+
+ var gridRowTag = $("#"+gridId).html();   //그리드가 표현될 ROW 태그
+ $("body").data(gridId, gridRowTag);    //key, value로 저장하여 원본태그 값을 저장한다.
+ $("#"+gridId).children().remove();
+
+ //------------------ 셀렉트 박스 부분 ----------------------------------------------
+ var selectId = $("[selectTag='true']").attr("id");  //셀렉트가 표현될 태그의 ID
+ var selectOptionTag = $("#"+selectId).html();
+ $("body").data(selectId, selectOptionTag);    //key, value로 저장하여 원본태그 값을 저장한다.
+ $("#"+selectId).html('');
+ $("#"+selectId).html(' 값을 선택해주세요 ');
+//--------------------------- 끝 ----------------------------------------------------
+}
+/* ajax json 호출 */
+function getJson(){
+ $.ajax({
+  type: "post",
+  url: "sample_json.html",
+  data: "",
+  dataType: "json",
+  success: function(json){
+   //alert(JSON.stringify(json));
+   gridView("grid", json.data); // 첫번째 파라메터 : 그리드가 표현될 ID, 두번째 파라메터 : json 데이터
+   makeSelect("select1",json.data);
+  }
+ });
+}
+/* json Grid 구현 */
+function gridView(gridTagId, data){
+   $("#" + gridTagId).html('');
+  for ( var i = 0; i
+
+
+
+  json 그리드 예제
+
+
+    번호
+    제목
+    글쓴이
+
+
+
+
+    COL_NAME_NUMBER
+    COL_NAME_TITLE
+    COL_NAME_USER_ID
+
+
+
+
+
+    COL_NAME_NUMBER(COL_NAME_USER_ID)
+
+
+```

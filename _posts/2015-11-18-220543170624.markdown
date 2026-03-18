@@ -1,0 +1,162 @@
+---
+title: "mysql 유저 생성"
+date: 2015-11-18 19:34:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220543170624"
+---
+
+<http://link2me.tistory.com/431>
+
+<http://link2me.tistory.com/431>
+
+[MySQL DB 생성 및 사용자 추가, 권한 부여MySQL DB 생성/삭제 및 사용자 추가/삭제, 권한 부여 서버 관리를 하다보면 mysql 사용자 계정을 추가해 줄때가 있다. MySQL 접속 및 데...link2me.tistory.com](http://link2me.tistory.com/431)
+
+서버 관리를 하다보면 mysql 사용자 계정을 추가해 줄때가 있다.
+
+MySQL 접속 및 데이터 베이스 추가**
+
+# mysql -u root -p**
+사용자 계정을 추가하기 전에 먼저 현재 생성된 사용자 계정을 확인한다.
+
+mysql > use mysql;    // mysql database 선택
+mysql > select host, user, password from user;    // user 테이블 살펴보기
+
+다른 방법으로는
+
+mysql > USE mysql;     // mysql database 선택
+mysql > INSERT INTO user (Host, User, Password) VALUES ('localhost', '계정아이디', password('비밀번호'));
+mysql > INSERT INTO user (Host, User, Password) VALUES ('%', '계정아이디', password('비밀번호'));
+mysql > FLUSH privileges;
+
+mysql > drop user '사용자ID'@localhost;    // 사용자 삭제
+
+mysql > select * from user;    // 등록된 모든 사용자 ID 조회
+mysql > delete from user where user = '사용자ID';      // 사용자 삭제
+
+계정이 생성되었다면, 그 계정이 접근할 수 있는 데이터베이스를 생성하고 권한을 부여해야 한다
+
+데이터베이스 생성****
+
+mysql > show databases;     // DB 목록 확인
+
+msyql > create schema DB명 default character set utf8; -- 둘중에 하나를 입력하면 DB 생성됨
+
+mysql > create database DB명 default character set utf8;
+
+// default character set을 지정하지 않으면 한글이 깨져서 나오므로 주의해야 한다.
+
+msyql > drop database DB명;       // 데이터베이스 삭제
+
+사용자에게 데이터베이스 사용권한 부여**
+
+MySQL은 사용자 이름, 비밀번호, 접속 호스트로 여러분을 인증한다. **
+
+MySQL은 로그인을 시도하는 위치가 어디인가 하는 것도 인증의 일부로 간주한다.
+
+MySQL 에서 사용자 계정을 추가하고 권한을 추가하거나 제거하는 데 GRANT 와 REVOKE 명령을 사용하기를 권장한다.
+
+사용자에게 허가된 것을 확인하려면 SHOW GRANTS 를 사용한다.
+
+IDENTIFIED BY '비밀번호'; 는 권한부여를 하면서 비밀번호까지 변경하고자 하는 경우
+
+이므로 비밀번호는 변경하지 않으려면 이 부분을 빼면 된다.
+
+mysql > GRANT ALL PRIVILEGES ON DB명.테이블 TO 계정아이디@host IDENTIFIED BY '비밀번호';
+
+// 계정이 이미 존재 하는데 'identified by '비밀번호' 부분을 추가하면 비밀번호가 변경된다
+
+mysql> GRANT ALL privileges ON DB명.* TO 계정아이디@locahost IDENTIFIED BY '비밀번호';
+
+mysql> GRANT ALL privileges ON DB명.* TO 계정아이디@'%' IDENTIFIED BY '비밀번호';
+
+mysql > grant all privileges on DB명.* to userid@'%' identified by '비밀번호' ;  //모든 원격지에서 접속 권한 추가
+
+host에 '200.100.%' 로 하면 IP주소가 200.100.X.X 로 시작되는 모든 IP에서 원격 접속을 허용한다는 의미
+
+host에 '200.100.100.50' 으로 하면 IP주소가 200.100.100.50 인 곳에서만 원격 접속을 허용한다는 의미
+
+mysql > grant all privileges on test.* to userid@localhost identified by '비밀번호';
+
+// user 에게 test 데이터베이스 모든 테이블에 대한 권한 부여
+
+mysql> grant select, insert, update on test.* to user@localhost identified by '비밀번호';
+
+// user 에게 test 데이터베이스 모든 테이블에 select, insert, update 권한 부여
+
+mysql> grant select, insert, update on test.* to user@localhost;   -- 패스워드는 변경없이 권한만 부여하는 경우
+
+// user 에게 test 데이터베이스 모든 테이블에 select, insert, update 권한 부여
+
+
+
+mysql> grant all privileges on *.* to user@localhost identified by '비밀번호' with grant option;
+
+// user 에게 모든 데이터베이스 모든 테이블에 권한 부여
+
+// 전역 권한은 모두 광범위한 보안문제가 수반되므로 권한을 허용하는 경우 신중해야 함
+
+mysql > flush privileges;     // 변경된 내용을 메모리에 반영(권한 적용)
+
+사용자에게 부여된 권한 확인**
+
+mysql > SHOW GRANTS FOR test@localhost;  -- userid 와 host명까지 붙여서 검색해야 함**
+
+mysql > SHOW GRANTS FOR test@'%';****
+
+mysql > SHOW GRANTS FOR test@'200.100.100.50';
+
+사용자에게 데이터베이스 사용권한 제거****
+
+revoke all on DB명.테이블명 from 사용자ID;     // 모든 권한을 삭제
+
+이제 다시 show grants 로 정보를 확인해보면
+
+user 정보는 남아 있는데, 권한부여 정보는 삭제되고 없는 것이 보인다.
+
+
+
+사용자 계정마저 삭제하고 권한 설정 정보를 확인하려고 하면 Error 가 발생하는 걸 확인할 수 있다.
+
+
+
+사용자 계정 삭제**
+
+mysql > drop user userid@'%';
+
+mysql > drop user userid@localhost;
+
+위에 있는 것과 비교해서 host 가 % 로 된 것이 삭제되었다.
+
+비밀번호 보안
+
+MySQL 비밀번호가 일반 텍스트로 저장되지 않는다고 해서 비밀번호를 간단하게 만들어서는 안된다. MySQL 서버에 접속 가능한 사람은 누구든지 무차별 대입공격(brute-force) 방식으로 비밀번호를 알아내려고 시도해 볼 수 있으며, MySQL 은 유닉스 비밀번호에서처럼 이런 공격을 감지하고 막아낼 방도가 없다.
+
+---------------- 2016. 08. 31 --------------
+
+로컬에 설치시
+
+Error Code 1364가 발생된다.
+
+이땐 아래 링크 참조.
+
+<http://linuxism.tistory.com/263>
+
+ERROR 1364 (HY000): Field 'ssl_cipher' doesn't have a default value**
+
+Mysql 버전이 높아지면서 보안관련 인한 오류입니다.
+
+User 생성시 Host, User ,Password, ssl_cipher, x509_issuer, x509_subject 를 입력 해 주셔야 합니다.
+
+ssl_cipher, x509_issuer, x509_subject 값은 '' 빈값을 입력하세요.
+
+ex)** insert into user (Host, User, Password, ssl_cipher, x509_issuer, x509_subject )
+values('localhost','사용자명',password('비밀번호'),'','','');
+
+ERROR 1364 (HY000): Field 'authentication_string' doesn't have a default value**
+
+* mysql 5.5 에서 user 생성시 authentication_string 필드 추가. '' 값으로 넣어 주세요.
+
+ex)
+insert into user (Host, User, Password, ssl_cipher, x509_issuer, x509_subject, authentication_string)
+
+values('localhost','사용자명', password('비밀번호'),'','','','');

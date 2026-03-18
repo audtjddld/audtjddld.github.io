@@ -1,0 +1,239 @@
+---
+title: "Gradle extract function and gradle version management"
+date: 2023-08-30 10:45:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223197409843"
+---
+
+gradle project의 버전 관리에 대해 작성합니다.
+
+​
+
+**구조**
+
+​
+
+gradle version을 major, minor, patch로 구조로 나눕니다.
+
+​
+
+gradle project(application version)을 별도의 file로 분리하고, 위에서 이야기한 3가지 version을 자동으로 올려주는 task를 작성합니다.
+
+​
+
+그리고 이 task를 가지고 있는 gradle.kts 파일로 분리하고, root gradle.kts 에서 불러와서 사용하는 방법에 대해 작성합니다.
+
+​
+
+**version.properties**
+
+
+
+
+
+
+
+
+
+```
+applicationVersion=0.0.1
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+setting.gradle
+
+
+
+
+
+
+
+
+
+```
+gradle.beforeProject {
+    val localPropertiesFile = rootDir.resolve("version.properties")
+    if (localPropertiesFile.exists()) {
+        val localProperties = java.util.Properties()
+        localProperties.load(localPropertiesFile.inputStream())
+        localProperties.forEach { (k, v) -> if (k is String) project.extra.set(k, v) }
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+위 설정으로 이제 하위 gradle project에서 version.properties에 작성한 값을 사용할 수 있습니다.
+
+​
+
+사용예
+
+
+
+
+
+
+
+
+
+```
+val applicationVersion: String by project
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+function.gradle.kts
+
+
+
+
+
+
+
+
+
+```
+val applicationVersion: String by project
+
+tasks.register("minor-version-update") {
+    val version = applicationVersion.split(".")
+    val newVersion = "${version[0]}.${version[1].toInt().inc()}.${version[2]}"
+    println(applicationVersion + " -> " + newVersion)
+
+    val versionProperties = rootProject.file("version.properties")
+
+    versionProperties.readText().replace(applicationVersion, newVersion).let {
+        versionProperties.writeText(it)
+    }
+}
+
+tasks.register("patch-version-update") {
+    val version = applicationVersion.split(".")
+    val newVersion = "${version[0]}.${version[1]}.${version[2].toInt().inc()}"
+    println(applicationVersion + " -> " + newVersion)
+
+    val versionProperties = rootProject.file("version.properties")
+
+    versionProperties.readText().replace(applicationVersion, newVersion).let {
+        versionProperties.writeText(it)
+    }
+}
+
+tasks.register("major-version-update") {
+    val version = applicationVersion.split(".")
+
+    val newVersion = "${version[0].toInt().inc()}.0.0"
+    println(applicationVersion + " -> " + newVersion)
+
+    val versionProperties = rootProject.file("version.properties")
+
+    versionProperties.readText().replace(applicationVersion, newVersion).let {
+        versionProperties.writeText(it)
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+해당 task를 사용할 gradle.kts
+
+
+
+
+
+
+
+
+
+```
+apply {
+    from("functions.gradle.kts")
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+이렇게 작성하게되면 version update task를 호출 할 때 마다, version.properties에 갱신이 됩니다.
+
+​
+
+이렇게 작성한 내용을 기반으로 github action에 version update 후 commit을 만들려고 만들어봤습니다.

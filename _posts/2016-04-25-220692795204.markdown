@@ -1,0 +1,34 @@
+---
+title: "AOP 에서 method 가져오기"
+date: 2016-04-25 13:53:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220692795204"
+---
+
+역시 외국 개발자님들
+
+<http://stackoverflow.com/questions/2559255/spring-aop-how-to-get-the-annotations-of-the-adviced-method>
+
+<http://stackoverflow.com/questions/2559255/spring-aop-how-to-get-the-annotations-of-the-adviced-method>
+
+[Spring AOP: how to get the annotations of the adviced methodI'd like to implement declarative security with Spring/AOP and annotations.
+As you see in the next code sample I have the Restric...stackoverflow.com](http://stackoverflow.com/questions/2559255/spring-aop-how-to-get-the-annotations-of-the-adviced-method)
+
+To whoever is still having problem after** changing annotation retention to Runtime, you might be having the same problem I had: getMethod() returns interface method instead of the implementing class. So, if you have your annotations in the class then naturally getAnnotations() on the interface method returns null.
+
+The following solution solved this problem:
+
+```
+final String methodName = pjp.getSignature().getName();
+final MethodSignature methodSignature = (MethodSignature)pjp.getSignature();
+Method method = methodSignature.getMethod();
+if (method.getDeclaringClass().isInterface()) {
+    method = pjp.getTarget().getClass().getDeclaredMethod(methodName, method.getParameterTypes());
+}
+```
+
+and if you like, you have the option of handling interface annotations here too.
+
+Some more comments available here: [getting template method instance from ProceedingJoinPoint](http://stackoverflow.com/questions/5212088/getting-a-template-generic-java-lang-reflect-method-object-from-org-aspectj-lang)
+
+Oleg

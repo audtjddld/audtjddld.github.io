@@ -1,0 +1,54 @@
+---
+title: "Talend API Tester"
+date: 2023-11-27 16:32:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223276129578"
+---
+
+<https://velog.io/@hyunbeen0216/Talend-API-Tester-%EC%82%AC%EC%9A%A9%EA%B8%B0-REST-API-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%9B%B9%ED%88%B4>
+> [**Talend API Tester 사용기 REST API 테스트 웹툴**](https://velog.io/@hyunbeen0216/Talend-API-Tester-%EC%82%AC%EC%9A%A9%EA%B8%B0-REST-API-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%9B%B9%ED%88%B4)
+>
+> 오늘 개발자들 사이에서 API 관련 이야기가 나왔다. 그 중 Talend API Tester라는 API 테스트 웹 도구를 알게되어 포스팅한다. >Talend API Tester란? Talend API Tester는 크롬 확장프로그램으로 무료로 웹에서 API를 테
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<https://heeeju4lov.tistory.com/9>
+> [**무료 REST(HTTP) API TESTER - Talend API Tester (크롬 확장 프로그램)**](https://heeeju4lov.tistory.com/9)
+>
+> 서비스를 개발하게되면 필수적으로 서버와 통신을 하게되는데, 이때 REST API를 사용하게 됩니다. 개발 또는 운영중에 REST API가 정상적으로 동작을 하는지 검증이 필요한 경우가 있습니다. 이럴때 아주 직관적인 인터페이스로 손쉽게 사용이 가능한 API Tester 앱을 소개 합니다. Talend API Tester 크롬 확장 프로그램으로 크롬 웹브라우저에서 chrome 웹 스토어에서 손쉽게 설치가 가능합니다. 아래 크롬 웹 스토어에 들어가서 "Talend" 로 검색을 합니다. Chrome 웹 스토어 Chrome에 사용할 유용한...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+postman으로 사용했었는데, Talend API Tester 요런게 있었군

@@ -1,0 +1,30 @@
+---
+title: "java ee에서 jakarta ee로 전환"
+date: 2023-08-24 11:44:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223192127294"
+---
+
+<https://www.samsungsds.com/kr/insights/java_jakarta.html>
+> [**Java EE에서 Jakarta EE로의 전환 | 인사이트리포트 | 삼성SDS**](https://www.samsungsds.com/kr/insights/java_jakarta.html)
+>
+> 자바 기술자라면 Java EE(Java Platform, Enterprise Edition) 또는 J2EE(Java 2 Platform, Enterprise Edition)를 들어봤을 것입니다. 자바를 이용한 서버 개발 플랫폼으로 한 때 엔터프라이즈 자바 기술을 선도하며 막강한 영향력을 발휘했지만 기술 변화와 시장 요구에 제때 대응하지 못하면서 현재는 명맥만 유지하는 암울한 상황에 처해 있습니다. 그럼에도 불구하고 자바EE는 가장 성공적인 상업용 표준 플랫폼의 하나이며 대부분의 웹 애플리케이션 서비스를 위한 미들웨어 기술로 꾸준히 ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

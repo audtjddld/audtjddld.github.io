@@ -1,0 +1,50 @@
+---
+title: "barrier"
+date: 2019-06-18 15:02:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221564923295"
+---
+
+```
+public static void main(String[] args) throws InterruptedException, BrokenBarrierException {
+    ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+    RestTemplate restTemplate = new RestTemplate();
+    String url = "URL";
+    String data = "";
+    CyclicBarrier cyclicBarrier = new CyclicBarrier(11);
+
+    AtomicInteger counter = new AtomicInteger(0);
+    for (int i = 0; i  {
+        int idx = counter.addAndGet(1);
+
+        cyclicBarrier.await();
+
+        ResponseEntity result = restTemplate.postForEntity(url, data, String.class);
+
+        System.out.println(result + " " + idx);
+        return null;
+      });
+    }
+
+    cyclicBarrier.await();
+  }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+예전에 동시성 할 때 이건 잘 이해가 안됐는데 이건 팍팍된당

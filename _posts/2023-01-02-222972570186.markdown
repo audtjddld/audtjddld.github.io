@@ -1,0 +1,127 @@
+---
+title: "Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider"
+date: 2023-01-02 11:59:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222972570186"
+---
+
+Spring Cloud library dependency 추가 후 running시 m1 mac의 경우 build시 다음과 같은 오류를 확인할 수 있다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+2023-01-02 11:53:30.526 ERROR 64011 --- [           main] i.n.r.d.DnsServerAddressStreamProviders  : Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+m1 chipset의 경우 발생되는 오류인데, 이럴 경우 library를 추가해야 한다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+dependency {
+...
+developmentOnly("io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64")
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+관련 이슈 확인
+
+<https://github.com/netty/netty/issues/11020>
+
+​
+
+​
+
+아래 방법으로 system property 값을 가져와서 확인 후 의존성을 추가할지 확인하는 것으로 사용했다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+dependency {
+...
+    val isMacOS = System.getProperty("os.name").contains("Mac OS X")
+    val architecture = System.getProperty("os.arch").toLowerCase()
+    if (isMacOS && architecture == "aarch64") {
+        developmentOnly("io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64")
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

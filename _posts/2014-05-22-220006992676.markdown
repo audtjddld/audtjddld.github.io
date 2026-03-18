@@ -1,0 +1,23 @@
+---
+title: "varbinary은(는) ntext과(와) 호환되지 않습니다."
+date: 2014-05-22 10:43:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/220006992676"
+---
+
+오라클쪽에서 CLOB 데이터인 것을 MSSQL에서는 ntext로 변환하였다.
+
+헌데 입력할때 오류가 발생!?
+
+
+
+**varbinary은(는) ntext과(와) 호환되지 않습니다.**
+
+
+
+바이너리가 자꾸 들어간다는 것이였다.
+
+
+
+확인해본결과 ntext로 들어가는 vo의 초기값이 초기화가 되지 않으면 null이 아닌 바이너리(?) 값이 들어가져서 나오던 에러였다.

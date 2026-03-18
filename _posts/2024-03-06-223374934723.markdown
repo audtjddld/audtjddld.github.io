@@ -1,0 +1,64 @@
+---
+title: "Wiki 문서 레이아웃"
+date: 2024-03-06 14:08:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223374934723"
+---
+
+wiki문서를 자주 쓰는데, 매번 양식이 다르다.
+
+​
+
+대략적으로 페이지 레이아웃을 고려할 때 어떻게 설정하면 좋을지 생각해보면 좋을지 한번 남겨본다.
+
+​
+
+우선 페이지 상단에 **목차, 이력 **으로 구성하고, 하단에 본문의 구성을 작성한다.
+
+​
+
+Overview
+
+​
+
+Context
+
+​
+
+Goal
+
+​
+
+Concern
+
+​
+
+이후에 추가적인 양식은 편리하게 작성해보고, 이런 양식을 따로 저장하는 방법이 있는지도 살펴봐야겠다.
+
+​
+
+<https://www.atlassian.com/software/confluence/templates/categories/business-strategy>
+> [**Confluence Business Strategy Templates | Atlassian**](https://www.atlassian.com/software/confluence/templates/categories/business-strategy)
+>
+> Identify goals, assess risks, and implement business tactics with these business strategy templates.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+그렇게 신박한건 없는거 같기도 하네;

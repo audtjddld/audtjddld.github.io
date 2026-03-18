@@ -1,0 +1,30 @@
+---
+title: "intelij AI Actions"
+date: 2024-01-11 15:52:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223319339228"
+---
+
+<https://blog.jetbrains.com/ko/idea/2023/06/ai-assistant-in-jetbrains-ides/>
+> [**JetBrains IDE의 AI Assistant | The IntelliJ IDEA Blog**](https://blog.jetbrains.com/ko/idea/2023/06/ai-assistant-in-jetbrains-ides/)
+>
+> 7월 13일 업데이트: AI Assistant는 사전 릴리스 버전에서 사용할 수 있지만, JetBrains IDE의 안정적인 릴리스인 2023.2에서는 번들로 제공되지 않습니다. 2023.2.x 버전에서 플러그인을 설치하여 사용할 수 있지만, AI Assistant 기능은 사용자 수가 많은 경우 사용자 수가 제한되어 대기자 명단에 추가될 수 있습니다.&nb
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Intellij AI Actions로 자동 주석이나 코드 설명등을 할 수 있구나, 바로 활성화 해서 해보니 잘 동작한다.

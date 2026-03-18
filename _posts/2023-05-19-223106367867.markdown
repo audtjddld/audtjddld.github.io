@@ -1,0 +1,10 @@
+---
+title: "Istio 관련"
+date: 2023-05-19 14:23:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223106367867"
+---
+
+<https://nyyang.tistory.com/160>
+
+​

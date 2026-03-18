@@ -1,0 +1,33 @@
+---
+title: "자바 패키지"
+date: 2019-07-30 10:48:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221599710956"
+---
+
+<https://dzone.com/articles/project-package-organization>
+> [**Project Package Organization - DZone Java**](https://dzone.com/articles/project-package-organization)
+>
+> The package by layer is popular, but packaging by feature might be more worthwhile. But whether you use vertical or horizontal slicing, here are the tradeoffs.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+패키지를 나누는 것은 Bounded Context를 분류하기 위한 기준으로 삼을 수 있고,
+
+비슷한 역할과 책임을 하는 도메인 으로 묶을 수 있고,
+
+같은 패키지 내에 서로 협력하는 객체들로 묶을 수 있다.

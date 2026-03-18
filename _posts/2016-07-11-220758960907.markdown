@@ -1,0 +1,7 @@
+---
+title: "spring boot를 이용한 web app및 rest api 개발 관련 작업 일지"
+date: 2016-07-11 09:51:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220758960907"
+---
+

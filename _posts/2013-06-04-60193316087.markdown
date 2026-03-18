@@ -1,0 +1,9 @@
+---
+title: "프로퍼티 사용방법"
+date: 2013-06-04 16:48:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60193316087"
+---
+
+출처 : <http://wizardee.tistory.com/105>

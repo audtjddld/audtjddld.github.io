@@ -1,0 +1,45 @@
+---
+title: "그냥 소소한 팁 JSPF"
+date: 2014-01-05 10:32:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60206664622"
+---
+
+jstl 등 el 문법을 사용하다보면
+
+매 페이지 마다 해당 태그 라이브러리 선언 하는 걸 복사해서 붙이곤 했었다.
+
+
+
+헌데,, able-framework 에서 이 방법 외에 다른 방법으로 추가시켰던게 생각났다
+
+
+
+jspf 라는 파일을 생성 후에
+
+이 안에
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ui" uri="[http://egovframework.gov/ctl/ui"%](http://egovframework.gov/ctl/ui"%)>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="egov" uri="/WEB-INF/tlds/method.tld" %>
+
+
+
+EL 들을 선언 시킨다.
+
+
+
+이후 사용할 페이지에서
+
+
+
+<[%@include file="경로.jspf" /](mailto:%@include file="경로.jspf" /)> 로하면
+
+
+
+한줄이면 끝난다~
+
+이런 위로 정도.. ㅎㅎ?

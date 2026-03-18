@@ -1,0 +1,34 @@
+---
+title: "webjars 라이브러리 사용시 기존 script에러 발생되는 이유"
+date: 2016-03-30 19:33:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220669768780"
+---
+
+각각 라이브러리 버전마다 참조가 되어져있는 라이브러리들이 있는데,
+
+메이븐에서 기본적으로 최신을 선택해 주지만 webjars 쪽 라이브러리에서는 최신버전을 가끔 알 수가 없어서
+
+하위 버전이 최신 버전이 되는 경우가 있다.
+
+이럴 경우
+
+pom.xml 에 Dependency Hierarchy 부분을 확인하고 maven에 걸어진 라이브러리가 최신이 잘 올라왔는지 확인한다.
+
+이후 잘못 올라와져 있다면 해당 maven dependency 쪽으로 이동하여
+
+```
+
+            org.webjars.bower
+            mdPickers
+            0.5.2
+
+
+                    org.webjars.bower
+                    angular
+
+
+
+```
+
+이런식으로 exclusions 를 설정하여 잘못 참조가 되는 라이브러리를 최신으로 맞추면 된다.

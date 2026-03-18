@@ -1,0 +1,125 @@
+---
+title: "Sparrow 시큐어 코딩 점검 관련."
+date: 2015-01-12 10:26:00 +0900
+categories: [경험 및 정보 공유]
+tags: [sparrow, codeinspaction]
+original_url: "https://blog.naver.com/kkforgg/220237341964"
+---
+
+시큐어 코딩 관련 작업을 진행하였는데 작업시 팁을 정리할려고 한다.
+
+Fasoo 닷컴에서 개발한 코드 인스펙션 (Code Inspection) 을 이용해서 시큐어 코딩 관련 작업을 진행하였다.
+
+코드 검증 툴은 큰 회사마다 각 개발 프레임워크를 가지고 있는데 코드 검증 부분을 이클립스 플러그인 형태로도 존재하였다.
+
+ <http://bcho.tistory.com/148>
+
+[Code Inspection ToolsCode inspection tools 정적 분석 툴이라고도 이야기 하는데... 모냐 하면 소스코드나 컴파일된 클래스를 넣으면 코드 상에서 발생할 수 있는 예...bcho.tistory.com](http://bcho.tistory.com/148)
+
+기본적으로 툴을 돌리게되면 여러 보안 취약점 점검이 NEST 라는 Sparrow 서버에 설정된 기준대로 점검이 된다.
+
+해당 보안 취약점 점검시 여러 항목들이 나타나는데 그 항목들은 안행부 기준에 의해 점검된다고 나타난다.
+
+<http://www.mogaha.go.kr/frt/bbs/type001/commonSelectBoardArticle.do;jsessionid=hY0v0WL10mTylKSOFmGIhMybETAit0HYaFIIdKh330113X1vqT4f4Qkgj5TqiyLO.mopwas52_servlet_engine1?bbsId=BBSMSTR_000000000012&nttId=42152>
+
+오탐도 자주 되니 주의가 필요하다.
+
+전자정부프레임 워크를 사용하였는데 그 안에서도 상당수 걸리게 된다.
+
+기본적으로 자주 발생되는 부분은 IO 부분이다.
+
+int read = 0;
+
+while(read = in.readLine() != -1)
+
+{
+
+   // 작업
+
+}
+
+이런 구문이 있다면,
+
+int read = 0
+
+for(read = in.readLine(); read != -1; read = in.readLine())
+
+{
+
+  // 작업
+
+}
+
+으로 변경해 주어야 된다.
+
+그리고 많이 나온 부분은 예외처리 부분이다.
+
+try{
+
+}catch(Exception e){**
+
+**   e.printStackTrace();**
+
+}
+
+라고 정의되어 있을 때,
+
+catch 문의 Exception e라고 예외처리 최상위 클래스를 걸어놔서
+
+적절하지 못한 예외 처리 부분이라고 나온다.
+
+위의 해결 방법으로는 Exception 앞단에 예외가 발생되는 Exception을 1개 적용해주면 해결 되었다.
+
+ex)
+
+try{
+
+}catch(SQLException e){**
+
+**  System.out.println(" Error 가 발생되었습니다 " );**
+
+}catch(Exception e){
+
+   System.out.println(" Error 가 발생되었습니다 " );
+
+}
+
+그리고 Error 로그 확인을 위한 printStackTrace() 나 System.out.println(e.getMessage());
+
+등도 잡히니 다른 메시지 처리로 알아 볼 수 있도록 변경해 놓으면 해결되었다.
+
+그리고 현재 사내 프레임워크쪽에 개발시 문제가 있었던 부분이 있었다.
+
+예외처리시 view단으로 이동 후 처리하기 위한 처리가 필요하였는데, 그 부분을 현재 검사 중인 프로젝트에는
+
+이해가 부족하다보니 제대로 적용하지 못했던 것 같다.
+
+그렇기 때문에 앞으로 개발시에는
+
+비즈니스 로직은 Service단에 처리를 하고 모든 예외처리는 그 쪽으로 한정지어서 처리하는 노력이 필요 한 것 같다.
+
+Controller 에서 처리하는 부분도 있고, Service 단에 예외처리가 처리되는 부분도 있고,
+
+DAO단에도 걸어논 것이 있고 중구난방으로 되어있는데 앞으로 프로젝트 진행시에는 해당 부분 정리가 필요하며,
+
+Service 단에서 Error 발생시 뷰단 처리 부분은
+
+dispatch-servlet 내에 org.springframework.web.servlet.handler.SimpleMappingExceptionResolver으로
+
+해당 예외시 뷰단을 설정하여 그 페이지로 이동하게 끔 처리를 공통적으로 하면 될 것 같다.
+
+ex)
+
+try{
+
+}catch(Exception e){
+
+ throw new CustomException();
+
+}
+
+그럼 해당 보안 취약점 점검 사항을 돌렸을 때 처리되야 될 부분이 명확하게 나타날 것 같다.
+
+또안 보안 하는 방법도 어렵지 않을 듯 싶다.
+
+그 외에 추가적인 내용이 발생한다면 여기에 추가하도록 하겠다.

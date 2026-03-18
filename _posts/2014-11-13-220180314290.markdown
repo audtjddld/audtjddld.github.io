@@ -1,0 +1,182 @@
+---
+title: "제우스 설정 관련 파일"
+date: 2014-11-13 17:30:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220180314290"
+---
+
+일ㅁㄴㅇㄹㅁㄴㅇㄹ
+
+
+
+
+
+ㅁㄴㅇㄹㅁㄴㅇㄹ
+
+
+
+
+
+data-source.xml
+
+
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+    xsi:schemaLocation="http://www.springframework.org/schema/beans <http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">>
+
+
+
+    <!-- hsql
+
+     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+
+        <property name="driverClassName" value="net.sf.log4jdbc.DriverSpy"/>
+
+        <property name="url" value="jdbc:log4jdbc:hsqldb:hsql://localhost/sampledb"/>
+
+        <property name="username" value="sa"/>
+
+    </bean>
+
+     -->
+
+
+
+    <!-- mysql
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+
+        <property name="url" value="jdbc:mysql://db2:1621/rte"/>
+
+        <property name="username" value="rte"/>
+
+        <property name="password" value="rte01"/>
+
+    </bean>
+
+    -->
+
+      <!--
+
+     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+
+        <property name="url" value="jdbc:oracle:thin:@172.28.190.32:1521:mart"/>
+
+        <property name="username" value="cws"/>
+
+        <property name="password" value="cwsdev00"/>
+
+    </bean>
+
+   -->
+
+      <!--  jndi  -->
+
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+
+        <property name="jndiName">
+
+            <value>hansin</value>
+
+        </property>
+
+
+
+    </bean>
+
+
+
+
+
+</beans>

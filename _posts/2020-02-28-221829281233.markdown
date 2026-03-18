@@ -1,0 +1,69 @@
+---
+title: "Spring boot test"
+date: 2020-02-28 17:26:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221829281233"
+---
+
+```
+@RunWith(SpringRunner.class)
+@Profile("local")
+@SpringBootTest
+@Transactional
+public class CreateTest {
+
+  @Autowired
+  private WebApplicationContext wac;
+
+  private MockMvc mockMvc;
+
+  private ObjectMapper objectMapper = new ObjectMapper();
+
+  @Before
+  public void before() throws Exception {
+    mockMvc = MockMvcBuilders
+        .webAppContextSetup(this.wac)
+        .alwaysDo(MockMvcResultHandlers.print())
+        .build();
+  }
+
+  @Test
+  public void 등록_성공() throws Exception {
+
+    CreateRequest request = new CreateRequest();
+    List list = new ArrayList<>();
+    list.add(request);
+
+    mockMvc.perform(
+        post("/v2/rest/products")
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(objectMapper.writeValueAsString(list))
+    )
+        .andExpect(status().isBadRequest())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MockMvc 를 이용한 테스트, 이후에 쭉 작성할 예정
+
+​
+
+​

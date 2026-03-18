@@ -1,0 +1,54 @@
+---
+title: "spring boot annotation 목록"
+date: 2022-02-09 11:36:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222642870833"
+---
+
+<https://www.javatpoint.com/spring-boot-annotations#:~:text=Spring%20Boot%20Annotations%20is%20a,the%20application%20that%20we%20develop>
+> [**Spring Boot Annotations - javatpoint**](https://www.javatpoint.com/spring-boot-annotations#:~:text=Spring%20Boot%20Annotations%20is%20a,the%20application%20that%20we%20develop)
+>
+> Spring Boot Annotations with features, project, starter project wizard, cli, application, annotations, dm, properties, actuator, thymeleaf view, jpa, jdbc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+<https://springframework.guru/spring-framework-annotations/>
+> [**Spring Framework Annotations - Spring Framework Guru**](https://springframework.guru/spring-framework-annotations/)
+>
+> In this post I review the Java annotations which are commonly used to configure behaviors in the Spring Framework.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

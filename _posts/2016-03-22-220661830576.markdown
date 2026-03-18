@@ -1,0 +1,42 @@
+---
+title: "MongoDB 이동 (dump)"
+date: 2016-03-22 10:40:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220661830576"
+---
+
+1. 백업 : mongodump **
+
+> mongodump --out "백업파일 생성할 폴더위치" --host "아이피" --port "포트" -u아이디 -p패스워드 --db DB명
+
+ ** 예)
+
+> mongodump --out /home/mongo/dump/20150515 --host 127.0.0.1 --port 27017 -uihchoi -p1234 --db myprojectdb
+
+id랑 password가 없으면 굳이 안써줘도 된다. -db역시 통으로 복사할꺼면 작성 안해도 됨
+
+dump를 뜨고 나면 지정한 폴더 위치에 collection 별로 폴더 및 bson 파일이 생성된다.
+
+그 파일들을 옴길 서버쪽으로 이동 후 restore 해주면 사용이 가능하다.
+
+2. 복구 : mongorestore**
+
+> mongorestore --host "아이피" --port "포트" -u아이디 -p패스워드 --drop --db DB명 "복구 폴더위치"
+
+
+ 예)
+
+> mongorestore --host 127.0.0.1 --port 27017 -uihchoi -p1234 --db myprojectdb --drop /home/mongo/dump/20150515
+
+
+ --drop 옵션은 복구할 때, 기존에 동일한 컬렉션이 존재할 경우 삭제하고 할 것인지에 대한 설정이다.
+ 백업할 때와 마찬가지로 --db 옵션으로 특정 DB만 선택적으로 복구할 수 있다.
+
+ 해당 포스트 때문에 유용하게 옴길 수 있었다.
+
+출처  : <http://redine07.tistory.com/m/post/150>
+
+<http://redine07.tistory.com/150>
+
+[MongoDB 백업과 복구1. 백업 : mongodump > mongodump --out "백업파일 생성할 폴더위치" --host "아이피" --port "포트" -u아이디 -p패스워드 --db DB명 예) > mong...redine07.tistory.com](http://redine07.tistory.com/150)
+

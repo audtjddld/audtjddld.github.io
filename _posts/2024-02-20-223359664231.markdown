@@ -1,0 +1,42 @@
+---
+title: "The best way to use Testcontainers with Spring Boot"
+date: 2024-02-20 16:57:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223359664231"
+---
+
+​
+
+<https://maciejwalkowiak.com/blog/testcontainers-spring-boot-setup/>
+> [**The best way to use Testcontainers with Spring Boot**](https://maciejwalkowiak.com/blog/testcontainers-spring-boot-setup/)
+>
+> The best way to use Testcontainers with Spring Boot
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+test container 설정시 올바르게 설정하는 방법에 대해 작성되어 있구먼
+
+하지만 아직 나에게는 낯설다
+
+​
+
+​
+
+​

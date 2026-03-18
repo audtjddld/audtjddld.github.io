@@ -1,0 +1,65 @@
+---
+title: "jenkins 사용기"
+date: 2015-12-04 17:01:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220558823460"
+---
+
+출처 : <http://jinstudio.tistory.com/16>
+
+<http://jinstudio.tistory.com/16>
+
+[Jenkins 설치 (Windows 설치파일 기준)# 프로젝트를 하면서 Jenkins의 편리함에 반해 관련 자료를 포스팅 해보기로 하였다. 1. Jenkins 설치 (Windows 설치파일 기준) 1. 먼저 Jenki...jinstudio.tistory.com](http://jinstudio.tistory.com/16)
+
+# 프로젝트를 하면서 Jenkins의 편리함에 반해 관련 자료를 포스팅 해보기로 하였다.
+
+**1. Jenkins 설치 (**Windows 설치파일 기준**)**
+
+     1. 먼저 Jenkins 사이트에서 Windows 설치파일을 다운로드 받는다.
+
+          <http://jenkins-ci.org/>
+
+
+![](http://cfile26.uf.tistory.com/image/143F844751232BAB31AE3B)
+
+          오른쪽에 Windows 를 클릭하면 화면이 바뀌면서 자동으로 파일 다운로드가 시작된다.
+
+     2. 다운로드 받은 압축 파일을 적당한 경로에 풀어준다.
+
+     3. 압축이 풀린 풀더에서 setup.exe 파일을 실행한다.
+
+          뭐 그냥 "Next", "Install", "Finish" 클릭해주면 될 것 같다.
+
+          ![](http://cfile24.uf.tistory.com/image/024F314751232BAB15EBB1)
+
+          ![](http://cfile6.uf.tistory.com/image/1558554751232BAB0CDE1F)
+
+          ![](http://cfile2.uf.tistory.com/image/233DDA4751232BAC36CC5D)
+
+          ![](http://cfile23.uf.tistory.com/image/1758654751232BAC0C732B)
+
+          ![](http://cfile21.uf.tistory.com/image/153F574751232BAC31BF65)
+
+     4. 확인하기
+
+          [http://localhost:8080](http://localhost:8080/)
+
+          ![](http://cfile21.uf.tistory.com/image/1142414751232BAD234204)
+
+     !. 참고로 설치를 다하고 자동으로 브라우져가 열리는데 404 에러가 떳다.
+
+          아마 기존에 8080포트를 사용하고 있어서 인것 같은데
+
+     ![](http://cfile5.uf.tistory.com/image/2139CB5051232BAE1E4899)
+
+     Jenkins 가 설치된 경로(C:\Program Files (x86)\Jenkins)로 가서
+
+          ![](http://cfile2.uf.tistory.com/image/254B285051232BAE0310D9)
+
+          jenkins.xml 을 편집기로 연 후
+
+          ![](http://cfile29.uf.tistory.com/image/2031D65051232BAF2AA611)
+
+          --httpPort=8080 부분의 포트를 적당한 포트(8086)로 바꾼다.
+
+     그리고 다시 Jenkins 를 재시작[ 제어판 > 관리도구 > 서비스 > Jenkins ] 하면 위의 4번과 같은 화면이 뜬다.

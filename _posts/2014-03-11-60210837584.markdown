@@ -1,0 +1,108 @@
+---
+title: "Internet Explorer 8 Https 파일 다운로드 Error 해결방법"
+date: 2014-03-11 18:19:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60210837584"
+---
+
+출처 : <http://ultteky.egloos.com/10995758>
+
+
+
+익스 8에서 https로 하면 다운로드가 안되는데 8이하 버전까지 예외처리를 해줘야된다는~
+
+
+
+[참고자료]**
+
+<http://mark.koli.ch/2009/10/internet-explorer-cant-open-file-via-https-try-removing-the-pragma-header.html>
+
+<http://support.microsoft.com/kb/316431>
+
+<http://wiki.apache.org/httpd/SSLSessionCache>
+
+[처리내용]**
+
+****
+
+**처리 1)** 아파이 웹서버 SSL 캐싱 설정
+
+SSLSessionCache        "shmcb:/supp1/apachedomains/all_domain/logs/ssl_scache(512000)"
+
+SSLSessionCacheTimeout  300
+
+처리 2) **문제가 되는 브라우저에 대해 Pragma 제거
+
+package net.e4net.eiwaf.web.util;
+
+ public static void noCache(HttpServletRequest request, HttpServletResponse response) {
+
+  response.setHeader("Cache-Control", "no-store");
+
+  response.setHeader("Pragma", "no-cache");
+
+  response.setDateHeader("Expires", 0);
+
+  if (request.getProtocol().equals("HTTP/1.1")) {
+
+   response.setHeader("Cache-Control", "no-cache");
+
+  }
+
+ }
+
+ public static void noCacheDownload(HttpServletRequest request, HttpServletResponse response) {
+
+  String reqScheme = request.getScheme();
+
+  boolean ieSSLBug = false;
+
+  if ("https".equals(reqScheme))  {
+
+   String userAgent  = StringUtil.nvl(request.getHeader("User-Agent"), StringUtil.EMPTY);
+
+   if (userAgent.indexOf("MSIE 6") > -1
+
+     || userAgent.indexOf("MSIE 7") > -1
+
+     || userAgent.indexOf("MSIE 8") > -1) {
+
+    ieSSLBug = true;
+
+   }
+
+  }
+
+    String noCache = ieSSLBug ? StringUtil.EMPTY : "no-cache, ";**
+
+  response.setHeader("Cache-Control", **noCache **+ "no-store");
+
+  response.setHeader("Pragma", **noCache**);
+
+  response.setDateHeader("Expires", 0);
+
+ }
+
+[알아봅시다]**
+
+## Common Pragma header values:
+
+- Pragma: no-cache
+- Pragma: no-cache, xResetStrm=1
+- Pragma: No-cache
+- Pragma: cache
+- Pragma: No-Cache
+- Pragma: private
+- Pragma: public
+- Pragma: no-store
+- Pragma: no-store, no-cache, must-revalidate
+- Pragma: no cache
+- Pragma: NO-CACHE
+- Pragma: Private
+- Pragma: no-cache, no-cache
+- Pragma: no-cash
+- Pragma: no-chache
+- Pragma: no-store,no-cache
+- Pragma: no_cache
+- Pragma: nocache

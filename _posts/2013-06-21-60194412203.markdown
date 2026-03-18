@@ -1,0 +1,20 @@
+---
+title: "Solaris Jeus WebtoB 로그 설정 부분"
+date: 2013-06-21 11:40:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60194412203"
+---
+
+제우스 웹투비 로그 설정 부분.
+
+<http://totoriver.egloos.com/2975342>
+
+
+
+로그 파일 위치로 가서
+
+tail -f 로그파일이름
+
+
+
+하면 실시간으로 쭉쭉 올라간다.

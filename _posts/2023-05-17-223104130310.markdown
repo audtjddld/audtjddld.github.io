@@ -1,0 +1,86 @@
+---
+title: "reflection을 사용한 변수 접근"
+date: 2023-05-17 01:22:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223104130310"
+---
+
+kotlin에서는 java reflection 보다 간단하게 사용할 수 있도록 해준 것 같다.
+
+
+
+
+
+
+
+
+
+```
+data class ABC(
+ val a: Boolean,
+ val b: Boolean,
+ val c: Boolean
+)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+클래스의 멤버 변수를 활용해서 list형태로 값이 true인 변수들만 변수명을 만들려고 한다.
+
+​
+
+이때 하는 방법은 간단했다.
+
+
+
+
+
+
+
+
+
+```
+class SimpleGrantedAuthority(val name:String)
+
+val instance = ABC(a=true, b=false, c=true)
+
+ABC::class.memberProperties.filter {
+     it.getter.call(instance) as Boolean
+}.map {
+   SimpleGrantedAuthority(it.name)
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+요런식으로 변환하니 간단하게 되더라

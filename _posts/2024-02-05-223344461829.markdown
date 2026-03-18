@@ -1,0 +1,74 @@
+---
+title: "Kotlin class layout"
+date: 2024-02-05 11:00:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223344461829"
+---
+
+코틀린 클래스 레이아웃에 대해 설명하자면 이런 상황이 있었다.
+
+관례적으로 companion object 를 class 작성시 바로 아래 줄에 작성하곤 했었는데 코틀린 공식 컨벤션에서는 메서드 선언 다음이더라.
+
+​
+
+<https://kotlinlang.org/docs/coding-conventions.html#class-layout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <https://kotlinlang.org/docs/coding-conventions.html#class-layout>
+                                [**Coding conventions | Kotlin**
+
+                                        kotlinlang.org](https://kotlinlang.org/docs/coding-conventions.html#class-layout)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+이 내용을 알고 있는 상태에서 리뷰에 작성해주신 것도 대단한 것 같고, 나도 좀더 관심을 가져보면 좋을 것 같다.
+
+​
+
+**Class layout**
+
+The contents of a class should go in the following order:
+
+-
+Property declarations and initializer blocks
+
+-
+Secondary constructors
+
+-
+Method declarations
+
+-
+Companion object
+
+Do not sort the method declarations alphabetically or by visibility, and do not separate regular methods from extension methods. Instead, put related stuff together, so that someone reading the class from top to bottom can follow the logic of what's happening. Choose an order (either higher-level stuff first, or vice versa) and stick to it.
+
+Put nested classes next to the code that uses those classes. If the classes are intended to be used externally and aren't referenced inside the class, put them in the end, after the companion object.

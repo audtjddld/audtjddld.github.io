@@ -1,0 +1,101 @@
+---
+title: "레디스는 쓰레기다 (아니다 수정)"
+date: 2019-02-19 22:53:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221469968098"
+---
+
+<https://www.letmecompile.com/redis-cluster-sentinel-overview/>
+> [**레디스 클러스터, 센티넬 구성 및 동작 방식**](https://www.letmecompile.com/redis-cluster-sentinel-overview/)
+>
+> RDBMS만큼의 정합성과 영속성을 보장할 필요가 없는 데이터들을 빠르게 처리하거나 일정 기간동안만 보관하고 있기 위한 용도로 레디스(Redis), memcached 등의 in-memory 기반 저장소가 많이 사용된다. 그중에서도 Redis는 빠른 성능을 유지하면서도 일정 수준 이상의 persistence를 제공하고, 다양한 native 데이터 구조들을…
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+파편화나 쉽게 발생하는 레디스야 말로 쓰레기
+
+​
+
+<https://charsyam.wordpress.com/2017/05/27/%ED%98%80%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8-charsyam%EC%9D%80-%EA%B5%AC%EB%9D%BC%EC%9F%81%EC%9D%B4-2-%EC%BA%90%EC%8B%9C-%EB%A9%A4%EC%BA%90%EC%8B%9C%EB%82%98-%EB%A0%88%EB%94%94%EC%8A%A4-%EC%93%B0/>
+> [**[혀로그래머 charsyam은 구라쟁이 #2] 캐시 멤캐시나 레디스 쓰세요. 쉬워요**](https://charsyam.wordpress.com/2017/05/27/%ED%98%80%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8-charsyam%EC%9D%80-%EA%B5%AC%EB%9D%BC%EC%9F%81%EC%9D%B4-2-%EC%BA%90%EC%8B%9C-%EB%A9%A4%EC%BA%90%EC%8B%9C%EB%82%98-%EB%A0%88%EB%94%94%EC%8A%A4-%EC%93%B0/)
+>
+> 안녕하세요. 혀로그래머이자 구라쟁이 charsyam 입니다. 오늘은 지난 1편 [혀로그래머 charsyam은 구라쟁이 #1] 샤딩은 쉬워요 샤딩하세요. 의 뒤를 이은 2편 “캐시 멤캐시나 레디스 쓰세요. 쉬워요” 편입니다. 일단 캐시를 왜 쓰는걸까요? 캐시라는 의미는 원래는 연산이 오래 걸리는 작업이나, 레이턴시가 긴곳에서 뭔가 …
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+뭐 새로 매번 만들어?
+
+​
+
+<https://goodgid.github.io/Redis/>
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2019-06-10
+
+​
+
+내가 멍청해서 작성했던 것으로 -_-;; 공부좀 하자 으휴

@@ -1,0 +1,41 @@
+---
+title: "s3 bucket metadata 추가."
+date: 2019-03-07 18:08:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221482650245"
+---
+
+s3 bucket + cloud front 조합시 cache-control은 각 이미지 파일마다 적용해줘야 된다고 함..
+
+​
+
+따라서 아래 링크를 보고 추가를 함.
+
+​
+
+<https://aws.amazon.com/ko/blogs/developer/amazon-s3-transfermanager-batched-file-uploads/>
+
+​
+
+​
+> [**Amazon S3 TransferManager – Batched File Uploads | Amazon Web Services**](https://aws.amazon.com/ko/blogs/developer/amazon-s3-transfermanager-batched-file-uploads/)
+>
+> In addition to all the cool features in TransferManager around asynchronous upload and download management, there are some other great features around batched uploads and downloads of multiple files. The uploadDirectory and uploadFileList methods in TransferManager make it easy to upload a complete ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

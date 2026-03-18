@@ -1,0 +1,318 @@
+---
+title: "자바 정규식"
+date: 2014-03-12 16:01:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60210892882"
+---
+
+출처 : <http://gliderwiki.org/wiki/6>
+
+
+
+### java 정규식 패턴 함수
+
+
+
+[?](http://gliderwiki.org/wiki/6#)
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+55
+
+56
+
+57
+
+58
+
+59
+
+`import java.util.regex.*;`
+
+`public class MyUtil {`
+
+` `
+
+` ``public static boolean checkParameter(String pattern, String str){`
+
+`  `
+
+`  ``boolean okPattern = ``false``;`
+
+`  ``String patternRegex = ``null``;`
+
+`  `
+
+`  ``pattern = pattern.trim().toLowerCase();`
+
+`  `
+
+`  ``//숫자`
+
+`  ``if``(``"num"``.equals(pattern)){   `
+
+`   ``patternRegex = ``"^[0-9]*$"``;`
+
+`  `
+
+`  ``//영어 `
+
+`  ``}``else` `if``(``"eng"``.equals(pattern)){   `
+
+`   ``patternRegex = ``"^[a-zA-Z]*$"``;`
+
+`  `
+
+`  ``//한글 `
+
+`  ``}`
+
+`  ``else` `if``(``"kor"``.equals(pattern)){`
+
+`   ``patternRegex = ``"^[ㄱ-ㅎ가-힣]*$"``;`
+
+`  `
+
+`  ``//영숫자 `
+
+`  ``}``else` `if``(``"eng_num"``.equals(pattern) || ``"num_eng"``.equals(pattern)){`
+
+`   ``patternRegex = ``"^[a-zA-Z0-9]*$"``;`
+
+`  `
+
+`  ``//한숫자`
+
+`  ``}``else` `if``(``"kor_num"``.equals(pattern) || ``"num_kor"``.equals(pattern)){`
+
+`   ``patternRegex = ``"^[ㄱ-ㅎ가-힣0-9]*$"``;  `
+
+`   `
+
+`  ``//이메일`
+
+`  ``}``else` `if``(``"email"``.equals(pattern)){`
+
+`   ``patternRegex = ``"^[_0-9a-zA-Z-]+@[0-9a-zA-Z]+(.[_0-9a-zA-Z-]+)*$"``;`
+
+`   `
+
+`  ``//핸드폰`
+
+`  ``}``else` `if``(``"hp"``.equals(pattern)){`
+
+`   ``patternRegex = ``"^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$"``;`
+
+`  `
+
+`  ``//전화 `
+
+`  ``}``else` `if``(``"tel"``.equals(pattern)){`
+
+`   ``patternRegex = ``"^\d{2,3}-\d{3,4}-\d{4}$"``;`
+
+`   `
+
+`  ``//주민번호`
+
+`  ``}``else` `if``(``"ssn"``.equals(pattern)){`
+
+`   ``patternRegex = ``"^\d{7}-[1-4]\d{6}"``;`
+
+`   `
+
+`  ``//아이피 `
+
+`  ``}``else` `if``(``"ip"``.equals(pattern)){`
+
+`   ``patternRegex = ``"([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})"``;`
+
+`   `
+
+`  ``}`
+
+`  `
+
+`  ``okPattern = Pattern.matches(patternRegex, str);`
+
+`  `
+
+`  ``return` `okPattern;`
+
+` ``}`
+
+` `
+
+`} `
+
+
+
+---
+
+
+
+### JSP에서 java.util.regex이용하여 특수문자 체크하기
+
+[?](http://gliderwiki.org/wiki/6#)
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+``
+
+
+
+`String strKeyword       = request.getParameter(``"keyword"``);`
+
+`String strKeywordU      = strKeyword.toUpperCase();`
+
+
+
+`Pattern p = Pattern.compile(``".*[^가-힣a-zA-Z0-9].*"``);`
+
+`Matcher m = p.matcher(strKeywordU);`
+
+
+
+`if``(m.matches()) {`
+
+`        ``out.println(``"특수문자가 있고만"``);`
+
+`} ``else` `{`
+
+`        ``out.println(``"한글/영문/숫자만 있고만"``);`
+
+`}`
+
+`
+`

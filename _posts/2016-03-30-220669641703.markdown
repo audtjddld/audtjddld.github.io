@@ -1,0 +1,10 @@
+---
+title: "angularjs metarial ui md-datepicker should have option to select year and month"
+date: 2016-03-30 17:11:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220669641703"
+---
+
+<https://github.com/angular/material/issues/4251>
+
+역시 양키성님들

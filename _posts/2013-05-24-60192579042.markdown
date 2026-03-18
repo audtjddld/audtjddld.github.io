@@ -1,0 +1,14 @@
+---
+title: "javascript 정규식 숫자만 입력"
+date: 2013-05-24 10:05:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60192579042"
+---
+
+function onlyNumber(obj) {
+if(/[^0123456789]/g.test(obj.value)) {
+  alert("숫자가 아닙니다.\n\n0-9의 정수만 허용합니다.");
+  obj.value = "";
+  obj.focus();
+ }
+}

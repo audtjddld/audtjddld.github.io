@@ -1,0 +1,82 @@
+---
+title: "mongo DB 명령어"
+date: 2014-05-19 11:12:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220003943965"
+---
+
+출처 : <http://pacino.tistory.com/entry/mongoDB-%EB%AA%85%EB%A0%B9%EC%96%B4>
+
+
+
+1. 데이터베이스가 생성될 물리적 경로생성
+c:\>mkdir c:\MONGODB\test
+
+2. mongoDB 버전 확인
+>mongod --version
+
+3. mongoDB 인스턴스 활성화
+>mongod --dbpath c:\mongodb\test
+-- mogodb shell프로그램 실행
+>mongo
+
+4.test 데이터베이스로 이동할때
+>use test
+
+5. 데이터베이스 목록 출력
+>show dbs
+
+6. 데이터베이스 상태확인
+>db.stats()
+
+7. 데이터베이스 shutdown
+admin 영억으로 이동후에 셧다운 해야함.
+>use admin
+>db.shutdownServer()
+
+8. 데이터베이스 로그아웃
+>db.logout()
+
+9.collection 생성
+capped:true이면 해당 익스텐트를 모두 사용하게되면
+처음부터 재 사용할 수 있는 데이터 구조를 생성할 때
+size 해당 Collection의 최초 생성크기
+>db.createCollection("emp",{capped:false, size:8192});
+
+10. colection list보기
+show collections
+
+11. collection의 현재상태 및 정보분석
+>db.emp.validate();
+
+12.collection의 이름변경
+>db.emp.renameCollection("employee")
+
+13.Collection의 삭제
+>db.employee.drop();
+
+14.collection에 데이터 INSERT
+>db.emp.insert({eno:1101,fname:"JIMMY"});
+
+15.collection에 데이터 UPDATE
+>db.emp.update({eno:1101},{$set:{fname:"JOO"}});
+
+16.collection에 데이터 SELECT
+>db.emp.find().sort({eno:-1});
+
+17.도큐먼트(row)부터 정의하고 collection 생성
+>m={ename :  "smith"}
+>n={ename :  1101}
+>db.things.save(m)
+>db.things.save(n)
+>db.things.find()
+>db.things.insert({ empno : 1102, ename:"king"})
+
+18.for문을 이용한 증감된 값을 Collection에 insert
+>for(var n=1103; n<=1120; n++) db.things.save({n:n, m:"test"+n})
+
+19.db.things.find()로 조회시 리스트가 20 row가 넘는 경우 다음 페이지를 보고싶을때
+>it
+
+
+<script src="http://pacino.tistory.com/plugin/CallBack_bootstrapper?&src=http://s1.daumcdn.net/cfs.tistory/v/0/blog/plugins/CallBack/callback&id=16&callbackId=pacinotistorycom168716&destDocId=callbacknestpacinotistorycom168716&host=http://pacino.tistory.com&float=left&random=524"></script>

@@ -1,0 +1,49 @@
+---
+title: "화면 푸터를 항상 바닥에 놓고 싶을때"
+date: 2015-05-15 11:06:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220360140010"
+---
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+<script type="text/javascript">
+
+//<![CDATA[
+
+         jQuery(window).resize(function(){
+
+
+
+        if(jQuery("section").height() + jQuery("footer").height() + 93 < jQuery(window).height()) {
+
+            jQuery("section").css("height", jQuery(window).height() - jQuery("footer").height() - 93);
+
+        }
+
+    });jQuery(window).resize();
+
+//]]>
+
+</script>
+
+[Colored by Color Scripter](http://colorscripter.com/info#e)
+[cs](http://colorscripter.com/info#e)

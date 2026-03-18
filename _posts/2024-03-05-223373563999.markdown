@@ -1,0 +1,395 @@
+---
+title: "Github actions runners"
+date: 2024-03-05 10:42:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223373563999"
+---
+{% raw %}
+
+<https://github.com/actions/actions-runner-controller/blob/master/docs/automatically-scaling-runners.md>
+<https://github.com/actions/actions-runner-controller/blob/master/docs/automatically-scaling-runners.md>
+​
+
+kubernetes에서 github actions runners의 manifest를 작성하고 등록하면, github workflow에 작성한 특정 event시 마다 runner를 구동시킬 수 있다.
+
+​
+
+특히 특정 서버에 runner를 등록해서 구동하는 방식이 아닌, event를 감지하고 필요할 때 구동을 시킬 수 있도록 해준다.
+
+​
+
+이런 구분을 self-hosted 와 액션 러너 컨트롤 (ARC)로 구분 짓고 있는 것 같다.
+
+​
+
+시작 가이드
+
+<https://github.com/actions/actions-runner-controller/blob/master/README.md#getting-started>
+<https://github.com/actions/actions-runner-controller/blob/master/README.md#getting-started>
+스케일링 옵션을 2가지 제공해주는 것 같다.
+
+​
+
+**풀 기반 확장 스키마(Pull Driven Scaling Schema)**
+
+
+
+
+
+
+
+
+
+```
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: HorizontalRunnerAutoscaler
+metadata:
+  name: example-runner-deployment-autoscaler
+spec:
+  scaleTargetRef:
+    # Your RunnerDeployment Here
+    name: example-runnerdeploy
+    kind: RunnerDeployment
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: PercentageRunnersBusy
+    scaleUpThreshold: '0.75'
+    scaleDownThreshold: '0.25'
+    scaleUpFactor: '2'
+    scaleDownFactor: '0.5'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<https://github.com/actions/actions-runner-controller/blob/master/docs/automatically-scaling-runners.md#automatically-scaling-runners>
+
+자동 확장 크기 조정
+
+​
+
+측정 항목 옵션 중
+
+**TotalNumberOfQueuedAndInProgressWorkflowRuns**
+
+메트릭 TotalNumberOfQueuedAndInProgressWorkflowRuns은 지정된 리포지토리 집합에 대해 보류 중인 모든 워크플로 실행에 대해 GitHub를 폴링합니다. 메트릭은 구성까지 동기화 시간에 보류 중인 총 작업 수까지 실행자 수를 확장합니다 maxReplicas.
+
+**이 측정항목의 이점**
+
+-
+실행기를 서버 측 지정된 저장소 세트로 제한할 수 있도록 명명된 저장소를 지원합니다.
+
+-
+작업 큐의 깊이에 따라 실행자 수를 조정합니다. 즉, 대기 중인 작업에 대한 실행자의 1:1 크기 조정을 의미합니다.
+
+-
+[모든 확장 지표와 마찬가지로 GitHub 레이블을](https://github.com/actions/actions-runner-controller/blob/master/docs/automatically-scaling-runners.md#runner-labels) 사용하여 RunnerDeployment에 대한 워크플로 할당을 관리할 수 있습니다 .
+
+​
+
+**이 측정항목의 단점**
+
+-
+크기 조정 지표에는 저장소 목록이 포함되어야 합니다. 대규모 환경이나 셀프 서비스 환경에서는 리포지토리 목록을 유지 관리하는 것이 불가능할 수 있습니다.
+
+-
+일부 사용자의 요구에 맞게 빠르게 확장되지 않을 수 있습니다. 이 지표는 가져오기 기반이므로 대기열 깊이는 동기화 기간에 의해 구성된 대로 폴링됩니다. 결과적으로 조정 성능은 이 동기화 기간에 의해 제한됩니다. 즉 조정 활동에 지연이 있음을 의미합니다.
+
+-
+이 지표를 유지하려면 상대적으로 많은 양의 API 요청이 필요합니다. 환경 규모와 동기화 기간 구성의 강도에 따라 API 속도 제한 문제가 발생할 수 있습니다.
+
+​
+
+백분율
+
+​
+
+HorizontalRunnerAutoscalerRunnerDeployment의 네임스페이스에 있는 해당 상태의 실행자 수에 대해 GitHub를 폴링한 다음 busy배율 인수를 구성한 방법에 따라 크기가 조정됩니다.
+
+**이 측정항목의 이점**
+
+-
+TotalNumberOfQueuedAndInProgressWorkflowRuns측정항목 [#313](https://github.com/actions/actions-runner-controller/pull/313) 과 동일하게 서버측에서 명명된 저장소를 지원합니다.
+
+-
+명시적인 리포지토리 목록을 유지하지 않고도 GitHub 조직 전체의 확장을 지원합니다. 이는 특히 대규모로 작업하는 사람들에게 유용합니다. [#223](https://github.com/actions/actions-runner-controller/pull/223)
+
+-
+[모든 확장 지표와 마찬가지로 GitHub 레이블을](https://github.com/actions/actions-runner-controller/blob/master/docs/using-arc-runners-in-a-workflow.md#runner-labels) 사용하여 RunnerDeployment에 대한 워크플로 할당을 관리할 수 있습니다.
+
+-
+백분율 증가/감소 기준뿐만 아니라 고정된 증가/감소 카운트 기준으로 원하는 실행자 수 조정 지원 [#223](https://github.com/actions/actions-runner-controller/pull/223)[#315](https://github.com/actions/actions-runner-controller/pull/315)
+
+**이 측정항목의 단점**
+
+-
+일부 사용자의 요구에 맞게 빠르게 확장되지 않을 수 있습니다. 이 지표는 가져오기 기반이므로 바쁜 실행자 수는 동기화 기간에 따라 구성된 대로 폴링됩니다. 결과적으로 조정 성능은 이 동기화 기간에 의해 제한됩니다. 즉 조정 활동에 지연이 있음을 의미합니다.
+
+-
+우리는 대기 중인 작업의 실제 개수가 아닌 표시 정보를 기반으로 확장 및 축소하므로 원하는 실행자 수는 새 실행자를 과소 프로비저닝하거나 실제 작업 대기열 깊이에 비해 초과 프로비저닝할 가능성이 높습니다. 이는 그럴 수도 있고 아닐 수도 있습니다. 당신에게 문제가 있습니다.
+
+
+
+
+
+
+
+
+
+```
+---
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: HorizontalRunnerAutoscaler
+metadata:
+  name: example-runner-deployment-autoscaler
+spec:
+  scaleTargetRef:
+    kind: RunnerDeployment
+    # # In case the scale target is RunnerSet:
+    # kind: RunnerSet
+    name: example-runner-deployment
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: PercentageRunnersBusy
+    scaleUpThreshold: '0.75'    # The percentage of busy runners at which the number of desired runners are re-evaluated to scale up
+    scaleDownThreshold: '0.3'   # The percentage of busy runners at which the number of desired runners are re-evaluated to scale down
+    scaleUpFactor: '1.4'        # The scale up multiplier factor applied to desired count
+    scaleDownFactor: '0.7'      # The scale down multiplier factor applied to desired count
+```
+
+
+
+
+
+
+
+
+
+
+
+```
+---
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: HorizontalRunnerAutoscaler
+metadata:
+  name: example-runner-deployment-autoscaler
+spec:
+  scaleTargetRef:
+    kind: RunnerDeployment
+    # # In case the scale target is RunnerSet:
+    # kind: RunnerSet
+    name: example-runner-deployment
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: PercentageRunnersBusy
+    scaleUpThreshold: '0.75'    # The percentage of busy runners at which the number of desired runners are re-evaluated to scale up
+    scaleDownThreshold: '0.3'   # The percentage of busy runners at which the number of desired runners are re-evaluated to scale down
+    scaleUpAdjustment: 2        # The scale up runner count added to desired count
+    scaleDownAdjustment: 1      # The scale down runner count subtracted from the desired count
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**웹훅 기반 확장 (webhook driven scaling schema)**
+
+**​**
+
+
+
+
+
+
+
+
+
+```
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+  name: example-runners
+spec:
+  template:
+    spec:
+      repository: example/myrepo
+---
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: HorizontalRunnerAutoscaler
+metadata:
+  name: example-runners
+spec:
+  minReplicas: 1
+  maxReplicas: 10
+  scaleTargetRef:
+    kind: RunnerDeployment
+    # # In case the scale target is RunnerSet:
+    # kind: RunnerSet
+    name: example-runners
+  scaleUpTriggers:
+    - githubEvent:
+        workflowJob: {}
+      duration: "30m"
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ARC는 0에서 확장되도록 설정하면, 웹훅 기반 자동 크기 조정은 상대적으로 빠르게 확장가능하다.
+
+​
+
+JVM Application의 경우 resource의 requests와 limits의 값을 동일하게 가져가는 것이 좋다.
+
+
+
+
+
+
+
+
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ci-job
+spec:
+  containers:
+  - name: ci-container
+    image: my-ci-image
+    resources:
+      requests:
+        cpu: "1"      # 예: 1 CPU 코어
+        memory: "1Gi" # 예: 1GB 메모리
+      limits:
+        cpu: "1"
+        memory: "1Gi"
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 24.03.06 동시성 작업 범위를 제한하는 설정을 알게 되었다.
+
+<https://docs.github.com/en/actions/using-jobs/using-concurrency#example-concurrency-groups>
+
+​
+> [**Using concurrency - GitHub Docs**](https://docs.github.com/en/actions/using-jobs/using-concurrency#example-concurrency-groups)
+>
+> Using concurrency Run a single job at a time. Overview By default, GitHub Actions allows multiple jobs within the same workflow, multiple workflow runs within the same repository, and multiple workflow runs across a repository owner's account to run concurrently. This means that multiple workflow ru...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+예시 workflow.yaml
+
+
+
+
+
+
+
+
+
+```
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​{% endraw %}

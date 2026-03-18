@@ -1,0 +1,39 @@
+---
+title: "java 8 stream"
+date: 2017-09-06 20:08:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221090942648"
+---
+> [**winterbe.com**](http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/)
+>
+> Learn Java 8 streams by example: functional programming with filter, map, flatMap, reduce, collect, lambdas, sequential and parallel streams are covered in-depth in this tutorial.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/>
+
+​
+
+​
+
+2019-06-28 추가
+
+<https://futurecreator.github.io/2018/08/26/java-8-streams/>
+
+<https://futurecreator.github.io/2018/08/26/java-8-streams-advanced/>
+
+​

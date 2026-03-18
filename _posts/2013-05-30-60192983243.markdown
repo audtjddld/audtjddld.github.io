@@ -1,0 +1,13 @@
+---
+title: "자바 어노테이션 (@) 만들기"
+date: 2013-05-30 10:35:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60192983243"
+---
+
+출처 :  <http://www.okjsp.net/seq/210756>
+
+
+
+링크 : <http://isagoksu.com/2009/development/java/creating-custom-annotations-and-making-use-of-them/>

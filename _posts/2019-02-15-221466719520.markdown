@@ -1,0 +1,144 @@
+---
+title: "s3 bucket 인코딩 문제"
+date: 2019-02-15 17:46:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221466719520"
+---
+
+​
+
+​
+
+s3 버킷에 텍스트 데이터를 올려놨는데 이때 문제가 생겼다.
+
+​
+
+바로 인코딩 문제. s3버킷에 대한 것을 잘 모르다보
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                <https://stackoverflow.com/questions/22403071/text-files-uploaded-to-s3-are-encoded-strangely>
+                                [**Text files uploaded to S3 are encoded strangely?**
+
+                                        This is the strangest error, and I don't even know where to start understanding what's wrong.
+
+S3 has been working well, up until suddenly one day (yesterday) it strangely encodes any text file upl...
+                                        stackoverflow.com](https://stackoverflow.com/questions/22403071/text-files-uploaded-to-s3-are-encoded-strangely)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+니 삽을 좀 푸다가
+
+​
+
+양키 성님이 알려주셔서 해결 할 수 있었다.
+
+​
+
+<https://stackoverflow.com/questions/22403071/text-files-uploaded-to-s3-are-encoded-strangely>
+
+​
+
+텍스트 파일을 업로드시에 metadata 셋팅을 옵션 값으로 넣어줘야 했다.
+
+​
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Content-Type: text/plain; charset=utf-8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+I used:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Content-Type: text/html; charset=utf-8
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+댓글에는 html 포멧이라 적었지만, 진짜 plain text 라서 위의 것으로 설정했다.

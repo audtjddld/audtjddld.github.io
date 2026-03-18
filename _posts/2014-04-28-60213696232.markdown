@@ -1,0 +1,159 @@
+---
+title: "오라클 db백업 방법"
+date: 2014-04-28 17:34:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60213696232"
+---
+
+​출처 : <http://blog.naver.com/PostView.nhn?blogId=idbali&logNo=140050128692>
+
+​
+
+==========================================================================================
+
+
+
++간단 명료한 오라클 DB백업하기+
+
+
+
+실행 > cmd > EXP ID/PW@SID full=Y file=백업받을 경로
+
+
+
+완전 간단하다는거!!!
+
+
+
++간단 명료한 오라클 DB복원하기+
+
+
+
+1.SQL Plus
+
+
+
+   SQL+에서  SYSTEM 계정으로 접속(기본DB일경우 pw=manager)
+
+
+
+   CREATE USER ID IDENTIFIED BY PW;**   GRANT connect, resource, DBA TO ID;
+
+
+
+2.DOS
+
+
+
+   실행 > cmd > imp ID/PW fromuser=record touser=ID ignore=Y file=백업파일이 있는 경로
+
+
+
+========================================================================================
+
+​
+
+2014.05.02 추가
+
+​
+
+오라클 백업 방법에 대해 검색해보았는데
+
+배치파일 작성 후에 하는 방법, 그외 다른 방버으로 하는게 있었다..
+
+​
+
+나는 그 방법을 해볼려고 했는데 도저히​ 어려워서 막히는 그런 문제가 발생.
+
+​
+
+java를 이용해서 console창에다가 명령어를 쓰는 거소가 같은 효과를 내는 방법을 찾았다.
+
+​
+
+
+
+​
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+     public static void main(String a[]) throws Exception{
+
+      String cmd = "EXP 오라클계정/패스워드@orcl full=Y file=e:/BACKUP/DB_BACKUP";
+
+      Process p = null;
+
+      String returnData = "";
+
+      try {
+
+         p = Runtime.getRuntime().exec(cmd);
+
+         InputStream in = p.getInputStream(); // Ȥ getErrorStream
+
+         int i;
+
+         while ((i=in.read()) != -1) {
+
+        returnData += (char)i;
+
+        }
+
+        System.out.println(returnData);
+
+      } catch (IOException e) { e.printStackTrace(); }
+
+     }
+
+
+
+위의 오라클 백업 명령어를 콘솔로해서 사용하는 것이다.
+
+위 main 파일을 작성 후에 java 모듈중에
+
+
+
+스케쥴 효과를 줄 수 있는 quartz 를 이용해서 코드를 작성
+
+exe파일로 추출해서 윈도우서버로 되어있는 db서버를 백업 하기로 하였다.
+
+
+
+(하지만 하진 못함 ^^;)
+
+자체적으로 dbms상에서 해주는 기능을 바래셧던 거라서..
+
+테스트만 해보고 더는 진행하지 못했다.
+
+​
+
+**[ㅇㅇㅇㅇ**
+
+**위윙출처]** [[ORACLE] 간단 명료한 오라클 DB백업하기](http://blog.naver.com/idbali/140050128692)|**작성자** [밍](http://blog.naver.com/idbali)

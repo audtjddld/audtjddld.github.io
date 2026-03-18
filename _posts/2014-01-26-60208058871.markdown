@@ -1,0 +1,345 @@
+---
+title: "전자 정부 프레임워크 관련 설명"
+date: 2014-01-26 11:49:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60208058871"
+---
+
+전자정부프레임워크 : <http://www.egovframe.go.kr/>
+
+에서 제공해주는 개발 툴을 가지고 작업 하는 중 알게된 내용들을 앞으로 종합적으로 정리할 예정이다.
+
+(※주의 : 종합적이라고 해봣자 남들보면 그냥 일기나 낙서장 수준일 수 있음)
+
+
+
+전자정부프레임워크 기준은 spring 3.0 이상 maven 적용, orm ibatis or mybatis 사용하게 되면 전자정부프레임워크 기준에 충족한다고 한다. ( 이건 오픈프레임워크 커뮤니티에서 댓글로 알아낸 사항임)
+
+ 따라서 폴더구조가 기존과 다르다.
+
+MAVEN 구조가 아래와 같다.**
+
+------------------------------------ 2014.12.26 추가 ---------------------------------------
+
+Maven의 기본적인 사용법
+
+#### Maven 프로젝트의 기본 디렉토리 정책
+
+
+
+![](http://www.gliderwiki.org/resource/real/1/20130607/thumb/thumb_2013060722220339857825238.jpg)
+
+메이븐의 프로젝트 관리 디렉토리는 최상위에 프로젝트를 기준으로 pom.xml 이라는 메이븐 프로젝트 설정 파일이 존재하며 그것을 바탕으로 프로젝트와 관련된 정보를(라이브러리 및 빌드 정보등) 기술하게 되어 있습니다. src 밑으로는 main 과 test 라는 디렉토리가 존재하며 각 하위에 java 와 resources 가 위치하게 됩니다. 기본적인 메이븐의 주요 디렉토리는 아래와 같습니다.
+
+- src/main/java : 자바 소스 파일 위치 시킵니다. 이 하위에 org.gliderwiki ... 와 같은 패키지를 배치합니다.
+- src/main/resources : 프로퍼티나 XML 등 리소스 파일이 위치합니다.
+- src/main/webapp : Web Project 일 경우 WEB-INF등 웹 어플리케이션 리소스를 위치시킵니다.
+- src/test/java : JUnit등의 테스트 파일이 위치하게 됩니다.
+- src/test/resources : 테스트시에 필요한 resource 파일이 위치하게 됩니다.
+
+src 위치 하위에 main 부분과 test 부분을 경로가 나뉘는 이유는 개발과 동시에 테스트 코드를 작성 하기 위함일 것입니다. XP 프로그래밍과 같이 로직의 개발과 테스트가 동일한 시점에 가능하다면 class package 정책에 맞춰 test 단계의 코드들 또한 같이 개발할 수 있게 하기 위함입니다.
+
+------------------------------------- 2014.12.26 추가 끝 ------------------------------------
+
+
+
+workspace\프로젝트이름\src
+
+으로 main과 test 로 폴더가 나뉘어진다.
+
+아마 추측하건데 test는 jUnit test를 위한폴더가 아닐지.. 혼자 생각해본다. 아직까지 확실하지 않음.
+
+
+
+이후 main 안으로
+
+\java
+
+\resource
+
+\webapp
+
+
+
+으로 떨어지는데
+
+java            <-- java file
+
+resource     <-- spring 설정 파일
+
+webapp      <-- view 단, 관련된 내용 (dispatcher-servlet.xml 도 이쪽으로 들어가져있다.)
+
+
+
+pakage 구성 규칙
+
+기본적으로 전자정부에서는
+
+패키지이름/web             <-- comtroller
+
+패키지이름/service         <-- serviceInterface
+
+패키지이름/service/impl  <-- serviceImpl, DAO, component 등등
+
+
+
+이렇게 나뉘어진다.
+
+(표준은 아니지만 이리 나누는 곳이 많다. 고로 위의 패키지명을 따른다.)
+
+
+
+// 2016.10.19 추가
+
+filter가 동작하는 위치를 알고 싶어져서 찾아보니 dispatcherServlet에 도달하기 전에 요청이 처리되는 것으로 알아냈다.
+
+![](/assets/images/posts/60208058871/5aeaa052830f.jpg?type=w3)
+
+// 추가 끝.
+
+* 스프링의 내부 흐름관계는 아래와 같다.
+
+
+
+![](/assets/images/posts/60208058871/4788b2797d4b.jpg?type=w3)
+
+
+
+위 흐름관계를 보면서 코딩시 필요한 시점(?), 이나 타이밍(?)을 알 수 있다.
+
+예) interceptor에서 prehandler(), posthandler() 시점.
+
+
+
+전자정부에는 많은 모듈을 제공해줄 뿐만아니라 여러 template 와 컴포넌트들을 제공해준다. 전자정부에서 제공해주는 eclipse에 내장된 기능들만 해도 수두룩 하다. 아직까지 몰라서 못쓰는게 더 많을 정도. 만약에 저 기능들을 효율적으로 다룬다면야 얼마나 도움 될지는 나도 궁금하다.
+
+
+
+
+
+File 관리 부분은 테이블이 나뉘어져있다.
+
+COMTNFILE (주)Table과
+
+COMTNFILEDETAIL (부: 상세) Table 2개로 되어 있다.
+
+
+
+또한 SEQUENCE 관련되어 idgen 이라는 ID 관리하는 서비스 모듈이 따로 있다.
+
+
+
+resource/spring/idgen.xml 안에 xml 형태로
+
+COMTECOPSEQ 라는 테이블에 KEY, VALUE 형태로 저장된다.
+
+
+
+
+
+해당 xml을 등록하게 되면 Controller나 Service 단에서 호출 후에 사용 할 수 있다.
+
+
+
+자동 증감 되는 방식이다.
+
+
+
+* 이왕이면 Service단 : ServiceImpl 에서 아이디를 가져오는걸 실행 시키고,
+
+Error 발생시 Rollback 되도록 설정하는 것이 좋을 것 같다.
+
+
+
+물론, DB에다가 Sequence를 걸어서 따로 관리해도 되지만 현재 프로젝트 진행 중에는 되도록 전자정부쪽 프레임워크에 맞춰서
+
+진행하기 때문에 이 모듈을 사용하고 있다.
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+
+   <property name="dataSource" ref="egov.dataSource"/>
+
+ </bean>
+
+
+
+ <tx:advice id="txAdvice" transaction-manager="txManager">
+
+    <tx:attributes>
+
+      <tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception"/>
+
+      <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+
+      <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
+
+    </tx:attributes>
+
+ </tx:advice>
+
+
+
+ <aop:config>
+
+  <aop:pointcut id="requiredTx"
+
+   expression="execution(* mngwserc.com..*Impl.*(..)) or execution(* egovframework.com..*Impl.*(..)) or
+
+   execution(* front.com..*Impl.*(..)) or
+
+   execution(* group.com..*Impl.*(..)) or
+
+   execution(* mngwserc.rte.fdl.excel.impl.*Impl.*(..))"/>
+
+  <aop:advisor advice-ref="txAdvice" pointcut-ref="requiredTx" />
+
+ </aop:config>
+
+[Colored by Color Scripter](http://colorscripter.com/info#e)
+[cs](http://colorscripter.com/info#e)
+
+각 페키지 별로 impl이 붙은 객체에 대해서 트렌젝션을 걸어주게 되면
+
+spring에서 transaction 정책을 수행 할 수 있다.
+
+
+
+
+
+** 화면 레이아웃 관련,
+
+
+
+블로그 네에 tiles 셋팅 하는 방법이 들어 있다. 화면단은 tiles로 레이아웃을 따로 resource/spring/common.xml 쪽에 정의해서 사용한다.
+
+
+
+** DB Connection 관련.
+
+resource/spring/sqlMap.xml 에서 관리한다. 해당 부분에 dbcp로 커넥션을 맺을 건지 jndi를 사용할건지 정의해서 사용하면 된다.
+
+
+
+
+
+// 2014-04-14 추가.
+
+
+
+Controller, Service, DAO에 관한 설명.
+
+
+
+위에서 언급했던 것과 같이 폴더 구조는
+
+/web
+
+/web/service
+
+/web/service/impl
+
+로 구성 됩니다.
+
+
+
+Controller 단.**
+
+컨트롤러 위치인 web쪽을 보자면
+
+아래와 같이 컨트롤러 (진입점) 이 있습니다.
+
+
+
+![](/assets/images/posts/60208058871/773962ddff53.png?type=w3)**
+컨트롤러는 해당 클래스 상단에
+
+@Controller 라는 클래스 어노테이션을 선언해줍니다.
+
+그리고 원하시는 url을 @RequestMapping 어노테이션에다가 value 값에 넣어줍니다.
+
+
+
+@Resource 어노테이션을 이용해서 서비스단 (인터페이스)를 DI 시켜줍니다.
+
+![](/assets/images/posts/60208058871/cea038859722.png?type=w3)
+
+Serivce 단.**
+
+
+
+![](/assets/images/posts/60208058871/23b3bc0d1fbd.png?type=w3)**
+서비스 단을 보시면 컨트롤러 단과 같이
+
+클래스 상단에
+
+@Service 라는 클래스 어노테이션을 사용 합니다.
+
+그리고 위에 그림 처럼 serviceImpl 클래스에 interface를 상속 시켜 줍니다.
+
+( 컨트롤러와 서비스단 간에 인터페이스를 두는 이유는 약한 결합을 위한 이유도 있다고 합니다.  그외도 이유도 있음.)
+
+컨트롤러와 마찬가지로 @Resource 어노테이션을 사용해서
+
+DAO를 DI 시켜줍니다.![](/assets/images/posts/60208058871/0a8dfba2e49b.png?type=w3)
+
+DAO 단.**
+
+클래스 상단에
+
+@Repository 어노테이션을 선언합니다.
+
+DAO (DATA ACCESS OBJECT) 인 DAO단에는 Repository 어노테이션을 선언해서
+
+sql 에러 발생시 Exception을 처리 할 수 있도록 해놨다고 들은 것 같습니다.
+
+![](/assets/images/posts/60208058871/9e1fc44a2280.png?type=w3)
+
+
+
+이렇게 하면 기본 스프링 MVC 흐름을 알 수 있습니다.
+
+
+
+출처 : <http://www.gliderwiki.org/wiki/105>

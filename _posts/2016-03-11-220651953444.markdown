@@ -1,0 +1,12 @@
+---
+title: "Angularjs google material design"
+date: 2016-03-11 13:43:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220651953444"
+---
+
+<https://material.angularjs.org/latest/demo/dialog>
+
+[' + menu.currentPage.name)">
+  Angular Materialmaterial.angularjs.org](https://material.angularjs.org/latest/demo/dialog)
+

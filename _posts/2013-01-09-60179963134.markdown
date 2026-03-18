@@ -1,0 +1,80 @@
+---
+title: "javascript로 행추가 하기"
+date: 2013-01-09 09:01:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60179963134"
+---
+
+```
+
+Insert title here
+
+ var rowIndex=3;
+
+  function createRow(){
+     var objTable = document.getElementById('table1');
+     var objRow = objTable.insertRow(rowIndex);
+     var cell = objRow.insertCell(0);
+  var cel2 = objRow.insertCell(1);
+     cell.innerHTML = '첨부파일';
+  cel2.innerHTML = ''
+  //alert(objTable.rows.length-4)
+  rowIndex++;
+  }
+
+
+
+
+
+    제목
+
+
+
+
+    내용
+
+
+
+    첨부파일
+
+
+
+    등록일
+
+
+
+
+
+
+
+----------------------------------- 2013.03.12 추가 ---------------------------------------
+
+function rowInsert(){
+ var table = document.getElementById("tbl");
+
+ var idx = table.rows.length;
+    var objRow = table.insertRow(idx-1);
+
+ for(var i=0; i
+
+내용
+수량
+단가
+공임비
+공급가
+부가세
+합계
+삭제
+
+
+총 합계 원
+
+
+
+
+
+
+
+
+```

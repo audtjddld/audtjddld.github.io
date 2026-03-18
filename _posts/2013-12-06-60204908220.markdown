@@ -1,0 +1,26 @@
+---
+title: "오라클 현재 사용자에 물려있는 계정 전체 삭제하기 위한 쿼리"
+date: 2013-12-06 17:40:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60204908220"
+---
+
+SELECT LTRIM(RTRIM(OWNER)) || '.' || OBJECT_NAME OBJ_NAME, OBJECT_TYPE,
+
+DECODE(OBJECT_TYPE, 'TABLE', 'DROP TABLE ' ||
+
+OBJECT_NAME || ';', '') DROP_TABLE
+
+FROM ALL_OBJECTS
+
+WHERE OWNER LIKE UPPER('%icpa%')
+
+AND OBJECT_TYPE = 'TABLE'
+
+ORDER BY OBJECT_NAME;
+
+
+
+이렇게 치면 sql developer에서 drop table 테이블 이름 ;
+
+형식으로 쭈루룩 나옴.

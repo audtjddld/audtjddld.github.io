@@ -1,0 +1,363 @@
+---
+title: "컨텐츠 내 파일 링크 관리하기 관련 내용 정리"
+date: 2014-10-31 13:34:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/220167321023"
+---
+
+기존에 컨텐츠내에 다운로드 링크 걸때
+
+기존 사이트 경로 또는 한글 파일들이 리눅스나 유닉스계열 언어쪽에 인식이 안되서
+
+임의로 바꿔주면서 작업한 경우가 많이 있었다.
+
+
+
+링크 거는 작업자나 기타 해당되는 구조도 따로 정리해두는 번거로움이 많이 있었었는데
+
+
+
+이번에 Spring 프레임워크 내에 파일 다운로드 링크 관련하여 정리한다.
+
+
+
+일단 서버내에서 한글 text가 인식이 될때 이야기 이다.
+
+
+
+
+
+1
+
+2
+
+3
+
+4
+
+@Controller
+
+public class EgovFileDownloadController implements ServletContextAware {
+
+
+
+    // 위와 같이 ServletContextAware 상속받는다
+
+
+
+
+
+그리고 프로퍼티나 xml등에다가 파일 경로들을 저장시킨다.
+
+
+
+![]()
+
+
+
+
+
+위와 같이 선언 후
+
+
+
+파일 컨트롤러로
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+55
+
+56
+
+57
+
+58
+
+59
+
+60
+
+61
+
+62
+
+63
+
+64
+
+65
+
+66
+
+67
+
+68
+
+69
+
+    private ServletContext servletContext;
+
+    @Override
+
+    public void setServletContext(ServletContext servletContext) {
+
+        this.servletContext = servletContext;
+
+    }
+
+
+
+    /**
+
+     * 컨텐츠 내 첨부파일 다운로드 관련 컨트롤러
+
+     * @param request
+
+     * @param response
+
+     * @param model
+
+     * @throws Exception
+
+     */
+
+    @RequestMapping("/file/download.do")
+
+    public void ContentsFiledownload(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+
+        String file_id = request.getParameter("file_id");    // 파일명
+
+        if (file_id == null) {
+
+            throw new Exception("파일아이디가 존재하지 않습니다. 파라미터오류");
+
+        }
+
+
+
+
+
+        // 파일 경로 구하기
+
+        String path = EgovProperties.getProperty("FILE_" + file_id);
+
+        //String path = resources.getMessage("FILE_" + file_id);
+
+
+
+        if (path == null) {
+
+            throw new Exception("파일이 존재하지 않습니다.(1)");
+
+        }
+
+
+
+        System.out.println("path    " + path);
+
+        File file ;
+
+        try{
+
+
+
+            String rootPath = servletContext.getRealPath("/");
+
+
+
+            System.out.println("file path " + rootPath + "files" + File.separator + path.trim());
+
+
+
+            file = new File(rootPath + "files" + File.separator + path.trim());
+
+            if (!file.exists()) {
+
+                System.err.println("파일없음:" + file.getAbsolutePath());
+
+                throw new Exception("파일이 존재하지 않습니다.(2)");
+
+            }
+
+
+
+            response.setContentType("application/unknown");
+
+               response.setHeader("Content-Disposition", "attachment;filename=" + Utils.toEng(file.getName()));
+
+               response.setHeader("Content-Length", String.valueOf(file.length()));
+
+
+
+        }catch(Exception e){
+
+            e.printStackTrace();
+
+            throw new EgovBizException("파일 다운로드 Error!!");
+
+        }
+
+
+
+
+
+
+
+        int len;
+
+        byte[] buf = new byte[4 * 1024];
+
+
+
+        OutputStream os = response.getOutputStream();
+
+        InputStream is = new FileInputStream(file);
+
+        try {
+
+            while ((len = is.read(buf)) != -1) {
+
+                os.write(buf, 0, len);
+
+            }
+
+        } finally {
+
+            os.flush();
+
+            os.close();
+
+            is.close();
+
+        }
+
+    }
+
+
+
+
+
+
+
+상속받은 경로로 현재 프로젝트 절대경로를 얻는다.
+
+기존 에는 풀패스로 작성하였었는데 절대경로를 얻어내기 때문에 뒤에 붙는 프로퍼티내 경로만 붙어지면 다운로드 링크 경로가 완성된다.
+
+
+
+위와 같이 프로퍼티로 정리를 해두면
+
+해당 파일이 무엇인지 찾기도 쉽고
+
+
+
+링크 관리도 쉬울 것 같다.

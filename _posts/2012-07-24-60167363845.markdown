@@ -1,0 +1,172 @@
+---
+title: "JSP Servlet에서 쿠키(Cookie) 한글 저장시 에러 발생. 해결법?"
+date: 2012-07-24 10:36:00 +0900
+categories: [경험 및 정보 공유]
+tags: [ServletCookie사용법, 한글Cookie, IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60167363845"
+---
+
+이번에 세션으로 로그인부터 인증 하고 있었는데,
+
+쿠키로 바꿔보라는 팀장님 지시에 따라서 쿠키로 바꿨습니다.
+
+
+
+그러던 도중.. 사용자 이름을 쿠키로 굽는 순간 뙇!!
+
+
+
+---------------------------------------------------------------------------
+
+java.lang.IllegalArgumentException: Control character in cookie value or attribu**te.
+        at org.apache.tomcat.util.http.CookieSupport.isHttpSeparator(CookieSuppo
+rt.java:192)
+        at org.apache.tomcat.util.http.CookieSupport.isHttpToken(CookieSupport.j
+ava:214)
+        at org.apache.tomcat.util.http.ServerCookie.appendCookieValue(ServerCook
+ie.java:187)
+        at org.apache.catalina.connector.Response.generateCookieString(Response.
+java:1039)
+        at org.apache.catalina.connector.Response.addCookie(Response.java:982)
+        at org.apache.catalina.connector.ResponseFacade.addCookie(ResponseFacade
+.java:373)
+        at com.winglish.login.service.LoginService.procLogin(LoginService.java:6
+7)
+        at com.winglish.login.servlet.LoginServlet.service(LoginServlet.java:62)
+
+        at javax.servlet.http.HttpServlet.service(HttpServlet.java:722)
+        at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(Appl
+icationFilterChain.java:304)
+
+---------------------------------------------------------------------------
+
+에러가 터져주시네요
+
+
+
+해결방법은
+
+쿠키 추가시킬때
+
+cookie = new Cookie("userName", URLEncoder.encode**(m.getMemName(),"utf-8"));
+
+response.addCookie(cookie);
+
+해주시구요
+
+출력할때는
+
+if (n.equals("userName"))       Name = **URLDecoder.decode**((thisCookie.getValue()),"utf-8");
+
+
+
+ 요런 방법으로
+
+해주시면 됩니다.
+
+출처는 구글링에서 퍼온거고 소스는 제꺼에서 적용했을때 입니다.
+
+
+
+아래는 쿠키 가져오는 문구 그냥 추가루요~
+
+------------------------------------------------------------------------
+
+        if(request.getCookies()!=null){**            Cookie[] cookies=request.getCookies();
+
+            for(int i=0;i<cookies.length;i++) {
+                Cookie thisCookie = cookies[i];
+                String n=thisCookie.getName();
+                if (n.equals("쿠키 이름"))       mgr = thisCookie.getValue();
+
+            }
+
+
+
+        }
+
+----------------------- 2013.05.31 -------------------------------------------
+
+
+
+쿠키 생성 상세
+
+출처 : <http://utils.egloos.com/3225087>
+
+
+
+1. 쿠키 생성
+
+Cookie cookie = new Cookie("cookie_key", "value");
+    cookie.setMaxAge(60*60*24*365);            // 쿠키 유지 기간 - 1년
+    cookie.setPath("/");                               // 모든 경로에서 접근 가능하도록
+    response.addCookie(cookie);                // 쿠키저장
+}
+
+
+
+2. cookie 가져오기
+
+Cookie[] cookies = request.getCookies();
+
+for (int i = 0; i < cookies.length; i++) {
+
+cookies[i].getName();
+cookies[i].getValue();
+
+}
+
+3. 쿠키 삭제
+
+cookies[i].setMaxAge(0);                 //쿠키 유지기간을 0으로함
+cookies[i].setPath("/");                    //쿠키 접근 경로 지정
+response.addCookie(cookies[i]);      //쿠키저장
+
+3번에서 빨간색으로 표시한 cookies[i].setPath("/");  이부분은 쿠키의 생성때와 똑같이 지정을 하지 않으면 삭제가 되지 않는다!!( 삽질좀 했죠.;;에휴 )
+
+
+
+또한 쿠키 생성때 cookie.setDomain(".aaa.com") 과 같이 지정 할수 있는데
+".aaa.com" 과깉이 지정하면 [www.aaa.com**](http://www.aaa.com/), sub.aaa.com, xxx.aaa.com 과같이 모든 서브 도메인에서 접근이 가능하다.**
+음.. 물론 저렇게 세팅하면 삭제시도 저렇게 해줘야겠죠? ( 한번해보세요 제가 해봤을땐 삭제시는 setDomain()과는 상관 없고 오로지 setPath("/") 였다는...
+
+결론...setPath, setDomain 을 쿠키 생성할때 넣어줬으면 지울때도 반드시 넣어준다..!!!!!!
+
+
+
+--------------------------------------------------------------------------------------
+
+
+
+  □ Cookie 클래스
+**    ■ 정의**      - 서블릿/JSP에서 쿠키를 위해 사용.
+    ■ 쿠키를 웹 브라우저에 전달
+      - HttpServletResponse.addCookie()
+    ■ 쿠키 설정
+      1) Cookie 객체를 만듬.
+      2) 쿠키에 속성을 부여.
+      3) 쿠키를 전송.
+    ■ 생성자
+      ○ Cookie(String name, String value)****        - 이름이 name이고 값이 value인 쿠키를 생성.
+    ■ 속성을 부여할 수 있는 메소드
+      ○ void setComment(String purpose)****        - 쿠키에 관련된 정보를 주석 형식으로 기술.
+      ○ void setDomain(String pattern)****        - 쿠키가 사용될 도메인을 설정.
+        - 해당 도메인에 속해 있는 컴퓨터를 방문하면 웹 브라우저는 자동적으로 쿠키를 그 웹서버에 전송.
+      ○ void setMaxAge(int expiry)****        - 쿠키가 유효한 기간을 설정. (단위: 초)
+        - 기간이 초과되면 쿠키는 삭제.
+        - 이 속성을 기술하지 않으면 쿠키는 클라이언트 컴퓨터에 저장되지 않고, 현재 웹 브라우저가 실행되는 동안에만 유효.
+      ○ void setPath(String url)****        - 쿠키가 적용될 패스 정보를 설정.
+        - 패스가 설정되면 해당되는 패스에 방문하는 경우에만 웹 브라우저가 웹 서버에 쿠키를 전송.
+      ○ void setSecure(boolean flag)****        - 보안을 설정.
+        - flag가 true이면 보안성이 있는 채널(예:SSL)을 사용하는 경우에만 쿠키를 전송.
+      ○ void setValue(String newValue)****        - 쿠키 값을 설정.
+    ■ 속성을 읽는 메소드
+      ○ String getComment()****        - 쿠키의 목적 등을 기술하는 주석을 읽어 옴.
+      ○ String getDomain()****        - 쿠키의 도메인 이름을 얻어 옴.
+      ○ int getMaxAge()****        - 쿠키의 유효 기간을 얻어 옴. (단위: 초)
+      ○ String getName()****        - 쿠키의 이름을 얻어 옴.
+      ○ String getPath()
+**        - 패스 정보(URI)를 얻어 옴.**      ○ boolean getSecure()****        - 쿠키가 보안이 설정된 프로토콜에서만 보내지면 true, 아니면 false를 리턴.
+      ○ String getValue()****        - 쿠키 값을 얻어 옴.
+
+[출처]** [8. 쿠키, 세션, 필터 (쿠키)](http://blog.naver.com/chocolleto/30083786336)|**작성자** [외계인셩](http://blog.naver.com/chocolleto)

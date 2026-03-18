@@ -1,0 +1,284 @@
+---
+title: "웹 사이트 성능 최적화 분석 자동화: YSlow와 CI 서버 연동"
+date: 2016-01-02 22:04:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220585766012"
+---
+
+출처 : <http://d2.naver.com/helloworld/303083>
+
+<http://helloworld.naver.com/helloworld/303083>
+
+[웹 사이트 성능 최적화 분석 자동화: YSlow와 CI 서버 연동2007년 Yahoo!에서 웹 사이트 성능 최적화를 위한 내부 노하우를 14개 법칙(현재는 35개 법칙, <http://developer.yahoo.com/performance/ru..helloworld.naver.com>](http://helloworld.naver.com/helloworld/303083)
+
+2007년 Yahoo!에서 웹 사이트 성능 최적화를 위한 내부 노하우를 14개 법칙(현재는 35개 법칙,http://developer.yahoo.com/performance/rules.html) 으로 정리해 일반 개발자에게 공개했습니다. 그리고 해당 법칙에 따라 성능 최적화를 분석하는 YSlow라는 도구도 함께 공개했습니다.
+
+초기에 YSlow는 Firefox의 확장 프로그램으로 공개됐으나 그 이후 Chrome, Opera, Safari 등 모든 브라우저의 확장 도구로 포팅됐습니다. 최근에는 Node.js나 PhantomJS를 이용해 브라우저 없이 명령어 입력으로 바로 실행할 수 있는 커맨드라인 버전까지 다양하게 제공하고 있어 원하는 방법을 선택해 사용할 수 있습니다.
+
+이 글에서는 YSlow 커맨드라인 버전과 CI(Continuous Integration, 지속적인 통합) 서버인 Jenkins를 연동해 빌드 때마다 자동으로 웹 사이트 성능 최적화 분석 결과를 리포팅하는 방법을 살펴보겠습니다.
+
+## 웹 사이트 성능 최적화 분석 자동화
+
+먼저 웹 사이트 성능 최적화 법칙에 대해 간단히 살펴보고, 성능 최적화 분석 자동화에 필요한 도구에 무엇이 있는지 알아보겠다.
+
+### 웹 사이트 성능 최적화 법칙
+
+인터넷 포털 사이트는 사용자들에게 인터넷의 첫 관문 역할을 하기 때문에 다양한 정보를 제공하면서도 웹 사이트의 속도가 빨라야 한다. Yahoo!는 자사의 포털 사이트가 점점 방대해지면서 페이지 로딩 속도도 느려지게 돼 성능 최적화를 고민하지 않을 수 없었다.
+
+당시에 웹 사이트의 성능 최적화는 주로 백엔드(back-end) 요소인 서버 프로그램이나 데이터베이스 등에 초점을 맞추고 있었다. 그 이유는 사용자 PC의 브라우저에 페이지가 로딩돼 화면에 나타나고 나면 성능 최적화는 개발자가 컨트롤할 수 있는 영역을 벗어난 브라우저의 몫이라고 생각했기 때문이다. 하지만 Yahoo!의 성능개선팀 매니저였던 스티브 사우더스(Steve Souders)는 연구, 조사를 통해 서버 프로그램 영역을 떠난 순간인 프런트엔드(front-end) 영역에서 일어나는 일이 웹 페이지 속도의 80~90%를 차지한다는 사실을 인지하고 프런트엔드 요소를 어떻게 하면 빠르게 할 수 있을지 고민하고 연구하여 최선의 방안들을 Yahoo! 포털에 하나씩 적용해 나갔다. 그 결과 Yahoo!는 많은 정보를 담고 있으면서도 빠른 속도로 첫 페이지를 사용자에게 제공할 수 있게 됐다.
+
+이러한 Yahoo! 성능개선팀의 우수 사례(best practice)가 모여 웹 사이트 성능 최적화 14개 법칙이 탄생했다. 현재는 다음과 같은 35개 법칙이 있다.
+
+- Minimize HTTP Requests(HTTP요청을 최소화하라)**
+- **Use a Content Delivery Network(CDN을 이용하라)**
+- **Add an Expires or a Cache-Control Header(응답헤더에 Expires 혹은 Cache-Control을 추가하라)**
+- **Gzip Components(gzip으로 압축하라)**
+- **Put Stylesheets at the Top(스타일시트는 문서의 위쪽에 넣어라)**
+- **Put Scripts at the Bottom(스크립트는 문서의 아래쪽에 넣어라)**
+- **Avoid CSS Expressions(CSS Expression을 피하라)**
+- **Make JavaScript and CSS External(자바스크립트와 CSS는 외부 파일로 만들어라)**
+- **Reduce DNS Lookups(DNS 검색을 줄여라)**
+- **Minify JavaScript and CSS(자바스크립트와 CSS의 크기를 작게 하라)**
+- **Avoid Redirects(리다이렉션을 피하라)**
+- **Remove Duplicate Scripts(중복 스크립트를 제거하라)**
+- **Configure ETags(ETags를 설정하라)**
+- **Make Ajax Cacheable(AJAX도 캐싱할 수 있도록 만들어라)**
+- Flush the Buffer Early(버퍼를 빨리 비워라)
+- **Use GET for AJAX Requests(AJAX 요청 시 GET을 사용하라)**
+- Post-load Components (사후 구성 컴포넌트)
+- Preload Components(사전 구성 컴포넌트)
+- **Reduce the Number of DOM Elements(DOM 요소의 개수를 줄여라)**
+- Split Components Across Domains(컴포넌트를 도메인별로 분리하라)
+- Minimize the Number of iframes(IFrame의 개수를 최소화하라)
+- **No 404s(404 오류가 발생하지 않게 하라)**
+- **Reduce Cookie Size(쿠키의 크기를 줄여라)**
+- **Use Cookie-free Domains for Components(컴포넌트는 쿠키가 없는 도메인을 사용하라)**
+- Minimize DOM Access (DOM 접근을 최소화하라)
+- Develop Smart Event Handlers (이벤트 핸들러를 잘 개발하라)
+- Choose over @import(@import보다는 태그를 써라)
+- **Avoid Filters(CSS 필터를 피하라)**
+- Optimize Images(이미지를 최적화하라)
+- Optimize CSS Sprites(CSS 스프라이트를 최적화하라)
+- **Don't Scale Images in HTML(HTML로 지정한 크기보다 큰 이미지를 사용하지 마라)**
+- **Make favicon.ico Small and Cacheable(favicon.ico 파일은 작게 만들고 캐싱되도록 만들어라)**
+- Keep Components under 25K(컴포넌트 크기를 25KB 이하로 유지하라)
+- Pack Components into a Multipart Document(컴포넌트를 멀티파트 문서로 묶어라)
+- **Avoid Empty Image src(이미지의 src 속성 값을 빈 채로 만들지 마라)**
+
+여기서는 이 법칙의 자세한 내용과 기법에 관해서 따로 설명하지 않겠다. 법칙에 관한 자세한 내용은 Yahoo! 개발자 페이지의 "[Best Practices for Speeding Up Your Web Site](http://developer.yahoo.com/performance/rules.html)" 문서에서 확인할 수 있다.
+
+### 성능 최적화 분석 자동화 도구
+
+#### YSlow
+
+YSlow는 앞에서 언급한 웹 사이트 성능 최적화 법칙을 웹 사이트가 얼마나 만족하고 있는지 측정하는 도구다. 다양한 브라우저 확장 프로그램 버전을 제공하고 있으며, <http://yslow.org/> 에서 다운로드할 수 있다.
+
+YSlow는 현재 35개 법칙 중 프로그램으로 측정할 수 있는 23개 법칙(앞에서 35개 법칙 중 굵은 글자로 표시해 두었다)을 분석해 자체 기준에 따라 A~F까지 등급을 분류해서 보고한다. 등급 및 점수는 참고 사항이므로 자신의 웹 사이트 상황과는 안 맞을 수 있다. 보고서 점수에 너무 연연하지 말고 보고서 내용을 참고하여 상황에 맞게 최적화하면 된다.
+
+자세한 등급과 점수는 "YSlow Ruleset Matrix(http://yslow.org/ruleset-matrix)" 문서에서 확인할 수 있다.
+
+#### PhantomJS(http://phantomjs.org/)
+
+PhantomJS는 WebKit 엔진으로 브라우저를 에뮬레이팅해 커맨드라인에서 JavaScript를 실행시킬 수 있게 하는 도구다. JavaScript 테스트 자동화에 많이 사용하고 있으며 브라우저 화면 캡처와 네트워크 분석도 가능해서 다양하게 활용할 수 있다.
+
+#### Jenkins
+
+Jenkins 서버는 소스코드가 변경됐을 때 빌드, 테스트, 분석, 리포팅이 자동으로 수행되도록 도와주는 CI 서버다. Jenkins 서버는 프로젝트의 소스가 변경되면 자동으로 빌드하고 단위 테스트를 수행해 그 결과를 리포팅하기 때문에 프로그램 변경 시에 발생할 수 있는 문제를 사전에 찾아 해결할 수 있다. 그래서 프로젝트를 더 안정적이고 성공적으로 유지 보수할 수 있다.
+
+각 프로젝트마다 소스 저장소, 빌드 환경, 단위 테스트 환경 등이 서로 다르기 때문에 Jenkins 서버는 다양한 환경을 수용할 수 있도록 잘 구조화된 플러그인 확장 환경을 제공한다. 좀 더 자세한 내용은 홈페이지(http://jenkins-ci.org/) 를 참고하길 바란다.
+참고** Jenkins의 원래 이름은 Hudson이었으나 Oracle사와의 상표 권리 문제로 2011년 1월부터 Hudson(Oracle)과 Jenkins(오픈소스)로 나뉘게 됐다.
+
+## YSlow for PhantomJS
+
+### PhantomJS 설치하기
+
+YSlow가 브라우저 없이 실행될 수 있도록 먼저 PhantomJS를 설치한다.
+
+- <http://phantomjs.org/download.html> 에서 자신의 운영체제에 맞는 PhantomJS 버전을 다운로드한다.
+- 다운로드한 파일의 압축을 해제하면 PhantomJS 실행 파일을 확인할 수 있다.
+-
+먼저 버전 확인 명령으로 이상이 없는지 확인한다. 아무런 의존성이 없기 때문에 다음과 같이 바로 명령어를 실행하면 된다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-1.png)
+
+-
+<http://yslow.org/phantomjs/> 에서 YSlow for PhantomJS를 다운로드한 다음 압축을 해제한다.
+
+-
+다음과 같이 **phantomjs** 명령어로 **yslow.js**를 실행시켜서 본다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-2.png)
+
+PhantomJS와 YSlow만으로도 커맨드 라인을 통해 YSlow로 웹 사이트 성능을 분석할 수 있다.
+
+### 사용법
+
+**phantomjs yslow.js --help** 명령을 실행시키면 다음과 같은 사용법을 확인할 수 있다. 편의를 위해 각 옵션 설명을 번역해 놓았다.
+
+```
+Usage: phantomjs [phantomjs options] yslow.js [yslow options] [url ...]
+
+PhantomJS Options:
+
+  <http://y.ahoo.it/phantomjs/options>
+
+YSlow Options:
+
+  -h, --help               사용법을 출력한다
+  -V, --version            버전 출력
+  -i, --info         로그 출력정보를 지정 (basic|grade|stats|comps|all) [all]
+  -f, --format     결과물 출력 형식을 지정한다 (json|xml|plain|tap|junit) [json]
+  -r, --ruleset   적용할 YSlow 성능 법칙세트을 지정한다 (ydefault|yslow1|yblog) [ydefault]
+  -b, --beacon        결과를 로그할 URL을 지정한다
+  -d, --dict               결과 항목 사전을 포함한다
+  -v, --verbose            beacon 응답 정보를 출력한다
+  -t, --threshold   합격/불합격여부를 위한 한계 최저점수를 지정한다 ([0-100]|[A-F]|{JSON}) [80]
+                           e.g.: -t B or -t 75 or -t '{"overall": "B", "ycdn": "F", "yexpires": 85}'
+  -u, --ua ""  페이지가 리소스를 요청할 때 서버로 전송할 user agent 문자열을 지정한다
+  -vp, --viewport     페이지의 뷰포트 사이즈를 WxY로 지정한다, W = 너비, H = 높이 [400x300]
+  -ch, --headers     커스텀 요청 헤더를 지정한다, e.g.: -ch '{"Cookie": "foo=bar"}'
+  -c, --console     페이지 console 메시지를 출력한다 (0: none, 1: message, 2: message + line + source) [0]
+
+Examples:
+phantomjs yslow.js <http://yslow.org>
+phantomjs yslow.js -i grade -f xml www.yahoo.com www.cnn.com www.nytimes.com
+phantomjs yslow.js -info all --format plain --ua "MSIE 9.0" <http://yslow.org>
+phantomjs yslow.js -i basic --rulseset yslow1 -d <http://yslow.org>
+phantomjs yslow.js -i grade -b <http://www.showslow.com/beacon/yslow/> -v yslow.org
+phantomjs --load-plugins=yes yslow.js -vp 800x600 <http://www.yahoo.com>
+phantomjs yslow.js -i grade -f tap -t 85 <http://yslow.org>
+```
+
+실행 예제 설명은 [YSlow for Phantom 사용법 페이지](http://yslow.org/phantomjs/)를 참고하도록 한다. 예제를 실행해 보면 알겠지만 문자열로 주르륵 떨어지는 출력 결과에 당혹하지 않을 수 없다. 이제 Jenkins를 이용해 보기 좋게 보고서를 출력하고 자동화해 보자
+
+## Jenkins 서버에 YSlow연동하기
+
+### Jenkins 서버 준비하기
+
+이미 Hudson이나 Jenkins 서버가 구축돼 있다면 구축된 서버를 활용하도록 하자. 시험 삼아 로컬 PC의 Windows 환경에서 확인해 보고 싶다면 다음과 같이 Jenkins 서버를 다운로드해 실행하도록 한다.
+
+- 먼저 <http://java.com/download> 에서 Java를 다운로드해 설치한다.
+- jenkins.war를 <http://jenkins-ci.org/> 에서 다운로드한다.
+-
+Windows의 명령 프롬프트에서 다음과 같이 Jenkins 서버를 실행한다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-3.png)
+
+-
+브라우저에서 [http://localhost:8080](http://localhost:8080/) 으로 접속해 서버가 정상적으로 실행되는지 확인한다. 다음과 같은 화면을 볼 수 있으면 정상적으로 실행된 것이다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-4.png)
+
+YSlow for PhantomJS는 TAP(Test Anything Protocol) 타입과 JUnit 타입의 출력 포맷을 제공하고 있기 때문에 Jenkins의 TAP 플러그인이나 JUnit 플러그인으로 분석 결과를 보기 좋게 만들어낼 수 있다. Jenkins 서버에 해당 플러그인이 있는지 확인하고, 없다면 다음과 같이 플러그인을 설치한다.
+
+-
+**Jenkins 관리 > 플러그인 관리** 항목을 클릭한다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-5.png)
+
+-
+**설치된 플러그인** 탭에서 플러그인 설치 여부를 확인한다.
+
+-
+플러그인이 없다면 **설치 가능** 탭에서 해당 플러그인을 찾아서 설치한다(JUnit 플러그인은 기본으로 설치돼 있어 별도로 설치하지 않아도 된다).
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-6.png)
+
+-
+플러그인 다운로드 및 설치가 완료되면 자동으로 다시 시작한다. Windows에서는 자동으로 다시 시작하지 않으므로 서버가 실행되고 있는 명령 창에서 **Ctrl+C** 키를 눌러 중단했다가 다시 실행하면 된다.
+
+이제 모든 준비가 완료됐다. Jenkins에서 YSlow를 실행하고 보고서가 출력되도록 연동해 보자.
+
+### Jenkins 서버에 YSlow 연동하기
+
+#### TAP 보고서로 출력하기
+
+Jenkins에 프로젝트를 추가하고 다음과 같이 설정한다.
+
+-
+**새로운 Job**을 클릭해 프로젝트를 추가한다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-7.png)
+
+-
+**OK**를 클릭하면 설정 화면이 나온다.
+
+-
+**Build** 항목에서 **Add build step > Execute shell**을 선택하고 커맨드라인 명령을 입력한다(Windows에서는 **Execute Windows batch command**를 이용한다).
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-8.png)
+참고: 커맨드라인 명령 입력 값**
+
+```
+phantomjs yslow.js -i grade -threshold "B" -f tap <http://www.naver.com> > yslow.tap
+```
+
+-i grade : 모든 법칙이 테스트되도록 지정 **-threshold "B" : 모든 법칙의 수용 가능한 최저 점수를 지정
+-f tap : 결과를 TAP 형식으로 출력하도록 지정
+[http://www.naver.com](http://www.naver.com/) : 테스트할 페이지 URL
+yslow.tap : 저장할 TAP 결과 파일 이름
+
+-
+Post-build Actions** 항목에서 **Add build step > Publish TAP Results**를 선택하고 **Test results**에 **yslow.tap**을 입력한다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-9.png)
+
+-
+설정한 내용을 저장한다.
+
+- 왼쪽 메뉴에서 **Build Now**를 클릭해서 실행한다.
+-
+빌드가 완료되면 왼쪽 메뉴에서 **TAP**을 클릭해 최근 빌드의 결과를 확인할 수 있다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-10.png)
+
+-
+**TAP Test Result**를 클릭하면 검사 항목별 내용을 확인할 수 있다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-11.png)
+
+#### JUnit 보고서로 출력하기
+
+JUnit 보고서를 출력하려면 다음과 같이 설정하고 실행하면 된다.
+
+-
+**Build** 항목에서 **Add build step > Execute shell**을 추가하고 커맨드라인 명령을 입력한다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-12.png)
+참고: 커맨드라인 명령 입력 값**
+
+```
+phantomjs yslow.js -i grade -threshold "B" -f junit <http://www.naver.com> > yslow.xml
+```
+
+-i grade : 모든 법칙이 테스트되도록 지정 **-threshold "B" : 모든 법칙의 수용 가능한 최저 점수를 지정
+-f junit : 결과를 JUnit 형식으로 출력하도록 지정
+[http://www.naver.com](http://www.naver.com/) : 테스트할 페이지 URL
+yslow.tap : 저장할 JUnit 결과파일 이름
+
+-
+Post-build Actions** 항목에서 **Add build step > Publish JUnit test result report**를 선택하고 **Test report XMLs**에 **yslow.xml**을 입력한다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-13.png)
+
+-
+설정 내용을 저장하고 빌드를 수행하면 결과를 확인할 수 있다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-14.png)
+
+-
+**Test Result**를 클릭하면 상세 결과를 확인할 수 있다.
+
+![](http://d2.naver.com/content/images/2015/06/helloworld-303083-15.png)
+
+여기까지는 Jenkins 서버에 적용하는 방법을 쉽게 보여주기 위해 단독 프로젝트를 생성하고 빌드했지만, 기존에 Jenkins 서버를 사용하고 있었다면 Build와 Post-build Actions 설정을 추가한다. 자신의 Yslow로 검사할 URL은 프로젝트의 최종 URL을 적용하면 된다.
+
+## 마치며
+
+웹 페이지의 성능 문제로 골머리를 앓았던 웹 개발자라면 한 번쯤 Firefox나 Chrome의 YSlow 플러그인을 설치해서 사용해 봤을 것이다.
+
+일반적으로 프런트엔드 성능 최적화는 프로젝트 막바지 혹은 운영 중 심각하게 성능 이슈가 있을 때 일회성으로 조치하고 이후에는 잘 신경 쓰지 않는다. 하지만 웹 페이지를 유지 보수하다 보면 이것저것 새로운 기능과 변경 사항으로 인해 조금씩 느려지다 언젠가 다시 성능 이슈가 발생할 수도 있다.
+
+CI 서버에 YSlow를 설정하면 유지 보수 시에 변경이 발생할 때마다 문제가 발생할 여지가 있는 부분을 손쉽게 모니터링하고 추적할 수 있을 것이다. 또한 이렇게 개발자가 사전에 성능 문제를 인지할 수 있다면, 기능이 추가되고 변경되더라도 사용자에게 항상 쾌적한 속도의 웹 페이지 접속 환경을 보장한다는 가치도 만들어 낼 수 있다.
+
+이런 점에서 Yslow와 CI 연동을 이용한 웹사이트 성능 최적화는 시도해 볼만하다.

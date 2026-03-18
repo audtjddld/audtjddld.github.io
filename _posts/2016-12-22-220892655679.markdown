@@ -1,0 +1,7 @@
+---
+title: "자바에서의 다중상속"
+date: 2016-12-22 23:10:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220892655679"
+---
+

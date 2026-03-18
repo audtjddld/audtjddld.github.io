@@ -1,0 +1,23 @@
+---
+title: "프록시 패턴 ( proxy pattern )"
+date: 2016-05-09 16:26:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220705043379"
+---
+
+대리자로써 일을 맡기려면 그 일을 처리하고 완료되면 그 결과를 알려주는 패턴.
+
+프록시 패턴의 잘 알려진 예로는 참조 횟수 스마트 포인터가 있다.
+
+(Spread_ptr, weak_ptr)
+
+
+
+![](https://lh3.googleusercontent.com/S-f_VvVGYtqEReQ2JArcfQLeUCzOBrSHAJwTjH0QspbmWjy1A5tn18j4YZOhbo7nptwPKNPxan5LUb_ArgB1ubVPNU3uepjqUwvM4m9pFuIKarz2J17es8X_Ku6rPJr0kkDGeYY1UOY)
+
+ <https://github.com/audtjddld/pattern/tree/master/pattern/src/proxy>
+
+<https://github.com/audtjddld/pattern>
+
+[audtjddld/patternContribute to pattern development by creating an account on GitHub.github.com](https://github.com/audtjddld/pattern)
+

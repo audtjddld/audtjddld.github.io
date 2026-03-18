@@ -1,0 +1,67 @@
+---
+title: "사용자 생성 및 권한"
+date: 2016-02-15 09:47:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220627258015"
+---
+
+출처 : <http://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4_%EA%B3%84%EC%A0%95_%EC%83%9D%EC%84%B1_useradd>
+
+## 계정이 있는지 확인[편집]
+
+```
+cat /etc/passwd | grep 계정명
+```
+
+```
+[root@zetawiki ~]# cat /etc/passwd | grep testuser
+```
+
+→ 결과 없음. 즉 testuser 계정 없음.
+## 계정+홈 생성[편집]
+
+```
+useradd 계정명
+```
+
+CentOS 등 [레드햇 계열](http://zetawiki.com/wiki/%EB%A0%88%EB%93%9C%ED%96%87_%EA%B3%84%EC%97%B4)에서는 아무 옵션을 주지 않아도 홈 디렉토리가 생성되지만, SUSE의 경우에는 `-m` 옵션을 명시해야 홈 디렉토리가 생성된다.
+
+```
+useradd -m 계정명
+```
+
+### 실행예시[편집]
+
+```
+[root@zetawiki ~]# useradd testuser
+[root@zetawiki ~]# cat /etc/passwd | grep testuser
+testuser:x:500:500::/home/testuser:/bin/bash
+```
+
+→ testuser 계정을 만들었다. [UID](http://zetawiki.com/wiki/UID)와 [GID](http://zetawiki.com/wiki/GID)는 500, 홈폴더는 /home/testuser 이고, bash 셸 사용이 가능하다.
+
+```
+[root@zetawiki~]# echo 'P@ssw0rd' | passwd --stdin testuser
+Changing password for user testuser.
+passwd: all authentication tokens updated successfully.
+```
+
+→ testuser 계정의 패스워드를 [P@ssw0rd](http://zetawiki.com/wiki/P@ssw0rd) 로 설정하였다.
+## 그룹 지정하여 만들기[편집]
+명령어
+
+```
+useradd 계정명 -G 그룹명
+```
+
+## UID 지정하여 만들기[편집]
+
+사용자아이디(User ID; UID)는 숫자이다.
+
+```
+useradd 계정명 -u 사용자아이디
+```
+
+
+
+사용자 폴더 cd ~ 가 없을때는 /etc/passwd 에 정의된 폴더를 생성해주면 된다.

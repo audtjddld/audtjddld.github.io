@@ -1,0 +1,30 @@
+---
+title: "Kubernetes Network 정리"
+date: 2022-12-13 18:38:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222954664177"
+---
+
+<https://medium.com/finda-tech/kubernetes-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EC%A0%95%EB%A6%AC-fccd4fd0ae6>
+> [**쿠버네티스(Kubernetes) 네트워크 정리**](https://medium.com/finda-tech/kubernetes-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EC%A0%95%EB%A6%AC-fccd4fd0ae6)
+>
+> Kubernetes Network
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

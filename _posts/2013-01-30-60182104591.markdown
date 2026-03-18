@@ -1,0 +1,166 @@
+---
+title: "폴더 구조 뽑기"
+date: 2013-01-30 11:33:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60182104591"
+---
+
+1**2
+package test2;
+
+import java.io.File;
+
+public class Directory {
+ public static void main(String [] args){
+  String path="D:\\data\\";
+
+  System.out.println("----- drectory Test  -----");
+  directoryTree(path);
+
+ }
+
+ public static void  directoryTree(String path){
+  //System.out.println("------> path =" + path );
+  File file= new File(path);
+  String result="";
+
+  File temp[] = file.listFiles();
+
+  if(temp.length>0){
+   for(int i =0; i<temp.length; i++){
+    System.out.println("--------> "+temp[i]);
+    if(temp[i].isDirectory()){
+     result=path;
+     directoryTree(temp[i].toString());
+    }else{
+     result=temp[i].getName();
+    }
+   }
+  }
+
+ }
+}
+
+-------------- 실행 결과 -------------------
+
+----- drectory Test  -----
+--------> D:\data\service
+--------> D:\data\service\B2CAdmin
+--------> D:\data\service\B2CAdmin\ddd
+--------> D:\data\service\B2CAdmin\ddd\test.txt
+--------> D:\data\service\B2CAdmin\images
+--------> D:\data\service\B2CAdmin\images\main
+--------> D:\data\service\B2CAdmin\images\main\issue_10.JPG
+--------> D:\data\service\B2CAdmin\images\main\issue_11.JPG
+--------> D:\data\service\B2CAdmin\images\main\issue_12.JPG
+--------> D:\data\service\B2CAdmin\images\main\issue_14.JPG
+--------> D:\data\service\B2CAdmin\images\main\issue_15.JPG
+--------> D:\data\service\B2CAdmin\images\main\issue_16.JPG
+--------> D:\data\service\B2CAdmin\images\main\issue_17.JPG
+--------> D:\data\service\B2CAdmin\images\main\issue_18.JPG
+--------> D:\data\service\B2CAdmin\images\main\issue_20.JPG
+--------> D:\data\service\B2CAdmin\images\main\issue_28.JPG
+--------> D:\data\service\B2CAdmin\images\main\issue_29.JPG
+--------> D:\data\service\B2CAdmin\images\main\issue_30.JPG
+
+
+
+
+
+몇번에 실패를 거듭했다가 ㅡㅡ 우연하게 했더니 됨..
+
+
+
+
+
+------------------------------------------------------------------------------------------
+
+응용 편
+
+------------------------------------------------------------------------------------------
+
+
+
+package test2;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
+public class Drectory {
+ public static void main(String [] args){
+  //String path="Y:\\Inbound";
+  String path="Y:\\test";
+
+  System.out.println("----- drectory Start  -----");
+  drectoryTree(path);
+  System.out.println("----- drectory End  -----");
+ }
+
+ public static void  drectoryTree(String path){
+  //System.out.println("------> path =" + path );
+  File file= new File(path);
+  String result="";
+
+  File temp[] = file.listFiles();
+
+
+        try{
+      if(temp.length>0){
+       for(int i =0; i<temp.length; i++){
+        //System.out.println("--------> "+temp[i]);
+        if(temp[i].isDirectory()){
+         result=path;
+         drectoryTree(temp[i].toString());
+        }else{
+         result=temp[i].getName();
+         if(result.indexOf("01.html")>0){
+          System.out.println("--------->"+temp[i].toString());
+          getHtmlParsing(temp[i].toString());
+         }
+        }
+       }
+      }
+        }catch(Exception e){
+         e.printStackTrace();
+        }
+ }
+
+ public static void getHtmlParsing(String path) throws IOException{
+        FileReader fileReader = null;
+        BufferedReader bufReader = null;
+        OutputStreamWriter ot = null;
+        try {
+            fileReader = new FileReader(path);
+            bufReader = new BufferedReader(fileReader);
+            StringBuffer str =  new StringBuffer();
+            String line = null;
+            while((line = bufReader.readLine()) != null ) {
+                //line=line.replace("<head>", "<head> \n<script type='text/javascript'>var a1 =1; var b=2;</script>");
+             line=line.replace("<script type='text/javascript'>var a1 =1; var b=2;</script>", "");
+             str.append(line).append("\n");
+            }
+            bufReader.close();
+            fileReader.close();
+            ot = new FileWriter(path);
+            ot.write(str.toString());
+            ot.flush();
+
+            System.out.println(str.toString());
+        } finally {
+            if (bufReader != null) bufReader.close();
+            if (fileReader != null) fileReader.close();
+        }
+
+ }
+}
+
+디렉토리를 따라서 이동하다가 원하는 html파일을 찾고 난 뒤에
+
+내용일 읽어서 <head> 부분에 스크립트를 리플레이스 해준다!
+
+이것임.

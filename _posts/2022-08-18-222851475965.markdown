@@ -1,0 +1,190 @@
+---
+title: "성능 측정"
+date: 2022-08-18 11:07:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222851475965"
+---
+
+최근에 성능 측정을 방법을 여럿 보게 되었다.
+
+​
+
+만만하게 생각했던 jmeter만 생각했는데, 의외로 별도의 스크립트를 작성하지 않아도 성능을 측정할 수 있는 방법들이 많이 있었다.
+
+​
+
+wrk
+
+<https://www.lesstif.com/software-architect/wrk-modern-http-bench-marking-tool-106856711.html>
+> [**wrk - 모던 웹 성능 측정 도구(Modern HTTP bench marking tool)**](https://www.lesstif.com/software-architect/wrk-modern-http-bench-marking-tool-106856711.html)
+>
+> Software Architect IT 개발 knowhow, tip & tech Current: wrk - 모던 웹 성능 측정 도구(Modern HTTP bench marking tool) wrk - 모던 웹 성능 측정 도구(Modern HTTP bench marking tool) wrk 는 C 로 작성된 가볍고 현대적인 command line용 HTTP 부하 테스트 및 성능 측정 도구입니다. kernel 의 epoll이나 kqueue 에 기반한 event 방식으로 동작하므로 실행하는 서버에 큰 부하를 주지 않으므로 저사양의 서버에...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+설치 방법은 아래 링크에 잘 정리되어 있다.
+
+<https://bipulkkuri.medium.com/install-wrk-on-centos-redhat-7d9291de15d7>
+
+​
+
+설치시간은 대략 5분 정도 걸리는 것 같다.
+
+​
+
+cent os 설치
+
+
+
+
+
+
+
+
+
+```
+Install Wrk on Centos /Redhat
+Wrk is HTTP benchmarking tool .Lets build it on centos
+
+sudo yum -y groupinstall 'Development Tools'
+sudo yum -y install openssl-devel git
+Let’s clone the repo,it is available here <https://github.com/wg/wrk>
+
+git clone <https://github.com/wg/wrk.git>
+cd wrk
+Now build it
+
+make
+or with lua
+
+make WITH_LUAJIT=/usr WITH_OPENSSL=/usr
+Copy the wrk to the $PATH
+
+sudo cp wrk /usr/local/bin/
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Post Method의 경우 Lua script를 작성해야 한다.
+
+
+
+
+
+
+
+
+
+```
+wrk.method = "POST"
+wrk.body = '{"firstKey": "somedata", "secondKey": "somedata"}'
+wrk.headers["Content-Type"] = "application/json"
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sample command
+
+
+
+
+
+
+
+
+
+```
+wrk -t 4 -c 32 -d 20s --timeout 10s -s lua로_작성된_script.lua URL
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+**Docker 로 테스트**
+
+<https://github.com/fortio/fortio>
+> [**GitHub - fortio/fortio: Fortio load testing library, command line tool, advanced echo server and web UI in go (golang). Allows to specify a set query-per-second load and record latency histograms and other useful stats.**](https://github.com/fortio/fortio)
+>
+> Fortio load testing library, command line tool, advanced echo server and web UI in go (golang). Allows to specify a set query-per-second load and record latency histograms and other useful stats. -...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

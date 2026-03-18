@@ -1,0 +1,12 @@
+---
+title: "환경변수 파일 설정"
+date: 2016-02-12 16:21:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220624921829"
+---
+
+/{tomcat-base]/bin/setenv.sh
+
+파일에 환경변수 내용을 등록시키면 된다.
+
+JAVA_OPTS="$JAVA_OPTS -Dspring.profiles.active=development"

@@ -1,0 +1,172 @@
+---
+title: "호출 테스트 kotest"
+date: 2024-09-02 08:59:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223568999369"
+---
+
+횟수 검증
+
+​
+
+
+
+
+
+
+
+
+
+```
+@Test
+fun `verify method call count`() {
+val session = mockk(relaxed = true)
+
+session.setAttribute("user", "John Doe")
+session.setAttribute("user", "John Doe")
+
+verify(exactly = 2) { session.setAttribute("user", "John Doe") }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+펑션 호출 순서 검증
+
+
+
+
+
+
+
+
+
+```
+@Test
+fun `verify method call order`() {
+    val session = mockk(relaxed = true)
+
+    session.setAttribute("user", "John Doe")
+    session.setAttribute("role", "admin")
+
+    verifyOrder {
+        session.setAttribute("user", "John Doe")
+        session.setAttribute("role", "admin")
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+gradle 설정
+
+
+
+
+
+
+
+
+
+```
+build.gradle.kts
+
+dependencies {
+    testImplementation("io.mockk:mockk:1.12.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+부록
+
+​
+
+동시 테스트 진행으로 verify exactly 값이 정상적으로 카운팅되지 않을때
+
+​
+
+
+
+
+
+
+
+
+
+```
+import io.kotest.core.config.AbstractProjectConfig
+import io.kotest.core.spec.IsolationMode
+
+object ProjectConfig : AbstractProjectConfig() {
+override val isolationMode = IsolationMode.InstancePerTest
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**ProjectConfig**를 사용하여 **IsolationMode.InstancePerTest**를 설정하면 된다.

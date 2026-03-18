@@ -1,0 +1,55 @@
+---
+title: "java XML 파싱"
+date: 2013-07-02 16:36:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60195128048"
+---
+
+참조 : <http://stove99.tistory.com/106>
+
+
+
+ public static void main(String[] args) {
+ File file = new File("E:\\eclipse-SDK-4.2.2-win32\\workspace\\testJava\\src\\votest\\admin.xml");
+
+  try{
+    Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
+    XPath xpath = XPathFactory.newInstance().newXPath();
+
+    NodeList root  = (NodeList)xpath.evaluate("//root/navi/navi", document, XPathConstants.NODESET);
+    NodeList child  = null;
+    StringBuffer sb = new StringBuffer();
+    int rootCnt = root.getLength();
+    int depth1 =0;
+    int depth2 =0;
+
+    for(int i=0; i<rootCnt; i++){
+     child  = root.item(i).getChildNodes();
+     for(int y=0; y< child.getLength(); y++){
+      String url="";
+      if(child.item(y).getNodeName()=="link"){
+       url=child.item(y).getTextContent();
+       if(url.indexOf("/popup/") >= 0){
+        sb.append("<tr> <td> ");
+        sb.append("<a href='"+child.item(y).getTextContent()+"' class='on'> " + child.item(y-2).getTextContent()+"</a>");
+        sb.append("</td> </tr> \n");
+       }else{
+        sb.append("<tr> <td> ");
+        sb.append("<a href='"+child.item(y).getTextContent()+"'> " + child.item(y-2).getTextContent()+"</a>");
+        sb.append("</td> </tr> \n");
+       }
+      }
+
+     }
+
+    }
+
+    //System.out.println("------------------- html : \n " + sb.toString());
+   }catch(Exception e){
+
+    e.printStackTrace();
+
+   }
+
+ }

@@ -1,0 +1,16 @@
+---
+title: "오늘도 외국 개발자님들의 은혜로 -_-"
+date: 2016-04-04 11:31:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220673761180"
+---
+
+<http://stackoverflow.com/questions/20057771/no-junit-tests-found-in-eclipse>
+
+junit test가 제대로 작동을 안해서 찾아보니
+
+tests not founded 라는 메시지가 나왔다.
+
+링크를 삭제했다가 다시 build path에서 추가해주니 정상적으로 된다.
+
+thank you for stack over flow

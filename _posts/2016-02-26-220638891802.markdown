@@ -1,0 +1,8 @@
+---
+title: "우분투 vim 설치"
+date: 2016-02-26 15:10:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220638891802"
+---
+
+$ sudo apt-get install vim

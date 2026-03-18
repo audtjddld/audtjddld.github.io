@@ -1,0 +1,119 @@
+---
+title: "상속을 이용하여, 같은 테이블을 각 속성에 맞게 테이블 구성하기"
+date: 2021-12-13 11:29:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222594111934"
+---
+
+​
+
+하나의 테이블을 특정 속성마다, 다른 형태로 사용하기 위해서는 상속을 이용한 구조가 좋아보이는 경우.
+
+(is-a) 형태
+
+​
+
+별도의 table entity를 구성하지 않고, 상속을 받아서 각 성격에 맞게 새로 재구성을 해야 하는 경우에는
+
+​
+
+@MappedSuperClass를 이용하여 추상 클래스를 정의할 수 있고, 그것을 상속받은 테이블에서 활용할 수 있다.
+
+​
+
+내가 활용한 방안은 (별로 내키지는 않았지만)
+
+​
+
+선물 주문 은 주문이다.
+
+​
+
+일반 주문은 주문이다.
+
+​
+
+​
+
+형태로 구성 되는 것으로 팀내 의견이 모아졌고, 그걸 구현할 때, 일반 주문이나 선물 주문에 컬럼은 거의 같을 것이고, 달라지는 부분만 맵핑 테이블을 추가해서 하자고 논의가 되었다.
+
+​
+
+이럴 때 구성방법은 다음과 같다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+@MappedSuperclass
+@Getter
+@Setter
+public abstract class BaseOrder {
+ //..
+}
+
+@Table(name = "주문")
+public class 선물주문 extends BaseOrder {
+ //..
+ @OneToOne
+ @JoinColumn
+ private 선물추가정보 meta;
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+위와 같은 구성으로 상속을 받아 구성을 했고, 달라지는 부분만 별도로 맵핑 관계를 구성하여, 활용 할 수 있도록 수정하였다.
+
+​
+
+따라서, 해당 타입을 이용해서 동일한 주문 테이블이지만, 서로 다른 특성을 유지할 수 있도록 구성하였다.
+
+​
+
+관련 문서 : <https://www.baeldung.com/hibernate-inheritance>
+> [**Hibernate Inheritance Mapping | Baeldung**](https://www.baeldung.com/hibernate-inheritance)
+>
+> A practical guide to understanding different inheritance mapping strategies with JPA / Hibernate.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

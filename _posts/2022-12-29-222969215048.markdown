@@ -1,0 +1,115 @@
+---
+title: "git properties 설정"
+date: 2022-12-29 14:48:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222969215048"
+---
+
+<https://plugins.gradle.org/plugin/com.gorylenko.gradle-git-properties>
+> [**Gradle - Plugin: com.gorylenko.gradle-git-properties**](https://plugins.gradle.org/plugin/com.gorylenko.gradle-git-properties)
+>
+> com.gorylenko.gradle-git-properties Owner: Nikolay Gorylenko Produce git.properties for spring-boot-actuator <http://github.com/n0mer/gradle-git-properties> #git #spring-boot Version 2.4.1 (latest) Created 01 May 2022. Produce git.properties for spring-boot-actuator Other versions  Groovy Kotlin Using...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**Using the **[**plugins DSL**](https://docs.gradle.org/current/userguide/plugins.html#sec:plugins_block)**:**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+plugins { id("com.gorylenko.gradle-git-properties") version "2.4.1" }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**Using **[**legacy plugin application**](https://docs.gradle.org/current/userguide/plugins.html#sec:old_plugin_application)**:**
+
+
+
+
+
+
+
+
+
+```
+buildscript {
+  repositories {
+    maven {
+      url = uri("https://plugins.gradle.org/m2/")
+    }
+  }
+  dependencies {
+    classpath("com.gorylenko.gradle-git-properties:gradle-git-properties:2.4.1")
+  }
+}
+
+apply(plugin = "com.gorylenko.gradle-git-properties")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**​**

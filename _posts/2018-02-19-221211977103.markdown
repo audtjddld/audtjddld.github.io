@@ -1,0 +1,7 @@
+---
+title: "DDD - Domain 영역 관련 생각."
+date: 2018-02-19 23:46:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221211977103"
+---
+

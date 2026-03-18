@@ -1,0 +1,81 @@
+---
+title: "Spring Test override properties 작성 방법"
+date: 2024-04-15 22:25:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223416598683"
+---
+
+<https://www.baeldung.com/spring-tests-override-properties>
+
+​
+
+​
+
+Spring boot test에서 test properties를 작성하는 방법이 있었음
+
+​
+
+추가로 array list로 등록되어야하는 경우
+
+​
+
+‘value.of.name[0]’, ‘value’
+
+​
+
+식으로 넣으면 됨 이걸 몰라서 몇시간 삽품..
+
+​
+
+
+
+
+
+
+
+
+
+```
+class MySqlContainerContextInitializer : ApplicationContextInitializer {
+
+    override fun initialize(applicationContext: ConfigurableApplicationContext) {
+
+        val props = mapOf(
+            "address[0].name" to "address",
+            "address[0].zipcode" to "zipcode",
+            "username" to "10000",
+            "password" to "10000",
+        )
+
+        TestPropertyValues.of(props).applyTo(applicationContext.environment)
+    }
+
+    companion object {
+        private val container: MySQLContainer by lazy {
+            buildMySqlContainer(MySqlImageNames.MYSQL_8_0_28).apply {
+                withEnv("TZ", "Asia/Tokyo")
+                start()
+            }
+        }
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

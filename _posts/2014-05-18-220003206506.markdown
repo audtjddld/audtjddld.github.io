@@ -1,0 +1,22 @@
+---
+title: "mongoDB 설치"
+date: 2014-05-18 15:58:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220003206506"
+---
+
+1. OS에 맞는 다운로드 -> <http://www.mongodb.org/downloads>
+
+2. windows 환경일 경우 mongodb-win32-i386-2.2.2.zip 형태의 파일을 받은 후(요즘은 exe 파일로 배포하던데, 그거 실행)\
+
+3. exe 파일로 실행 후 c드라이브에 program files 폴더에 mongoDB Standard 폴더에 설치 파일이 생성 된다. 해당 설치 파일의 이름을 mongodb 로 변경 후, c:\ 경로로 이동해준다
+
+4. 여기까지 했을 때 , c:\mongodb 폴더가 있어야 함
+
+5. c:\mongodb 폴더로 이동 후 data 폴더 생성
+
+6. cmd -> cd c:\mongodb\bin -> mongod --dbpath c:\mongodb\data 하면 몽고DB의 서비스가 시작된다.
+
+7. 다시 새로운 cmd 창을 열고 -> cd c:\mongodb\bin -> mongo 하면 mongoDB의 쉘이 시작 된다
+
+**[출처]** [mongoDB 설치](http://blog.naver.com/atoz333/120175366369)|**작성자** [June](http://blog.naver.com/atoz333)

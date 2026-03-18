@@ -1,0 +1,84 @@
+---
+title: "Maven 배포"
+date: 2016-02-17 14:01:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220629730581"
+---
+
+기본 프로젝트 생성 후
+
+MAVEN -> pom.xml 내에
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.tistory.stove99</groupId>
+
+    <artifactId>DeployTest</artifactId>
+
+    <version>0.0.1-SNAPSHOT</version>
+
+    <packaging>war</packaging>
+
+
+
+    <build>
+
+        <plugins>
+
+            <plugin>
+
+                <groupId>org.apache.maven.plugins</groupId>
+
+                <artifactId>maven-war-plugin</artifactId>
+
+                <version>2.1.1</version>
+
+                <configuration>
+
+                    <warSourceDirectory>src/main/webapp</warSourceDirectory>
+
+                    <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+
+                </configuration>
+
+            </plugin>
+
+
+
+            <plugin>
+
+                <groupId>org.codehaus.mojo</groupId>
+
+                <artifactId>tomcat-maven-plugin</artifactId>
+
+                <version>1.1</version>
+
+                <configuration>
+
+                    <url>http://127.0.0.1:8080/manager</url>
+
+                    <path>/</path>
+
+                    <username>admin</username>
+
+                    <password>test</password>
+
+                </configuration>
+
+            </plugin>
+
+        </plugins>
+
+    </build>
+
+</project>
+
+이후 기존에 배포할려고 했던 프로젝트의 <groupId> 와 <artifactId> 등을 <dependency>에 등록시켜 놓으면 된다.
+
+그리고 <profile> 을 이용해서 원격 및 로컬 주소 등을 설정 할 수 있다.

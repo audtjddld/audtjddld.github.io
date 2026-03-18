@@ -1,0 +1,62 @@
+---
+title: "시드 암호화 정리"
+date: 2013-01-03 13:28:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60179476398"
+---
+
+기존 Base64+Seed 암호화에서
+
+AnsiX923Padding() 까지 한번더 암호화시켰다.
+
+자리수는 기존 24에서 16자리로 짤라놨으니 원하는데로 변경해서 사용 하면 될 것 같다.
+
+
+
+첨부된 파일 보면서 확인하면 됨.
+
+
+
+BASE64는
+
+<http://bbolmin.tistory.com/46>
+
+참조 하면 됨.
+
+
+
+SeedTest.java
+
+-------------------------------------------------------------------------------------------
+
+public class SeedTest {
+
+ public static void main(String[] args) {
+     Base64Utils base64 = new Base64Utils();  //요놈선언
+     String encryptKey = "YOUWANTKEYINPUT1";     //key 선언
+
+
+
+     String W_ORG_FG = "홍길동";
+
+
+
+    //seed + base64 암호화, 복호화
+     String EN_ORG_FG = base64.encrypt(W_ORG_FG,encryptKey);
+     String DE_ORG_FG = base64.decrypt(EN_ORG_FG,encryptKey);
+     System.out.println(EN_ORG_FG+ " "+DE_ORG_FG);
+
+     //base64로만 암호화, 복호화
+     //EN_ORG_FG = base64.base64Encoding(W_ORG_FG);
+
+     //DE_ORG_FG = base64.base64decoding(EN_ORG_FG);
+
+     System.out.println(EN_ORG_FG+ " "+DE_ORG_FG);
+
+ }
+
+
+}
+
+-------------------------------------------------------------------------------------------

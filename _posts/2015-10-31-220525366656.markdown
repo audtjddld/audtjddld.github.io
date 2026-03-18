@@ -1,0 +1,341 @@
+---
+title: "jsoup [펌]"
+date: 2015-10-31 23:24:00 +0900
+categories: [경험 및 정보 공유]
+tags: [에디터보안취약점제거, TextToHtml]
+original_url: "https://blog.naver.com/kkforgg/220525366656"
+---
+
+출처 : <http://edoli.tistory.com/95>
+
+<http://edoli.tistory.com/95>
+
+[jsoup - 자바를 위한 BeautifulSoup (HTML parser)자바를 위한 Beautiful Soup 파이썬에는 BeautifulSoup이라고 하는 멋있는 HTML 파서가 있습니다. BeautifulSoup에 대해서는 이전에 저 ...edoli.tistory.com](http://edoli.tistory.com/95)
+
+프로젝트 진행 중 웹 에디터 사용에 대해서 관리자 단에서 사용하니까 xss 공격이라던지 그런걸 예외로 프로젝트를 진행해 왓었는데 현대쪽 프로젝트 하면서 그 부분이 예외없이 진행되도록 하는 경우가 발생하였다.
+
+에디터에서 넘겨온 text 를 html로 파싱하고 거기서 특정 엘리먼트를 제거하고 특정 어트리뷰트를 제거해야하는 등
+
+많은 기능이 요구되었다. 그런데 .net 계열에서는 위와 같은 필터가 존재하는 것을 확인하고 라이브러리를 확인하였으나..
+
+java쪽으로 변경하는 작업이 더 오래 걸릴 것 같아서 찾아보던 중 jsoup을 알게되었다.
+
+위 링크에서 설명한 것 처럼 같은 개념으로 위험요소를 제거한 화이트리스트가 존재하며, 그에 따른 추가적인 엘리먼트를 설정할 수 있고,
+
+그 엘리먼트에 어트리뷰트도 허용 할 수 있다.
+
+자세한 내용은 위 링크 내용으로~
+
+## 자바를 위한 Beautiful Soup
+
+
+
+파이썬에는 [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)이라고 하는 멋있는 HTML 파서가 있습니다. [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/)에 대해서는 이전에 저 블로그에도 [포스팅](http://edoli.tistory.com/entry/%ED%8C%8C%EC%9D%B4%EC%8D%AC-%EC%9B%B9-%ED%8C%8C%EC%8B%B1-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-Beautiful-Soup)을 한적이 있습니다. BeautifulSoup은 정말 사용하기 편하고 다양한 기능들을 수행할 수 있는 유용한 파이썬 기반의 HTML 파서입니다. 다른 언어에도 BeautifulSoup과 같은 라이브러리가 있으면 안된다는 법은 없습니다. 자바에는 [jsoup](http://jsoup.org/) (이름부터 따라했다는 느낌이 드는) 이라는 HTML 파서가 있습니다. jsoup은 HTML 문서를 읽어들인 후에 그 문서를 DOM 객체로 변환을 하게 됩니다. 그리고 나서 jsoup의 selector api를 이용해서 특정 Element에 접근을 할 수 있고, 해당 Element의 정보를 읽거나 수정할 수 있습니다. jsoup은 jquery의 selector와 비슷한 selector api를 제공하기 때문에 쉽게 사용할 수 있습니다.
+
+※ 아래 글은 [jsoup의 공식 문서](http://jsoup.org/)를 참고하여 작성되었습니다.
+
+
+
+## jsoup 시작하기
+
+
+
+jsoup은 기본적으로 HTML형식의 string을 넘겨주면 자바에서 사용할 수 있는 DOM 객체로 만들어 주는 parser이지, 웹페이지를 읽어들이는 기능까지 하는 라이브러리는 아닙니다. Jsoup.parse(String url, int timeoutMillisecons) api를 이용하면 URL로 부터 웹 페이지를 읽어와서 알아서 DOM 객체로 변환해 주긴 하지만 jsoup은 네트워크 라이브러리는 아니여서 해당 api를 사용하는 것은 추천드리지 않고 [AsyncHttpClient](https://github.com/AsyncHttpClient/async-http-client)와 같은 네트워크 전용 라이브러리로 HTML을 읽어온 다음에 읽어온 string을 jsoup으로 변환시키는 방법을 추천드립니다.
+
+HTML을 읽어왔다면 jsoup document 객체로 변환시키는 방법은 간단합니다.
+
+String html = ....(html 문서)
+
+Document doc = Jsoup.parse(html);
+
+이제 이렇게 Document 객체로 만들고 나서는 알아서 지지고 볶으시면 됩니다. 이번에는 자세한 요리방법에 대해 설명하도록 하겠습니다.
+
+
+
+## DOM 탐험하기
+
+
+
+Document 객체를 만들었으니 이제 HTML 문서 안에 무엇이 있는지 찾아봐야 할 차례입니다. Navigating에 관련된 API는 크게 2가지가 있습니다. 각각의 api에 대해 차례대로 설명하도록 하곗습니다.
+
+
+
+### 전통적인 방식의 Navigating api
+
+
+
+[ getElementById](http://jsoup.org/apidocs/org/jsoup/nodes/Element.html#getElementById(java.lang.String))(), [getElementsByTag](http://jsoup.org/apidocs/org/jsoup/nodes/Element.html#getElementsByTag(java.lang.String))(), [getElementsByClass](http://jsoup.org/apidocs/org/jsoup/nodes/Element.html#getElementsByClass(java.lang.String))(), [getElementsByAttribute](http://jsoup.org/apidocs/org/jsoup/nodes/Element.html#getElementsByAttribute(java.lang.String))()와 같은 메쏘드를 이용하여 특정 Element를 찾아 낼 수 있습니다. 여기서 조심해야 활 것은 getElementById 만 Element 이고, 나머지는Elements 라는 점입니다. Id는 하나의 Element만 가지고 있는 고유 속성이기 때문에 단일 Element를 돌려줍니다. 그리고 Elements는 ArrayList<Element> 같은 것이 아니고 [Elements](http://jsoup.org/apidocs/org/jsoup/select/Elements.html)라고 하는 객체가 따로 존재합니다. 그래도 Elements는 List 인터페이스를 구현했기 때문에 일반 리스트 처럼 사용할 수 있습니다.
+
+Elements는 List이긴 하지만 jquery 객체 처럼 일종의 [monad](http://importantshock.wordpress.com/2009/01/18/jquery-is-a-monad/)입니다. 즉, Element에 있는 대부분의 메쏘드를 가지고 있고 해당 메쏘드를 호출하면 Elements 내부에 있는 모든 Element에서 해당 메쏘드를 호출하게 됩니다. 예를 들어 Elements에는 [addClass(String className)](http://jsoup.org/apidocs/org/jsoup/select/Elements.html#addClass(java.lang.String)) 메쏘드가 있습니다. 해당 메쏘드를 호출하게 되면 Elements가 포함하고 있는 모든 Element에 해당 클래스 이름이 추가됩니다.
+
+
+
+### jquery 방식의 Navigating api
+
+
+
+jquery처럼 $('.class#id') 와 비슷하게 사용할 수 있는 메쏘드가 jsoup에 있습니다. [select ](http://jsoup.org/apidocs/org/jsoup/nodes/Element.html#select(java.lang.String))메쏘드를 사용하면 됩니다.
+
+Document doc = Jsoup.parse(html);
+
+Elements elements = doc.select(".class #id");
+
+select 메쏘드는 string 인자를 하나를 받고, 해당 인자는 jquery에서 사용되는 selector와 비슷한 css query입니다. 리턴값은 [Elements](http://jsoup.org/apidocs/org/jsoup/select/Elements.html) 입니다. Selector에 id 값을 넣어 갖어왔다고 해도 애초에 select 메쏘드의 리턴 타입은 Elements 이므로 어쨋든 Elements를 반환합니다. Element를 가져오고 싶다면 elements.first()라고 하면 쉽게 Element를 갖어올 수 있습니다. select 메쏘드는 getElementById와 getElementByTag와 getElementByClass 메쏘드를 여러번 호출해야 하는 일을 한번에 할 수 있게 해줍니다. 그만큼 굉장히 유용하고 편리한 기능입니다.Java 스타일 같아 보이진 않지만, jquery의 훌륭한 부분을 잘 갖어와서 괜찮은 api 라고 생각합니다.
+
+그리고 사실 select 메쏘드는 생각보다 굉장히 강력합니다. [jsoup의 select syntax 문서](http://jsoup.org/cookbook/extracting-data/selector-syntax)를 보면 괴상한 Selector들이 존재합니다. 가령 select("img[src$=.png]")는 이미지 태그중 소스 파일 이름이 .png을 포함하고 있는 태그들만 추출합니다. $=는 해당 문자열로 끝나는 attribute이 있는 확인할 수 있는 selector입니다. 비슷한 selector로 ^=는 해당 문자열로 시작하는 attribute가 있는지 찾고, *= 는 해당 문자열을 포함하는지 확인합니다. 이 이외에도 다양한 selector들이 있으니 [jsoup의 select syntax 문서](http://jsoup.org/cookbook/extracting-data/selector-syntax)를 참고하셔서 응용하시면 됩니다.
+
+
+
+### 그 외의 Traversing Api
+
+그 외에 node에 직접 접근하는 api가 아닌 특정 노드와 연관된 Element를 찾는 api로는 쉽게 생각할 수 있는 siblingElements(), firstElementSibling(), lastElementSibling(), nextElementSibling, previousElementSibling(), 같은 메쏘드들이 있고 parent(), children(), child(int index)와 같은 메쏘드들도 존재합니다. (sibling은 선택되어 있는 element와 비슷한 element를 찾는 api입니다. 비슷하다는 말은 <ul> 태그 아래에 <li>태그들이 여러개가 있을때 하나의 <li>를 선택한 후에 nextElementSibling 메쏘드를 호출하면 다음 <li> Element를 돌려줍니다.)
+
+
+
+또한 특정 노드의 data를 갖어올 수 있는 api도 존재합니다. (당연하겠지만) attr(String key), attributes(), id(), className(), classNames(), text(), html(), outerHtml(), data(), tag(), tagName()과 같은 api들이 존재합니다. attr, text, html 등의 메쏘드들은 jquery와 비슷하게 String 인자를 넘겨주면 setter api가 됩니다. 가령 attr(String key, String value) 메쏘드가 존재해서 이 메쏘드를 이용하면 element의 attr를 수정할 수 있습니다.
+
+
+
+## 데이터 수정
+
+
+
+위에서 말했듯이 해당 Element를 찾았으면 element.attr(String key, String value) 메쏘드를 호출하면 attribute를 수정할 수 있습니다. 마찬 가지로 element.text(String text), element.html(String html) 을 사용하면 Element 내부의 내용을 바꿀 수 있습니다. element.append(String tag)나 element.prepand(String tag)를 이용해서 노드를 추가할 수 도 있습니다. 하지만 jquery는 html 파일을 웹브라우저에서 동적으로 바꿀 수 있다는 장점이 있지만, 자바는 웹브라우저를 동적으로 바꾸는 플랫폼은 아니여서 DOM 문서를 수정하는 일이 별로 없을 것 같습니다. 언제 쓸일이 있는지도 잘 모르겠고요. 아무튼 DOM을 수정할 수 있다는 기능이 있다는 정도만 알아두면 되겠습니다.
+
+
+
+## 간단한 파싱연습 (한국 프로 야구 순위)
+
+
+
+실습을 통해 배워보는 것이 가장 효율적인 방법이겠지요? 이번에는 간단한 파싱 프로그램을 만들어 보려고 합니다. 네이버에 보면 한국 프로 야구 순위가 나와 있는 페이지가 있습니다. <http://kbodata.news.naver.com/m_rank/rank_team.asp> 해당 페이지로 들어가 보면 테이블이 하나 있고 테이블 안에 프로 야구 구단들의 순위와 승,패,무, 승률등이 적혀있는 것을 확인할 수 있습니다. 이 표를 파싱해서 간단하게 출력하도록 하겠습니다. 저는 이 실습에서 [jsoup](http://jsoup.org/)과 apache commons의 [HttpClient](http://hc.apache.org/index.html)를 사용했습니다. 아래는 제 프로젝트의 프로젝트 구조입니다.
+
+![](http://cfile10.uf.tistory.com/image/2319B544518A2E4A0E6F6B)프로젝트 구조
+
+Main 에서는 [HttpClinent](http://hc.apache.org/index.html)를 이용하여 웹페이지를 가져오고, [jsoup](http://jsoup.org/)을 이용해서 해당 HTML 파일을 파싱해서 원하는 부분만 골라내어 출력하게 됩니다. 웹페이지의 구조를 보면 다음과 같습니다.
+
+![](http://cfile24.uf.tistory.com/image/0105733F518A2EB81ED56B)네이버의 프로 야구 순위 페이지 분석
+
+보시다시피 데이터는 <table class="table_board2> 라는 테이블 안에 있습니다. 해당 테이블을 찾아서 테이블의 각각의 행을 잘 우려내서 출력하면 될것 같네요.
+
+제가 작성한 소스코드는 다음과 같습니다.
+
+
+
+[?](http://edoli.tistory.com/95#)
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+`
+``import` `java.io.IOException;`
+
+`import` `java.util.Iterator;`
+
+`import` `org.apache.http.HttpResponse;`
+
+`import` `org.apache.http.client.ClientProtocolException;`
+
+`import` `org.apache.http.client.HttpClient;`
+
+`import` `org.apache.http.client.HttpResponseException;`
+
+`import` `org.apache.http.client.methods.HttpGet;`
+
+`import` `org.apache.http.impl.client.BasicResponseHandler;`
+
+`import` `org.apache.http.impl.client.DefaultHttpClient;`
+
+`import` `org.jsoup.Jsoup;`
+
+`import` `org.jsoup.nodes.Document;`
+
+`import` `org.jsoup.nodes.Element;`
+
+`import` `org.jsoup.select.Elements;`
+
+
+
+`public` `class` `Main {`
+
+`  ``public` `static` `void` `main(String args[]) {`
+
+`    ``HttpClient httpClient = ``new` `DefaultHttpClient();`
+
+`    ``HttpGet httpget = ``new` `HttpGet(``"http://kbodata.news.naver.com/m_rank/rank_team.asp"``);`
+
+`    ``try` `{`
+
+`      ``httpClient.execute(httpget, ``new` `BasicResponseHandler() {`
+
+`        ``@Override`
+
+`        ``public` `String handleResponse(HttpResponse response) ``throws` `HttpResponseException,`
+
+`            ``IOException {`
+
+`          ``// 웹페이지를 그냥 갖어오면 한글이 깨져요. 인코딩 처리를 해야해요.`
+
+`          ``String res = ``new` `String(``super``.handleResponse(response).getBytes(``"8859_1"``), ``"euc-kr"``);`
+
+`          ``Document doc = Jsoup.parse(res);`
+
+`          ``Elements rows = doc.select(``"table.table_board2 tbody tr"``);`
+
+`          ``String[] items = ``new` `String[] { ``"순위"``, ``"팀"``, ``"경기수"``, ``"승"``, ``"패"``, ``"무"``, ``"승률"``, ``"연속"``,`
+
+`              ``"최근 10경기"` `};`
+
+`          ``for` `(Element row : rows) {`
+
+`            ``Iterator iterElem = row.getElementsByTag(``"td"``).iterator();`
+
+`            ``StringBuilder builder = ``new` `StringBuilder();`
+
+`            ``for` `(String item : items) {`
+
+`              ``builder.append(item + ``": "` `+ iterElem.next().text() + ``"   \t"``);`
+
+`            ``}`
+
+`            ``System.out.println(builder.toString());`
+
+`          ``}`
+
+
+
+`          ``return` `res;`
+
+`        ``}`
+
+`      ``});`
+
+`    ``} ``catch` `(ClientProtocolException e) {`
+
+`      ``e.printStackTrace();`
+
+`    ``} ``catch` `(IOException e) {`
+
+`      ``e.printStackTrace();`
+
+`    ``}`
+
+`  ``}`
+
+`}`
+
+`
+`
+
+
+
+HttpClient를 이용하여 html 페이지를 갖어오면 그 html 페이지를 jsoup의 Document 객체로 만듭니다. 그 이후에 이루어 지는 일이 마술입니다.
+
+doc.select("table.table_board2 tbody tr")
+
+위의 Selector를 이용하면 <table class="table_board2> 안에 있는 <tbody> 안에 있는 모든 <tr>를 갖어오게 됩니다. 이렇게 갖어준 행들에 있는 <td> 태그에 있는 값들을 확인하여 출력하기만 하면 됩니다. 다른 라이브러리를 이용하는 것에 비해서 굉장히 간단합니다. 위의 프로그램을 실행하면 다음과 같은 글이 출력됩니다.
+
+jsoup을 이용한 프로 야구 순위 파싱
+
+
+
+## 마치면서
+
+
+
+자바가 안드로이드 기본 언어로 선택됨에 따라서 자바가 본격적으로 클라이언트 언어로 사용되기 시작했습니다. 그러면서 HTML를 쉽게 파싱할 수 있는 라이브러리가 있었으면 하는 니즈가 생기기 시작했습니다. ("웹툰을 파싱해서 웹툰을 편리하게 볼 수 있는 웹툰앱을 만들어 보겠다!" 같은 생각 많이 하시지 않나요?) 그러던 와중에 jsoup은 굉장히 유용한 라이브러리 라고 생각합니다. 나온지는 꽤 되었는데, 최근에 와서야 jsoup에 대해 알게 되었다는 점이 조금 안타깝네요. 아무튼 jsoup이라는 좋은 라이브러리를 알게 되었으니 잘 활용하면 HTML 파싱따위는 식은죽 먹기가 될 것입니다.(???)

@@ -1,0 +1,146 @@
+---
+title: "java thread"
+date: 2019-04-22 22:25:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221520131284"
+---
+
+출처 : <https://wikidocs.net/230>
+
+Thread 란
+
+동작하고 있는 프로그램을 프로세스(Process)라고 한다. 보통 한 개의 프로세스는 한 가지의 일을 하지만, 이 쓰레드를 이용하면 한 프로세스 내에서 두 가지 또는 그 이상의 일을 **동시에** 할 수 있게 된다.
+
+
+
+
+
+
+
+```
+public class Test extends Thread {
+    public void run() {
+        System.out.println("thread run.");
+    }
+
+    public static void main(String[] args) {
+        Test test = new Test();
+        test.start();
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Thread.Join()
+
+쓰레드의 join 메소드는 쓰레드가 종료될 때까지 기다리게 하는 메서드이다.
+
+
+
+
+
+
+
+
+```
+public static void main(String[] args) {
+    ArrayList threads = new ArrayList();
+    for(int i=0; i
+Runnable
+
+보통 쓰레드 객체를 만들 때 위의 예처럼 Thread를 상속하여 만들기도 하지만 보통 Runnable 인터페이스를 구현하도록 하는 방법을 많이 사용한다.
+
+위에서 만든 예제를 Runnable 인터페이스를 사용하는 방식으로 변경 해 보자.
+
+
+
+
+
+
+
+
+```
+public class Test implements Runnable {
+    int seq;
+    public Test(int seq) {
+        this.seq = seq;
+    }
+    public void run() {
+        System.out.println(this.seq+" thread start.");
+        try {
+            Thread.sleep(1000);
+        }catch(Exception e) {
+        }
+        System.out.println(this.seq+" thread end.");
+    }
+
+    public static void main(String[] args) {
+        ArrayList threads = new ArrayList();
+        for(int i=0; i
+Thread를 extends 하던 것에서 Runnable을 implements 하도록 변경되었다. (Runnable 인터페이스는 run 메소드를 구현하도록 강제한다.) 그리고 Thread 를 생성하는 부분을 다음과 같이 변경했다.
+
+
+
+
+
+
+
+```
+Thread t = new Thread(new Test(i));
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Thread의 생성자로 Runnable 인터페이스를 구현한 객체를 넘길 수 있는데 이 방법을 사용한 것이다. 이렇게 변경된 코드는 이 전에 만들었던 예제와 완전히 동일하게 동작한다. 다만 인터페이스를 이용했으니 상속 및 기타 등등에서 좀 더 유연한 프로그램으로 발전했다고 볼 수 있겠다.
+
+<http://kimilb412-2.blogspot.kr/2016/02/java-concurrency-threads-and-executors.html>
+> [**[일기] Java 동시성(Concurrency) Threads and Executors**](http://kimilb412-2.blogspot.com/2016/02/java-concurrency-threads-and-executors.html)
+>
+> 출처 : <http://winterbe.com/posts/2015/04/07/java8-concurrency-tutorial-thread-executor-examples/>     Java 8 병행 지침서의 첫 시작에 눈독을 들인 것을 환영한다. 이 지침...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

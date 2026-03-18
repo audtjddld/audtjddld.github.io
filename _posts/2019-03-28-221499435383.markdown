@@ -1,0 +1,256 @@
+---
+title: "progressive jpeg 적용."
+date: 2019-03-28 11:56:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221499435383"
+---
+
+progressive jpeg 적용을 해달라는 요청이 와서 확인해보았다.
+
+​
+
+우선 progressive JPEG가 무엇인지 알아보자.
+
+​
+
+<http://www.terms.co.kr/progressiveJPEG.htm>
+
+
+
+
+
+
+
+```
+progressive JPEG [프로그레시브 제이펙]은 점차 초점이 맞아지면서 표시되는 JPEG 이미지를 말한다.
+이미지를 위에서부터 아래까지 한번에 한 줄씩 표현하는 대신에, 전체 이미지가 매우 낮은 해상도로 희미하게 먼저
+표시된 후, 빈칸이 한 줄씩 채워지면서 점차 선명해진다. 이것은 그 페이지가 완전히 선명해지기까지 같거나,
+혹은 조금더 많은 시간이 소요됨에도 불구하고, 마치 더 빠르게 다운로드 되는 듯한 착각을 불러일으킨다.
+progressive JPEG은 이미지를 여러 번 주사함으로써 만들어진다.
+
+GIF 이미지 파일에서 progressive JPEG에 대응되는 형식으로는 interlaced GIF가 있다.
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+이미지 파일 자체에 걸어두는 형태도 있고, javascript를 이용하여 화면에서 적용하는 방법도 존재하는 것 같다.
+
+​
+
+<https://github.com/thinker3197/progressively>
+
+​
+
+추가적으로 웹 사이트 최적화 관련 측정 도구도 있다.
+
+<https://www.webpagetest.org/>
+
+​
+
+​
+
+웹 사이트 최적화 일환으로 Progressive JPEG를 적용해 달라는 요청이 있었는데, 우리가 유료 CDN 서비스를 이용했다면 추가적으로 개발 할 필요 없이 적용이 가능했을텐데.. 맨날 돈이다. -_-; 따라서 구현하는 방법에 대해 알아보았다.
+
+​
+
+<https://www.programcreek.com/java-api-examples/?class=javax.imageio.ImageWriteParam&method=setProgressiveMode>
+
+​
+
+위 링크에서 보시다 싶이 기본 java library에서도 적용이 가능한 것으로 보인다.
+
+
+
+
+
+
+
+
+```
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageOutputStream;
+
+public class Converter {
+
+  private String savePath;
+
+  public Converter(String savePath) {
+    this.savePath = savePath;
+  }
+
+  public void convert(File file) {
+    BufferedImage image = null;
+    try (
+        ImageOutputStream imageOutputStream = new FileImageOutputStream(Paths.get(savePath + file.getName()).toFile());
+    ) {
+
+      ImageWriter imageWriter = ImageIO.getImageWritersByFormatName("jpg").next();
+      JPEGImageWriteParam imageWriteParam = new JPEGImageWriteParam(null);
+      imageWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+      imageWriteParam.setCompressionQuality(0.4f);
+      imageWriteParam.setProgressiveMode(ImageWriteParam.MODE_DEFAULT);
+      imageWriter.setOutput(imageOutputStream);
+
+      image = ImageIO.read(file);
+
+      IIOImage iioImage = new IIOImage(image, null, null);
+
+      imageWriter.write(null, iioImage, imageWriteParam);
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+위와 같이 압축율을 40%대로 주고 Progress JPEG를 적용하는 설정을 넣고 파일을 생성하면 progressive JPEG가 완성된다.
+
+​
+
+추가적으로 웹 사이트에 이미지는 jpeg외에도 여러 확장자가 존재하는데, gif, png, jpg, jpeg 등등.
+
+​
+
+이중에서 gif 이미지에 대해서는 frame cutting 후 jpeg 변환 할 경우 문제가 생겼다.
+
+​
+
+이유는 현재 OpenJDK를 사용하면서 native JPEG 라이브러리가 없기 때문.
+
+​
+
+<https://stackoverflow.com/questions/3432388/imageio-not-able-to-write-a-jpeg-file>
+> [**ImageIO not able to write a JPEG file**](https://stackoverflow.com/questions/3432388/imageio-not-able-to-write-a-jpeg-file)
+>
+> I have a BufferedImage I'm trying to write to a jpeg file, but my Java program throws an exception. I'm able to successfully save the same buffer to a gif and png. I've tried looking around on Goog...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+이 방법에 대해서 예전에 twelve monkeys (https://github.com/haraldk/TwelveMonkeys)  라이브러리를 적용해서 해결했었는데, 이번엔 에러가 나지만.. 싫지 않은 느낌.. 찾아봐야된다.
+
+​
+
+생성된 JPEG가 Progressive 인지 확인 하는 방법은 아래 링크에서 확인이 가능하다.
+
+​
+
+<http://techslides.com/demos/progressive-test.html>
+
+​
+
+검사 결과
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    ![](/assets/images/posts/221499435383/ad9d970eea55.png?type=w580)
+
+
+
+
+
+
+
+
+
+
+
+
+
+ gradle library 는 아래와 같다.
+
+
+
+
+
+
+
+```
+// <https://mvnrepository.com/artifact/com.twelvemonkeys.imageio/imageio-core>
+    compile group: 'com.twelvemonkeys.imageio', name: 'imageio-core', version: '3.4.1'
+    // <https://mvnrepository.com/artifact/com.twelvemonkeys.imageio/imageio-jpeg>
+    compile group: 'com.twelvemonkeys.imageio', name: 'imageio-jpeg', version: '3.4.1'
+
+    compile group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

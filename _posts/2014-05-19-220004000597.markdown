@@ -1,0 +1,18 @@
+---
+title: "merge into"
+date: 2014-05-19 12:09:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220004000597"
+---
+
+update 문인데 뒤에 조건에 따라 merge문처럼도 가능하다.
+
+
+
+db.collection.update({조건},{업데이트},true,false)
+
+
+
+세번째에 true가 들어가면 해당 조건이 기존 컬렉션에 있을 경우에는 update, 없을 경우에는 insert
+
+**[출처]** [merge into](http://blog.naver.com/atoz333/120194345455)|**작성자** [June](http://blog.naver.com/atoz333)

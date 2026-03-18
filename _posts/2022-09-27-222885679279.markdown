@@ -1,0 +1,30 @@
+---
+title: "git secrets"
+date: 2022-09-27 16:25:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222885679279"
+---
+
+<https://qiita.com/jqtype/items/9196e047eddb53d07a91#%E6%BA%96%E5%82%99>
+> [**git-secretsはじめました - Qiita**](https://qiita.com/jqtype/items/9196e047eddb53d07a91#%E6%BA%96%E5%82%99)
+>
+> はじめに サーバのID/Passwordをソースにべた書きして開発することは誰しもあるかと思います。しかし先日話題になっていた「AWSから120万円の高額請求が来た話」というQiitaエントリのように、public gitリポジ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+git repo에 올라가면 안되는 secret 정보를 검사해주고 commit을 막을 수 있게 도와주는 것 같다.

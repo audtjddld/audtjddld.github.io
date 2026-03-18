@@ -1,0 +1,199 @@
+---
+title: "Spring 3.0  BindingResult를 이용한 경고창 띄우기"
+date: 2013-06-28 18:41:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60194888718"
+---
+
+팀장님이 구축해놓으신거 정리해논다.
+
+parameter Check를 서버 쪽에서도 해줘야되는데
+
+웹접근성을 위해서는 label 처럼 옆에 문자로 표시해주는것 보다 얼럿창으로 나타나는게 좋을 것 같다고 하셨다.
+
+그래서 팀장님께서 고안하셔서 만드셨다.
+
+
+
+ vo 클래스에서
+
+** @Id
+ private int 변수1;
+ @NotEmpty
+ @NotNull
+
+private String 변수2;
+
+
+
+설정을 해준다.
+
+
+
+그런 뒤 체크 해줄 액션 쪽으로 가서
+
+erInfo(HttpServletRequest request,
+           ModelMap modelMap,
+           @ModelAttribute("testVO") @Valid TestVO vo,
+           BindingResult biresult ) throws Exception{
+
+
+
+요론식으로 선언해준다.
+
+
+
+BindingResult는 Check할 VO 뒤에 넣어줘야 된다. (안그럼 에러 발생..)
+
+
+
+
+
+@Valid 어노테이션에 관한 내용은
+
+<http://springmvc.egloos.com/509029>
+
+참조하시기 바란다.
+
+
+
+@Valid에는 기본적으로 14개의 검증 어노테이션을 제공한다.
+
+@AssertFalse :** false 값만 통과 가능**@AssertTrue :** true 값만 통과 가능**@DecimalMax(value=) : **지정된 값 이하의 실수만 통과 가능**@DecimalMin(value=) : **지정된 값 이상의 실수만 통과 가능**@Digits(integer=,fraction=) : **대상 수가 지정된 정수와 소수 자리수보다 적을 경우 통과 가능**@Future : **대상 날짜가 현재보다 미래일 경우만 통과 가능**@Past :** 대상 날짜가 현재보다 과거일 경우만 통과 가능**@Max(value) :** 지정된 값보다 아래일 경우만 통과 가능**@Min(value) : **지정된 값보다 이상일 경우만 통과 가능**@NotNull : **null 값이 아닐 경우만 통과 가능**@Null : **null일 겨우만 통과 가능**@Pattern(regex=, flag=) : **해당 정규식을 만족할 경우만 통과 가능**@Size(min=, max=) :** 문자열 또는 배열이 지정된 값 사이일 경우 통과 가능**@Valid :** 대상 객체의 확인 조건을 만족할 경우 통과 가능
+
+  //모델을 검증하는 로직을 하나 만든 뒤 modelMap에 "commandName과 VO이름을 적어준다.
+
+여기서 VO 이름은 properties에 저장된 변수 명이다.
+
+
+
+프로퍼티에는
+
+
+
+# @Valid 검출 메시지
+NotNull.testVO.am_id     = 아이디를 입력하세요.
+NotNull.testVO.am_name    = 이름을 입력하세요.
+NotNull.testVO.am_password  = 비밀번호를 입력하세요.
+NotEmpty.testVO.am_password = 비밀번호 값이 없습니다.
+
+
+
+위와 같이 설정 하고
+
+@NotNull 일때 am_id란 변수는 저런 에러 메시지를 나타내준다는 것이다.
+
+@NotEmpty면 당연 저 밑에 메시지로..
+
+  if(biresult.hasErrors())
+  {
+   System.out.println("BindingResult ERROR!!!!");
+   modelMap.addAttribute("commandName", "testVO");
+   return "cmm/error/formerror";
+  }
+
+
+
+이렇게 해준 다음
+
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="text/javascript" src="/js/_admin/jQuery/jquery-1.6.4.min.js"></script>
+
+<title>ERROR</title>
+
+<script type="text/javascript">
+
+ jQuery(document).ready(function(){
+
+  var msg = jQuery.trim(jQuery("form").text());
+
+  if(msg == "")
+
+  {
+
+   msg = "잘못된 접근방식입니다."
+
+  }
+
+  alert(msg);
+
+  history.back(-1);
+
+ })
+
+</script>
+
+</head>
+
+<body>
+
+<form:form method="put" commandName="${commandName}">
+
+   <form:errors path="*" style="display:none;"/>
+
+</form:form>
+
+</body>
+
+</html>
+
+
+
+과 같이 폼테그를 찍고 내용을 alert시킨 뒤에
+
+history.back()으로 돌아간다.

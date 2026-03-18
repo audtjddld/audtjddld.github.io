@@ -1,0 +1,65 @@
+---
+title: "jsp 페이징"
+date: 2012-09-24 15:38:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/60172019204"
+---
+
+<table>
+    <tr>
+        <td>
+
+              <c:if test="${count > 0}">
+
+            <c:if test="${endPage > pageCount}">
+                <c:set var="endPage" value="${pageCount}"/>
+
+            </c:if>
+            </c:if>
+
+            <c:choose>
+            <c:when test="${startPage > 10}">
+            <a href="javascript:pw_paging('${startPage - 10}')"> [이전 10개] </a>
+            </c:when>
+            <c:when test="${startPage <=10}">
+            <a href="javascript:pw_paging('1')"> [이전] </a>
+            </c:when>
+            <c:otherwise>
+            [이전]
+            </c:otherwise>
+            </c:choose>
+
+            <c:if test="${count<0}">
+                <c:out value="[0]"></c:out>
+            </c:if>
+            <c:if test="${count>0}">
+
+            <c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
+
+            <c:if test="${pageindex==null || pageindex==''}">
+                <c:set var="pageindex" value="1"></c:set>
+            </c:if>
+            <c:if test="${currentPage==i}">
+            <b><u>[<c:out value="${i}"/>]</u></b>
+            </c:if>
+
+            <c:if test="${pageindex!=i}">
+            <a href="javascript:pw_paging('${i}')">[${i}]</a>
+            </c:if>
+
+            </c:forEach>
+            <c:choose>
+            <c:when test="${endPage < pageCount}">
+            <a href="javascript:pw_paging('${startPage + 10}')">[다음 10개]</a>
+            </c:when>
+            <c:otherwise>
+            [다음]
+            </c:otherwise>
+            </c:choose>
+
+            </c:if>
+    </tr>
+
+    </td>
+    <c:out value="스타트 페이지는 ${startPage} 엔드페이지는 ${endPage} 페이지 카운트는 ${pageCount} 카운트는 ${count} 커런트 페이지 ${currentPage} 페이지 사이즈 ${pageSize} 페이지넘 ${pageNum}"/>
+</table>

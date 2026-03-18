@@ -1,0 +1,95 @@
+---
+title: "Drone CI 설정"
+date: 2022-12-29 18:35:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222969504805"
+---
+
+<https://docs.drone.io/pipeline/docker/examples/languages/gradle/>
+> [**Gradle | Drone**](https://docs.drone.io/pipeline/docker/examples/languages/gradle/)
+>
+> Example Gradle Pipeline Gradle Example This guide covers configuring continuous integration pipelines for Gradle projects. If you’re new to Drone please read our Tutorial and build configuration guides first. Build and Test In the below example we demonstrate a pipeline that executes gradle assemble...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+Drone CI 설정 추가하고 github에도 연동시켜서 build시 test를 할 수 있도록 지원해준다.
+
+​
+
+곧 build가 되고나면 docker image로 생성된다.
+
+​
+
+
+
+
+
+
+
+
+
+
+```
+kind: pipeline
+type: docker
+name: "build"
+
+java_image: &java_image docker-hub-mirror.com/eclipse-temurin:17-alpine
+gradle_home: &gradle_home .gradle
+vos_bucket_name: &vos_bucket_name demae-merchant-membership-drone-cache
+.template:
+  .on_push: &on_push
+    when:
+      event:
+        - push
+  .on_pr_push: &on_pr_push
+    when:
+      event:
+        - pull_request
+        - push
+
+platform:
+  os: linux
+  arch: amd64
+
+workspace:
+  path: /workspace
+
+trigger:
+  branch:
+    - main
+  event:
+    - pull_request
+    - push
+
+steps:
+  - name: restore-cache
+    image: plugins/s3-cache
+    settings:
+      endpoint: <https://line-objects-dev.com>
+      access_key:
+        from_secret: vos_access_key
+      secret_key:
+        from_secret: vos_secret_key
+      pull: true
+      restore: true
+      root: *vos_bucket_name
+
+​

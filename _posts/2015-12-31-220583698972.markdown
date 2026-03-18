@@ -1,0 +1,156 @@
+---
+title: "smtp test 하는 java 코드"
+date: 2015-12-31 11:52:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220583698972"
+---
+
+SMTP 가 현재 제대로 메일 발송이 되는지 테스트를 하기 위해서 찾아낸 방법입니다.
+
+StringBuffer 안에 응답 요청했던 내용들이 담겨지기 때문에 저 메시지를 이용하여 메일 테스트 내역을 알 수 있었습니다.
+
+```
+package smtp;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+public class SMTPDemo {
+
+    public static void main(String args[]) throws IOException, UnknownHostException {
+
+        String from = "fromEmail";
+        String to = "sendEmail";
+        String mailHost = "smtp server";
+
+        SMTP mail = new SMTP(mailHost);
+        if (mail != null) {
+            /*
+            if (mail.send(new FileReader(msgFile), from, to)) {
+                System.out.println("Mail sent.");
+            } else {
+                System.out.println("Connect to SMTP server failed!");
+            }
+            */
+
+            mail.send( from, to);
+        }
+        System.out.println("Done.");
+    }
+
+    static class SMTP {
+        private final static int SMTP_PORT = 25;
+
+        InetAddress mailHost;
+
+        InetAddress localhost;
+
+        BufferedReader in;
+
+        PrintWriter out;
+
+        public SMTP(String host) throws UnknownHostException {
+            mailHost = InetAddress.getByName(host);
+            localhost = InetAddress.getLocalHost();
+            System.out.println("mailhost = " + mailHost);
+            System.out.println("localhost= " + localhost);
+            System.out.println("SMTP constructor done\n");
+        }
+
+        @SuppressWarnings({ "resource", "unused" })
+        public boolean send( String from, String to) throws IOException {
+            Socket smtpPipe;
+            InputStream inn;
+            OutputStream outt;
+
+            smtpPipe = new Socket(mailHost, SMTP_PORT);
+            if (smtpPipe == null) {
+                return false;
+            }
+            try{
+
+                inn = smtpPipe.getInputStream();
+                outt = smtpPipe.getOutputStream();
+                in = new BufferedReader(new InputStreamReader(inn));
+                out = new PrintWriter(new OutputStreamWriter(outt), true);
+                if (inn == null || outt == null) {
+                    System.out.println("Failed to open streams to socket.");
+                    return false;
+                }
+
+                StringBuffer sb = new StringBuffer()
+                                        .append("\n"+in.readLine())
+                                        .append("HELO " + localhost.getHostName());
+                                        out.println("HELO " + localhost.getHostName());
+                                        sb.append(in.readLine()+"\n").append("MAIL From:  \n");
+
+                                        out.println("mail from: ");
+                                        sb.append(in.readLine()+"\n").append("RCPT TO: \n");
+
+                                        out.println("rcpt to : ");
+                                        sb.append(in.readLine()+"\n");
+                                        sb.append("SUBJECT:test\n").append("DATA");
+
+                                        out.println("DATA");
+                                        out.println("subject : test");
+                                        out.println("\n test mail ");
+                                        out.println(".");
+                                        sb.append(in.readLine()+"\n");
+
+                                        sb.append("test.");
+                                        out.println("QUIT");
+                                        sb.append(in.readLine() + "\n")
+                                        .append("QUIT \n");
+
+
+                System.out.println(sb.toString());
+
+            }catch(Exception e){
+                e.printStackTrace();
+
+            }finally{
+                if(in!=null)in.close();
+                if(out!=null)out.close();
+            }
+
+            return true;
+        }
+    }
+}
+
+/*
+String initialID = in.readLine();
+
+System.out.println(initialID);
+System.out.println("HELO " + localhost.getHostName());
+out.println("HELO " + localhost.getHostName());
+String welcome = in.readLine();
+System.out.println(welcome);
+System.out.println("MAIL From:");
+out.println("MAIL From:");
+String senderOK = in.readLine();
+System.out.println(senderOK);
+System.out.println("RCPT TO:");
+out.println("RCPT TO:");
+String recipientOK = in.readLine();
+System.out.println(recipientOK);
+System.out.println("DATA");
+out.println("DATA");
+String line;
+System.out.println(msg);
+System.out.println(".");
+out.println(".");
+String acceptedOK = in.readLine();
+System.out.println(acceptedOK);
+System.out.println("QUIT");
+out.println("QUIT");
+*/
+```

@@ -1,0 +1,379 @@
+---
+title: "Spring RestDoc"
+date: 2021-04-12 21:43:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/222307729529"
+---
+
+이번에 신규로 작성하면서 이력을 남겨본다.
+
+​
+
+​
+
+아래 오류 문제 해결 방법
+
+**urlTemplate not found. If you are using MockMvc did you use RestDocumentationRequestBuilders to build the request? **
+
+**​**
+
+**pathParameters****를 사용할거면 ****MockMvcBuilders**** 보다 ****RestDocumentationRequestBuilders****를 이용하는 것이 좋다고 한다.**
+
+​
+
+변경하니 정상적으로 동작한다.
+
+<https://java.ihoney.pe.kr/517>
+
+​
+
+​
+
+**Path Parameter RestDoc 작성방법**
+
+<https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/reference/html5/#documenting-your-api-path-parameters>
+
+​
+
+**RequestParamter RestDoc 작성방법**
+
+<https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/reference/html5/#documenting-your-api-request-parameters>
+
+​
+
+​
+
+gradle 설정
+
+
+
+
+
+
+
+
+
+```
+plugins {
+   id "org.asciidoctor.convert" version "1.5.10"
+   ...
+}
+
+//-------
+
+apply plugin: 'org.asciidoctor.convert'
+//-------
+
+    bootJar {
+        dependsOn asciidoctor
+        from("${asciidoctor.outputDir}") {
+            into 'static/docs'
+        }
+        archiveFileName.set "파일명.jar"
+    }
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+asciidocs 위치
+
+
+
+
+
+
+
+
+
+```
+/src
+ /docs
+  /asciidoc
+   index.adoc
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+adoc 파일
+
+
+
+
+
+
+
+
+
+
+```
+= Reusable Package API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:snippets: ../../../build/generated-snippets
+
+== 소개
+
+~~~ API
+
+=== Domain
+
+[cols="1,3"]
+|===
+| Environment | Domain
+
+| 개발서버
+| `dev host`
+
+| 운영서버
+| `prod host`
+|===
+
+=== HTTP Status
+
+link:<https://tools.ietf.org/html/rfc7231#section-6[RFC7231>] 에 많은 HTTP 응답코드가 정의되어 있지만, 너무 많은 응답코드는 개발자에서 혼란을 초래한다.
+그렇기 때문에 다음과 같은 `HTTP Status Code` 만을 사용한다.
+
+[cols="1,2,3"]
+|===
+| Code | Name | Description
+
+| 200
+| OK
+| 요청이 성공적으로 수행
+
+| 201
+| Created
+| 요청이 성공적이었으며 그 결과로 새로운 리소스가 생성
+
+| 204
+| No Contents
+| 요청이 성공적이었으며 응답 바디 값이 없다
+
+| 400
+| Bad request
+| 이 응답은 잘못 된 문법으로 인하여 서버가 요청을 이해할 수 없을 때 사용
+
+| 401
+| Unauthorized
+| 인증 실패
+
+| 403
+| Forbidden
+| 인가 실패
+
+| 404
+| Not found
+| 리소스를 찾을 수 없음
+
+| 409
+| Conflict
+| 요청이 현재 서버의 리소스 상태와 충돌이 발생 (패스워트 불일치 등)
+
+| 500
+| Internal server error
+| 서버에 오류가 발생하여 요청을 수행할 수 없음
+
+|===
+
+=== HTTP Method
+
+아래의 `HTTP Method` 만을 사용한다.
+
+[cols="1,3"]
+|===
+| Method | Description
+
+| GET
+| GET를 통해 해당 리소스를 조회한다.
+리소스를 조회하고 해당 도큐먼트에 대한 자세한 정보를 조회한다.
+
+| POST
+| POST를 통해 해당 URI를 요청하면 리소스를 생성한다.
+
+| PUT
+| PUT를 통해 해당 리소스를 전체 수정한다.
+
+| PATCH
+| PATCH를 통해 해당 리소스를 부분 수정한다.
+
+| DELETE
+| DELETE를 통해 리소스를 삭제한다.
+|===
+
+NOTE: link:<https://tools.ietf.org/html/rfc7231[RFC7231>], link:<https://ko.wikipedia.org/wiki/HTTP[위키백과>] 에 근거하여 HTTP GET Method 에는 Request Body를 포함하지 않는다.
+이러한 이유로 인해 조회 성격의 API 이지만 조회 쿼리가 복잡할 경우 POST Method 를 사용할 수 있다.
+
+=== Content Type
+
+API 성격에 상관없이 일관되지 않은 다양한 `Content-Type` 을 사용하면 API를 사용하는 클라이언트에게 혼란을 초래하게 된다.
+특별한 경우가 아닐 경우 `Content-Type` 은 `application/json;charset=utf-8` 을 통일한다.
+
+=== 공통 Response Body
+
+[source,options="nowrap"]
+----
+{
+  "success" : true,
+  "message" : null,
+  "data" : ...
+}
+
+=== 오류 Response Body
+
+HTTP Status 400 (Bad Request) 오류일 경우 입력 요청 값의 상세 오류내용이 아래의 포맷과 같이 응답된다.
+
+[source,options="nowrap"]
+----
+{
+  "success" : false,
+  "message" : "입력 값이 올바르지 않습니다.",
+  "data" : [
+    {
+      "field" : "id",
+      "reason" : "must not be blank"
+    },
+    {
+      "field" : "email",
+      "reason" : "must not be blank"
+    }
+  ]
+}
+----
+
+|===
+| Field | Type | Description
+
+| `success`
+| Boolean
+| 성공 여부
+
+| `message`
+| String
+| 메세지
+
+| `data[].field`
+| String
+| 구체적인 오류발생 필드 명
+
+| `data[].message`
+| String
+| 구체적인 오류 설명
+
+|===
+
+== 공통 필드값
+
+include::document명.adoc[]
+
+...
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+REST Docs Test 코드 작성
+
+
+
+
+
+
+
+
+
+```
+@SpringBootTest
+@ExtendWith(RestDocumentationExtension.class)
+public class OrderControllerDocument {
+  private MockMvc mockMvc;
+ @DisplayName("주문 정보 조회")
+  @Test
+  void order_api_test() throws Exception {
+    mockMvc.perform(get("/v1/orders/{orderNo}", 1)
+        .accept(MediaType.APPLICATION_JSON)
+    ).andExpect(status().isOk())
+        .andDo(document("order-find",
+            getDocumentRequest(),
+            getDocumentResponse(),
+            pathParameters(
+                parameterWithName("orderNo").description("주문번호")
+            ),
+            responseFields(beneathPath("data"),
+                of(
+                    of("orderName", JsonFieldType.STRING, "주문명")
+                ).build()
+            )
+        ));
+
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+위와 같은 양식으로 작성하고, 테스트 케이스가 통과되면 REST Docs가 만들어진다.

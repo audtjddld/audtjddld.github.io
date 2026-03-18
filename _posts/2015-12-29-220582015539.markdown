@@ -1,0 +1,114 @@
+---
+title: "logback 설정 방법 디테일하게 잘나와 있음."
+date: 2015-12-29 17:37:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220582015539"
+---
+
+-------------------- 2019.07.23 -----------------
+
+<https://meetup.toast.com/posts/149>
+
+<https://meetup.toast.com/posts/149>
+
+[(Spring Boot)Logging과 Profile 전략 : TOAST Meetup(Spring Boot)Logging과 Profile 전략meetup.toast.com](https://meetup.toast.com/posts/149)
+
+----------------------  2017-05-24  ----------------------------
+
+설정 내역
+
+<https://github.com/audtjddld/angularjs-springboot-jpa-example/blob/master/demo2/src/main/resources/logback.xml>
+
+<https://github.com/audtjddld/angularjs-springboot-jpa-example/blob/master/demo2/src/main/resources/logback.xml>
+
+[audtjddld/angularjs-springboot-jpa-exampleangularjs-springboot-jpa-example - new sample sitegithub.com](https://github.com/audtjddld/angularjs-springboot-jpa-example/blob/master/demo2/src/main/resources/logback.xml)
+
+----------------------------- 2015. 12. 30 ----------------------------------
+
+rollingfileAppender 설정시
+
+<fileNamePattern> 에도 저장 경로까지 풀로 써줘야된다.
+
+ <configuration>
+
+```
+
+
+   .%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n
+
+
+
+   TRACE
+
+
+
+
+  c:/tmp/rest-demo.log
+
+
+   c:/temp/rest-demo.%d{yyyy-MM-dd}.log
+
+
+   30
+
+
+
+   %d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n
+
+
+
+
+
+   c:/tmp/minutes/rest-demo-minute.%d{yyyy-MM-dd_HH-mm}.log
+
+
+   30
+
+
+
+   %-4relative [%thread] %-5level %logger{35} - %msg %n
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+
+![](https://ssl.pstatic.net/static.se2/static/img/emoticon/1_32.gif)
+
+내가 적용했던 pattern
+
+<Pattern>%date{yyyy-MM-dd:HH:mm:ss.SSS} %-5level %relative --- [%thread] %logger.%method\(%file:%line\) : %msg %n</Pattern>
+
+---------- 원글 ----------
+
+<http://www.codingpedia.org/ama/how-to-log-in-spring-with-slf4j-and-logback/>
+
+<http://www.codingpedia.org/ama/how-to-log-in-spring-with-slf4j-and-logback/>
+
+[How to log in Spring with SLF4J and LogbackHow to log in Spring based application with the help of Simple Logging Facade for Java (SLF4J) and Logback.www.codingpedia.org](http://www.codingpedia.org/ama/how-to-log-in-spring-with-slf4j-and-logback/)
+
+<http://logback.qos.ch/manual/configuration.html>
+
+<http://logback.qos.ch/manual/configuration.html>
+
+[Chapter 3: Configurationlogback.qos.ch](http://logback.qos.ch/manual/configuration.html)
+
+<http://www.nextree.co.kr/p5584/>
+
+<http://www.nextree.co.kr/p5584/>
+
+[Logback을 활용한 Remote Logging 구현 사례 | 넥스트리 | NEXTREEwww.nextree.co.kr](http://www.nextree.co.kr/p5584/)
+
+<https://meetup.toast.com/posts/149>

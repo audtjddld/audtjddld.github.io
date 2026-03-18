@@ -1,0 +1,131 @@
+---
+title: "asp 에서 json 사용 방법"
+date: 2013-05-22 16:21:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60192460837"
+---
+
+출처 : <http://www.uhoon.co.kr/asp/250>
+
+
+
+사용하기도 쉽고 간단하다~!
+
+
+
+
+
+API LINK <http://code.google.com/p/aspjson/>
+
+
+
+[JSON_UTIL_0.1.1.asp](http://www.uhoon.co.kr/?module=file&act=procFileDownload&file_srl=1067&sid=72b8f0346fbb1385f888e334d7fc2fbf&module_srl=175)
+
+[JSON_2.0.4.asp](http://www.uhoon.co.kr/?module=file&act=procFileDownload&file_srl=1066&sid=e876933286e9df48ec42c8baa9853e51&module_srl=175)
+
+
+
+default
+
+
+
+[?](http://www.uhoon.co.kr/asp/250#)
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+``
+
+``
+
+
+
+`{"name":"uhoons","age":"30","message":"Hello uhoons World"}`
+
+
+
+
+
+SQL Queries - 쿼리문으로 JASON 데이터 만들기
+
+
+
+[?](http://www.uhoon.co.kr/asp/250#)
+
+1
+
+2
+
+3
+
+4
+
+5
+
+`!--#include file="JSON_2.0.4.asp"-->`
+
+``
+
+``
+
+
+
+`[{"name":"ali","age":"30"},{"name":"mahmut","age":"40"     } ]`
+
+
+
+
+
+Multi Dimensional Arrays¶- 배열로 만들기
+
+
+
+[?](http://www.uhoon.co.kr/asp/250#)
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+``
+
+``
+
+
+
+`[[``"zero - zero"``,``"zero - one"``],[``"one - zero"``,``"one - one"``]]`

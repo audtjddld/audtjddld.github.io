@@ -1,0 +1,179 @@
+---
+title: "2014.12.20 스터디 내용 정리"
+date: 2014-12-20 18:20:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220215756368"
+---
+
+SNMP (간이 망 관리 프로토콜)
+
+SNMP는 네트웍 관리 및 네트웍 장치와 그들의 동작을 감시, 통할하는 프로토콜이다.
+
+한마디로 각 시스템별 상태들을 확인 할 수있도록 해주는 것입니다.
+
+솔루션 업체에서 프로젝트 진행시 고객 요구사항에서 필수적으로 요구하는 부분이라고 하네요.
+
+따라서 리눅스 계열이나 윈도우 계열등으로 snmp를 설치해서 해당 시스템 값들을 얻어오면서
+
+모니터링 할 수 있는 사이트까지 만들어 준다고 합니다.
+
+하지만 윈도우계열은 비추천 한다고 하며(설정이 복잡함),
+
+리눅스 계열에서 적용하는 게 편하다고 합니다.
+
+리눅스 계열에서 각 Status를 알아볼 수 있도록 oid (Object ID) 제공해 준다고 합니다.
+
+그리고 oid를 통해서 각 장비에서 원하는 상태값을 얻어내서 모니터링 할 수있다고 합니다
+
+ex) cpu 사용량 , 메모리 상태, hdd 용량 상태등**
+
+CPU times
+
+percentage of user CPU time: .1.3.6.1.4.1.2021.11.9.0
+
+raw user cpu time: .1.3.6.1.4.1.2021.11.50.0
+
+percentages of system CPU time: .1.3.6.1.4.1.2021.11.10.0
+
+raw system cpu time: .1.3.6.1.4.1.2021.11.52.0
+
+percentages of idle CPU time: .1.3.6.1.4.1.2021.11.11.0
+
+raw idle cpu time: .1.3.6.1.4.1.2021.11.53.0
+
+raw nice cpu time: .1.3.6.1.4.1.2021.11.51.0
+
+Memory Statistics
+
+Total Swap Size: .1.3.6.1.4.1.2021.4.3.0
+
+Available Swap Space: .1.3.6.1.4.1.2021.4.4.0
+
+Total RAM in machine: .1.3.6.1.4.1.2021.4.5.0
+
+Total RAM used: .1.3.6.1.4.1.2021.4.6.0
+
+Total RAM Free: .1.3.6.1.4.1.2021.4.11.0
+
+Total RAM Shared: .1.3.6.1.4.1.2021.4.13.0
+
+Total RAM Buffered: .1.3.6.1.4.1.2021.4.14.0
+
+Total Cached Memory: .1.3.6.1.4.1.2021.4.15.0
+
+Disk Statistics
+
+Add the following line to snmpd.conf and restart:
+
+includeAllDisks 10% for all partitions and disks
+
+Disk OID's
+
+Path where the disk is mounted: .1.3.6.1.4.1.2021.9.1.2.1
+
+Path of the device for the partition: .1.3.6.1.4.1.2021.9.1.3.1
+
+Total size of the disk/partion (kBytes): .1.3.6.1.4.1.2021.9.1.6.1
+
+Available space on the disk: .1.3.6.1.4.1.2021.9.1.7.1
+
+Used space on the disk: .1.3.6.1.4.1.2021.9.1.8.1
+
+Percentage of space used on disk: .1.3.6.1.4.1.2021.9.1.9.1
+
+Percentage of inodes used on disk: .1.3.6.1.4.1.2021.9.1.10.1
+
+.1.3.6.1.4.1.2021.9.1.2.1 <-- oid 입니다.**
+
+참고 ( OID 리스트 )http://kaivanov.blogspot.kr/2012/02/linux-snmp-oids-for-cpumemory-and-disk.htmlhttp://www.debianadmin.com/linux-snmp-oids-for-cpumemory-and-disk-statistics.html
+
+(제조사 이름을 달고 나오는 서버 머신등은 oid가 다를 수가 있다고합니다.)**
+
+SNMP 를 구축해서 솔루션으로 사업하는 회사들도 많이 있다고 합니다.
+
+제가 금일 봤던 내용으로는 JAVA runtime, process 를 이용 console로 명령어를
+
+날려서 넘어온 text 값으로 DB에 저장시킨 뒤, 웹에서 각 장비별 상태값들을 그래프 형태로
+
+노출하였다고 합니다.
+
+그리고 일정 횟수 이상 응답이 없거나 하면 알림을 해주는 부분도 구현했다고 하네요.
+
+구글 검색시 여러자료가 많은 걸로 봐서는 꽤나 인기가 있었던 부분들인 듯 합니다.
+
+<https://www.google.co.kr/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#newwindow=1&q=snmp%20%EA%B5%AC%EC%B6%95>
+
+
+
+SNMP 설치 방법**
+
+<http://www.liquidweb.com/kb/how-to-install-and-configure-snmp-on-centos/>
+
+# How To Install and Configure SNMP on CentOS
+
+Category: [Technical Support](http://www.liquidweb.com/kb/category/technical-support/), [Tutorials](http://www.liquidweb.com/kb/category/tutorials/)
+
+SNMP 101: The Basics
+
+I. How To Install and Configure SNMP on CentOS****II. [How To Change the SNMP Port on CentOS](http://www.liquidweb.com/kb/how-to-change-the-snmp-port-on-centos/)
+
+## Introduction
+
+SNMP, or Simple Network Management Protocol, is widely used to communicate with and monitor network devices, servers, and more, all via IP. In this case, we’ll be installing an SNMP agent on a CentOS 6.5 server, which will allow for collection of data from our server, and make the information available to a remote SNMP manager.
+
+## Pre-Flight Check
+
+- These instructions are intended for installing SNMP and doing a very basic configuration.
+- I’ll be working from a Liquid Web Core Managed CentOS 6.5 server, and I’ll be logged in as root.
+
+## Install SNMP and SNMP Utilities
+
+Installing SNMP and some optional SNMP utilities is as simple as running one command:
+
+`yum -y install net-snmp net-snmp-utils`
+
+## Add a Basic Configuration for SNMP
+
+Now, let’s take the default SNMP configuration file, /etc/snmp/snmpd.conf** and move it to an alternate location, **/etc/snmp/snmpd.conf.orig**.
+
+`mv /etc/snmp/snmpd.conf /etc/snmp/snmpd.conf.orig`
+
+And now we’ll create a new /etc/snmp/snmpd.conf:
+
+`vim /etc/snmp/snmpd.conf`
+
+For a refresher on editing files with vim see: [New User Tutorial: Overview of the Vim Text Editor](http://www.liquidweb.com/kb/overview-of-vim-text-editor/)
+
+Insert the following text into the new **/etc/snmp/snmpd.conf**
+
+`# Map 'idv90we3rnov90wer' community to the 'ConfigUser'**# Map '209ijvfwer0df92jd' community to the 'AllUser'#       sec.name        source          communitycom2sec ConfigUser      default         idv90we3rnov90wercom2sec AllUser         default         209ijvfwer0df92jd# Map 'ConfigUser' to 'ConfigGroup' for SNMP Version 2c# Map 'AllUser' to 'AllGroup' for SNMP Version 2c#                       sec.model       sec.namegroup   ConfigGroup     v2c             ConfigUsergroup   AllGroup        v2c             AllUser# Define 'SystemView', which includes everything under .1.3.6.1.2.1.1 (or .1.3.6.1.2.1.25.1)# Define 'AllView', which includes everything under .1#                       incl/excl       subtreeview    SystemView      included        .1.3.6.1.2.1.1view    SystemView      included        .1.3.6.1.2.1.25.1.1view    AllView         included        .1# Give 'ConfigGroup' read access to objects in the view 'SystemView'# Give 'AllGroup' read access to objects in the view 'AllView'#                       context model   level   prefix  read            write   notifyaccess  ConfigGroup     ""      any     noauth  exact   SystemView      none    noneaccess  AllGroup        ""      any     noauth  exact   AllView         none    none`
+
+The above text is noted with basic information on the function of each configuration line. In short, we’re creating two scenarios for polling information from SNMP version 2c.
+
+Note: SNMPv2c contains some security enhancements over SNMPv1 but uses the existing SNMPv1 administration structure, which is “community” based. Areas of improvement include: transport mappings, protocol packet types, and MIB structure elements.
+
+In the first scenario: ConfigUser** is assigned to **ConfigGroup** and may only use SNMP security model**2c**, **ConfigGroup** can use the **SystemView**, **SystemView** is assigned to two OID sub-trees, and all of this is referenced in an SNMP poll by the secret, and unique community string **idv90we3rnov90wer**.
+
+In the second scenario: **AllUser** is assigned to **AllGroup** and may only use SNMP security model **2c**,**AllGroup **can use the **AllView**, **AllView** is assigned to the entire OID tree, and all of this is referenced in an SNMP poll by the secret, and unique community string **209ijvfwer0df92jd**.
+
+Important Tip: Be ABSOLUTELY SURE that you choose a unique community string and replace the community strings in the above examples. Keep each secret, and keep each safe.
+
+Exit vim, and restart the SNMP service to reload the new configuration file:
+
+`service snmpd restart`
+
+Configure SNMP to start when the server boots:
+
+`chkconfig snmpd on`
+
+## Test the SNMP Configuration
+
+Now let’s test the SNMP configuration… try running the following two commands:
+
+`snmpwalk -v 2c -c idv90we3rnov90wer -O e 127.0.0.1``snmpwalk -v 2c -c 209ijvfwer0df92jd -O e 127.0.0.1`
+
+Note: The default port for SNMP is 161 and 162. If you’re going to connect to SNMP from a remote server, be sure [your server’s firewall has the appropriate ports open](http://www.liquidweb.com/kb/opening-ports-in-your-firewall/).
+
+
+
+The result for your first command should be about 33 lines, and contain some basic system information. The result for the second command should contain a lot more information about your system, and will likely be thousands of lines.

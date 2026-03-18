@@ -1,0 +1,94 @@
+---
+title: "javascript Map~"
+date: 2014-09-01 10:21:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220109707968"
+---
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+// JavaScript Code
+
+
+
+$(document).ready(function(){
+
+    var map = new Map();
+
+
+
+    map.put("zzz","123");
+
+
+
+    alert(map.get("zzz"));
+
+});
+
+
+
+function Map(){
+
+    this.map = new Object();
+
+}
+
+
+
+Map.prototype = {
+
+    put : function(key, value) {
+
+        this.map[key] = value;
+
+    },
+
+    get : function(key) {
+
+        return this.map[key];
+
+    }
+
+}

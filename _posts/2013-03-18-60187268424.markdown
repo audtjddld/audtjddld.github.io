@@ -1,0 +1,71 @@
+---
+title: "엑셀 Poi로 파일 만들기~"
+date: 2013-03-18 17:26:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60187268424"
+---
+
+출처 : <http://blog.naver.com/PostView.nhn?blogId=newacadia&logNo=110139685797>
+
+ /*
+     * Desc : iRowNum 행에 첫번째 열부터 삽입합니다.
+     * @Method Name : setOneLineHeader
+     * @param sheet 시트
+     * @param iRowNum 행번호 0번이 첫번째
+     * @param al 문자리스트
+ */
+    private void setOneLineHeader(HSSFSheet sheet, int iRowNum, ArrayList<String> al) {
+        try {
+            HSSFRow row = sheet.createRow(iRowNum);
+            int i = 0;
+            for (String str : al) {
+                row.createCell(i++, HSSFCell.CELL_TYPE_STRING).setCellValue(str);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Desc :엑셀파일 만들기
+     * @Method Name : makeFile
+     * @param wb
+     * @param sFileName
+    */
+    private void makeFile(HSSFWorkbook wb, String sFileName) {
+        try {
+
+            FileOutputStream fo = new FileOutputStream(sFileName);
+            wb.write(fo);
+            fo.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Desc : 간단 엑셀 샘플 만들기
+     * @Method Name : makeEx
+     **/
+    public void makeEx() {
+        ArrayList<String> Header = new ArrayList<String>();
+        HSSFWorkbook wb = new HSSFWorkbook();// 엑셀워크북생성(xls)
+        Header.add("          ");
+        Header.add("사업자번호");
+        Header.add("사업자명  ");
+        Header.add("담당자    ");
+        Header.add("계좌번호  ");
+        Header.add("구      분");
+
+        HSSFSheet sheet = wb.createSheet("시트이름");// 엑셀시트이름
+        setOneLineHeader(sheet, 0, Header);// 0번째 행의 헤더삽입
+        makeFile(wb, "c:\\work\\test1.xls");// 엑셀파일로 만들기
+    }
+
+    public static void main(String[] args) {
+        new ex().makeEx();
+    }
+
+}

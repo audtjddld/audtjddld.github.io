@@ -1,0 +1,74 @@
+---
+title: "JRE docker image를 배포하는 경우 모니터링에 이슈가 있는지"
+date: 2024-01-05 10:37:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223313118312"
+---
+
+JRE (Java Runtime Environment) 기반의 Docker 이미지를 사용하여 Kubernetes에 Pod를 배포하는 경우, JDK (Java Development Kit)에 포함된 도구들인 `jcmd`, `jstack`, `jmap`, `jstat` 등을 사용할 수 없습니다. 이 도구들은 Java 애플리케이션의 진단 및 모니터링에 사용되며, JRE 이미지에는 포함되어 있지 않기 때문입니다. 그 결과, 이러한 도구들을 사용한 thread dump, heap dump, Java Flight Recorder (JFR) dump 등의 진단 정보를 Kubernetes의 모니터링 도구를 통해 직접적으로 볼 수 없게 됩니다.
+
+​
+
+Kubernetes 클러스터에서 애플리케이션 모니터링을 위해 일반적으로 사용되는 방법은 다음과 같습니다:
+
+​
+
+1. **Metrics Server / Heapster**:
+
+   Kubernetes에서 일반적인 메트릭(예: CPU, 메모리 사용량)을 수집하는 데 사용됩니다.
+
+​
+
+2. **Prometheus**:
+
+   시간 기반의 메트릭 데이터베이스로, Pod와 서비스의 다양한 메트릭을 수집하고 쿼리할 수 있습니다.
+
+​
+
+3. **Grafana**:
+
+   Prometheus와 같은 시스템으로부터 수집된 메트릭을 시각화하기 위해 사용됩니다.
+
+​
+
+4. **Elastic Stack (ELK)**:
+
+   로깅과 메트릭 수집을 위한 솔루션으로 Elasticsearch, Logstash, Kibana를 포함합니다.
+
+​
+
+5. **Kubernetes Dashboard**:
+
+   클러스터의 리소스와 사용량을 시각적으로 모니터링하기 위한 웹 기반 UI입니다.
+
+​
+
+6. **Custom Sidecars**:
+
+   로깅이나 메트릭 수집을 위한 사이드카 컨테이너를 애플리케이션 Pod에 추가하여 사용할 수 있습니다.
+
+​
+
+위와 같은 모니터링 도구들은 JVM의 내부 상태나 thread dump, heap dump 등을 직접 제공하지는 않지만, 전체 시스템의 성능, 상태, 로그 및 기본적인 메트릭에 대한 정보를 제공할 수 있습니다.
+
+​
+
+JVM의 내부 정보에 접근하기 위해서는 JDK 기반 이미지를 사용하거나, `jlink`를 사용하여 필요한 모듈만 포함한 custom JRE 이미지를 만들어야 합니다. 또 다른 방법으로는 외부 진단 도구를 사용하여 원격으로 JVM을 모니터링하는 것입니다. 예를 들어, `Mission Control`, `VisualVM`, `YourKit` 같은 도구들이 있습니다.
+
+​
+
+JDK 도구 없이도 JVM 내부 정보를 어느 정도 모니터링하기 위해, 런타임에서 제공하는 JMX (Java Management Extensions)를 활용할 수도 있습니다. JMX를 사용하면 원격에서 JVM의 MBeans를 통해 다양한 정보를 조회하고 조작할 수 있습니다. 이러한 접근은 보안 설정과 네트워크 구성을 적절하게 관리해야 합니다.
+
+​
+
+​
+
+--------
+
+​
+
+이전에 JDK, JRE 에 대해서 정리했던 적이 있었는데 한동안 또 까먹고 있었다.
+
+리뷰에서 base image를 JRE 버전으로 사용했더니 jcmd 등을 이용해서 troubleshooting을 못하게 되서 변경이 필요해보인다고 하시더라.
+
+문득 다시 알아보고 나니 잊었던 것을 알게 되었다.

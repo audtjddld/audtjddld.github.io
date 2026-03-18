@@ -1,0 +1,219 @@
+---
+title: "swagger + spring boot"
+date: 2018-05-02 11:20:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221266196834"
+---
+
+내 개인 취향으로는 postman으로 api 작성해서 예제 포함해서 link 보내주는 것을 좋아하지만..
+
+어찌하다보니 회사에서 swagger를 적용시켜놨네 =_=;
+
+get방식에 파라미터가 json으로 맵핑 되는 거 때문에 좀 골치 아팠는데, 의외로 버전업 하니까 문제가 없음.;;
+
+​
+
+gradle 설정
+
+
+
+
+
+
+
+```
+compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
+compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.8.0'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+설정 관련 링크
+
+<https://springfox.github.io/springfox/docs/current/#development-environment>
+
+swagger config
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    ![](/assets/images/posts/221266196834/9a15453c07f0.png?type=w580)
+
+
+
+
+
+
+
+```
+3. Docket, Springfox 's, 기본 API 설정 메카니즘은 swagger specification 2.0을 위해 초기화된다.
+4. select ()는 ApiSelectorBuilder의 인스턴스를 반환하여 swagger를 통해 노출 된 끝점을 세부적으로 제어합니다.
+5. apis() allows selection of RequestHandler's using a predicate. The example here uses an any predicate (default). Out of the box predicates provided are any, none, withClassAnnotation, withMethodAnnotation and basePackage.
+6. paths ()는 술어를 사용하여 Path를 선택할 수있게합니다. 여기에있는 예는 임의의 술어 (기본값)를 사용합니다. 상자 밖에서 우리는 정규식, ant, 모두, 아무도에 대한 술어를 제공합니다.
+7. 선택기는 API 및 경로 선택기를 구성한 후에 작성해야합니다.
+8. 서블릿에 경로 매핑이있을 때 서블릿 경로 매핑을 추가합니다. 이 경로는 제공된 경로 매핑의 경로 접두사입니다.
+9. 모델 속성을 렌더링 할 때 LocalDate를 String으로 대체하는 편리한 규칙 작성기
+하나의 유형 매개 변수로 제네릭 유형을 type 매개 변수로 대체하는 편리한 규칙 작성기입니다.
+10. 예를 들어 T. alternateTypeRules를 사용하는 ResponseEntity 를 사용하면 좀 더 복잡한 사용자 정의 규칙을 사용할 수 있습니다. 이 예에서는 DeferredResult >를 T로 대체합니다.
+11. 기본 http 응답 코드를 사용해야하는지 여부를 나타내는 플래그입니다.
+12. 다른 http 메소드에 대한 응답 메시지를 전역 적으로 대체 할 수 있습니다. 이 예에서는 모든 GET 요청에 대해 500 오류 코드를 재정의합니다 ...
+13. 응답 모델 오류 (다른 곳에서 정의 됨)를 사용할 것임을 나타냅니다.
+14. api를 보호하는 데 사용되는 보안 체계를 설정합니다. 지원되는 스키마는 ApiKey, BasicAuth 및 OAuth입니다.
+15. 운영을위한 보안 컨텍스트를 전역 적으로 설정하는 방법을 제공합니다. 여기서는 지정된 보안 구성표 중 하나에서 보호 할 작업을 선택하는 방법을 제공합니다.
+16. 여기서 mykey라는 이름으로 식별되는 보안 스키마로 ApiKey를 사용합니다.
+17. 이 보안 컨텍스트가 적용되는 경로의 선택기입니다.
+18. 여기서 우리는 보안 체계 mykey에 정의 된 동일한 키를 사용합니다.
+19. oauth 및 apiKey 설정을위한 선택적 swagger-ui 보안 구성
+20. 선택적 swagger-ui 구성은 현재 유효성 확인 url 만 지원합니다.
+* 인큐베이팅 *이 플래그를 설정하면 생성 된 경로가 양식 스타일 쿼리 확장을 시도하고
+ 사용해야하는 프로세서에 신호를 보냅니다.
+결과적으로 경로 줄기가 같지만 쿼리 문자열 조합이 다른 경로를 구별 할 수 있습니다.
+21. 예를 들어 두 가지 apis가 있습니다.
+첫째, <http://example.org/findCustomersBy?name=Test로> 이름으로 고객을 찾으십시오.
+RFC 6570에 따라 <http://example.org/findCustomersBy{?name}로> 표시됩니다.
+둘째, 우편으로 고객을 찾으려면 <http://example.org/findCustomersBy?zip=76051.>
+RFC 6570에 따라 <http://example.org/findCustomersBy{?zip}로> 표시됩니다.
+API의 모든 나머지 작업에 공통되지만 스프링 컨트롤러 메소드 서명
+(예 : 인증 정보)에 필요하지 않은 기본 경로 / 요청 / / 헤더 매개 변수의 전역 적 구성을 허용합니다.
+22.여기에 추가 된 매개 변수는 생성 된 스 거거 사양에서 모든 API 작업의 일부가됩니다.
+보안 설정 방법에 사용되는 헤더의 이름이 다를 수 있습니다.
+이 값을 무시하면 기본 비헤이비어를 무시할 수 있습니다.
+23. 태그를 추가하는 것은 서비스 / 작업이 선택할 수있는 모든 사용 가능한 태그를 정의하는 방법입니다.
+현재로서는 이름과 설명 만 있습니다.
+24.응용 프로그램에 "접근 할 수없는"모델이 있습니까? 도달 할 수없는 것은 우리가 묘사하고 싶지만
+ 조작 중에 명시 적으로 사용되지 않는 모델이있을 때입니다.
+ 이 예제는 문자열로 직렬화 된 모델을 반환하는 연산입니다.
+ 우리는 문자열에 대한 스키마의 기대를 전달하고자합니다. 이것은 정확하게하는 방법입니다.
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+API 페이지별 문서 정보도 별도로 설정할 수 있다.
+
+​
+
+<http://springboot.tistory.com/23>
+
+
+
+
+
+
+
+```
+@SpringBootApplication
+@EnableSwagger2
+@ComponentScan("hello")
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+    @Bean
+    public Docket newsApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("greetings")
+                .apiInfo(apiInfo())
+                .select()
+                .paths(regex("/greeting.*"))
+                .build();
+    }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("Spring REST Sample with Swagger")
+                .description("Spring REST Sample with Swagger")
+                .termsOfServiceUrl("http://www-03.ibm.com/software/sla/sladb.nsf/sla/bm?Open")
+                .contact("Niklas Heidloff")
+                .license("Apache License Version 2.0")
+                .licenseUrl("https://github.com/IBM-Bluemix/news-aggregator/blob/master/LICENSE")
+                .version("2.0")
+                .build();
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+mutiple api 작성
+
+<https://github.com/indrabasak/swagger-deepdive/wiki/Multiple-Swagger-Groups>
+
+​
+> [**indrabasak/swagger-deepdive**](https://github.com/indrabasak/swagger-deepdive/wiki/Multiple-Swagger-Groups)
+>
+> In-depth look at different Springfox and Swagger features. - indrabasak/swagger-deepdive
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

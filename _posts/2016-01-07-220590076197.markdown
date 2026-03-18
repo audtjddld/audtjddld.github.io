@@ -1,0 +1,102 @@
+---
+title: "싱글톤 (singleton)"
+date: 2016-01-07 09:28:00 +0900
+categories: [경험 및 정보 공유]
+tags: [singleton]
+original_url: "https://blog.naver.com/kkforgg/220590076197"
+---
+
+싱글톤(Singleton) Pattern 이란?
+
+객체지향형언어(OOP)에 대해 조금이라도 파고든 사람이라면 싱글톤 패턴이라는
+
+말을 들어봤을 것이다. 못들어봤다면 이제부터 들었다고 해라. 싱글톤이란 생성하고자
+
+하는 인스턴스의 수를 오직 하나로 제한하는 디자인 패턴이다.
+
+그렇다면 왜 싱글톤 패턴을 사용해야하는 것일까? 라는 질문에 대게 답하는 것이
+
+여러개의 인스턴스를 생성하게 되면 가끔 프로그래머도 당혹스럽게 되는 서로의
+
+인스턴스에 간섭을 하는 경우가 있다. 정말 재수 없는 일이 아닐 수가 없다.
+
+ singleton 멤버변수는 static 이어야한다는 것과 Singleton 클래스의
+
+생성자는 private / protected 이어야한다는 것을 꼭 유념해야한다. private 일 경우는 결코
+
+new 를 이용하여 인스턴스의 중복 생성을 방지하는 셈이기도 하나 상속이 되지 않는다는
+
+단점이 있어 protected로 대게 선언한다.
+
+2개의 클래스를 작성해보았다.
+
+Test.java
+
+```
+package singleton;
+
+/**
+ * @author
+ * create date : 2016. 1. 7.
+ * singleton.Test.java
+ */
+public class Test {
+    private volatile static Test test;
+    private String  name;
+    private int     score;
+
+    public static Test getInstance() {
+        if(test == null) {
+            test = new Test();
+        }
+        return test;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public int getScore() {
+        return score;
+    }
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+}
+```
+
+Operation.java
+
+```
+package singleton;
+
+/**
+ * @author
+ * create date : 2016. 1. 7.
+ * singleton.Operation.java
+ */
+public class Operation {
+    public static void main(String[] args) {
+        Test t1 = Test.getInstance();
+        t1.setName("헤헤");
+        t1.setScore(90);
+        Test t2 = Test.getInstance();
+        t2.setName("홍길동");
+        t2.setScore(80);
+
+        System.out.println(t1.getName() + " " + t1.getScore());
+        System.out.println(t2.getName() + " " + t2.getScore());
+    }
+}
+```
+
+위에서 이야기 했던대로 인스턴스 수를 줄이기 위해 Test.java Class내에 getInstance() 메서드에 자기자신을 리턴시켜 주도록하였다.
+
+아래 Operation.java 클래스 내에 T1과 T2가 Test.getInstace() 메서드를 호출하여 같은 객체를 바라보게 하였기 때문에 아래 System.out.println 에 t1에 입력했던 값은 t2에 입력한 값으로 대체되었다.
+
+Spring에서 DI를 사용하여 주입시키는 것도 이와 같은 singleton 방식이라고 들었다.
+
+출처 : <http://tokisum.tistory.com/8>

@@ -1,0 +1,8 @@
+---
+title: "AngularJS 기본 예제 w3school 껄로 만들어놈"
+date: 2015-05-07 16:30:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220352633765"
+---
+
+아주~~ 기본 예제

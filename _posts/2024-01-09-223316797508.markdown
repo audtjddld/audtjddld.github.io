@@ -1,0 +1,328 @@
+---
+title: "Kubernetes namespace, quota"
+date: 2024-01-09 09:44:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223316797508"
+---
+
+namespace
+
+-
+namespace를 사용하면 같은 물리적 클러스터 안에서 가상 클러스터를 생성할 수 있다.
+
+-
+namespace는 논리적으로 클러스터에서 분리할 수 있다.
+
+-
+표준 namespace를 기본값이라고 하고 리소스가 기본적으로 시작되는 곳이다.
+
+ 따라서, 네임스페이스를 지정하지 않을 때마다 실제로 기본 네임스페이스 내에서 파드, 배포 등등 시작하는데 큐브시스템이라 불리는 쿠버네티스 특정 리소스의 네임스페이스도 존재한다.
+
+-
+예를 들어, 대부분의 모니터링은 kube-system에서 시작하고 DNS 애드온 또한 kube-system에서 시작한다. 대시보드 또한 kube-system 네임스페이스에 있는 예시이다.
+
+-
+namespace는 kubernetest cluster를 사용하는 여러 팀/프로젝트가 있는 경우 사용된다.
+
+​
+
+kubernetes는 namespace로 물리적인 리소스를 할당시키는데, 이때 namespace에게 quota를 설정할 수 있다. quota라는 것은 고정된 kubernetes의 resource를 고르게 분배하기 위해서 resource의 할당량을 지정하는 것을 말한다.
+
+​
+
+위의 예제와 같이 resource quota와 objest quota들을 설정할 수 있다.
+
+​
+
+resource limit을 걸어두지 않고 아래와 같이 deployment를 생성하게 되면 resource 부족으
+
+
+
+
+
+
+
+
+
+
+```
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: myspace
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-quota
+  namespace: myspace
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.cpu: "2"
+    limits.memory: 2Gi
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: object-quota
+  namespace: myspace
+spec:
+  hard:
+    configmaps: "10"
+    persistentvolumeclaims: "4"
+    replicationcontrollers: "20"
+    secrets: "10"
+    services: "10"
+    services.loadbalancers: "2"
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+로 인하여 pod가 2개까지만 생성되는 것을 확인할 수 있다.
+
+
+
+
+
+
+
+
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-deployment
+  namespace: myspace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: helloworld
+  template:
+    metadata:
+      labels:
+        app: helloworld
+    spec:
+      containers:
+      - name: k8s-demo
+        image: wardviaene/k8s-demo
+        ports:
+        - name: nodejs-port
+          containerPort: 3000
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+quota를 아래와 같이 cpu 2와 memory 2gb를 잡았는데, 위에 quota 설정이 없기 때문에 resource가 부족하여 실행시키지 못한 것이다.
+
+
+
+
+
+
+
+
+
+```
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.cpu: "2"
+    limits.memory: 2Gi
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+따라서 아래와 같이 조절하게 되면, 원하는 개수의 pod를 생성할 수 있다.
+
+
+
+
+
+
+
+
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld-deployment
+  namespace: myspace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: helloworld
+  template:
+    metadata:
+      labels:
+        app: helloworld
+    spec:
+      containers:
+      - name: k8s-demo
+        image: wardviaene/k8s-demo
+        ports:
+        - name: nodejs-port
+          containerPort: 3000
+        resources:
+          requests:
+            cpu: 200m
+            memory: 0.5Gi
+          limits:
+            cpu: 400m
+            memory: 1Gi
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+여기서 request와 limits가 있는데, request는 pod에 할당을 요청하는 단위 이고, limits는 총합을 넘을 수 없다는 제한이다. 즉 pod 3개를 cpu 200m, 500mi 로 생성한다고 가정하였을 때, 200 x 3 = 600m, 500mi x 3 = 1.5Gi 이기 떄문에 이 pod도 정상적으로 만들어질 수 없다.
+
+​
+
+따라서 각 resource 설정에 맞춰서 manifest를 작성해야 된다.
+
+​
+
+위와 같이 quota 설정을 하지 않는 경우 default resource 설정을 아래와 같이 할 수 있다.
+
+
+
+
+
+
+
+
+
+```
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: limits
+  namespace: myspace
+spec:
+  limits:
+  - default:
+      cpu: 200m
+      memory: 512Mi
+    defaultRequest:
+      cpu: 100m
+      memory: 256Mi
+    type: Container
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+quota 조회 명령어
+
+
+
+
+
+
+
+
+
+```
+kubectl describe quota/compute-quota --namespace=myspace
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​

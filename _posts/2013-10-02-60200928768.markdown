@@ -1,0 +1,160 @@
+---
+title: "web.xml :javaee 관련 에러 발생시"
+date: 2013-10-02 14:05:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60200928768"
+---
+
+출처  : <http://cafe.daum.net/ITVillage/IKm4/25?docid=1DpW4IKm42520120403100818>
+
+
+
+: 이클립스에서 프로젝트의 이름을 바꾸고 나면 아래와 같은 에러가 자주 발생한다.
+
+
+
+java.lang.IllegalArgumentException: Can't convert argument:
+null
+
+--> 이 에러가 발생하는 이유는 프로젝트 이름을 변경하게 되면 web.xml이 아래와 같이 자동으로 바뀌기 때문이다.
+
+
+
+==== web.xml ====
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:javaee="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+<http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"> id="WebApp_ID"
+version="2.4">
+
+  <javaee:display-name>onnuri2012.onnuri2012</javaee:display-name>
+
+  <filter>
+
+    <filter-name>encodingFilter</filter-name>
+
+    <filter-class>
+
+org.springframework.web.filter.CharacterEncodingFilter
+
+</filter-class>
+
+    <init-param>
+
+      <javaee:param-name>encoding</javaee:param-name>
+
+      <javaee:param-value>utf-8</javaee:param-value>
+
+    </init-param>
+
+  </filter>
+
+  <filter>
+
+    <filter-name>HTMLTagFilter</filter-name>
+
+    <filter-class>
+
+            egovframework.rte.ptl.mvc.filter.HTMLTagFilter
+
+        </filter-class>
+
+  </filter>
+
+  <filter-mapping>
+
+    <filter-name>encodingFilter</filter-name>
+
+    <url-pattern>*.ecg</url-pattern>
+
+    <url-pattern>*.test</url-pattern>
+
+    <url-pattern>/onnuri/*</url-pattern>
+
+  </filter-mapping>
+
+  <filter-mapping>
+
+    <filter-name>HTMLTagFilter</filter-name>
+
+    <url-pattern>*.ecg</url-pattern>
+
+  </filter-mapping>
+
+  <context-param>
+
+    <javaee:param-name>contextConfigLocation</javaee:param-name>
+
+    <javaee:param-value>
+
+classpath*:ecgframework/spring/root/**/context-*.xml
+
+classpath*:profile/**/context-*.xml
+
+</javaee:param-value>
+
+  </context-param>
+
+  <listener>
+
+
+<javaee:listener-class>org.springframework.web.context.ContextLoaderListener</javaee:listener-class>
+
+  </listener>
+
+  <servlet>
+
+    <servlet-name>dispatcher</servlet-name>
+
+    <servlet-class>
+
+org.springframework.web.servlet.DispatcherServlet
+
+</servlet-class>
+
+    <init-param>
+
+      <javaee:param-name>contextConfigLocation</javaee:param-name>
+
+      <javaee:param-value>
+
+/WEB-INF/config/spring/web/dispatcher-servlet.xml
+
+ </javaee:param-value>
+
+    </init-param>
+
+    <load-on-startup>1</load-on-startup>
+
+  </servlet>
+
+  <servlet-mapping>
+
+    <servlet-name>dispatcher</servlet-name>
+
+    <url-pattern>*.ecg</url-pattern>
+
+    <url-pattern>/onnuri/*</url-pattern>
+
+  </servlet-mapping>
+
+  <welcome-file-list>
+
+    <welcome-file>index.jsp</welcome-file>
+
+  </welcome-file-list>
+
+  <login-config>
+
+    <auth-method>BASIC</auth-method>
+
+  </login-config>
+
+</web-app>
+
+--> 이렇게 "javaee" 라는 prefix가 제멋대로 붙어버려서 나는 에러이다. 따라서 이 prefix를 제거하고 톰캣을
+재가동하면 에러를 해결할 수 있다.

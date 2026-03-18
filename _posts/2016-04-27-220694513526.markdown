@@ -1,0 +1,17 @@
+---
+title: "직렬화 (serialization )"
+date: 2016-04-27 09:26:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220694513526"
+---
+
+예전에 java중급 과정을 교육 받던중 mashalling , unmashalling에 대해서 들은 적 있었던 거 같은데,
+
+JPA에서 Domain 객체에 implements Serializeable 를 기본적으로 상속받아야 한다고 했는데,
+
+그 이유가 , **컴퓨터 과학 그중에서 데이터 저장소(data sotrage)의 맥락에서, 직렬화는 객체의 상태 혹은 데이터 구조를 기록할 수 있는 포맷(예를 들면 파일 또는 메모리 버퍼, 또는 네트워크 연결 링크를 통해 전송될 수 있는 형태)으로 변환하며, 나중에 동일 혹은 다른 컴퓨터 환경에서 재구성할 수 있게끔 하는 절차이다.**
+
+<https://docs.com/sunnykwak/7250/java-serialization>
+
+[자바 직렬화 (java serialization)컴퓨터 공학, 그중에서 데이터 저장소(data storage)의 맥락에서, 직렬화(serialization)는 객체의 상태 혹은 데이터 구조를 기록할 수 있는 포맷(...docs.com](https://docs.com/sunnykwak/7250/java-serialization)
+

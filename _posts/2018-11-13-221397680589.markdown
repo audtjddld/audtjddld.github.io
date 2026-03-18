@@ -1,0 +1,143 @@
+---
+title: "원격 저장소 URL 변경하기"
+date: 2018-11-13 17:38:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221397680589"
+---
+
+[**[번역]GitHub / Managing Remotes / 원격 저장소 URL 변경하기**
+
+                                        [번역]GitHub / Managing Remotes / 원격 저장소 URL 변경하기 18 March 2014 이 문서는 Changing a remote’s URL 의 비공식 번역글이며 GitHub에서 보증, 유지 또는 감독하지 않습니다. 공식 도움글을 보시려면 help.github.com 을 방문하세요. 원격 저장소 URL 변경하기 기존 원격 저장소 URL을 변경하기 위해 git remote set-url 명령어를 사용합니다: $ git remote -v
+ 	# View existing remotes
+origin  ht
+                                        minsone.github.io](http://minsone.github.io/git/github-managing-remotes-changing-a-remotes-url)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<http://minsone.github.io/git/github-managing-remotes-changing-a-remotes-url>
+
+​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+원격 저장소 URL 변경하기
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+기존 원격 저장소 URL을 변경하기 위해 git remote set-url 명령어를 사용합니다:
+
+
+
+
+
+
+
+```
+$ git remote -v
+ 	# View existing remotes
+origin  <https://github.com/user/repo.git> (fetch)
+origin  <https://github.com/user/repo.git> (push)
+
+$ git remote set-url origin <https://github.com/user/repo2.git>
+# Change the 'origin' remote's URL
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$ git remote -v
+
+
+
+
+
+
+
+```
+# Verify new remote URL
+origin  <https://github.com/user/repo2.git> (fetch)
+origin  <https://github.com/user/repo2.git> (push)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+두 개의 인자를 가집니다:
+
+기존 원격 저장소 이름: origin
+
+새로운 원격 저장소 URL : <https://github.com/user/repo2.git>
+
+​
+
+git remote add 방법.
+
+​
+
+<https://git-scm.com/book/ko/v1/Git%EC%9D%98-%EA%B8%B0%EC%B4%88-%EB%A6%AC%EB%AA%A8%ED%8A%B8-%EC%A0%80%EC%9E%A5%EC%86%8C>
+> [**Git - 리모트 저장소**](https://git-scm.com/book/ko/v1/Git%EC%9D%98-%EA%B8%B0%EC%B4%88-%EB%A6%AC%EB%AA%A8%ED%8A%B8-%EC%A0%80%EC%9E%A5%EC%86%8C)
+>
+> Chapters ▾ 1st Edition .5 Git의 기초 - 리모트 저장소 리모트 저장소 리모트 저장소를 관리할 줄 알아야 다른 사람과 함께 일할 수 있다. 리모트 저장소는 인터넷이나 네트워크 어딘가에 있는 저장소를 말한다. 저장소는 여러 개가 있을 수 있는데 어떤 저장소는 읽고 쓰기 모두 할 수 있고 어떤 저장소는 읽기 권한만 있을 수도 있다. 간단히 말해서 다른 사람들과 함께 일한다는 것은 리모트 저장소를 관리하면서 데이터를 거기에 Push하고 Pull하는 것이다. 리모트 저장소를 관리한다는 것은 저장소를 추가, 삭제하는 것...

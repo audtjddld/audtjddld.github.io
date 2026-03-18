@@ -1,0 +1,13 @@
+---
+title: "팝업 크기 변경 관련"
+date: 2016-05-18 17:18:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220713086431"
+---
+
+<http://blog.naver.com/PostView.nhn?blogId=afidev&logNo=20197202121#>
+
+<http://blog.naver.com/afidev/20197202121>
+
+[[jquery] 팝업 창(윈도우) 크기 변경 (window.innerHeight window.outerHeight)안녕하세요 오늘은 팝업 윈도우의 크기를 변경하는 방법을 알아보도록 하겠습니다. 자바스크립트의 width, ...blog.naver.com](http://blog.naver.com/afidev/20197202121)
+

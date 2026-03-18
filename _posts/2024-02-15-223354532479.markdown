@@ -1,0 +1,466 @@
+---
+title: "Kubernetes Secret 관련"
+date: 2024-02-15 15:46:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/223354532479"
+---
+
+Application에서 사용할 정보들을 어떻게 암호화해서 가져갈 수 있을지 방법을 찾아봤다.
+
+​
+
+이전에는 암호화된 값을 k8s의 manifest에 넣어두고, 사용하면 되는 것으로 생각했었는데, 그것보다 훨씬 더 간단하게 관리가 가능했다. 그 방법은 Secret을 설정해서 관리하는 것이었다.
+
+​
+
+`SealedSecrets`는 쿠버네티스 클러스터 외부에서 비밀(Secret)을 만들고, 클러스터 내부에서만 해독할 수 있는 방식으로 작동하는 Bitnami에서 제공하는 컨트롤러입니다. 사용자는 민감한 정보를 `SealedSecret` 형태로 암호화하고 이를 Git 레포지토리와 같은 공개적인 곳에 저장할 수 있습니다. 클러스터 내에 설치된 SealedSecrets 컨트롤러가 `SealedSecret` 리소스를 감지하고, 클러스터에만 알려진 키를 사용해서 이를 일반 `Secret`으로 해독하여 생성합니다.
+
+​
+
+`SealedSecret`을 사용하여 데이터베이스 패스워드를 암호화하고 Deployment에 전달하는 방법은 아래와 같습니다.
+
+​
+
+**### 1. SealedSecrets 컨트롤러 설치**
+
+​
+
+먼저 클러스터에 SealedSecrets 컨트롤러를 설치해야 합니다. 이는 Helm 차트나 직접 YAML 파일을 적용하는 방식으로 할 수 있습니다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+# SealedSecrets 컨트롤러 설치 (Helm을 사용하는 경우)
+helm repo add sealed-secrets <https://bitnami-labs.github.io/sealed-secrets>
+helm install sealed-secrets-controller sealed-secrets/sealed-secrets --namespace kube-system
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**### 2. 비밀 생성 및 암호화**
+
+​
+
+로컬 환경에서 민감한 정보를 포함한 `Secret`을 생성하고 이를 `SealedSecret` 형태로 암호화합니다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+# 일반 Secret을 생성합니다 (파일이 아닌 커맨드라인을 통해)
+kubectl create secret generic db-secret --from-literal=password='YOUR_DB_PASSWORD' --dry-run=client -o yaml > secret.yaml
+
+# Secret을 SealedSecret으로 암호화합니다 (Bitnami SealedSecrets CLI 사용)
+kubeseal --format yaml  sealed-secret.yaml
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+이제 `sealed-secret.yaml` 파일에는 암호화된 `SealedSecret` 리소스가 포함되어 있습니다.
+
+​
+
+**### 3. 암호화된 비밀을 클러스터에 적용**
+
+​
+
+이제 암호화된 `SealedSecret`을 클러스터에 적용할 수 있습니다.
+
+​
+
+
+
+
+
+
+
+
+
+```
+kubectl apply -f sealed-secret.yaml
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+클러스터에 설치된 SealedSecrets 컨트롤러는 `SealedSecret` 리소스를 `Secret`으로 변환하고 저장합니다.
+
+​
+
+**### 4. Deployment에서 SealedSecret 사용**
+
+​
+
+`Deployment`에서 이제 생성된 `Secret`을 환경 변수나 볼륨으로 주입하여 사용할 수 있습니다. 예를 들어 환경변수를 통해 패스워드를 주입하는 경우:
+
+​
+
+
+
+
+
+
+
+
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: myapp-deployment
+spec:
+template:
+spec:
+containers:
+- name: myapp
+image: myapp:latest
+env:
+- name: DB_PASSWORD
+valueFrom:
+secretKeyRef:
+name: db-secret # SealedSecrets 컨트롤러에 의해 생성된 Secret의 이름
+key: password
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+`SealedSecrets` 컨트롤러가 생성한 `Secret`는 기존의 `Secret`과 동일하게 사용됩니다. 따라서 위의 `Deployment` 정의는 `db-secret`라는 `Secret`에서 `password` 키를 찾아 `DB_PASSWORD` 환경 변수에 그 값을 주입합니다.
+
+​
+
+이 방법을 사용하면 Secret 데이터를 클러스터 외부에서 안전하게 관리하고, SealedSecrets 컨트롤러가 클러스터 내에서 자동으로 해독하여 사용할 수 있도록 할 수 있습니다.
+
+​
+
+​
+
+Kubernetes에서 위에서 등록한 SealedSecret이 정상적으로 등록되었는지 확인하는 방법은 다음과 같다.
+
+​
+
+Kubernetes에서 SealedSecret 리소스가 제대로 생성되었는지 확인하려면 `kubectl get` 명령어를 사용하여 클러스터 내의 SealedSecret 리소스 목록을 조회할 수 있습니다. SealedSecrets는 Bitnami에 의해 만들어진 컨트롤러와 CRD(Custom Resource Definition)이며, SealedSecret 리소스를 기반으로 일반 Kubernetes `Secret`을 생성합니다.
+
+​
+
+SealedSecrets 리소스의 목록을 확인하는 방법은 다음과 같습니다:
+
+​
+
+
+
+
+
+
+
+
+
+```
+kubectl get sealedsecrets
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+또는 특정 네임스페이스에 대해서만 조회하고 싶다면:
+
+​
+
+
+
+
+
+
+
+
+
+```
+kubectl get sealedsecrets -n
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+여기서 `<namespace>`는 조회하고자 하는 SealedSecret 리소스가 위치한 네임스페이스입니다.
+
+​
+
+SealedSecret 객체의 상세 정보를 보려면 `kubectl describe` 명령어를 사용할 수 있습니다:
+
+​
+
+
+
+
+
+
+
+
+
+```
+kubectl describe sealedsecret
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+​
+
+또는 네임스페이스를 지정하여:
+
+​
+
+
+
+
+
+
+
+
+
+```
+kubectl describe sealedsecret  -n
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+명령어를 실행하면 SealedSecret 객체의 상세 정보를 확인할 수 있으며, 이는 리소스의 상태, 메타데이터, SealedSecrets 컨트롤러에 의해 생성된 일반 `Secret`과 연관된 정보 등을 포함합니다.
+
+​
+
+SealedSecrets 컨트롤러가 정상적으로 작동하고 있다면, SealedSecret 리소스를 기반으로 일반 `Secret`이 생성됩니다. 이에 대한 확인은 다음과 같이 할 수 있습니다:
+
+​
+
+
+
+
+
+
+
+
+
+```
+kubectl get secret
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+여기서 `<generated-secret-name>`은 SealedSecret에서 생성될 Secret의 이름입니다. 이 이름은 일반적으로 SealedSecret 리소스의 이름과 동일합니다.
+
+​
+
+​
+
+**생성한 SealedSecret을 manifest로 전달하는 방법**
+
+**​**
+
+
+
+
+
+
+
+
+
+```
+# Install Sealed Secrets Controller using Helm
+helm repo add sealed-secrets <https://bitnami-labs.github.io/sealed-secrets>
+helm install sealed-secrets-controller sealed-secrets/sealed-secrets --namespace kube-system
+
+# Create a Secret with your database password
+kubectl create secret generic db-secret --from-literal=password='YOUR_DB_PASSWORD' --dry-run=client -o yaml > secret.yaml
+
+# Encrypt the Secret using kubeseal
+kubeseal --format yaml  sealed-secret.yaml
+
+# Apply the SealedSecret to your Kubernetes cluster
+kubectl apply -f sealed-secret.yaml
+
+# In your deployment YAML, reference the Secret
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+spec:
+  template:
+    spec:
+      containers:
+      - name: myapp
+        image: myapp:latest
+        env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret  # This is the name of the Secret generated by Sealed Secrets controller
+              key: password
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DB_PASSWORD에 Secret으로 지정한 특정 값을 맵핑하면 된다.
+
+​

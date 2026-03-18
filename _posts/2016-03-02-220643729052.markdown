@@ -1,0 +1,41 @@
+---
+title: "JPA 무한 루프 방지"
+date: 2016-03-02 19:28:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220643729052"
+---
+
+<http://stackoverflow.com/questions/3325387/infinite-recursion-with-jackson-json-and-hibernate-jpa-issue>
+
+<http://stackoverflow.com/questions/3325387/infinite-recursion-with-jackson-json-and-hibernate-jpa-issue>
+
+[Infinite Recursion with Jackson JSON and Hibernate JPA issueWhen trying to convert a JPA object that has a bi-directional association into JSON, I keep getting
+
+org.codehaus.jackson.map....stackoverflow.com](http://stackoverflow.com/questions/3325387/infinite-recursion-with-jackson-json-and-hibernate-jpa-issue)
+
+Business Object 1:**
+
+```
+@Entity
+@Table(name = "ta_trainee", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
+public class Trainee extends BusinessObject {
+
+    @OneToMany(mappedBy = "trainee", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Column(nullable = true)
+    @JsonManagedReference
+    private Set bodyStats;
+```
+
+**Business Object 2:**
+
+```
+@Entity
+@Table(name = "ta_bodystat", uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
+public class BodyStat extends BusinessObject {
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="trainee_fk")
+    @JsonBackReference
+```
+
+    private Trainee trainee;

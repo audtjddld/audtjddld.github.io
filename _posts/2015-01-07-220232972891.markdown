@@ -1,0 +1,23 @@
+---
+title: "JSP ServletContextListner 관련"
+date: 2015-01-07 20:26:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/220232972891"
+---
+
+다양한 시점에서 발생되는 이벤트와 이벤트를 처리하기 위한 인터페이스 정의시 사용됨.
+
+javax.servlet.ServletContextListener 인터페이스를 구현한 클래스를 작성한다.
+
+web.xml에 작성한 클래스를 등록.
+
+기본적으로
+
+public void contextInitailzed(ServletContextEvent sce) : 웹 애플리케이션 초기화 될때 호출
+
+public void contextDestroyed(ServletcontextEvent sce) : 웹 애플리케이션이 종료 될때 호출
+
+위 내용은 세션이 종료되는 시점을 제어하거나 기타 특정 시점에 어떤걸 실행하겠다 할때 하는 부분 인듯 하다.
+
+동시접속 불가 기능 개발시 알게된 내용이라 찾아봄.

@@ -1,0 +1,38 @@
+---
+title: "CDC란"
+date: 2020-01-17 11:05:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221775081489"
+---
+
+CDC란
+
+**1.CDC (Chage Data Capture)**
+
+
+
+    **1) 주목적** : 실시간(real time) 또는 준실시간(near real time)으로 원천 시스템(기간계,업무계) 데이타를 읽어 들여 정보계 시스템 또는 후선업무 시스템 등에 정보를 넘겨 어떤 처리를 하고자 할 때 사용하는 방식입니다.
+
+실시간 또는 준실시간에 대한 요건은 해당 사이트마다 서로 다르기 때문에 다 열거할 수는 없겠지만 한가지 예를 들면 , 조기경보시스템을 운영하는 사이트에서 고객이 5천만 이상을 인출할 시 조기경보 시스템에서 실시간으로 경보(Alert)을 발생시키게끔 모니터링를 해 볼수 있겠죠.
+
+
+
+    **2) 사용 기술** : 모든 거래 발생 이벤트를 추적해야 하므로, DBMS의 종류에 관계없이 변경 이력을 관리하는 DB Archive Log를 주로 사용합니다. CDC 솔루션의 데몬(Demon)이 떠서 일정 시간별로 archive log를 읽어 들여 타겟 시스템에 쌓는 방식으로 대부분 작동하게 됩니다.
+
+대대수의 경우 주로 실시간 기간계 복제용으로 사용하고 있으며 후선업무를 위해 특정 데이타 도착을 알리는 이벤트를 포함하는 개발된 경우가 많습니다.
+
+일부 사이트에서는 실시간으로 데이타를 추출할 원천 테이블에 트리거(trigger)를 걸어 처리하는 방식도 있기는 하지만, 트리거를 사용했을 때의 위험성(dead lock, 또는 오작동, 에러시 추적 어려움)이 너무 커서 권장할 만한 방법은 아닌 것 같습니다.
+
+
+
+    **3) 적재 수준** : 위에서 설명한 대로 원천 테이블이 아닌 시스템 테이블인 archive log를 읽어 처리하므로 적재주기(시간,일,월)에 관계없이 모든 원천 데이타의 변경사항(inset,update,delete)이 적재 대상이 되게 됩니다.
+
+출처 : <http://blog.daum.net/_blog/BlogTypeView.do?blogid=0dzBb&articleno=10&categoryId=0&regdt=20130324210313>
+
+CDC 관련 Mysql 솔루션
+
+<https://github.com/wushujames/mysql-cdc-projects/wiki>
+
+활용 내역
+
+<https://mk.kakaocdn.net/dn/if-kakao/conf2019/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C_2019/T03-S01.pdf>

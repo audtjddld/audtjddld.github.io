@@ -1,0 +1,7 @@
+---
+title: "DynamoDB 소개 및 예제."
+date: 2017-05-18 16:37:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/221008740186"
+---
+

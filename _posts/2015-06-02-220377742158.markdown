@@ -1,0 +1,12 @@
+---
+title: "EDA (Event Driven Archetecher) 이벤트 기반 구조"
+date: 2015-06-02 16:46:00 +0900
+categories: [경험 및 정보 공유]
+original_url: "https://blog.naver.com/kkforgg/220377742158"
+---
+
+<http://calab.kaist.ac.kr/~swseo/maso/p34371.pdf>
+
+[calab.kaist.ac.kr](http://calab.kaist.ac.kr/%7Eswseo/maso/p34371.pdf)
+
+﻿

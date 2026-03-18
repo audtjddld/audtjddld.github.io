@@ -1,0 +1,255 @@
+---
+title: "대충 만든 java xml 파싱"
+date: 2013-07-16 10:10:00 +0900
+categories: [경험 및 정보 공유]
+tags: [IT·컴퓨터]
+original_url: "https://blog.naver.com/kkforgg/60196030849"
+---
+
+실패한 코드임..
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+21
+
+22
+
+23
+
+24
+
+25
+
+26
+
+27
+
+28
+
+29
+
+30
+
+31
+
+32
+
+33
+
+34
+
+35
+
+36
+
+37
+
+38
+
+39
+
+40
+
+41
+
+42
+
+43
+
+44
+
+45
+
+46
+
+47
+
+48
+
+49
+
+50
+
+51
+
+52
+
+53
+
+54
+
+55
+
+56
+
+57
+
+58
+
+59
+
+60
+
+61
+
+    public static void main(String [] agrs){
+
+        try{
+
+            File file = new File("E:\\eclipse-SDK-4.2.2-win32\\workspace\\testJava\\src\\votest\\admin.xml");
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+            DocumentBuilder builder = factory.newDocumentBuilder();
+
+            Document doc = builder.parse(file);
+
+            StringBuffer sb = new StringBuffer();
+
+
+
+            doc.getDocumentElement().normalize();
+
+
+
+            System.out.println("Root element = " + doc.getDocumentElement().getNodeName());
+
+            Node headNodes = (Node) doc.getFirstChild();
+
+
+
+            NodeList childList = headNodes.getChildNodes();
+
+            int idx = childList.getLength();
+
+            String temp = "";
+
+            for(int i=0; i<idx; i++){
+
+                Node node = childList.item(i);
+
+
+
+                if(node.getNodeName().equals("navi")){
+
+                    NodeList list2 = node.getChildNodes();
+
+                    for(int j=0; j<list2.getLength(); j++){
+
+                        if(list2.item(j).getNodeType()==1){
+
+                            if(list2.item(j).getNodeName().equals("navi")){
+
+                                temp += " ";
+
+                                System.out.println(temp+list2.item(j).getNodeName());
+
+                                Child(list2.item(j).getChildNodes(), temp);
+
+                            }else{
+
+                                System.out.println(temp+list2.item(j).getNodeName() + " : " + list2.item(j).getTextContent());
+
+                            }
+
+
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+
+
+
+
+        }catch(Exception e){
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+
+
+    public static void Child(NodeList list, String temp){
+
+        int idx = list.getLength();
+
+
+
+        NodeList result=null;
+
+        for(int i=0; i<idx; i++){
+
+
+
+            if(list.item(i).getNodeType()==1){
+
+                if(list.item(i).getNodeName().equals("navi")){
+
+                    result= list.item(i).getChildNodes();
+
+                    temp += " ";
+
+                    Child(result, temp);
+
+                }else{
+
+                    result = list.item(i).getChildNodes();
+
+                    System.out.println(temp + list.item(i).getNodeName() + " : " + list.item(i).getTextContent());
+
+                }
+
+            }
+
+        }
+
+
+
+    }
