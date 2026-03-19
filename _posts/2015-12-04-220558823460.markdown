@@ -20,7 +20,7 @@ original_url: "https://blog.naver.com/kkforgg/220558823460"
           <http://jenkins-ci.org/>
 
 
-![](http://cfile26.uf.tistory.com/image/143F844751232BAB31AE3B)
+![](/assets/images/posts/220558823460/46355cdfd095.jpg)
 
           오른쪽에 Windows 를 클릭하면 화면이 바뀌면서 자동으로 파일 다운로드가 시작된다.
 
@@ -30,35 +30,35 @@ original_url: "https://blog.naver.com/kkforgg/220558823460"
 
           뭐 그냥 "Next", "Install", "Finish" 클릭해주면 될 것 같다.
 
-          ![](http://cfile24.uf.tistory.com/image/024F314751232BAB15EBB1)
+          ![](/assets/images/posts/220558823460/2a189a863b26.jpg)
 
-          ![](http://cfile6.uf.tistory.com/image/1558554751232BAB0CDE1F)
+          ![](/assets/images/posts/220558823460/74b77a38afd8.jpg)
 
-          ![](http://cfile2.uf.tistory.com/image/233DDA4751232BAC36CC5D)
+          ![](/assets/images/posts/220558823460/a33b2ba3f69b.jpg)
 
-          ![](http://cfile23.uf.tistory.com/image/1758654751232BAC0C732B)
+          ![](/assets/images/posts/220558823460/ef3589adb399.jpg)
 
-          ![](http://cfile21.uf.tistory.com/image/153F574751232BAC31BF65)
+          ![](/assets/images/posts/220558823460/ac61c62cb5b1.jpg)
 
      4. 확인하기
 
           [http://localhost:8080](http://localhost:8080/)
 
-          ![](http://cfile21.uf.tistory.com/image/1142414751232BAD234204)
+          ![](/assets/images/posts/220558823460/3b01a9cfdbf0.jpg)
 
      !. 참고로 설치를 다하고 자동으로 브라우져가 열리는데 404 에러가 떳다.
 
           아마 기존에 8080포트를 사용하고 있어서 인것 같은데
 
-     ![](http://cfile5.uf.tistory.com/image/2139CB5051232BAE1E4899)
+     ![](/assets/images/posts/220558823460/110059006ebc.jpg)
 
      Jenkins 가 설치된 경로(C:\Program Files (x86)\Jenkins)로 가서
 
-          ![](http://cfile2.uf.tistory.com/image/254B285051232BAE0310D9)
+          ![](/assets/images/posts/220558823460/6866bcabc6d3.jpg)
 
           jenkins.xml 을 편집기로 연 후
 
-          ![](http://cfile29.uf.tistory.com/image/2031D65051232BAF2AA611)
+          ![](/assets/images/posts/220558823460/2de026b943b9.jpg)
 
           --httpPort=8080 부분의 포트를 적당한 포트(8086)로 바꾼다.
 

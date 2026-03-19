@@ -85,7 +85,7 @@ rollingfileAppender 설정시
 ```
 
 
-![](https://ssl.pstatic.net/static.se2/static/img/emoticon/1_32.gif)
+![](/assets/images/posts/220582015539/0529e585f368.gif)
 
 내가 적용했던 pattern
 

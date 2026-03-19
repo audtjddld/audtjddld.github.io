@@ -5,3 +5,9 @@ categories: [경험 및 정보 공유]
 original_url: "https://blog.naver.com/kkforgg/221039028676"
 ---
 
+https://www.lightbend.com/case-studies/how-dwango-scaled-live-streaming-with-play-and-akka
+
+기타 라이브서비스 사례
+번역해서 돌려봄.
+
+일본이 이렇게?? 물론 우리 나라가 늦는 거겠지만

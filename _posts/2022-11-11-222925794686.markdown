@@ -55,7 +55,7 @@ Spring Cloud Gateway는 high-level overview 로는 이렇게 동작합니다.
 
 
 
-                                        ![](https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/images/spring_cloud_gateway_diagram.png)
+                                        ![](/assets/images/posts/222925794686/dd000a4c00a2.png)
 
 
 

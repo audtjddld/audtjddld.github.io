@@ -121,7 +121,7 @@ $(document).ready(function() {
 
 ------------------------------------- 결과 ----------------------------------------------
 
-![](https://blogfiles.pstatic.net/20121019_42/kkforgg_1350637263745RX3TL_PNG/1.png?type=w3)
+![](/assets/images/posts/60173767699/62e1f07e0a2a.png)
 
 
 

@@ -16,7 +16,7 @@ original_url: "https://blog.naver.com/kkforgg/60194677281"
 
 
 
-![](http://cfile2.uf.tistory.com/image/1842F6344EB9FDCC24B9CC)
+*[이미지가 만료되었습니다]*
 
 
 Spring framework를 사용하면 복잡한 기능을 간단하게 모듈로 구현해서 Injection하여 사용할 수 있다. 프로젝트를 진행하면서 특정 서비스가 종료되면 자동으로  메일을 발송하는 서비스 객체가 필요해서 JavaMailSender로 메일 발송시키는 간단한 메일서비스 객체를 만들었다. 이번 포스팅은 스프링 프레임워크에서 메일을 발송할 수 있는 예제를 준비했다.**

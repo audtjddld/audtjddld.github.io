@@ -70,11 +70,11 @@ $ sudo apt-get install openjdk-7-jdk
 
 <http://www.oracle.com/technetwork/java/javase/downloads/index.html>
 
-![](http://cfile28.uf.tistory.com/image/0320383E51E490A028B03E)
+*[이미지가 만료되었습니다]*
 
 
 
-![](http://cfile30.uf.tistory.com/image/033BD93E51E490A01F3F80)
+*[이미지가 만료되었습니다]*
 
 라이센스 동의 체크하고 다운로드 합니다.
 
@@ -128,7 +128,7 @@ $ type java
 
 
 
-![](http://cfile29.uf.tistory.com/image/0327984051E494351EE74C)
+*[이미지가 만료되었습니다]*
 
 저는 없군요.
 
@@ -247,7 +247,7 @@ $ java -version
 
 
 
-![](http://cfile25.uf.tistory.com/image/023F8B3E51E49BE70F5FDC)
+*[이미지가 만료되었습니다]*
 
 자바 설치는 완료 되었고 이제 이클립스를 설치 합니다.
 
@@ -265,7 +265,7 @@ $ java -version
 
 
 
-![](http://cfile25.uf.tistory.com/image/031B194551E49D710B9D8A)
+*[이미지가 만료되었습니다]*
 
 이번에 juno에서 kepler로 바뀌었네요.
 
@@ -275,7 +275,7 @@ $ java -version
 
 
 
-![](http://cfile8.uf.tistory.com/image/21386D4551E49E1A37DCC2)
+*[이미지가 만료되었습니다]*
 
 
 
@@ -356,7 +356,7 @@ $*
 
 
 
-![](http://cfile27.uf.tistory.com/image/221B644051E4A538273DC6)
+*[이미지가 만료되었습니다]*
 
 저장 후 종료
 
@@ -370,7 +370,7 @@ $ sudo chmod 755 /usr/bin/eclipse
 
 모든 사용자에게 실행 읽기 권한을 줍니다.
 
-![](http://cfile21.uf.tistory.com/image/0335023F51E4A60735B081)
+*[이미지가 만료되었습니다]*
 
 
 
@@ -421,7 +421,7 @@ StartupNotify=true
 
 
 
-![](http://cfile10.uf.tistory.com/image/226D2D4651E4A69113E093)
+*[이미지가 만료되었습니다]*
 
 
 
@@ -431,7 +431,7 @@ StartupNotify=true
 
 
 
-![](http://cfile21.uf.tistory.com/image/02160D4151E4A7D7270DCC)
+*[이미지가 만료되었습니다]*
 
 
 
@@ -439,7 +439,7 @@ StartupNotify=true
 
 
 
-![](http://cfile25.uf.tistory.com/image/2363E94151E4A8BF071A93)
+*[이미지가 만료되었습니다]*
 
 
 
@@ -447,7 +447,7 @@ StartupNotify=true
 
 
 
-![](http://cfile4.uf.tistory.com/image/2514F64151E4A8BF32F5B2)
+*[이미지가 만료되었습니다]*
 
 
 

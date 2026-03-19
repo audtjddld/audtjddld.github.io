@@ -103,7 +103,7 @@ public class Demo {
 }
 ```
 
-![](https://lh5.googleusercontent.com/RUDA7okxuZfUMbyOby0zJtmNznzpQTtC60BI3TMMJu-SSryK9jZXef4taJWFq6q2A6D7D8KDUty9fIevebx7wNdJYAAytQGckrSP059FQepepIymN9fBSypKNHbmaGTLWiwo16QEf4I)
+![](/assets/images/posts/220589805300/5aee08bd59ed.jpg)
 
 <https://github.com/audtjddld/pattern/tree/master/pattern/src/observer>
 

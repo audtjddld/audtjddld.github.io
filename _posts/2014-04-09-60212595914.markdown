@@ -52,9 +52,9 @@ extends 받아서 사용하면 어떨까 생각이 문득 들었습니다.
 
 
 
-![](http://cafeptthumb1.phinf.naver.net/20140409_79/kkforgg_1397007335245aa5ye_PNG/%B1%D7%B8%B21.png?type=w740)
+![](/assets/images/posts/60212595914/b5d17d4fb064.png)
 
-![](http://cafeptthumb2.phinf.naver.net/20140409_239/kkforgg_1397007335577Jg1Nn_PNG/%B1%D7%B8%B22.png?type=w740)
+![](/assets/images/posts/60212595914/a88b285e07aa.png)
 
 ex) 소스 코드 예
 

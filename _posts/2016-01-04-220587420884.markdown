@@ -25,9 +25,9 @@ original_url: "https://blog.naver.com/kkforgg/220587420884"
 
 일단 충돌이 발생하면 pull이든 commit이든 다음과 같은 오류가 뜨면서 아무 작업도 수행할 수가 없다.
 
-![](https://postfiles.pstatic.net/20150216_269/lge920904_1424025813101M6urt_PNG/pull%C3%E6%B5%B9%BF%A1%B7%AF.PNG?type=w3)
+*[이미지가 만료되었습니다]*
 
-pull했을 때 작업 실패창![](https://postfiles.pstatic.net/20150216_1/lge920904_1424025813182XCbMI_PNG/%C4%BF%B9%D4%A4%B7%B5%B9%BF%A1%B7%AF.PNG?type=w3)
+pull했을 때 작업 실패창*[이미지가 만료되었습니다]*
 
 commit했을 때 작업 실패창
 
@@ -41,7 +41,7 @@ Git은 친절하게도 사용자에게 충돌지점을 알려준다.
 
 빨간색 부분의 소스를 병합해주면 충돌을 해결할 수 있다.
 
-**![](https://postfiles.pstatic.net/20150216_228/lge920904_1424025813397YHC8y_PNG/%C3%E6%B5%B9%C7%D8%B0%B3%A4%C5%A4%A9.PNG?type=w3)
+***[이미지가 만료되었습니다]*
 
 두 창 사이에 빨간색 실선을 보면 가운데 하얀 점**이 있다. 그 점을 클릭하면 자동으로 병합시켜주게 된다.
 

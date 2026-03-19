@@ -95,7 +95,7 @@ topic들은 아마도 많은 파티션을 가지고 있다, 그래서 이것은 
 
 
 
-                                        ![](https://www.tutorialspoint.com/apache_kafka/images/cluster_architecture.jpg)
+                                        ![](/assets/images/posts/221095199328/a84950f369eb.jpg)
 
 
 

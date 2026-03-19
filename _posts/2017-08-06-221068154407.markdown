@@ -5,3 +5,460 @@ categories: [경험 및 정보 공유]
 original_url: "https://blog.naver.com/kkforgg/221068154407"
 ---
 
+중간 세미나. **세미나 자료
+https://www.slideshare.net/ParkChangwook/elixir-78601276
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                [동영상
+
+
+                            Elixir
+                                A brief introduction to the problems that can arise when building a distributed system and the libraries that can be solved.
+                            www.slideshare.net](https://www.slideshare.net/ParkChangwook/elixir-78601276)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+elixir 로 Actor model을 전파하시던 메이크어스의 박창욱 님이 시간을 내주셔서
+세미나를 해주는 자리가 있었다.
+
+Elixir https://ko.wikipedia.org/wiki/Elixir**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                [Elixir - 위키백과, 우리 모두의 백과사전
+                                엘릭서 프로그래밍 언어는 José Valim 이 설계했으며, Plataformatec 의 연구과제이다. 그는 얼랭 도구와 생태계를 계승하면서 얼랭 VM에서 작동하는 높은 확장성과 생산성을 가진 언어를 만들고자 했다. [4] 특징 [ 편집 ] 엘릭서 컴파일러 는 소스코드를 얼랭 가상 머신용 바이트 코드 로 컴파일 한다. (BEAM) [5] 모든 것은 expression이다.side effect를 동반하는 statement와는 다르다. [5] 얼랭 함수들은 런타임 영향 없이 엘릭서에서 호출될 수 있다. 메타 프로그래밍 을
+                            ko.wikipedia.org](https://ko.wikipedia.org/wiki/Elixir)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+****[얼랭](https://ko.wikipedia.org/wiki/%EC%96%BC%EB%9E%AD)(Erlang) [가상 머신](https://ko.wikipedia.org/wiki/%EA%B0%80%EC%83%81_%EB%A8%B8%EC%8B%A0)(BEAM) 위에서 동작하는 [함수형](https://ko.wikipedia.org/wiki/%ED%95%A8%EC%88%98%ED%98%95_%EC%96%B8%EC%96%B4), [동시성](https://ko.wikipedia.org/wiki/%EB%B3%91%ED%96%89%EC%84%B1) 프로그래밍 언어이다. 엘릭서는 얼랭이 보유하고 있는 분산 처리, 장애 내구성, 실시간, 무정지 애플리케이션 등의 특징을 공유한다. 그에 더해서 프로토콜[[1]](https://ko.wikipedia.org/wiki/Elixir#cite_note-1)을 이용해 [다형성](https://ko.wikipedia.org/wiki/%EB%8B%A4%ED%98%95%EC%84%B1)을 지원하고, Quote[[2]](https://ko.wikipedia.org/wiki/Elixir#cite_note-elixir_quote_and_unqote-2)과 Unquote[[2]](https://ko.wikipedia.org/wiki/Elixir#cite_note-elixir_quote_and_unqote-2) 그리고 [Macro](https://ko.wikipedia.org/wiki/%EB%A7%A4%ED%81%AC%EB%A1%9C)[[3]](https://ko.wikipedia.org/wiki/Elixir#cite_note-3)를 통한 [DSL](https://ko.wikipedia.org/wiki/%EB%8F%84%EB%A9%94%EC%9D%B8_%ED%8A%B9%ED%99%94_%EC%96%B8%EC%96%B4) 구현 등의 [메타 프로그래밍](https://ko.wikipedia.org/wiki/%EB%A9%94%ED%83%80_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D)이 가능하다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**elixir 는 2012년도에 만들어짐.
+1.5.x버전까지 만들어짐.
+
+루비 개발자들이 많이 넘어와서 사용한다고 함.
+Functional programming이다.
+
+순수 functional language는 아니다. 위에서 이야기 했듯이 동시성 프로그래밍 언어이다.
+
+자료형은 불변형 타입으로 만들어 짐.
+(스칼라에서 만든 Array, Set, List 등도 불변형으로 되어있다. 비슷한 개념인 듯.)
+
+function들을 연결해주는 Pipe Operator 라는 것이 존재한다.
+엘릭서에는 피닉스라는 웹 프레임워크가 있고, 이러한 형태로 만들어져 있다.
+
+Actor
+Code, Data, Process, MailBox 등으로 구성되어 있고, 서로 메시지로 통신한다.
+
+Erlang  https://ko.wikipedia.org/wiki/%EC%96%BC%EB%9E%AD**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                [얼랭 - 위키백과, 우리 모두의 백과사전
+                                얼랭 위키백과, 우리 모두의 백과사전. 이동: 둘러보기 , 검색 이 문서는 위키백과의 편집 지침 에 맞춰 다듬어야 합니다. 더 좋은 문서가 되도록 문서 수정을 도와주세요 . 내용에 대한 의견이 있으시다면 토론 문서 에서 나누어 주세요. (2015년 10월 21일) 얼랭(Erlang) 패러다임 다중 패러다임 함수형,병행성 발표년도 1986년 설계자 조 암스트롱 (Joe Armstrong) 로버트 버딩 (Robert Virding) 마이크 윌리암스 (Mike Williams) 최근 버전 18.2.1 최근 버전 출시일 2015년 12월
+                            ko.wikipedia.org](https://ko.wikipedia.org/wiki/%EC%96%BC%EB%9E%AD)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+******얼랭**(Erlang, [영어](https://ko.wikipedia.org/wiki/%EC%98%81%EC%96%B4): [IPA](https://ko.wikipedia.org/wiki/%EC%9C%84%ED%82%A4%EB%B0%B1%EA%B3%BC:IPA): [ˈɜrlæŋ])은 범용 [병렬](https://ko.wikipedia.org/wiki/%EB%B3%91%EB%A0%AC_%EC%BB%B4%ED%93%A8%ED%8C%85) [프로그래밍 언어](https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D_%EC%96%B8%EC%96%B4)이다. [함수형 언어](https://ko.wikipedia.org/wiki/%ED%95%A8%EC%88%98%ED%98%95_%EC%96%B8%EC%96%B4)가 효율적으로 산업 현장등에서 사용되는 유명한 사례이다.**원래는 [에릭슨](https://ko.wikipedia.org/wiki/%EC%97%90%EB%A6%AD%EC%8A%A8)(Ericsson)사에서 스위칭 소프트웨어에서 사용하기 위해 개발했지만, [1998년](https://ko.wikipedia.org/wiki/1998%EB%85%84)에 [오픈 소스](https://ko.wikipedia.org/wiki/%EC%98%A4%ED%94%88_%EC%86%8C%EC%8A%A4)로 공개되었다.
+흔히 Erlang이라는 이름이 Er**icsson **Lang**uage에서 따온 것이라고 생각하지만, 실제로는 [통신이론](https://ko.wikipedia.org/wiki/%ED%86%B5%EC%8B%A0%EC%9D%B4%EB%A1%A0)을 연구한 [덴마크](https://ko.wikipedia.org/wiki/%EB%8D%B4%EB%A7%88%ED%81%AC)의 [수학자](https://ko.wikipedia.org/wiki/%EC%88%98%ED%95%99%EC%9E%90) Agner Krarup Erlang의 이름에서 따온 것이다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**나무 위키에 정리가 더 잘되어있다.
+https://namu.wiki/w/Erlang
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                [Erlang
+                                - module (helloworld).
+- export ([start / 0 , start / 1 ]). start () -> io : fwrite ( "Hello, world! \n " ). start ([]) -> start(); start ( Who ) -> io : fwrite ( "Hello, ~s ! \n " , [ Who ]). 1 . 개요 2 . 역사 3 . 특징 3.1 . 병행성 3.2 . 패턴 매칭 3.3 . 강력한 내장 기능 3.4 . 장애 허용 4 . 성능
+                            namu.wiki](https://namu.wiki/w/Erlang)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Beam, erlang/otp 위에서 돌기 때문에 erlang에 대한 것 보다 beam, erlang/otp를 이해하는 것이 좋다.
+
+1986년도에 개발됨.
+
+switch문을 가장 먼저 개발해낸 언어임.
+분산 처리등에 적합한 형태로 구현이 가능했었지만 자바만큼 유행해지지 않음.
+
+Beam(erlang vm)****내부에 scheduler가 porcess 갯수만큼 생기고, scheduler마다 queue를 가지고 있다.
+
+큐는 우선순위 큐로 구현되어 있다.
+
+erlang은 프로세스마다 garbage collector가 동작한다.
+(이 부분은 좀 알아봐야할 듯 cpu core 갯수만큼 증가인 거 같은데 아닐지 모름)
+
+O**pen **T**elecom **P**latform https://www.ibm.com/developerworks/community/blogs/9e635b49-09e9-4c23-8999-a4d461aeace2/entry/208?lang=en
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                [얼랭(Erlang) 웹 프로그래밍, Part 3 RESTful 웹 서비스와 ErlangOTP (한국 developerWorks  로컬 콘텐츠)
+                                김석준 sjoonk@gmail.com 웹2.0과 루비온레일스 기반 소프트웨어 개발, 컨설팅을 하는 유스풀패러다임의 대표다. 한때 공직에 근무하다 어릴 적부터 해오던 프로그래밍의 맛을 잊을 수 없어 업종을 전환한 경력을 가지고 있으며, 항상 끊임없이 새로워지려고 노력 중이다. 번역한 책으로 『프로그래밍 얼랭』, 『레일스와 함께하는 애자일 웹 개발』, 『레일스 레시피』가 있다. 난이도 : 중급 2008년 7월 15일 연재순서 1회(2008년5월): Yaws와 얼랭 2회(2008년6월): ErlyWeb을 이용한 웹 개발 3회(2008년7
+                            www.ibm.com](https://www.ibm.com/developerworks/community/blogs/9e635b49-09e9-4c23-8999-a4d461aeace2/entry/208?lang=en)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+**
+erlang의 라이브러리다.
+
+OTP HEBAVIOR
+> gen_server
+> supervisor
+> gen_fsm
+...
+
+gen_server****는 client와 server와 요청을 주고 받는 기능을 구현해 놓은 것.
+
+supervisor는 worker를 관리하는 역할을 하고 있음.
+
+erlang에서는 supervisor가 큰 트리를 하나 만드는 것을 application 단위로 나눔.
+
+erlang cluster
+>  Node와 Node를 연결해서 한개이 서비스
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+처럼 동작하게 해준다.
+
+100개 이하로 묶으라고 한다고 함.
+네트워크 부하가 커져서 문제라고 함.
+
+Distributed System.****1. load balancing
+2. high availablilry
+3. reliabilty
+
+fault tolerance 라는 부분에서
+actor monitor링을 걸 수있다.
+supervisor -> worker 사이에는 이미 이게 걸려져 있다.
+
+remote actor에게 보낼 때도 monitor를 걸어서 주고 받을 수 있게 해준다.
+
+akka는 가능한데, erlang은 직접 구현해야 함.
+
+supervisor -> worker 사이에는 전략이 있다고 함.
+
+actor가 죽을 때 mailBox를 복사해서 관리하는 부분을 관리하도록 한다.
+(stash 라는 것이 있었다. 기억나니?)
+
+Timout****동기 처리.
+외부 api 호출 시.
+erlang otp 에서는 actor의 모니터링을 할 수 있도록 보여준다.
+
+hotswapping****위에서 이야기한, Actor의 형태는 Code, Data, Process, MailBox 로 나뉘어져 있는데
+굳이 재시작하지 않고 구현된 Code를 변경이 가능하다.
+이것을 erlang에서는 hotwapping이라고 한다고 함.
+(좀 신기하네 이건)
+
+간단한 bug fix등에는 가장 적합하다.
+erlang에서는 tree가 변경될 때에도 이 메시지 처리 방식을 변경할 수 있도록 가능하지만, 매우 어렵다고 함. (나같아도 그냥 새로 내렷다 올릴 듯...)
+
+Hot upgrading****Actor의 데이터를 바꿀 수 있다.
+
+CAP THEOREM****지금은 C냐 A냐 라고 나뉜다고 함.
+많은 이야기를 한다고 함.
+
+DB 레플레카 replication
+
+분산처리 시스템에서 발생되는 문제 3개
+
+CONSENSUS PROBLEM****데드락과 같은 개념 같음.
+쓰레드 레이싱와 같은 개념인데, Cluster를 걸었을 때 이러한 문제를 어떻게 해결 할지 보장해주는 라이브러리 인듯.
+
+개념은 요청마다 버전(version)을 먹인 뒤 version 으로 판단하여 어느 것이 최신데이터 인지 확인 하고 버릴지 사용할지 확인한다는 것. JPA에서 @Version 이라는 것으로 이러한 문제를 해결한다는 내용이 있었다.
+
+Determine Order of Events****
+Vector Clock****
+이벤트에 버전 이나 순서를 둬서 동기화는 시키는 것을 하는 것.
+
+concurrent problem 이 발생했을 때 어떻게 처리 할지 정의도 가능하다.
+
+RIACK_CORE - DVVS (Dotted version vectors)****는 concurrent problem이 발생되면 client에게 문제가 발생한 n개의 이벤트를 다 보내서 client에서 처리 하도록 한다.
+
+SHARE DATA Consistently**
+
+Data를 샤팅하고 있을 때 문제가 발생되는 부분을 이야기 함.
+
+3개의 Data를 샤딩해서 저장하고 있다가, 부하나 다른 이유로 1개를 더 추가하게 되었을 때 1~3까지 샤딩을 하던 것을 4개로 나누게되면서 Data storage 간의 트래픽 문제가 발생된다.
+Consistent hashing ring 을 둬서 밸런싱을 조절해서 나눠 저장 할 수 있도록 하는 것. 부하가 적은 storage에게 좀더 주고 부하가 많은 것은 적게 주고 그렇게 한다는 것이다.
+https://ko.wikipedia.org/wiki/%EC%9D%BC%EA%B4%80%EB%90%9C_%ED%95%B4%EC%8B%B1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                [일관된 해싱 - 위키백과, 우리 모두의 백과사전
+                                이 문서는 위키백과의 편집 지침 에 맞춰 다듬어야 합니다. 더 좋은 문서가 되도록 문서 수정을 도와주세요 . 내용에 대한 의견이 있으시다면 토론 문서 에서 나누어 주세요. (2016년 10월 3일) 일관된 해싱 (Consistent hashing)은 웹서버의 갯수가 변동하는 가운데 요청을 분산하는 방법을 말한다. 해시테이블의 크기가 변할 때, 평균적으로 K/n의 키만 재매핑되면 된다. 즉 노드나 슬롯의 개수가 바뀔 때, 노드의 추가나 삭제를 할 때, 오직 K/n의 아이템만 다시 섞이면 되는 것이다. (n은 전체 노드의 갯수, K는
+                            ko.wikipedia.org](https://ko.wikipedia.org/wiki/%EC%9D%BC%EA%B4%80%EB%90%9C_%ED%95%B4%EC%8B%B1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CONSISTENT HASHING RING - R
+CONSISTENT HASHING RING - W
+
+데이터를 샤딩할 때도 일정 전략이 필요하다는 것을 잊지 말자.
+
+Erlang에서는 우리가 별도의 시스템이나 환경을 구축하는 것이 erlang 라이브러리를 가지고 구현이 가능하다고 함.
+
+그래서 늘어나는 시스템에 대한 부담을 좀 줄일 수 있고, 일관성도 유지되기 때문에 유지보수성이 높다는 것이다.

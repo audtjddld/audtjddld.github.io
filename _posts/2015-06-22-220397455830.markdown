@@ -27,7 +27,7 @@ node.js에서는 view template를 선택할 수 있는데, 그 엔진들은 jade
 
 를 보면 각각 코드 스타일을 확인 할 수 있다.
 
-![](http://cfile1.uf.tistory.com/image/22074A4A533A778F0117D1)
+![](/assets/images/posts/220397455830/13a5ca44c1de.jpg)
 
 jade는 특이한게 탭(tab)키로 들여쓰기를 하게되면 파싱 에러가 난다 -_-;; 그래서 스페이스바로 정성스럽게 해줘야된다. **
 

@@ -5,3 +5,180 @@ categories: [경험 및 정보 공유]
 original_url: "https://blog.naver.com/kkforgg/221045386631"
 ---
 
+akka를 이용하여 크리쳐 서버를 구현중이다.**여기서 크리쳐 서버란 몬스터 서버 이다.
+
+앞서 설명에서 누락된 부분이 있는데, 현재 스칼라로 actor를 구현하는 것이 아닌 java actor로 구현 중이다.
+
+따라서 스칼라로 작성하는 것과는 무관할 수 있으니 참고하시길 바란다.
+
+우선 이번 설계를 하면서 많이 삭제하고 많이 수정을 했었다.
+
+spring + akka 를 이용하여 작성하였기 때문에 spring에 올려놓은 자원을 이용하여 actor에서 가져다 쓸 수 있었다.
+
+몇가지 정보 저장소의 역할을 위의 내용으로 대체할 수 있었기 때문에 이점이 많이 있었다.
+
+Actor는 모든 것이 비동기, 순서는 정해져 있지않다. 다만 actor간의 message 전달은 순서를 보장해준다. 앞서 이야기 한 순서가 정해져 있지 않다는 것은 원하는 시점에 원하는 결과가 안올 수 있다는 것이다.
+
+이런 생각을 계속 가져가면서 actor의 tree를 꾸며 나갔는데, 결국은 CSP 형태로 작성을 따르게 되었다.
+CSP에 대한 내용은 아래 링크에서 확인하길 바란다,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                [Communicating sequential processes - Wikipedia
+                        In computer science , communicating sequential processes ( CSP ) is a formal language for describing patterns of interaction in concurrent systems . [1] It is a member of the family of mathematical theories of concurrency known as process algebras, or process calculi , based on message passing via c
+                        en.wikipedia.org
+
+                 -->](https://en.wikipedia.org/wiki/Communicating_sequential_processes)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+앞서서 설명을 못했지만, creature의 행동은 다음과 같다.
+1. 이동
+2. 회수
+3. Hit(유저한테 공격)
+4. 채팅
+5. 죽음
+
+위의 행동을 구분짓기 위해서 actor를 이동, 상태**로 분리하여 작성했었다.
+
+이동에 관련된 로직을 따로, 그리고 상태에서 발생될 회수, 타격 계산, 죽음 등을 서로 다른 가지로 구분하여 처리하는 방식으로 하였는데.
+이러다보니 동시성 문제 (공유자원 문제)등이 발생하였다.
+
+비동기적으로 처리되고 서로 이타적인 시스템 형태로 메시지를 전달 받는 형식으로는 우리가 원하는 순서대로 처리는 힘들었다. 따라서 저 부분을 공통 부분으로 합친 뒤 처리 방식을 나뉘어봤을 때 한참 헤멧지만 우선순위를 결정하기 시작했다.
+
+1. 죽음
+2. 타격
+3. 회수
+4. 이동
+5. 채팅
+
+위에서 부터 우선 순위가 높은 순으로 되었다.
+
+이후 수석님이 게임 개발 쪽에 사례를 찾아서 flag로 나뉘는 방법을 제안하여, 저 5가지 상태에 대해서 flag를 두기 시작했다.
+
+client에서 넘어오는 메시지들은 flag 셋팅만 담당하였고, (hit or die)
+
+creature 정보가 생성 후 이동을 busy waiting 형태로 이동, 회수, 타격, 채팅 등을 검사하는 식으로 진행하였다.
+
+이동을 어떻게 처리 할까 하였는데 생성 시간과 이동 시간을 creature 정보에 같이 저장 한 뒤 회수는 정해진 초마다, 그리고 이동은 1초마다 이동되도록 하였다.
+
+receiveBuilder() 를 작성할 때
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+receiveBuilder()
+.match(Clazz.class, function(val, val))
+.match(Clazz.class, !function(val, val))
+.matchAny(e -> {}).build()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+넘어온 메시지의 특정 파라미터를 이용하여 match 구분에 function으로 적용하였는데, 문제는 저 펑션에서 계산에 문제가 발생되면 true 조건과 false 조건을 둘다 맞지 않아서 matchAny로 빠지는 경우가 발생한다.
+
+따라서 같은 경우가 발생된다면, 당황하지 말고 function내 계산이 제대로 수행되는지 알아봐야 한다.
+
+그리고 CSP형태로 작성하다보니. 1개의 메시지(creature) 정보는 1 대 1로 대응되기 때문에 위에서 발생한 동시성문제(공유자원 문제)를 피해갈 수 있었다.
+
+이렇게 하여 어느정도 creature 이동 부분을 작성하는 것은 마무리된 것 같다.

@@ -19,12 +19,12 @@ original_url: "https://blog.naver.com/kkforgg/220200472684"
 
 - 크롬 개발자 도구의 Network 탭을 선택한 후 <http://localhost:8080/login.jsp> 접속
 
-- HTTP 헤더 정보를 보면 Response Headers에 쿠키 정보를 client로 전달한 것을 볼 수 있다. JSESSIONID 값이 톰켓에서 발급하는 쿠키 정보이다.![](http://cfile28.uf.tistory.com/image/2540383451BA9DEA2ADEF0)
+- HTTP 헤더 정보를 보면 Response Headers에 쿠키 정보를 client로 전달한 것을 볼 수 있다. JSESSIONID 값이 톰켓에서 발급하는 쿠키 정보이다.![](/assets/images/posts/220200472684/c15a69a5745a.jpg)
 
 - 이와 같이 톰켓은 사용자가 로그인을 하지 않아도 최초 접속 시 JSESSIONID 쿠키 값을 브라우저에 내려주는 것을 알 수 있다. 그럼 왜 쿠키 값을 내려주는 걸까? HTTP 프로토콜은 stateless의 특징을 가지고 있기 때문에 사용자와 서버는 단 한번의 요청과 응답으로 연결이 끊어진다. 그렇기 때문에 서버에서는 사용자의 로그인 인증 여부를 확인할 수 있도록 key 값 처럼 사용할 수 있는 JSESSIONID 값을 클라이언트로 내려줌으로써 이를 이용하여 로그인 처리를 할 수 있는 것이다.
 
 - <http://localhost:8080/login.jsp> 재요청
-재요청을 보내게 되면 client 브라우저는 로컬에 저장되어 있는 JSESSIONID 쿠키 값을 request header에 담아 서버로 전송한다. 톰켓은 client로부터 JSESSIONID 쿠키 값을 전달 받으면 response로 JSESSIONID 쿠키 값을 내려주지 않는다.![](http://cfile5.uf.tistory.com/image/26536E3D51BA9ECE2C5C0B)
+재요청을 보내게 되면 client 브라우저는 로컬에 저장되어 있는 JSESSIONID 쿠키 값을 request header에 담아 서버로 전송한다. 톰켓은 client로부터 JSESSIONID 쿠키 값을 전달 받으면 response로 JSESSIONID 쿠키 값을 내려주지 않는다.![](/assets/images/posts/220200472684/6ab322d702ac.jpg)
 
 - 로그인 페이지에서 로그인 진행
 사용자가 아이디와 패스워드를 로그인 창에서 입력 후 서버로 전송을 하게 되면 웹 애플리케이션에서 사용자 인증 후 세션 객체에 JSESSIONID 쿠키 값을 키로 사용하는 사용자 정보를 메모리 영역에 저장하게 된다.

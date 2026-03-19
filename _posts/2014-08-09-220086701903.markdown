@@ -46,7 +46,7 @@ $ sudo vi /etc/sudoers
 
 `%그룹이름 ALL=(ALL) ALL`
 
-![](http://sarghis.com/blog/wp-content/uploads/2013/01/11.png)
+*[이미지가 만료되었습니다]*
 
 
 
@@ -56,4 +56,4 @@ Ctrl+X 를 누른후 Y를 눌러 저장한다.
 
 이 때 파일명을 “sudoers.tmp”가 아닌 “sudoers”로 저장해야한다.
 
-![](http://sarghis.com/blog/wp-content/uploads/2013/01/21.png)
+*[이미지가 만료되었습니다]*

@@ -86,7 +86,7 @@ original_url: "https://blog.naver.com/kkforgg/60170204071"
 
 * 실행 시
 
-![](https://cafefiles.pstatic.net/20120809_36/mykazan_1344476950608zIRHK_JPEG/2012-08-09_AM_10-48-59.jpg)
+![](/assets/images/posts/60170204071/abe913b5b25f.jpg)
 
 
 
@@ -219,7 +219,7 @@ arr : <c:forEach var="temp" items="${arr }">
 
 * 실행 시
 
-![](https://cafefiles.pstatic.net/20120809_150/mykazan_13444785868406m29B_JPEG/2012-08-09_AM_11-16-15.jpg)
+![](/assets/images/posts/60170204071/d64a5b406bf6.jpg)
 
 
 
@@ -274,7 +274,7 @@ catch문
 
 * 실행 시
 
-![](https://cafefiles.pstatic.net/20120809_114/mykazan_1344489919179EqiGK_JPEG/2012-08-09_PM_02-24-51.jpg)
+![](/assets/images/posts/60170204071/27a8fb733212.jpg)
 **---------------------------------------------------------------------------------------------**
 
 ****
@@ -357,7 +357,7 @@ catch문
 
 * 실행 시
 
-![](https://cafefiles.pstatic.net/20120809_202/mykazan_1344492064100fg2QR_JPEG/2012-08-09_PM_02-38-24.jpg)
+![](/assets/images/posts/60170204071/ae43621140d4.jpg)
 
 ****
 
@@ -448,7 +448,7 @@ catch문
 
 
 * 실행 시
-![](https://cafefiles.pstatic.net/20120809_21/mykazan_1344500564391KG2bS_JPEG/2012-08-09_PM_04-59-46.jpg)
+![](/assets/images/posts/60170204071/8a12ccf83d15.jpg)
 
 
 
@@ -456,7 +456,7 @@ catch문
 
 * jslOutput.jsp 클릭시
 
-![](https://cafefiles.pstatic.net/20120809_211/mykazan_1344500563641z2yvT_JPEG/2012-08-09_PM_05-00-02.jpg)
+![](/assets/images/posts/60170204071/a93dd4f92343.jpg)
 
 
 

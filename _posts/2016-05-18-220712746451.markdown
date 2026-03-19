@@ -13,7 +13,7 @@ original_url: "https://blog.naver.com/kkforgg/220712746451"
 
  - 프로젝트 전체 리스트 게시판 추가
 
-![](http://easymedia.matty.works/_easymedia/File/Details/X2rYU) 개념 및 구현 부분 관련 설명은 아래를 참조하시면 됩니다.
+*[이미지가 만료되었습니다]* 개념 및 구현 부분 관련 설명은 아래를 참조하시면 됩니다.
 
 
 
@@ -39,7 +39,7 @@ plugin 형태로 구현할려고 노력하였고, 부족한 기능이 있을 수
 
 감사합니다.
 
-모바일은.. 아직..![](http://easymedia.matty.works/Common/images/ChatIcon/POPO.adiumemoticonset/too_sad.png) Crying" title="ㅠㅠ -> Crying" style="box-sizing: border-box; margin: 0px; padding: 0px; border: none; vertical-align: top; border-radius: 0px !important;">
+모바일은.. 아직..![](/assets/images/posts/220712746451/d7f889555a27.png) Crying" title="ㅠㅠ -> Crying" style="box-sizing: border-box; margin: 0px; padding: 0px; border: none; vertical-align: top; border-radius: 0px !important;">
 
 에러마크는 복수개 설정 가능합니다.
 
@@ -49,19 +49,19 @@ idea by 허진영
 
 기능설명
 
-![](http://easymedia.matty.works/_easymedia/File/Details/saVvS)
+*[이미지가 만료되었습니다]*
 
 프로젝트 기능 삽입 방법
 
-![](http://easymedia.matty.works/_easymedia/File/Details/9fgua)
+*[이미지가 만료되었습니다]*
 
 관리자 화면설명
 
-![](http://easymedia.matty.works/_easymedia/File/Details/zTkS9)
+*[이미지가 만료되었습니다]*
 
 관리자 상세화면 설명
 
-![](http://easymedia.matty.works/_easymedia/File/Details/LxhiM)
+*[이미지가 만료되었습니다]*
 
  현재 관리자 사이트는 사내 개발서버에 올라와져 있는 상태입니다.
 

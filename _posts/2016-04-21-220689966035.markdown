@@ -47,11 +47,11 @@ angular material은 기존 angular 1을 사용하고 있으며, 계속해서 개
 
 Angular Matrial에서는 불가능하다.
 
-![](https://lh4.googleusercontent.com/rKDrITtOlL0ojmc3onpIws2NSv-3E-9vIJvyp3n7-kJc6X6Wvo-8_WrnDxo4Ot9G23GVnaq9Jc9mgNEH3iK7rqGDZmmAUk2d__NXYW01ux81K6N2GTAwzKZVqAVcGexNQ64a8eNE)
+![](/assets/images/posts/220689966035/b7d864d1957c.jpg)
 
  **
 
-![](https://lh3.googleusercontent.com/HLUvFd4d-Lw38Mip1JJXL0cfRmHCTizAXg-kUmAepgdXi6Dlhpvg_MfytOT4GMIbl8RrGVsR0HoRdHSIQcDTTH8vk5OVB8L36GBFP3KNblDIqwuwStOWw2NG8owGZf0jTuVZMU2X)
+![](/assets/images/posts/220689966035/a0a83635610d.jpg)
 
 휠로 조절이 가능한데 70년도 생년월일 선택하다가 마우스 휠이 나갈판이다. -_-;;
 
@@ -77,19 +77,19 @@ Angular Matrial에서는 불가능하다.
 
 깔끔한 ui, Input 및 List, Checkbox, Dialog 등등 좋은 컴포넌트들이 많이 있다.
 
-![](https://lh6.googleusercontent.com/Dm_ZDDB1Ch718bZtnWblwkRv2tHHgPNNyxDq9LnowGHwX_Fjzg-NdDt0hrV6PxTr4htU3bZN-W0cC7NIawutSGGFFEA4AQaqW4hz2lTdCj8WJoyh3P2Or9pqjjiLjq5SlmNCTpDX)
+![](/assets/images/posts/220689966035/3ac201647584.jpg)
 
  **
 
-![](https://lh4.googleusercontent.com/dkF4Z1c2IHwOuWDIUM4zdpPXReAMvil-d20c26nph7cb6wHEBXQ6gsbYaFdvkYhLJ1ScK1yq7NTKoRLwD6HuDunwpyXx3XZsyi8io-Fal2nDq1bfSxkA2zPNY4fmIrjfe5Bmrfqk)
+![](/assets/images/posts/220689966035/05f63b962732.jpg)
 
 버튼 UI
 
-![](https://lh6.googleusercontent.com/L_FEGxYgk2coEzSMakOGUo3pRHrFEfuY71vSOIfkD0U9gfHTgQ_H-tYkazAVidkTqhM95t62AER4vXcXWv_kBhDpfNHKCwmc6OV2OQHNtlyXcUAkZnhRS95PV-3hmn-0shXnaJt5)
+![](/assets/images/posts/220689966035/482877e13e5c.jpg)
 
 CHECK BOX
 
-![](https://lh6.googleusercontent.com/aIdF54K17xjYUDRKIvwVoPGMFxPB0ZkiByRBeEqod5HYHGXEauTMwMvU4h2W-oY4bCqr58jgiUz5FACbgBLGLzvfzkl0-fEv0sw_DchUQ29aJVaU6NhyppFxPSwQoSTdzqt9Q_6l)
+![](/assets/images/posts/220689966035/9c6e4ad91f9c.jpg)
 
 INPUT UI
 

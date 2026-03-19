@@ -158,7 +158,7 @@ Assume that this file is placed next to JSP file where we need to parse this xml
 
 For parsing the imported XML content, <x:parse> tag is used. Hence the parsedDocument variable will contain parsed XML document. This variable can be used then to access other child tags as well as properties. <x:forEach> tag can be used to iterate across a given tag. Here in above example we have iterated through <student> tag by using <x:forEach select=”$parsedDocument/persons/student”>. Child elements of <student> tag can be accessed by <x:out select=”name” />. Hence this tag will print the value of the <name> tag.
 
-![](http://img.viralpatel.net/2008/12/xml-parsing-tutorial-using-jstl.jpg)
+*[이미지가 만료되었습니다]*
 
 ## Understanding structure of RSS 2.0
 

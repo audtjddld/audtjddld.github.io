@@ -46,11 +46,11 @@ body에다가 프린트할 영역을 넣고 window.print()시킨 다음
 
 
 
-출처 : <http://dantes.kr/365>
+출처 : </assets/images/posts/60186503715/a55bfe3fe8f9.jpg>
 
-<http://dantes.kr/365>
+</assets/images/posts/60186503715/a55bfe3fe8f9.jpg>
 
-[자바스크립트로 특정영역만 인쇄하기<script type="text/javascript"> //<![CDATA[ function printPage(){ var initBody; window.onbeforeprint = function(){ initBody = doc...dantes.kr](http://dantes.kr/365)
+[자바스크립트로 특정영역만 인쇄하기<script type="text/javascript"> //<![CDATA[ function printPage(){ var initBody; window.onbeforeprint = function(){ initBody = doc...dantes.kr](/assets/images/posts/60186503715/a55bfe3fe8f9.jpg)
 
 ----------------------------- 2016-11-03 추가 ----------------------------------
 

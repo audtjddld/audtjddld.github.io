@@ -27,6 +27,6 @@ SET SQL_SAFE_UPDATES =0;
 
 safe 모드 체크 해지
 
-![](https://lh6.googleusercontent.com/3ElWSozoxPaX-2iqhPUd_HUgzSJ6gIQdHaOSKJk6XKgSzwrFP6Qjy5REmWk4m130zScLk76ommv-bJv6bBPMPHoybEI5QOdbfvWg_1K_ZSg-NKYD_QaxZjFD8lG1WgI2BV-41r4b)
+![](/assets/images/posts/220610956044/40890baf662b.jpg)
 
-![](https://lh3.googleusercontent.com/tZccB0AsCVjUbXjFsdOc3nsJ5m9GMr9isQ9SWzU5FU5NykgTJ-wMUC7MKG7JBstYMGio0oWUHGi-uwWU2swn2fxIom75pcL2oLzXX19YY8jEUCqZjtXO0gPJgsYs45iaSdMLD9O1)
+![](/assets/images/posts/220610956044/317306b427b5.jpg)

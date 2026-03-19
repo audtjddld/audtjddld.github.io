@@ -13,7 +13,7 @@ original_url: "https://blog.naver.com/kkforgg/220705043379"
 
 
 
-![](https://lh3.googleusercontent.com/S-f_VvVGYtqEReQ2JArcfQLeUCzOBrSHAJwTjH0QspbmWjy1A5tn18j4YZOhbo7nptwPKNPxan5LUb_ArgB1ubVPNU3uepjqUwvM4m9pFuIKarz2J17es8X_Ku6rPJr0kkDGeYY1UOY)
+![](/assets/images/posts/220705043379/fce69406f888.jpg)
 
  <https://github.com/audtjddld/pattern/tree/master/pattern/src/proxy>
 

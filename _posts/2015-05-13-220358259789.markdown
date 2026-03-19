@@ -204,7 +204,7 @@ FileOutputStream을 이용하여 서버에 저장도록 하는 방법으로 풀 
 
 다른 곳으로 서버를 두게된다면 error쪽에서 떨어집니다. 크로스 도메인 때문에요.
 
-하지만 성공되는거죠. ![](https://ssl.pstatic.net/static.se2/static/full/20130612/emoticon/1_31.gif)
+하지만 성공되는거죠. ![](/assets/images/posts/220358259789/0ede61de05e0.gif)
 
 
 

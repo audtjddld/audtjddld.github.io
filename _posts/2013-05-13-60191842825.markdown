@@ -83,7 +83,7 @@ Web.xml 정의버전정의 내용2.3<? xml version = "1.0"encoding = "UTF-8"?>
 </ web-app>
 
 ## 관련 항목 [ 편집 ]
-![](http://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Wikibooks-logo-en-noslogan.svg/40px-Wikibooks-logo-en-noslogan.svg.png)위키 책에 [Java](http://ja.wikibooks.org/wiki/Java)** 관련 해설서와 교과서가 있습니다.
+*[이미지가 만료되었습니다]*위키 책에 [Java](http://ja.wikibooks.org/wiki/Java)** 관련 해설서와 교과서가 있습니다.
 - [Java Platform, Enterprise Edition](http://ja.wikipedia.org/wiki/Java_Platform,_Enterprise_Edition)
 - [응용 프로그램 서버](http://ja.wikipedia.org/wiki/%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%B5%E3%83%BC%E3%83%90)
 - [웹 응용 프로그램](http://ja.wikipedia.org/wiki/%E3%82%A6%E3%82%A7%E3%83%96%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3)

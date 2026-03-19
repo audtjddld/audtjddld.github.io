@@ -263,7 +263,7 @@ Github Repo에서 Actions 클릭
 
 
 
-                                        ![](https://www.dropbox.com/s/xuefekjnxhpopu4/Screenshot%202020-05-30%2015.08.15.png?raw=1)
+                                        ![](/assets/images/posts/222591087749/c8314dd48cad.png)
 
 
 
@@ -282,7 +282,7 @@ Github Repo에서 Actions 클릭
 
 
 
-                                        ![](https://www.dropbox.com/s/9xayfkoe50ypmg3/Screenshot%202020-05-30%2015.08.46.png?raw=1)
+                                        ![](/assets/images/posts/222591087749/06da435cd81a.png)
 
 
 
@@ -319,7 +319,7 @@ Set up this workflow 클릭하면 간단한 workflow 생성할 수 있음
 
 
 
-                                        ![](https://www.dropbox.com/s/w2710nhfvigb433/Screenshot%202020-05-30%2015.09.40.png?raw=1)
+                                        ![](/assets/images/posts/222591087749/81f2816408af.png)
 
 
 
@@ -448,7 +448,7 @@ Github Repository에서 Actions 클릭 - New workflow - Continuous integration w
 
 
 
-                                        ![](https://www.dropbox.com/s/o61viwvro0edmh4/Screenshot%202020-06-06%2013.56.19.png?raw=1)
+                                        ![](/assets/images/posts/222591087749/0cc0774cb699.png)
 
 
 
@@ -487,7 +487,7 @@ Github Repository에서 Actions 클릭 - New workflow - Continuous integration w
 
 
 
-                                        ![](https://www.dropbox.com/s/fk9igo6mb6wwn1t/Screenshot%202020-06-04%2023.30.07.png?raw=1)
+                                        ![](/assets/images/posts/222591087749/a78a74508299.png)
 
 
 
@@ -530,7 +530,7 @@ Master로 Push하면 Latest commit 왼쪽에 노란색 아이콘이 생김. 이�
 
 
 
-                                        ![](https://www.dropbox.com/s/kcvvq91nfltnarw/Screenshot%202020-06-04%2023.38.53.png?raw=1)
+                                        ![](/assets/images/posts/222591087749/561b085471db.png)
 
 
 
@@ -567,7 +567,7 @@ Master로 Push하면 Latest commit 왼쪽에 노란색 아이콘이 생김. 이�
 
 
 
-                                        ![](https://www.dropbox.com/s/ho00pazf0gr180w/Screenshot%202020-06-04%2023.40.03.png?raw=1)
+                                        ![](/assets/images/posts/222591087749/36571613e488.png)
 
 
 
@@ -606,7 +606,7 @@ Details를 클릭하면
 
 
 
-                                        ![](https://www.dropbox.com/s/3lufc3oxkyicrla/Screenshot%202020-06-06%2014.09.20.png?raw=1)
+                                        ![](/assets/images/posts/222591087749/def035702046.png)
 
 
 
@@ -661,7 +661,7 @@ Details를 클릭하면
 
 
 
-                                        ![](https://www.dropbox.com/s/edigs0wz3chcrv1/Screenshot%202020-06-06%2014.01.46.png?raw=1)
+                                        ![](/assets/images/posts/222591087749/752204cb116d.png)
 
 
 
@@ -742,7 +742,7 @@ name: Python application on: push: branches: [ master ] pull_request: branches: 
 
 
 
-                                        ![](https://www.dropbox.com/s/tb0g3k1osfn7vqe/Screenshot%202020-06-04%2023.59.05.png?raw=1)
+                                        ![](/assets/images/posts/222591087749/093af19e62aa.png)
 
 
 
@@ -761,7 +761,7 @@ name: Python application on: push: branches: [ master ] pull_request: branches: 
 
 
 
-                                        ![](https://www.dropbox.com/s/rio9vo7g2ok6jk2/Screenshot%202020-06-04%2023.59.36.png?raw=1)
+                                        ![](/assets/images/posts/222591087749/d2e718696989.png)
 
 
 
@@ -864,7 +864,7 @@ Github Issue를 남기기 위해 Github Access Token이 필요함
 
 
 
-                                        ![](https://www.dropbox.com/s/m38bj7yd5b5465y/Screenshot%202020-06-06%2014.06.16.png?raw=1)
+                                        ![](/assets/images/posts/222591087749/0f79fa3eb3ce.png)
 
 
 
@@ -907,7 +907,7 @@ Value 복사하기
 
 
 
-                                        ![](https://www.dropbox.com/s/daxbpcnjwybi5hm/Screenshot%202020-06-06%2014.06.53.png?raw=1)
+                                        ![](/assets/images/posts/222591087749/c81813f03916.png)
 
 
 
@@ -1058,7 +1058,7 @@ uses에 어떤 액션을 사용할지 지정해서 인자만 입력해 활용함
 
 
 
-                                        ![](https://www.dropbox.com/s/o3323hd05h6ae9e/Screenshot%202020-06-06%2014.49.49.png?raw=1)
+                                        ![](/assets/images/posts/222591087749/d55782cc6c58.png)
 
 
 
