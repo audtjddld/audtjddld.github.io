@@ -9,6 +9,12 @@ baseurl: ""
 lang: ko
 timezone: Asia/Seoul
 
+# Polyglot multi-language
+languages: ["ko", "en"]
+default_lang: "ko"
+exclude_from_localization: ["assets", "javascript", "images", "css"]
+parallel_localization: false
+
 github_username: audtjddld
 
 # Theme
@@ -24,12 +30,13 @@ social:
     - https://github.com/audtjddld
 
 # Build settings
-port: 6704
+port: 9999
 plugins:
   - jekyll-feed
   - jekyll-paginate
   - jekyll-include-cache
   - jekyll-archives
+  - jekyll-polyglot
 
 paginate: 15
 paginate_path: "/page/:num/"

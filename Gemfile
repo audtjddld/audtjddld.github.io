@@ -7,6 +7,7 @@ group :jekyll_plugins do
   gem "jekyll-paginate"
   gem "jekyll-include-cache"  # 1000+ 포스트 성능 최적화
   gem "jekyll-archives"
+  gem "jekyll-polyglot"
 end
 
 platforms :mingw, :x64_mingw, :mswin, :jruby do
