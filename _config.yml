@@ -60,6 +60,11 @@ defaults:
       layout: page
       permalink: /:title/
 
+# Google Analytics
+analytics:
+  google:
+    id: "G-6R4EF0Q6XP"
+
 # Chirpy 설정
 toc: true
 
