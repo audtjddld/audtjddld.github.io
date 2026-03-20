@@ -70,7 +70,7 @@ public class DbTest1 {
 
     //2. DB 연결
 
-    conn = DriverManager.getConnection("odbc:oracle:thin:@localhost:1521:xe", "scott", "tiger");
+    conn = DriverManager.getConnection("odbc:oracle:thin:@localhost:1521:xe", "your_user", "your_password");
 
    } catch (Exception e) {
 
@@ -170,7 +170,7 @@ public class DbTest2 {
 
    try {
 
-    conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "scott", "tiger");
+    conn = DriverManager.getConnection("jdbc:oracle:thin:@127.0.0.1:1521:xe", "your_user", "your_password");
 
    } catch (Exception e) {
 

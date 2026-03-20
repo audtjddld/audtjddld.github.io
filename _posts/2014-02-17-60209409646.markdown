@@ -59,23 +59,23 @@ Database Link사용법
 ```
 원격지에 있는 데이터베이스를 link하는 법은 다음과 같다.
 
-원격지의 Database의 Service Name이 piruks.kang.com이다.
-나의 tnsnames.ora파일에는 Database alias가 piruks가 잡혀있다.
+원격지의 Database의 Service Name이 remote_db.example.com이다.
+나의 tnsnames.ora파일에는 Database alias가 remote_db가 잡혀있다.
 
-piruks.kang.com(원격지DB)의 init.ora내용
-db_name = "piruks"
-db_domain = kang.com
-instance_name = piruks
-service_names = piruks.kang.com
+remote_db.example.com(원격지DB)의 init.ora내용
+db_name = "remote_db"
+db_domain = example.com
+instance_name = remote_db
+service_names = remote_db.example.com
 
-maddog.kang.com(로컬DB)의 tnsnames.ora내용
-PIRUKS =
+local_db.example.com(로컬DB)의 tnsnames.ora내용
+REMOTE_DB =
   (DESCRIPTION =
     (ADDRESS_LIST =
-      (ADDRESS = (PROTOCOL = TCP)(HOST = 10.0.0.102)(PORT = 1521))
+      (ADDRESS = (PROTOCOL = TCP)(HOST = 10.x.x.x)(PORT = 1521))
     )
     (CONNECT_DATA =
-      (SERVICE_NAME = PIRUKS.KANG.COM)
+      (SERVICE_NAME = REMOTE_DB.EXAMPLE.COM)
     )
   )
 
@@ -93,71 +93,71 @@ global_names         FALSE
 
 현재 데이터베이스의 이름은 global_names에 질의함으로써 알 수 있다.
 
-SQL> connect kang/xxxxxx@piruks;
+SQL> connect myuser/xxxxxx@remote_db;
 연결되었습니다.
 SQL> select * from global_name;
 
 GLOBAL_NAME
 --------------------------------------
-PIRUKS.KANG.COM
+REMOTE_DB.EXAMPLE.COM
 
-local db에 kang이라는 사용자로 접속한다.
-SQL> connect kang/xxxxxx
+local db에 myuser라는 사용자로 접속한다.
+SQL> connect myuser/xxxxxx
 연결되었습니다.
 
-이제 원격지(piruks.kang.com)의 DB에 kang이라는 사용자로 연결되는 Database link를 생성한다.
-여기서 piruks.kang.com은 원격지의 [Database name].[Domain name]이다.
+이제 원격지(remote_db.example.com)의 DB에 myuser라는 사용자로 연결되는 Database link를 생성한다.
+여기서 remote_db.example.com은 원격지의 [Database name].[Domain name]이다.
 보통 [Database name].[Domain name]는 Service Name이라 불리운다.
 하지만 위와 같이 해서 제대로 않되는 경우가 있다.
 이럴때는 global_name에 있는 이름을 dblink이름으로 정하면 해결된다.
-piruks는 database connect string이다.
-SQL> create database link piruks.kang.com
-  2  connect to kang identified by xxxxxx
-  3  using 'piruks';
+remote_db는 database connect string이다.
+SQL> create database link remote_db.example.com
+  2  connect to myuser identified by xxxxxx
+  3  using 'remote_db';
 
 데이타베이스 링크가 생성되었습니다.
 
 사용법은 다음과 같다.
-보통의 DML문장에 '@piruks.kang.com'을 추가한다.
-SQL> select * from tab@piruks.kang.com;
+보통의 DML문장에 '@remote_db.example.com'을 추가한다.
+SQL> select * from tab@remote_db.example.com;
 
 TNAME                                                        TABTYPE         CLUSTERID
 ------------------------------------------------------------ -------------- ----------
 TEST                                                         TABLE
 
-SQL> select * from test@piruks.kang.com;
+SQL> select * from test@remote_db.example.com;
 
 NAME                        AGE
 -------------------- ----------
-강명규                       27
+홍길동                       27
 
-SQL> insert into test@piruks.kang.com values('홍길동', 30);
+SQL> insert into test@remote_db.example.com values('홍길동', 30);
 
 1 개의 행이 만들어졌습니다.
 
-SQL> update test@piruks.kang.com set age=31 where age=30;
+SQL> update test@remote_db.example.com set age=31 where age=30;
 
 1 행이 갱신되었습니다.
 
-SQL> select * from test@piruks.kang.com;
+SQL> select * from test@remote_db.example.com;
 
 NAME                        AGE
 -------------------- ----------
-강명규                       27
+홍길동                       27
 홍길동                       31
 
-SQL> delete from test@piruks.kang.com where age=31;
+SQL> delete from test@remote_db.example.com where age=31;
 
 1 행이 삭제되었습니다.
 
 데이터베이스링크에서 DDL문장은 적용되지 않는다.
-SQL> drop table test@piruks.kang.com;
-drop table test@piruks.kang.com
+SQL> drop table test@remote_db.example.com;
+drop table test@remote_db.example.com
                 *
 1행에 오류:
 ORA-02021: 원격 데이터베이스에 DDL 조작들이 허용되지 않습니다
 
-SQL> drop database link piruks.kang.com;
+SQL> drop database link remote_db.example.com;
 
 데이타베이스 링크가 삭제되었습니다.
 
@@ -172,20 +172,20 @@ public DB링크와 동의어의 사용
 DROP PUBLIC DATABASE LINK
 CREATE PUBLIC DATABASE LINK
 
-system계정에서 다음의 명령으로 kang계정에 이 권한을 줄 수 있다.
+system계정에서 다음의 명령으로 myuser계정에 이 권한을 줄 수 있다.
 
-SQL> grant CREATE PUBLIC DATABASE LINK, DROP PUBLIC DATABASE LINK to kang;
+SQL> grant CREATE PUBLIC DATABASE LINK, DROP PUBLIC DATABASE LINK to myuser;
 
 권한이 부여되었습니다.
 
 SQL> connect system/xxxxxx
 연결되었습니다.
 SQL> create public database link db.world
-  2  connect to kang identified by xxxxxx
+  2  connect to myuser identified by xxxxxx
   3  using 'linuxdb';
 
 데이타베이스 링크가 생성되었습니다.
-SQL> conn scott/tiger
+SQL> conn your_user/your_password
 연결되었습니다.
 SQL> select * from v_emp@db.world;
 
@@ -198,7 +198,7 @@ SQL> select * from v_emp@db.world;
 
 12 개의 행이 선택되었습니다.
 
-SQL> conn kang/xxxxxx
+SQL> conn myuser/xxxxxx
 연결되었습니다.
 SQL> select * from v_emp@db.world;
 
@@ -214,7 +214,7 @@ SQL> select * from v_emp@db.world;
 이와 같이 매번 골뱅이와 DB링크명(@db.world)를 붙이면 불편하므로, 동의어를 사용하여 투명하게 사용할 수도
 있을 것이다. 모든 사용자에게 적용하려면 마찬가지로 system계정에서 public동의어를 생성하면 된다.
 
-SQL> conn kang/xxxxxx
+SQL> conn myuser/xxxxxx
 연결되었습니다.
 SQL> create synonym v_emp for v_emp@db.world;
 
@@ -251,10 +251,10 @@ open_links_per_instance              integer 4
 
 [문제**********]
 DB링크는 에러없이 생성되나, 실제 질의가 실패함.
-SQL> conn kang/xxxxxx
+SQL> conn myuser/xxxxxx
 연결되었습니다.
 SQL> create database link linuxdb_link
-  2  connect to kang identified by xxxxxx
+  2  connect to myuser identified by xxxxxx
   3  using 'linuxdb';
 
 데이타베이스 링크가 생성되었습니다.
@@ -285,10 +285,10 @@ GLOBAL_NAME
 DB.WORLD
 
 다시 돌아와, DB링크생성시 이름을 위에서 확인한 global_names로 한다.
-SQL> conn kang/xxxxxx
+SQL> conn myuser/xxxxxx
 연결되었습니다.
 SQL> create database link db.world
-  2  connect to kang identified by xxxxxx
+  2  connect to myuser identified by xxxxxx
   3  using 'linuxdb';
 
 데이타베이스 링크가 생성되었습니다.

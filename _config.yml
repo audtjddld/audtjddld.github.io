@@ -67,6 +67,10 @@ defaults:
       layout: page
       permalink: /:title/
 
+# Google Search Console 인증
+webmaster_verifications:
+  google: # GSC 인증 코드를 여기에 입력 (content 속성값만)
+
 # Google Analytics
 analytics:
   google:
