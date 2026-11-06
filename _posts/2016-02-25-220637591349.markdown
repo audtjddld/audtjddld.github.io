@@ -1,156 +1,210 @@
 ---
-title: "Too many connection 문제 해결"
+title: "MySQL Too many connections 에러 원인과 해결 방법 (wait_timeout, thread_cache_size, 커넥션 풀)"
+description: "MySQL에서 Too many connections 에러가 반복될 때 슬로우 쿼리, wait_timeout, max_connections, thread_cache_size, DBCP 커넥션 풀(minIdle) 설정을 어떻게 점검하고 조정했는지 실제 장애 경험과 함께 정리했습니다."
 date: 2016-02-25 10:34:00 +0900
 categories: [Database, MySQL]
+tags: [MySQL, Too many connections, 커넥션 풀, DBCP, wait_timeout, 트러블슈팅]
 original_url: "https://blog.naver.com/kkforgg/220637591349"
 ---
 
-<http://egloos.zum.com/kwaknu/v/5212895>
+MySQL 서버가 `Too many connections` 에러로 하루에 한 번씩 멈추는 문제를 겪고, 원인을 찾아 설정을 고친 과정을 정리한 글입니다. 운영 중인 서비스에서 커넥션 수가 갑자기 치솟는 백엔드 개발자라면 **슬로우 쿼리 → MySQL 서버 변수 → 애플리케이션 커넥션 풀** 순서로 무엇을 확인해야 하는지 참고할 수 있습니다.
 
-[伏地不動egloos.zum.com](http://egloos.zum.com/kwaknu/v/5212895)
+> 참고: <http://egloos.zum.com/kwaknu/v/5212895>
 
-wha 이번해 초부터 시작된 too many connection 문제가 하루에 한번씩 mysql 을 뻗게 만들었다.되는대로... 아무것도 모른채로 만든 운영툴이 그 원인... 쿼리도 10초 이상 걸리는 것도 존재했고..인덱스도 제대로 안걸려있고..그래서 슬로우 쿼리를 잡고 인덱스도 제대로 걸어서...그런 쿼리문제를 없앰으로서 커넥션 문제는 없어질 줄 알았다.그런데 여전히 하루에 한번씩...서버를 내렸다 올리는 걸 반복해야 했으니.... 그래서 다음과 같은 삽질 겸.. 재설정 시작..
-이젠 그만 잡혀달라고~~~~! ㅠㅠToo many connections?
-**모든 연결 가능한 connections 이 다른 clients 들에 의해 쓰이고 있다는 의미.. 결국 이 이후의 커넥션 연결은 실패하게 되고 max_connect_errors 동안 커넥션에 실패하게 되면 이 이후의 모든 커넥션이 블러킹이 된다.**해결방법 1.
+## 문제 상황
 
-슬로우 쿼리의 제거, connection 을 지속시키는 불필요한 것들을 제거한다.connection 연결 시간을 최대한 줄인다. jdbc 설정에서는 데이터베이스 커넥션풀을 만들고 관리할 수 있다. 이때 이미 있는 커넥션을 재생하여 재 사용하는 것이 새 커넥션을 가져오는 것보다 효율적인데 웹 애플리케이션서 이들 커넥션을 닫지 못하게 되면 다시 재사용할 수가 없게 된다. 이를 해결할 수 있는 방법이 Jakarta-Commns DBCP 이다. 여기서는 버려진 커넥션을 추적해서 복구하도록 설정할 수 있는데 이 설정은 DBCP DataSoure 설정으로 할 수 있다.
+올해 초부터 시작된 too many connection 문제가 하루에 한 번씩 MySQL을 뻗게 만들었다. 아무것도 모른 채로 급하게 만든 운영툴이 그 원인이었다. 10초 이상 걸리는 쿼리도 있었고, 인덱스도 제대로 걸려 있지 않았다.
 
-또한 mysql_connect() 함수를 사용하면 해당 스크립트의 종료와 함께 자동으로 연결이 종료된다고 하지만 실제로 살펴보면 커넥션은 그대로 살아있다. ( " ./mysqladmin -u -p processlist "  명령어로 확인) 이것은 mysql 의시작옵션 중 wait_timeout 과 연관된다. 이 값만큼 서버에 그대로 연결을 유지한 채 남아있는 것이다.
+그래서 슬로우 쿼리를 잡고 인덱스도 제대로 걸었다. 쿼리 문제를 없애면 커넥션 문제도 없어질 줄 알았는데, 여전히 하루에 한 번씩 서버를 내렸다 올리는 걸 반복해야 했다. 그래서 다음과 같이 설정을 다시 점검하기 시작했다.
 
- 저기서 사용자 계정 패스워드 넣어야된다 그대로 치면 안됌 ㅡㅡ;**
+## Too many connections 에러의 의미
 
-**- datasource 설정
-    // db connection 을 재 사용하겠다고 선언 (default는 false 이다)
-    admin.datasource.master.jdbc.removeAbandoned=true    //버려진 connection 으로 간주하는 시간은 1분으로 설정
-    admin.datasource.master.jdbc.removeAbandonedTimeout = 60    // 재사용하는 커넥션에 대한 로그를 남기겠다고 선언(defaul는 false 이다)
-    admin.datasource.master.jdbc.logAbandoned = true**
-**- wait-timeout 설정
-  #mysql server 설정
-   port =3306
-   socket = /tmp/mysql.sock
-   .......기타 설정들
-   .......
-   wait_timeout = 50
-   #wait_timeout 을 50으로 줄임**
-**=> 슬로우 쿼리를 제거하는게 우선적으로 행해져야 한다. 커넥션을 지속시키는 가장 큰 원인이므로 슬로우 쿼리를 해결하면 커넥션 수를 감소시킬 수 있다. 또한 DB 서버의 접속이 많은 경우 wait_timeout 을 최대한 적게(10~20 정도..) 설정하여 불필요한 연결을 빨리 정리하는 것이 좋다. 하지만 Connection Miss Rate(%) 가 1% 이상이라면(아래 튜닝 부분에서 설명) 좀 더 길게 잡을 필요가 있다.해결방법 2.
+**연결 가능한 모든 connection이 다른 client들에 의해 사용 중이라는 의미다.** 이후의 커넥션 연결은 실패하게 되고, `max_connect_errors` 횟수만큼 커넥션에 실패하면 이후의 모든 커넥션이 블로킹된다.
 
-max_connection 수를 증가 시켜 connection 개수를 확보한다.
-이 때 커넥션풀을 사용하고 있다면 java 설정에서 jdbc 의 connection-pool 의 최대 도 같이 증가시켜야 한다.- mysql 서버의 my.cnf 에  max-connection 개수 설정
-  #mysql server 설정
-   port =3306
-   socket = /tmp/mysql.sock
-   .......기타 설정들
-   .......
-   max_connections = 200
-   #커넥션을 200으로 올림**
-**- jdbc pool-max 설정
-   //최소 connection pool 개수
-   admin.datasource.master.jdbc.pool-min=3 아래 문제 발생! 참고하세요 .
-**   //최대 connection pool 개수**   admin.datasource.master.jdbc.pool-max=100**  //max_connections 와 비례해서 증감시켜야 한다.
-**=> 문제: 하루에 보통 사용하는 connection 수는 기본 4~50 이었다. 그런데 이 연결이 어느 한 순간 150~180 이렇게 치솟게 된다. 이때 에러가 발생하는 것... 기본적으로 connection 수가 많다면 max connection 을 증가 시키는 것이 맞지만 어느 순간 치솟는 커넥션이라면 max를 증가한다고 해결되지는 않는다.
-해결방법 3.
+## 해결 방법 1. 슬로우 쿼리 제거와 불필요한 연결 정리
 
-connection 에 대한 튜닝을 한다.
+슬로우 쿼리를 제거하고, connection을 지속시키는 불필요한 요소를 제거해 connection 연결 시간을 최대한 줄인다.
 
-1. status
-- Aborted_clients - 클라이언트 프로그램이 비 정상적으로 종료된 수
-- Aborted_connects - MySQL 서버에 접속이 실패된 수
-- Max_used_connections - 최대로 동시에 접속한 수
-- Threads_cached - Thread Cache의 Thread 수
-- Threads_connected - 현재 연결된 Thread 수
-- Threads_created - 접속을 위해 생성된 Thread 수
-- Threads_running - Sleeping 되어 있지 않은 Thread 수
+JDBC 설정에서는 데이터베이스 커넥션 풀을 만들고 관리할 수 있다. 이미 있는 커넥션을 재사용하는 것이 새 커넥션을 가져오는 것보다 효율적인데, 웹 애플리케이션에서 커넥션을 닫지 못하면 다시 재사용할 수가 없게 된다. 이를 해결할 수 있는 방법이 Jakarta-Commons DBCP이다. DBCP에서는 버려진 커넥션을 추적해서 복구하도록 설정할 수 있고, 이 설정은 DBCP DataSource 설정으로 할 수 있다.
 
-2. system variables
-- wait_timeout - 종료전까지 요청이 없이 기다리는 시간 ( TCP/IP 연결, Shell 상의 접속이 아닌 경우 )
-- thread_cache_size - thread 재 사용을 위한 Thread Cache 수로써, Cache 에 있는 Thread 수보다 접속이 많으면 새롭게 Thread를 생성한다.
-- max_connections - 최대 동시 접속 가능 수
+또한 `mysql_connect()` 함수를 사용하면 스크립트 종료와 함께 자동으로 연결이 종료된다고 하지만, 실제로 살펴보면 커넥션은 그대로 살아 있다. (`./mysqladmin -u -p processlist` 명령어로 확인할 수 있다. 사용자 계정과 패스워드를 넣어야 하니 그대로 치면 안 된다.) 이것은 MySQL 시작 옵션 중 `wait_timeout`과 연관된다. 이 값만큼 서버에 연결을 유지한 채 남아 있는 것이다.
 
-<현재 내 mysql 정보>
+### datasource 설정
 
- mysql> show variables like '%max_connection%';
+```properties
+# db connection 을 재사용하겠다고 선언 (default는 false 이다)
+admin.datasource.master.jdbc.removeAbandoned=true
+# 버려진 connection 으로 간주하는 시간은 1분으로 설정
+admin.datasource.master.jdbc.removeAbandonedTimeout = 60
+# 재사용하는 커넥션에 대한 로그를 남기겠다고 선언 (default는 false 이다)
+admin.datasource.master.jdbc.logAbandoned = true
+```
+
+### wait_timeout 설정
+
+```ini
+# mysql server 설정
+port = 3306
+socket = /tmp/mysql.sock
+# ....... 기타 설정들
+wait_timeout = 50
+# wait_timeout 을 50으로 줄임
+```
+
+슬로우 쿼리 제거가 가장 먼저 이뤄져야 한다. 슬로우 쿼리는 커넥션을 지속시키는 가장 큰 원인이므로, 이를 해결하면 커넥션 수를 줄일 수 있다. 또한 DB 서버 접속이 많은 경우 `wait_timeout`을 최대한 적게(10~20 정도) 설정해 불필요한 연결을 빨리 정리하는 것이 좋다. 하지만 Connection Miss Rate(%)가 1% 이상이라면(아래 튜닝 부분에서 설명) 좀 더 길게 잡을 필요가 있다.
+
+## 해결 방법 2. max_connections 늘리기
+
+`max_connections` 수를 증가시켜 connection 개수를 확보한다. 이때 커넥션 풀을 사용하고 있다면 Java 쪽 JDBC connection pool의 최대값도 같이 증가시켜야 한다.
+
+### MySQL 서버 my.cnf의 max_connections 설정
+
+```ini
+# mysql server 설정
+port = 3306
+socket = /tmp/mysql.sock
+# ....... 기타 설정들
+max_connections = 200
+# 커넥션을 200으로 올림
+```
+
+### JDBC pool-max 설정
+
+```properties
+# 최소 connection pool 개수 (아래 문제 발생! 참고하세요)
+admin.datasource.master.jdbc.pool-min=3
+# 최대 connection pool 개수 - max_connections 와 비례해서 증감시켜야 한다.
+admin.datasource.master.jdbc.pool-max=100
+```
+
+문제는 하루에 보통 사용하는 connection 수가 40~50 정도였는데, 어느 한순간 150~180으로 치솟는다는 것이었다. 이때 에러가 발생했다. 평소 connection 수가 많다면 `max_connections`를 늘리는 것이 맞지만, 어느 순간 치솟는 커넥션이라면 max를 늘린다고 해결되지는 않는다.
+
+## 해결 방법 3. 커넥션 관련 튜닝
+
+### 확인할 status 값
+
+- `Aborted_clients` - 클라이언트 프로그램이 비정상적으로 종료된 수
+- `Aborted_connects` - MySQL 서버에 접속이 실패한 수
+- `Max_used_connections` - 최대로 동시에 접속한 수
+- `Threads_cached` - Thread Cache의 Thread 수
+- `Threads_connected` - 현재 연결된 Thread 수
+- `Threads_created` - 접속을 위해 생성된 Thread 수
+- `Threads_running` - Sleeping 상태가 아닌 Thread 수
+
+### 확인할 system variables
+
+- `wait_timeout` - 종료 전까지 요청 없이 기다리는 시간 (Shell 접속이 아닌 TCP/IP 연결의 경우)
+- `thread_cache_size` - thread 재사용을 위한 Thread Cache 수. Cache에 있는 Thread 수보다 접속이 많으면 새롭게 Thread를 생성한다.
+- `max_connections` - 최대 동시 접속 가능 수
+
+### 당시 MySQL 상태
+
+```text
+mysql> show variables like '%max_connection%';
 +-----------------+-------+
-| Variable_name   | Value |
+| Variable_name   | Value |
 +-----------------+-------+
-| max_connections | 200   |
+| max_connections | 200   |
 +-----------------+-------+
 1 row in set (0.00 sec)
 
 mysql> show status like '%connect%';
 +----------------------+-------+
-| Variable_name        | Value |
+| Variable_name        | Value |
 +----------------------+-------+
-| Aborted_connects     | 8     |
-| Connections          | 10558 |
-| Max_used_connections | 32    |
-| Threads_connected    | 12    |
+| Aborted_connects     | 8     |
+| Connections          | 10558 |
+| Max_used_connections | 32    |
+| Threads_connected    | 12    |
 +----------------------+-------+
 4 rows in set (0.01 sec)
 
 mysql> show status like '%clients%';
 +-----------------+-------+
-| Variable_name   | Value |
+| Variable_name   | Value |
 +-----------------+-------+
-| Aborted_clients | 680   |
+| Aborted_clients | 680   |
 +-----------------+-------+
 1 row in set (0.01 sec)
 
 mysql> show status like '%thread%';
 +------------------------+-------+
-| Variable_name          | Value |
+| Variable_name          | Value |
 +------------------------+-------+
-| Delayed_insert_threads | 0     |
-| Slow_launch_threads    | 0     |
-| Threads_cached         | 4     |
-| Threads_connected      | 14    |
-| Threads_created        | 246   |
-| Threads_running        | 1     |
+| Delayed_insert_threads | 0     |
+| Slow_launch_threads    | 0     |
+| Threads_cached         | 4     |
+| Threads_connected      | 14    |
+| Threads_created        | 246   |
+| Threads_running        | 1     |
 +------------------------+-------+
 6 rows in set (0.02 sec)
+```
 
-<계산식>Cache Miss Rate(%) =  (Threads_created / Connections) * 100
+### 계산식
+
+```text
+Cache Miss Rate(%)      = (Threads_created / Connections) * 100
 Connection Miss Rate(%) = (Aborted_connects / Connections) * 100
-Connection Usage(%) = (Threads_connected / max_connections) * 100
+Connection Usage(%)     = (Threads_connected / max_connections) * 100
+```
 
-(나의 경우는 Cache Miss Rate(%) = 2.3%, Connection Miss Rate(%) = 0.08%, Connection Usage(%) = 7% 이다.
-peak time 때 계산해보는 것이 중요...)
+내 경우는 Cache Miss Rate(%) = 2.3%, Connection Miss Rate(%) = 0.08%, Connection Usage(%) = 7%였다. peak time에 계산해 보는 것이 중요하다.
 
-- > 설명
+### 수치 해석
 
-Connection Usage(%)가 100% 라면 max_connections 수를 증가하기 바랍니다. Connection 수가 부족할 경우 Too Many Connection Error 가 발생합니다. DB 서버의 접속이 많은 경우는 wait_timeout 을 최대한 적게 (10~20 정도를 추천) 설정하여 불필요한 연결을 빨리 정리하는 것이 좋습니다.
+- Connection Usage(%)가 100%라면 `max_connections` 수를 늘린다. Connection 수가 부족하면 Too Many Connection Error가 발생한다.
+- DB 서버 접속이 많은 경우 `wait_timeout`을 최대한 적게(10~20 정도 추천) 설정해 불필요한 연결을 빨리 정리하는 것이 좋다.
+- 그러나 Connection Miss Rate(%)가 1% 이상이라면 `wait_timeout`을 좀 더 길게 잡는 것이 좋다.
+- Cache Miss Rate(%)가 높다면 `thread_cache_size`를 기본값인 8보다 높게 설정하는 것이 좋다. 일반적으로 peak time의 `Threads_connected`보다 약간 낮은 수치로 설정한다.
+- MySQL 서버는 외부 접속 요청을 받으면 인증을 위해 IP 주소를 호스트네임으로 바꾸는 과정을 수행해 불필요한 부하가 발생한다. `skip-name-resolve`를 설정하고 IP 기반으로 접속하면 hostname lookup 과정을 생략해 좀 더 빠르게 접속할 수 있다.
 
-그러나 Connection Miss Rate(%) 가 1% 이상이 된다면 wait_timeout 을 좀 더 길게 잡는 것이 좋습니다. Cache Miss Rate(%) 가 높다면 thread_cache_size를 기본값인 8 보다 높게 설정하는 것이 좋습니다. 일반적으로 threads_connected 가 Peak-time 시 보다 약간 낮은 수치로 설정하는 것이 좋습니다.
+## 원인: wait_timeout과 Thread Cache
 
-MySQL서버는 외부로부터 접속 요청을 받을 경우 인증을 위해 IP 주소를 호스트네임으로 바꾸는 과정을 수행하여 접속 시에 불필요한 부하가 발생하게 됩니다. skip-name-resolve를 설정하시고 접속 시에 IP 기반으로 접속을 하게 되면 hostname lookup 과정을 생략하게 되어 좀 더 빠르게 접속을 하실 수 있습니다.
+내 경우는 `wait_timeout`과 Cache Miss Rate에 문제가 있었다. 원래 `wait_timeout`이 28800으로 설정되어 있었고 `Threads_cached`가 0으로 되어 있었기 때문에, `Threads_created`가 connection 수만큼 증가하고 있었다.
 
-=============================================================================
-- 문제 해결!!**
+이렇게 설정한 뒤 MySQL을 재시작한 지금은 connection이 치솟는 현상이 없는 듯하다. 조금 더 지켜봐야겠지만 예전에 비해 연결이 안정적인 것 같다. 이것으로 더 이상 500 Too many connection이라는 글자를 안 봤으면 한다.
 
-내 경우는 wait_timeout 과 Cache Miss Rate 에 문제가 있었다.**원래 wait_timeout 이 28800 으로 설정되어 있었고 Threads_cashed 가 0 으로 되어있었기에 thread_created 가 connection 수만큼 증가하였던 것..
-이렇게 설정 후 mysql을 재시작 하게 한 지금은 connection 이 치솟는 현상은 없는 듯하다.
-아직은...조금 더 지켜봐야겠지만 예전에 비해 연결 정도가 안정적인것 같다. 이것으로 더이상 500 Too many connection 이란 글자를 안 봤으면 한다.. ㅠㅠ 시달린다 정말....
-======================================================
+## 추가: Oracle에서도 커넥션이 치솟은 경우 (커넥션 풀 minIdle)
 
-!!! 해결 한 줄 알았던 문제 또 발생!!
-이번엔...oraqle 이다...어휴 이건 DB 설정 못 건들이는데....
-자꾸 요청이 올 때 마다 치솟는 connection 수.. 외부서 배치로 2만개의 쿼리가 날라오는 것 땜에 리스너가 맛이 갈 정도였다..
+해결한 줄 알았던 문제가 또 발생했다. 이번엔 Oracle이었고, DB 설정은 건드릴 수 없는 상황이었다. 외부에서 배치로 2만 개의 쿼리가 날아오면서 요청이 올 때마다 connection 수가 치솟아 리스너가 버티지 못할 정도였다.
 
-DB 설정과 jdbc 설정이 안 맞는게 이상하여 테스트를 해보았다.
-jdbc 설정 고치기..
-커넥션 풀 의 속성 은 아래와 같다.
+DB 설정과 JDBC 설정이 맞지 않는 것이 이상해서 테스트를 해 보고 JDBC 설정을 고쳤다. 커넥션 풀의 속성은 아래와 같다.
 
+| 속성 | 설명 |
+| --- | --- |
+| maxActive | 커넥션 풀이 제공할 최대 커넥션 개수 |
+| whenExhaustedAction | 커넥션 풀에서 가져올 수 있는 커넥션이 없을 때 어떻게 동작할지를 지정한다. 1일 경우 maxWait 속성에서 지정한 시간만큼 커넥션을 구할 때까지 기다리며, 0일 경우 에러를 발생시킨다. 2일 경우에는 일시적으로 커넥션을 생성해서 사용한다. |
+| maxWait | whenExhaustedAction 속성의 값이 1일 때 사용되는 대기 시간. 단위는 1/1000초이며, 0보다 작을 경우 무한히 대기한다. |
+| maxIdle | 사용되지 않고 풀에 저장될 수 있는 최대 커넥션 개수. 음수일 경우 제한이 없다. |
+| minIdle | 사용되지 않고 풀에 저장될 수 있는 최소 커넥션 개수 |
+| testOnBorrow | true일 경우 커넥션 풀에서 커넥션을 가져올 때 커넥션이 유효한지의 여부를 검사한다. |
+| testOnReturn | true일 경우 커넥션 풀에 커넥션을 반환할 때 커넥션이 유효한지의 여부를 검사한다. |
+| timeBetweenEvctionRunsMillis | 사용되지 않은 커넥션을 추출하는 쓰레드의 실행 주기를 지정한다. 양수가 아닐 경우 실행되지 않는다. 단위는 1/1000초이다. |
+| numTestsPerEvictionRun | 사용되지 않는 커넥션을 몇 개 검사할지 지정한다. |
+| minEvictableIdleTimeMillis | 사용되지 않는 커넥션을 추출할 때 이 속성에서 지정한 시간 이상 비활성화 상태인 커넥션만 추출한다. 양수가 아닌 경우 비활성화된 시간으로는 풀에서 제거되지 않는다. 시간 단위는 1/1000초이다. |
+| testWhileIdle | true일 경우 비활성화 커넥션을 추출할 때 커넥션이 유효한지의 여부를 검사해서 유효하지 않은 커넥션은 풀에서 제거한다. |
 
-속성설명**maxActive커넥션 풀이 제공할 최대 커넥션 개수whenExhaustedAction커넥션 풀에서 가져올 수 있는 커넥션이 없을 때 어떻게 동작할지를 지정한다. 1일 경우 maxWait 속성에서 지정한 시간만큼 커넥션을 구할 때 까지 기다리며, 0일 경우 에러를 발생시킨다. 2일 경우에는 일시적으로 커넥션을 생성해서 사용한다.maxWaitwhenExhaustedAction 속성의 값이 1일 때 사용되는 대기 시간. 단위는 1/1000초이며, 0 보다 작을 경우 무한히 대기한다.maxIdle사용되지 않고 풀에 저장될 수 있는 최대 커넥션 개수. 음수일 경우 제한이 없다.minIdle사용되지 않고 풀에 저장될 수 있는 최소 커넥션 개수.testOnBorrowtrue일 경우 커넥션 풀에서 커넥션을 가져올 때 커넥션이 유효한지의 여부를 검사한다.testOnReturntrue일 경우 커넥션 풀에 커넥션을 반환할 때 커넥션이 유효한지의 여부를 검사한다.timeBetweenEvctionRunsMillis사용되지 않은 커넥션을 추출하는 쓰레드의 실행 주기를 지정한다. 양수가 아닐 경우 실행되지 않는다. 단위는 1/1000 초이다.numTestsPerEvictionRun사용되지 않는 커넥션을 몇 개 검사할지 지정한다.minEvictableIdleTimeMillis사용되지 않는 커넥션을 추출할 때 이 속성에서 지정한 시간 이상 비활성화 상태인 커넥션만 추출한다. 양수가 아닌 경우 비활성화된 시간으로는 풀에서 제거되지 않는다. 시간 단위는 1/1000초이다.testWhileIdletrue일 경우 비활성화 커넥션을 추출할 때 커넥션이 유효한지의 여부를 검사해서 유효하지 않은 커넥션은 풀에서 제거한다.
-**이 중..minIdle 은 사용되지 않고 풀에 저장될 수 있는 최소 커넥션이란다..그래 최소니까 최소한으로 끊지 않고 연결해두면 나중에 커넥션 요청 시 다시 맺지 않고 있는 걸 쓸테니 효율적이겠지...라고 생각했다만!! 이게 커넥션을 줄어들지 않게 만든 원인이 되고 있었다. 왜그럴까 의구심은 증폭.. 혹시 pool 자체가 하나가 아니고 여러개가 생성이 되나 하는 의심을 하게 된다.
-각 pool 마다 최소 커넥션을 유지하다보니 커넥션이 줄지 않는 게 아닐까... 근데 그럼 이게 있는 의미가 없잖아...ㅠㅠ
+이 중 `minIdle`은 사용되지 않고 풀에 저장될 수 있는 최소 커넥션이다. 최소한으로 끊지 않고 연결해 두면 나중에 커넥션 요청 시 다시 맺지 않고 있는 걸 쓸 테니 효율적이겠다고 생각했다. 그런데 이게 커넥션이 줄어들지 않게 만든 원인이 되고 있었다.
 
-헤고..일단 minIdle을 0으로 과감히 세팅해버렸다..무식하지만...일단 효율보다 DB가 죽어나게 생겼다...
-- jdbc pool-max 설정을 아래와 같이 바꿔보자
-   //최소 connection pool 개수
-   admin.datasource.master.jdbc.pool-min=0**   // 커넥션 풀 에 남아있지 않게 바꿈..**   admin.datasource.master.jdbc.pool-max=20**  //max_connections 와 비례해서 증감시켜야 한다.
-**참고! 위에서 말한 DB 설정 해결방법은 DB 에서 강제로 커넥션을 끊어주는 것에 반하여 아래는 DB 접속하는 측에서 connection 을 그때 그때 끊어주면서 접근하니까 아래 방법이 일단 더 낫다고 본다..
+왜 그럴까 의구심이 커졌고, 혹시 pool 자체가 하나가 아니라 여러 개 생성되는 것은 아닌지 의심하게 됐다. 각 pool마다 최소 커넥션을 유지하다 보니 커넥션이 줄지 않는 게 아닐까. 그렇다면 이 설정이 있는 의미가 없다.
 
-자료 출처 : <http://netholic.tistory.com/116**>
+일단 효율보다 DB가 버티는 게 우선이라 `minIdle`을 과감히 0으로 세팅했다. JDBC pool 설정을 아래와 같이 바꿨다.
 
-[TISTORYnetholic.tistory.com](http://netholic.tistory.com/116)
+```properties
+# 최소 connection pool 개수 - 커넥션 풀에 남아 있지 않게 바꿈
+admin.datasource.master.jdbc.pool-min=0
+# 최대 connection pool 개수 - max_connections 와 비례해서 증감시켜야 한다.
+admin.datasource.master.jdbc.pool-max=20
+```
 
+참고로 위에서 말한 DB 설정 해결 방법은 DB에서 강제로 커넥션을 끊어 주는 방식이고, 이 방법은 DB에 접속하는 쪽에서 connection을 그때그때 끊어 주면서 접근하는 방식이다. 그래서 일단 이 방법이 더 낫다고 본다.
+
+## 정리
+
+- `Too many connections`가 반복되면 먼저 슬로우 쿼리와 인덱스를 점검한다.
+- `wait_timeout`이 너무 길면 쓰지 않는 연결이 오래 남는다. 당시에는 28800으로 설정되어 있던 것이 문제였다.
+- `Threads_created / Connections`로 Cache Miss Rate를 보고 `thread_cache_size`를 조정한다.
+- 순간적으로 치솟는 커넥션은 `max_connections`만 늘려서는 해결되지 않는다. 애플리케이션 커넥션 풀의 최소 유지 개수(`minIdle`, pool-min)도 함께 본다.
+
+자료 출처: <http://netholic.tistory.com/116>
