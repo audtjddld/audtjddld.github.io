@@ -1,7 +1,7 @@
 ---
 title: "fork(), getpid(), pipe(), kill(), fcntl() 명령어"
 date: 2015-06-15 12:01:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Ubuntu]
 original_url: "https://blog.naver.com/kkforgg/220390532257"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "호출 테스트 kotest"
 date: 2024-09-02 08:59:00 +0900
-categories: [경험 및 정보 공유]
+categories: [테스트, TDD]
 original_url: "https://blog.naver.com/kkforgg/223568999369"
 ---
 

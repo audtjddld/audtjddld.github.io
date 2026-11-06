@@ -1,7 +1,7 @@
 ---
 title: "The bean 'requestMappingHandlerAdapter', defined in class path resource"
 date: 2019-11-07 16:56:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring]
 original_url: "https://blog.naver.com/kkforgg/221700926896"
 ---
 

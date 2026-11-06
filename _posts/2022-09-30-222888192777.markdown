@@ -1,7 +1,7 @@
 ---
 title: "Setting up test class sharing across Gradle multi-modules"
 date: 2022-09-30 12:07:00 +0900
-categories: [경험 및 정보 공유]
+categories: [빌드, Gradle]
 original_url: "https://blog.naver.com/kkforgg/222888192777"
 ---
 

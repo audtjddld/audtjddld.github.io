@@ -1,7 +1,7 @@
 ---
 title: "Project Loom (virtual thread) in jdk 21"
 date: 2023-08-17 18:11:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 original_url: "https://blog.naver.com/kkforgg/223186272299"
 ---
 

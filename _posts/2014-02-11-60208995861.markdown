@@ -1,7 +1,7 @@
 ---
 title: "JEUS session timeout 설정 부분"
 date: 2014-02-11 09:38:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Linux]
 original_url: "https://blog.naver.com/kkforgg/60208995861"
 ---
 

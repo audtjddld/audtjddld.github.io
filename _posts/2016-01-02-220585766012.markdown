@@ -1,7 +1,7 @@
 ---
 title: "웹 사이트 성능 최적화 분석 자동화: YSlow와 CI 서버 연동"
 date: 2016-01-02 22:04:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발노트, 경험공유]
 original_url: "https://blog.naver.com/kkforgg/220585766012"
 ---
 

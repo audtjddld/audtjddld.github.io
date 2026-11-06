@@ -1,7 +1,7 @@
 ---
 title: "java 속도체크"
 date: 2016-01-18 00:32:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 original_url: "https://blog.naver.com/kkforgg/220600492135"
 ---
 

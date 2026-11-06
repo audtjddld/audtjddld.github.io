@@ -1,7 +1,7 @@
 ---
 title: "using Hard Disk space as Java Heap"
 date: 2019-03-28 17:28:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 original_url: "https://blog.naver.com/kkforgg/221499725738"
 ---
 > [**How to manage the Java heap space**](https://kb.sos-berlin.com/display/PKB/How+to+manage+the+Java+heap+space)

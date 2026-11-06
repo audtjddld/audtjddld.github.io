@@ -1,7 +1,7 @@
 ---
 title: "thymeleaf 변수 사용법"
 date: 2016-05-25 13:23:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring, Thymeleaf]
 original_url: "https://blog.naver.com/kkforgg/220718858891"
 ---
 

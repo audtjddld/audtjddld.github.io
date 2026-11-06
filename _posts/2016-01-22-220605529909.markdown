@@ -1,7 +1,7 @@
 ---
 title: "java ObjectMapper"
 date: 2016-01-22 16:31:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 tags: [JsonToJavaObject]
 original_url: "https://blog.naver.com/kkforgg/220605529909"
 ---

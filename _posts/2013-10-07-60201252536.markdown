@@ -1,7 +1,7 @@
 ---
 title: "리팩토링 시작."
 date: 2013-10-07 21:59:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, 리팩토링]
 original_url: "https://blog.naver.com/kkforgg/60201252536"
 ---
 

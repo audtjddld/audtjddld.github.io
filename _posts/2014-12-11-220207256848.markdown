@@ -1,7 +1,7 @@
 ---
 title: "모바일 브라우저 체크"
 date: 2014-12-11 18:50:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, JavaScript]
 original_url: "https://blog.naver.com/kkforgg/220207256848"
 ---
 

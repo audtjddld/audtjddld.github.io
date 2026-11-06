@@ -1,7 +1,7 @@
 ---
 title: "safe mode off"
 date: 2016-01-28 09:16:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Database, MySQL]
 original_url: "https://blog.naver.com/kkforgg/220610956044"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "github markdown에 chart (diagram) 작성방법"
 date: 2024-02-18 12:20:00 +0900
-categories: [경험 및 정보 공유]
+categories: [도구, GitHub]
 original_url: "https://blog.naver.com/kkforgg/223357203687"
 ---
 

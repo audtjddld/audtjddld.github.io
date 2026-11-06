@@ -1,7 +1,7 @@
 ---
 title: "Finding enum by the value in kotlin"
 date: 2023-10-12 10:55:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Kotlin]
 original_url: "https://blog.naver.com/kkforgg/223234457993"
 ---
 

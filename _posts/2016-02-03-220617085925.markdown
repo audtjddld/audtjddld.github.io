@@ -1,7 +1,7 @@
 ---
 title: "@ControllerAdvice 관련"
 date: 2016-02-03 11:58:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring]
 original_url: "https://blog.naver.com/kkforgg/220617085925"
 ---
 

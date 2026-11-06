@@ -1,7 +1,7 @@
 ---
 title: "JPA fetch join, 일반 join 차이점"
 date: 2022-01-03 17:30:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, JPA]
 original_url: "https://blog.naver.com/kkforgg/222611880322"
 ---
 

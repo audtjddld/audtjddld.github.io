@@ -1,7 +1,7 @@
 ---
 title: "Spring boot queryDSL 셋팅 방법 및 CustomRepository 설정 방법"
 date: 2018-04-25 14:22:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring, "Spring Boot"]
 original_url: "https://blog.naver.com/kkforgg/221261138319"
 ---
 

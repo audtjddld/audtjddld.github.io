@@ -1,7 +1,7 @@
 ---
 title: "merge into"
 date: 2014-05-19 12:09:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Database, MongoDB]
 original_url: "https://blog.naver.com/kkforgg/220004000597"
 ---
 

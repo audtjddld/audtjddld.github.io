@@ -1,7 +1,7 @@
 ---
 title: "JSP Servlet에서 쿠키(Cookie) 한글 저장시 에러 발생. 해결법?"
 date: 2012-07-24 10:36:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, JSP]
 tags: [ServletCookie사용법, 한글Cookie, IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/60167363845"
 ---

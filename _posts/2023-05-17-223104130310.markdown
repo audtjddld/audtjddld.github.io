@@ -1,7 +1,7 @@
 ---
 title: "reflection을 사용한 변수 접근"
 date: 2023-05-17 01:22:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Kotlin]
 original_url: "https://blog.naver.com/kkforgg/223104130310"
 ---
 

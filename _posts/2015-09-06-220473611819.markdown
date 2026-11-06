@@ -1,7 +1,7 @@
 ---
 title: "번역사이트 모음"
 date: 2015-09-06 22:19:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발노트, 참고자료]
 original_url: "https://blog.naver.com/kkforgg/220473611819"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "이클립스 jdk 버전 넣기"
 date: 2013-06-11 11:37:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 tags: [IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/60193753896"
 ---

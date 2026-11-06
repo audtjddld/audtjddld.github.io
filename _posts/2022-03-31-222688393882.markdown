@@ -1,7 +1,7 @@
 ---
 title: "쿠버네티스 - 새로운 인프라 환경이 온다"
 date: 2022-03-31 23:28:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Kubernetes]
 original_url: "https://blog.naver.com/kkforgg/222688393882"
 ---
 

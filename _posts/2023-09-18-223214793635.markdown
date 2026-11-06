@@ -1,7 +1,7 @@
 ---
 title: "Gradle Version Catalog"
 date: 2023-09-18 16:00:00 +0900
-categories: [경험 및 정보 공유]
+categories: [빌드, Gradle]
 original_url: "https://blog.naver.com/kkforgg/223214793635"
 ---
 

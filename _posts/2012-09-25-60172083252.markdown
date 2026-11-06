@@ -1,7 +1,7 @@
 ---
 title: "jQuery $.ajax 을 이용한 JSON 형식 사용하기 ( Spring, Servlet )"
 date: 2012-09-25 10:50:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, JavaScript]
 original_url: "https://blog.naver.com/kkforgg/60172083252"
 ---
 

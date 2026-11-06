@@ -1,7 +1,7 @@
 ---
 title: "[2021 마이 블로그 리포트] 블로그 빅데이터로 알아보는 '2021 내 블로그 스타일'"
 date: 2021-12-15 19:01:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발]
 tags: [2021마이블로그리포트]
 original_url: "https://blog.naver.com/kkforgg/222596287399"
 ---

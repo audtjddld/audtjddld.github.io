@@ -1,7 +1,7 @@
 ---
 title: "Amazon ECS Exec를 이용해서 Amazon Fargate 컨테이너로 접속해 보기"
 date: 2022-12-06 19:57:00 +0900
-categories: [경험 및 정보 공유]
+categories: [클라우드, AWS]
 original_url: "https://blog.naver.com/kkforgg/222947982263"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "ElasticSearch Basic"
 date: 2022-08-09 12:03:00 +0900
-categories: [경험 및 정보 공유]
+categories: [검색, Elasticsearch]
 original_url: "https://blog.naver.com/kkforgg/222843707156"
 ---
 

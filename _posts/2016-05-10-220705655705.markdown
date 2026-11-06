@@ -1,7 +1,7 @@
 ---
 title: "angluarjs 이벤트 전송 및 수신을 위한 스코프 메서드"
 date: 2016-05-10 11:14:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, AngularJS]
 original_url: "https://blog.naver.com/kkforgg/220705655705"
 ---
 {% raw %}

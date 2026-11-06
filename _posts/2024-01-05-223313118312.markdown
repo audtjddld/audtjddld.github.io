@@ -1,7 +1,7 @@
 ---
 title: "JRE docker image를 배포하는 경우 모니터링에 이슈가 있는지"
 date: 2024-01-05 10:37:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Kubernetes]
 original_url: "https://blog.naver.com/kkforgg/223313118312"
 ---
 

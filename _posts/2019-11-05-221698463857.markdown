@@ -1,7 +1,7 @@
 ---
 title: "오브젝트 (2)"
 date: 2019-11-05 10:54:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, 오브젝트]
 original_url: "https://blog.naver.com/kkforgg/221698463857"
 ---
 

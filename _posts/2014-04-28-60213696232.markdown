@@ -1,7 +1,7 @@
 ---
 title: "오라클 db백업 방법"
 date: 2014-04-28 17:34:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Database, Oracle]
 original_url: "https://blog.naver.com/kkforgg/60213696232"
 ---
 

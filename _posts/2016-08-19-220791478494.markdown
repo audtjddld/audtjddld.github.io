@@ -1,7 +1,7 @@
 ---
 title: "DDD start 4"
 date: 2016-08-19 13:48:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, DDD]
 original_url: "https://blog.naver.com/kkforgg/220791478494"
 ---
 

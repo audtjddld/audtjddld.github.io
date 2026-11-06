@@ -1,7 +1,7 @@
 ---
 title: "전자정부프레임웍 기반 파일 다운로드 컨트롤러"
 date: 2013-12-10 09:57:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, 전자정부프레임워크]
 original_url: "https://blog.naver.com/kkforgg/60205112350"
 ---
 

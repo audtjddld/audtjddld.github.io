@@ -1,7 +1,7 @@
 ---
 title: "Spring boot test"
 date: 2020-02-28 17:26:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring, "Spring Boot"]
 original_url: "https://blog.naver.com/kkforgg/221829281233"
 ---
 

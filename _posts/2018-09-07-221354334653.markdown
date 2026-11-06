@@ -1,7 +1,7 @@
 ---
 title: "요즘 여러가지 생각 및 경험 GC 적용 포함"
 date: 2018-09-07 14:26:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발노트, 경험공유]
 original_url: "https://blog.naver.com/kkforgg/221354334653"
 ---
 

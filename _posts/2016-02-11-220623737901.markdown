@@ -1,7 +1,7 @@
 ---
 title: "[우분투 ubuntu] 우분투 14.04 server에 Mysql 설치, 외부 권한 주기, db 생성"
 date: 2016-02-11 15:12:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Ubuntu]
 original_url: "https://blog.naver.com/kkforgg/220623737901"
 ---
 

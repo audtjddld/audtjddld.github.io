@@ -1,7 +1,7 @@
 ---
 title: "오라클 계층형 쿼리 정리 [펌]"
 date: 2013-12-17 13:46:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Database, Oracle]
 original_url: "https://blog.naver.com/kkforgg/60205551958"
 ---
 

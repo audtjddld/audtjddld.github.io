@@ -1,7 +1,7 @@
 ---
 title: "[공유] [Solaris] 기본 ftp(in.ftpd)에서 계정별 홈디렉토리 상위로 접근 제한"
 date: 2013-06-25 14:21:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Linux]
 original_url: "https://blog.naver.com/kkforgg/60194669555"
 ---
 

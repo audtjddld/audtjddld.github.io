@@ -1,7 +1,7 @@
 ---
 title: "원격 저장소 URL 변경하기"
 date: 2018-11-13 17:38:00 +0900
-categories: [경험 및 정보 공유]
+categories: [도구, GitHub]
 original_url: "https://blog.naver.com/kkforgg/221397680589"
 ---
 

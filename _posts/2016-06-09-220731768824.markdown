@@ -1,7 +1,7 @@
 ---
 title: "angularjs 개행 관련"
 date: 2016-06-09 15:13:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, AngularJS]
 original_url: "https://blog.naver.com/kkforgg/220731768824"
 ---
 

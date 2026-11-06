@@ -1,7 +1,7 @@
 ---
 title: "VPC 전체 네트워크 traffic 확인 방법"
 date: 2022-08-09 15:29:00 +0900
-categories: [경험 및 정보 공유]
+categories: [클라우드, AWS]
 original_url: "https://blog.naver.com/kkforgg/222843891822"
 ---
 

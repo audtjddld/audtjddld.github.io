@@ -1,7 +1,7 @@
 ---
 title: "Spring Authorization Server reference"
 date: 2023-03-07 14:30:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring, "Spring Security"]
 original_url: "https://blog.naver.com/kkforgg/223037417320"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "DIP : 의존성 역전 원칙"
 date: 2022-01-23 23:40:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, 클린아키텍처]
 original_url: "https://blog.naver.com/kkforgg/222629504986"
 ---
 

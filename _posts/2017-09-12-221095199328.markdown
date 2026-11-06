@@ -1,7 +1,7 @@
 ---
 title: "Kafka 구성 알아보기 2"
 date: 2017-09-12 16:13:00 +0900
-categories: [경험 및 정보 공유]
+categories: [메시징, Kafka]
 original_url: "https://blog.naver.com/kkforgg/221095199328"
 ---
 

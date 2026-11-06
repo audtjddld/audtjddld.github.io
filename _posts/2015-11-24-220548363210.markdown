@@ -1,7 +1,7 @@
 ---
 title: "centos network 설정"
 date: 2015-11-24 10:19:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Linux]
 original_url: "https://blog.naver.com/kkforgg/220548363210"
 ---
 

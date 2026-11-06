@@ -1,7 +1,7 @@
 ---
 title: "Maven 구축 방법 [펌]"
 date: 2013-05-20 18:05:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드]
 tags: [메이븐구축, maven구축, maven, Maven]
 original_url: "https://blog.naver.com/kkforgg/60192324620"
 ---

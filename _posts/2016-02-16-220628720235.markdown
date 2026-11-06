@@ -1,7 +1,7 @@
 ---
 title: "잘돌아가던 이클립스 library 오류 발생시 대처 방법"
 date: 2016-02-16 15:13:00 +0900
-categories: [경험 및 정보 공유]
+categories: [도구, Eclipse]
 original_url: "https://blog.naver.com/kkforgg/220628720235"
 ---
 

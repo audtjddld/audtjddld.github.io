@@ -1,7 +1,7 @@
 ---
 title: "Cent OS Samba 설치 및 HDD Mount 하기"
 date: 2012-09-03 19:24:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Ubuntu]
 tags: [CentOSsamba, samba설치, 하드디스크마운트, 리눅스하드마운트, hdd, samba설정, IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/60170439762"
 ---

@@ -1,7 +1,7 @@
 ---
 title: "[java] 웹 페이지 특정영역 이미지 캡쳐 후 서버에 저장"
 date: 2015-05-13 14:14:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발노트, 경험공유]
 original_url: "https://blog.naver.com/kkforgg/220358259789"
 ---
 

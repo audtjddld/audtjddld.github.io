@@ -1,7 +1,7 @@
 ---
 title: "[공유] 스프링 페이징 기법(PagedListHolder)"
 date: 2013-01-08 15:27:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, JSP]
 original_url: "https://blog.naver.com/kkforgg/60179906889"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "싱글톤 패턴 (Singleton pattern)"
 date: 2016-02-22 21:57:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, 디자인패턴]
 tags: [디자인패턴, 싱글톤패턴, singleton, HEAD, FIRST, DESIGN, PATTERNS]
 original_url: "https://blog.naver.com/kkforgg/220635013785"
 ---

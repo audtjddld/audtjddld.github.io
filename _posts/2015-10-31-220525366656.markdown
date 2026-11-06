@@ -1,7 +1,7 @@
 ---
 title: "jsoup [펌]"
 date: 2015-10-31 23:24:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 tags: [에디터보안취약점제거, TextToHtml]
 original_url: "https://blog.naver.com/kkforgg/220525366656"
 ---

@@ -1,7 +1,7 @@
 ---
 title: "메뉴 관리 관련되서 Multi Select 박스를 이용한거 한번 만들어봤음."
 date: 2013-05-24 17:00:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, JavaScript]
 original_url: "https://blog.naver.com/kkforgg/60192604936"
 ---
 

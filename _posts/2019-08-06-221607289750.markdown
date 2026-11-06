@@ -1,7 +1,7 @@
 ---
 title: "Reactive Streams 몇가지 사항만 기술"
 date: 2019-08-06 12:13:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, Reactive]
 original_url: "https://blog.naver.com/kkforgg/221607289750"
 ---
 

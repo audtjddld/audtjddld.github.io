@@ -1,7 +1,7 @@
 ---
 title: "객체지향의 사실과 오해"
 date: 2019-05-22 00:53:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, OOP]
 original_url: "https://blog.naver.com/kkforgg/221543416942"
 ---
 > [**객체지향의 사실과 오해**](http://book.naver.com/bookdb/book_detail.php?bid=9145968)

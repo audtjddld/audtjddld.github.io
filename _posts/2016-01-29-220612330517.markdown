@@ -1,7 +1,7 @@
 ---
 title: "이클립스 성능 최적화."
 date: 2016-01-29 13:32:00 +0900
-categories: [경험 및 정보 공유]
+categories: [도구, Eclipse]
 original_url: "https://blog.naver.com/kkforgg/220612330517"
 ---
 

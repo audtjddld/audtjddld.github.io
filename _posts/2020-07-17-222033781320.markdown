@@ -1,7 +1,7 @@
 ---
 title: "hexagonal 2"
 date: 2020-07-17 17:58:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, DDD]
 original_url: "https://blog.naver.com/kkforgg/222033781320"
 ---
 

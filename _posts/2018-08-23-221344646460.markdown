@@ -1,7 +1,7 @@
 ---
 title: "7-ways-java-heap-dump"
 date: 2018-08-23 18:52:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발]
 original_url: "https://blog.naver.com/kkforgg/221344646460"
 ---
 

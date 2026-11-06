@@ -1,7 +1,7 @@
 ---
 title: "Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider"
 date: 2023-01-02 11:59:00 +0900
-categories: [경험 및 정보 공유]
+categories: [빌드, Gradle]
 original_url: "https://blog.naver.com/kkforgg/222972570186"
 ---
 

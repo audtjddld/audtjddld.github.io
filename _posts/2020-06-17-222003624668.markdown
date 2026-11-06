@@ -1,7 +1,7 @@
 ---
 title: "Github"
 date: 2020-06-17 13:14:00 +0900
-categories: [경험 및 정보 공유]
+categories: [도구, GitHub]
 original_url: "https://blog.naver.com/kkforgg/222003624668"
 ---
 

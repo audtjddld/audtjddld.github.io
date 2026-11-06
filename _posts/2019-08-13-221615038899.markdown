@@ -1,7 +1,7 @@
 ---
 title: "sun.security.validator.ValidatorException: PKIX path building failed:"
 date: 2019-08-13 14:24:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 original_url: "https://blog.naver.com/kkforgg/221615038899"
 ---
 

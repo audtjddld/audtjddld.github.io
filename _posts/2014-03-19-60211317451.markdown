@@ -1,7 +1,7 @@
 ---
 title: "보안 취약점 관련 사항 내용 정리."
 date: 2014-03-19 14:26:00 +0900
-categories: [경험 및 정보 공유]
+categories: [보안, 보안교육]
 original_url: "https://blog.naver.com/kkforgg/60211317451"
 ---
 

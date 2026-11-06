@@ -1,7 +1,7 @@
 ---
 title: "github PR, Issue 내용에 image 첨부시 주의해야 할점 (보안)"
 date: 2024-01-10 09:47:00 +0900
-categories: [경험 및 정보 공유]
+categories: [도구, GitHub]
 original_url: "https://blog.naver.com/kkforgg/223317894585"
 ---
 

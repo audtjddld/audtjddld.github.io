@@ -1,7 +1,7 @@
 ---
 title: "logback 설정 방법 디테일하게 잘나와 있음."
 date: 2015-12-29 17:37:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring, "Spring Boot"]
 original_url: "https://blog.naver.com/kkforgg/220582015539"
 ---
 

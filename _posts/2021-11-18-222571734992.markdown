@@ -1,7 +1,7 @@
 ---
 title: "프로젝트가 서쪽으로 간 까닭은? [펌]"
 date: 2021-11-18 11:39:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발노트, 경험공유]
 original_url: "https://blog.naver.com/kkforgg/222571734992"
 ---
 

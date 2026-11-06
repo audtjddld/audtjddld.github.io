@@ -1,7 +1,7 @@
 ---
 title: "gradle jib"
 date: 2022-08-08 12:52:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Docker]
 original_url: "https://blog.naver.com/kkforgg/222842776300"
 ---
 

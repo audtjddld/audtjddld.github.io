@@ -1,7 +1,7 @@
 ---
 title: "node.js 공부한 내용 정리"
 date: 2015-06-15 17:21:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, "Node.js"]
 original_url: "https://blog.naver.com/kkforgg/220390885241"
 ---
 

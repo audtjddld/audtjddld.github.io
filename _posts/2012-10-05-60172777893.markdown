@@ -1,7 +1,7 @@
 ---
 title: "[펌] [HTML] DTD DOCTYPE 과 HTML5"
 date: 2012-10-05 19:25:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, HTML]
 original_url: "https://blog.naver.com/kkforgg/60172777893"
 ---
 

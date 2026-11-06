@@ -1,7 +1,7 @@
 ---
 title: "openssl pkcs#12 형태로 인증서 만들기 p.12 인증서"
 date: 2016-01-05 09:40:00 +0900
-categories: [경험 및 정보 공유]
+categories: [보안]
 original_url: "https://blog.naver.com/kkforgg/220587928160"
 ---
 

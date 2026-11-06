@@ -1,7 +1,7 @@
 ---
 title: "Protobuf Best practices"
 date: 2024-03-06 10:46:00 +0900
-categories: [경험 및 정보 공유]
+categories: [도구, "Protocol Buffers"]
 original_url: "https://blog.naver.com/kkforgg/223374722899"
 ---
 

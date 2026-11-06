@@ -1,7 +1,7 @@
 ---
 title: "java 8 stream"
 date: 2017-09-06 20:08:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 original_url: "https://blog.naver.com/kkforgg/221090942648"
 ---
 > [**winterbe.com**](http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/)

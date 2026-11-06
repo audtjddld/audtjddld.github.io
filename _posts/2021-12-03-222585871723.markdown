@@ -1,7 +1,7 @@
 ---
 title: "한명이 떠나는 비용 [펌]"
 date: 2021-12-03 15:19:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발노트, 경험공유]
 original_url: "https://blog.naver.com/kkforgg/222585871723"
 ---
 

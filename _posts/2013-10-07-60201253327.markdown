@@ -1,7 +1,7 @@
 ---
 title: "리팩토링 정의 (2)"
 date: 2013-10-07 22:10:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, 리팩토링]
 original_url: "https://blog.naver.com/kkforgg/60201253327"
 ---
 

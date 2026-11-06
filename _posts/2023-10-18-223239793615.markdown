@@ -1,7 +1,7 @@
 ---
 title: "Spring Boot 내장 WAS 종류와 특징 [펌]"
 date: 2023-10-18 10:12:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, WAS]
 original_url: "https://blog.naver.com/kkforgg/223239793615"
 ---
 

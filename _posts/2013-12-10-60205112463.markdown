@@ -1,7 +1,7 @@
 ---
 title: "전자정부프레임워크 기반 image뷰 컨트롤러"
 date: 2013-12-10 10:00:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, 전자정부프레임워크]
 original_url: "https://blog.naver.com/kkforgg/60205112463"
 ---
 

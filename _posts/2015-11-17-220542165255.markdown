@@ -1,7 +1,7 @@
 ---
 title: "레거시 시스템, 레거시 코드"
 date: 2015-11-17 21:40:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, 리팩토링]
 original_url: "https://blog.naver.com/kkforgg/220542165255"
 ---
 

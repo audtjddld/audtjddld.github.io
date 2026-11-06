@@ -1,7 +1,7 @@
 ---
 title: "우아한객체지향을 보고"
 date: 2019-08-12 11:46:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, OOP]
 original_url: "https://blog.naver.com/kkforgg/221613687101"
 ---
 

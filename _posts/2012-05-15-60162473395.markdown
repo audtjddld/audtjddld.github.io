@@ -1,7 +1,7 @@
 ---
 title: "jstl forEach문"
 date: 2012-05-15 13:04:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, JSP]
 tags: [IT·컴퓨터, jstl, forEach]
 original_url: "https://blog.naver.com/kkforgg/60162473395"
 ---

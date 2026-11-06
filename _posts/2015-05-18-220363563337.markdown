@@ -1,7 +1,7 @@
 ---
 title: "리팩토링의 원리"
 date: 2015-05-18 23:29:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, 리팩토링]
 original_url: "https://blog.naver.com/kkforgg/220363563337"
 ---
 

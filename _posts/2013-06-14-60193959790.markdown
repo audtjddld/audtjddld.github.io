@@ -1,7 +1,7 @@
 ---
 title: "Spring Excel 생성 후 다운로드 방법"
 date: 2013-06-14 12:41:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, JSP]
 tags: [IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/60193959790"
 ---

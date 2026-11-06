@@ -1,7 +1,7 @@
 ---
 title: "mongoItemReader"
 date: 2016-05-02 15:51:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring, "Spring Batch"]
 original_url: "https://blog.naver.com/kkforgg/220699180912"
 ---
 

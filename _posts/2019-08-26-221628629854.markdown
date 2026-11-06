@@ -1,7 +1,7 @@
 ---
 title: "com.amazonaws.services.s3.model.AmazonS3Exception: The request signature we calculated does not ..."
 date: 2019-08-26 10:38:00 +0900
-categories: [경험 및 정보 공유]
+categories: [클라우드, AWS]
 original_url: "https://blog.naver.com/kkforgg/221628629854"
 ---
 

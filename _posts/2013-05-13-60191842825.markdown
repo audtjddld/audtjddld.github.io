@@ -1,7 +1,7 @@
 ---
 title: "[공유] Java Servlet에 관하여..."
 date: 2013-05-13 09:20:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 original_url: "https://blog.naver.com/kkforgg/60191842825"
 ---
 

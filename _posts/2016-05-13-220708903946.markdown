@@ -1,7 +1,7 @@
 ---
 title: "2016년 5월 13일 오후 6시 12분에 저장한 글입니다."
 date: 2016-05-13 18:12:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring]
 original_url: "https://blog.naver.com/kkforgg/220708903946"
 ---
 

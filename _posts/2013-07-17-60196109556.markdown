@@ -1,7 +1,7 @@
 ---
 title: "jstl을 이용한 xml 파싱 된 값과 기존 el값 비교하기"
 date: 2013-07-17 11:44:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, JSP]
 tags: [IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/60196109556"
 ---

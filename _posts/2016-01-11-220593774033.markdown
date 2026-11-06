@@ -1,7 +1,7 @@
 ---
 title: "좋은 퍼블리싱 하기"
 date: 2016-01-11 10:18:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, HTML]
 original_url: "https://blog.naver.com/kkforgg/220593774033"
 ---
 

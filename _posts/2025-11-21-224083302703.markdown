@@ -1,7 +1,7 @@
 ---
 title: "클로드 코드 관련"
 date: 2025-11-21 12:44:00 +0900
-categories: [경험 및 정보 공유]
+categories: [AI]
 tags: [키를]
 original_url: "https://blog.naver.com/kkforgg/224083302703"
 ---

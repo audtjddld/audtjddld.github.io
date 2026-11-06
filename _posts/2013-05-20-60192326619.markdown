@@ -1,7 +1,7 @@
 ---
 title: "[공유] Spring3+ibatis+maven 분석(1)"
 date: 2013-05-20 18:35:00 +0900
-categories: [경험 및 정보 공유]
+categories: [빌드, Maven]
 original_url: "https://blog.naver.com/kkforgg/60192326619"
 ---
 

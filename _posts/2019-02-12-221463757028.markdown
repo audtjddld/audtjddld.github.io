@@ -1,7 +1,7 @@
 ---
 title: "google guice, guava event-bus"
 date: 2019-02-12 10:58:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 original_url: "https://blog.naver.com/kkforgg/221463757028"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Node.js 란? [퍼옴]"
 date: 2013-05-16 15:56:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, 네트워크]
 original_url: "https://blog.naver.com/kkforgg/60192071113"
 ---
 

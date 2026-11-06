@@ -1,7 +1,7 @@
 ---
 title: "포털사이트 사이트 등록"
 date: 2016-02-23 10:15:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발노트, SEO]
 tags: [포털사이트, 사이트등록]
 original_url: "https://blog.naver.com/kkforgg/220635383384"
 ---

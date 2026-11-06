@@ -1,7 +1,7 @@
 ---
 title: "android restful api 호출 후 callback을 정의해보았다."
 date: 2017-01-05 01:18:00 +0900
-categories: [경험 및 정보 공유]
+categories: [모바일, Android]
 original_url: "https://blog.naver.com/kkforgg/220903033393"
 ---
 

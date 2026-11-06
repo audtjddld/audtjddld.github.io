@@ -1,7 +1,7 @@
 ---
 title: "angularjs 날짜 계산 방법. angular moment"
 date: 2016-06-01 16:24:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, AngularJS]
 original_url: "https://blog.naver.com/kkforgg/220725046584"
 ---
 

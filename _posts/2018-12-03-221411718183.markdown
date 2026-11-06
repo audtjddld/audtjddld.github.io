@@ -1,7 +1,7 @@
 ---
 title: "스레드와 비용"
 date: 2018-12-03 23:18:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, 동시성]
 original_url: "https://blog.naver.com/kkforgg/221411718183"
 ---
 

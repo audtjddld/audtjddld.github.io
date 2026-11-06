@@ -1,7 +1,7 @@
 ---
 title: "Java 22 release"
 date: 2024-04-07 23:52:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 original_url: "https://blog.naver.com/kkforgg/223408719924"
 ---
 

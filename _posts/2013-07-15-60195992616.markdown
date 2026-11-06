@@ -1,7 +1,7 @@
 ---
 title: "spring properties jsp 에서 사용하기."
 date: 2013-07-15 16:59:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, JSP]
 tags: [IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/60195992616"
 ---

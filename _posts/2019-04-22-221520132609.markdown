@@ -1,7 +1,7 @@
 ---
 title: "DDD 정리. 1부"
 date: 2019-04-22 22:26:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, DDD]
 original_url: "https://blog.naver.com/kkforgg/221520132609"
 ---
 

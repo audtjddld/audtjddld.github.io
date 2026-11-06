@@ -1,7 +1,7 @@
 ---
 title: "팝업창 안겹치게 뜨게 하기"
 date: 2013-03-26 17:01:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, JavaScript]
 original_url: "https://blog.naver.com/kkforgg/60188262036"
 ---
 

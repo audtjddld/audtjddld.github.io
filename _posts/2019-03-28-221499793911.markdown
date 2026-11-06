@@ -1,7 +1,7 @@
 ---
 title: "tomcat native"
 date: 2019-03-28 18:49:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Tomcat]
 original_url: "https://blog.naver.com/kkforgg/221499793911"
 ---
 

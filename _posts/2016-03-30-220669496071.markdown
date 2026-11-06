@@ -1,7 +1,7 @@
 ---
 title: "RequestBody 시  mapping not marked as ignorable Error 발생"
 date: 2016-03-30 14:50:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring, "Spring Boot"]
 original_url: "https://blog.naver.com/kkforgg/220669496071"
 ---
 

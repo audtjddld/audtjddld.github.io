@@ -1,7 +1,7 @@
 ---
 title: "javascript Map~"
 date: 2014-09-01 10:21:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, JavaScript]
 original_url: "https://blog.naver.com/kkforgg/220109707968"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "[공유] ~ 2. 7 까지 ) 공통과제 if문 case문 while문 for문 배열"
 date: 2013-02-07 10:31:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 original_url: "https://blog.naver.com/kkforgg/60182953118"
 ---
 

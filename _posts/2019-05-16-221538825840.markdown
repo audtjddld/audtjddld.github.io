@@ -1,7 +1,7 @@
 ---
 title: "분산 서버 로그 처리"
 date: 2019-05-16 10:35:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발노트, 경험공유]
 original_url: "https://blog.naver.com/kkforgg/221538825840"
 ---
 

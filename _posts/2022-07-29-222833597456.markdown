@@ -1,7 +1,7 @@
 ---
 title: "Junit Test 작성하기"
 date: 2022-07-29 11:57:00 +0900
-categories: [경험 및 정보 공유]
+categories: [테스트, TDD]
 original_url: "https://blog.naver.com/kkforgg/222833597456"
 ---
 

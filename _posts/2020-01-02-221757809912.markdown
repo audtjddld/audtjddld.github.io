@@ -1,7 +1,7 @@
 ---
 title: "심플소프트웨어"
 date: 2020-01-02 21:41:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발노트, 기초]
 original_url: "https://blog.naver.com/kkforgg/221757809912"
 ---
 

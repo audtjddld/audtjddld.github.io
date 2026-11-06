@@ -1,7 +1,7 @@
 ---
 title: "MongoDB 이동 (dump)"
 date: 2016-03-22 10:40:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Database, MongoDB]
 original_url: "https://blog.naver.com/kkforgg/220661830576"
 ---
 

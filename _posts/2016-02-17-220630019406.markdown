@@ -1,7 +1,7 @@
 ---
 title: "RESTful api HTTP header method"
 date: 2016-02-17 18:14:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, REST]
 original_url: "https://blog.naver.com/kkforgg/220630019406"
 ---
 

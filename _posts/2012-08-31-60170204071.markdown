@@ -1,7 +1,7 @@
 ---
 title: "[공유] 0809 Jsp & Servlet강의 (JSTL사용하기, 필터와래퍼)"
 date: 2012-08-31 11:05:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, JSP]
 tags: [jstl, jstl사용법]
 original_url: "https://blog.naver.com/kkforgg/60170204071"
 ---

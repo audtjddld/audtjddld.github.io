@@ -1,7 +1,7 @@
 ---
 title: "ZGC"
 date: 2023-08-18 17:01:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 original_url: "https://blog.naver.com/kkforgg/223187158851"
 ---
 

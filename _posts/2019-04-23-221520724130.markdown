@@ -1,7 +1,7 @@
 ---
 title: "grails 예제"
 date: 2019-04-23 16:07:00 +0900
-categories: [경험 및 정보 공유]
+categories: [언어, Grails]
 original_url: "https://blog.naver.com/kkforgg/221520724130"
 ---
 

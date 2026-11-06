@@ -1,7 +1,7 @@
 ---
 title: "java.lang.NumberFormatException: For input string: “y” 에러 해결방법"
 date: 2014-09-03 17:53:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, MyBatis]
 tags: [IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/220112292048"
 ---

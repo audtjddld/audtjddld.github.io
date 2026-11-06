@@ -1,7 +1,7 @@
 ---
 title: "컨테이너를 다루는 표준 아키텍처, 쿠버네티스"
 date: 2022-04-01 09:49:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Kubernetes]
 original_url: "https://blog.naver.com/kkforgg/222688659291"
 ---
 

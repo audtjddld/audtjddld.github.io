@@ -1,7 +1,7 @@
 ---
 title: "JEUS 5 서버에서 Windows xp 인터넷익스플로러 8 (IE 8) 에서 한글 검색시 인코딩 깨지는 문제"
 date: 2014-02-28 13:39:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Linux]
 original_url: "https://blog.naver.com/kkforgg/60210165099"
 ---
 

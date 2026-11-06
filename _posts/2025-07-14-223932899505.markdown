@@ -1,7 +1,7 @@
 ---
 title: "생성형 AI 도구를 사용하여 연구하고 쓰는 방법"
 date: 2025-07-14 19:50:00 +0900
-categories: [경험 및 정보 공유]
+categories: [AI]
 original_url: "https://blog.naver.com/kkforgg/223932899505"
 ---
 

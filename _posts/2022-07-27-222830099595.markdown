@@ -1,7 +1,7 @@
 ---
 title: "[펌][번역] 쿠버네티스에서 쉽게 저지르는 10가지 실수"
 date: 2022-07-27 00:04:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Kubernetes]
 original_url: "https://blog.naver.com/kkforgg/222830099595"
 ---
 

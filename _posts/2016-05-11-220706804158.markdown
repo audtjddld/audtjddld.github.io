@@ -1,7 +1,7 @@
 ---
 title: "AWS cannot allocate memory: fork: Unable to fork new process"
 date: 2016-05-11 14:04:00 +0900
-categories: [경험 및 정보 공유]
+categories: [클라우드, AWS]
 original_url: "https://blog.naver.com/kkforgg/220706804158"
 ---
 

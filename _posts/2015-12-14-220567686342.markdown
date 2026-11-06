@@ -1,7 +1,7 @@
 ---
 title: "cmd 로 smtp 메일 서버 테스트 하기"
 date: 2015-12-14 10:38:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발노트, 경험공유]
 original_url: "https://blog.naver.com/kkforgg/220567686342"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "솔라리스 10 , jeus 6.0, WebtoB 4.1 연동. Spring 구축하기"
 date: 2013-06-10 19:19:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, JEUS]
 original_url: "https://blog.naver.com/kkforgg/60193714881"
 ---
 

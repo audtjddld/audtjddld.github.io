@@ -1,7 +1,7 @@
 ---
 title: "주말을 제외한 날짜 txt파일로 뽑기."
 date: 2012-08-06 08:57:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 tags: [JavaCalendar, Calendar, IT·컴퓨터, 날짜계산, 날짜, 날짜함수, 자바켈린더]
 original_url: "https://blog.naver.com/kkforgg/60168281197"
 ---

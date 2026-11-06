@@ -1,7 +1,7 @@
 ---
 title: "[공유] java ftp 서버 파일 업로드하기"
 date: 2013-01-17 15:46:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 original_url: "https://blog.naver.com/kkforgg/60180770248"
 ---
 

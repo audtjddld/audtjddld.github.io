@@ -1,7 +1,7 @@
 ---
 title: "[20.Blog] 기록이 쌓이면 역사가 된다"
 date: 2023-10-14 16:41:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발]
 tags: [20blog, 블랭크블로깅]
 original_url: "https://blog.naver.com/kkforgg/223236560873"
 ---

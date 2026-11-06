@@ -1,7 +1,7 @@
 ---
 title: "전자 정부 프레임워크 tiles 셋팅"
 date: 2013-05-30 14:26:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, JSP]
 tags: [IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/60192996782"
 ---

@@ -1,7 +1,7 @@
 ---
 title: "ubuntu 설치시 처음해야 할 설정"
 date: 2016-02-05 14:52:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Ubuntu]
 original_url: "https://blog.naver.com/kkforgg/220619354958"
 ---
 

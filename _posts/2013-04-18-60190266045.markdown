@@ -1,9 +1,10 @@
 ---
 title: "아라뱃길"
 date: 2013-04-18 11:03:00 +0900
-categories: [경험 및 정보 공유]
+categories: [여행]
 tags: [NX1000, 아라뱃길, 4월초]
 original_url: "https://blog.naver.com/kkforgg/60190266045"
+published: false
 ---
 
 경인 아라뱃길 4월 초 모습~

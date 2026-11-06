@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes 강좌"
 date: 2022-11-21 11:14:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, Kubernetes]
 original_url: "https://blog.naver.com/kkforgg/222934160260"
 ---
 

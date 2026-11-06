@@ -1,7 +1,7 @@
 ---
 title: "AKKA"
 date: 2019-04-22 22:24:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, Akka]
 original_url: "https://blog.naver.com/kkforgg/221520130563"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "What is DynamoDB"
 date: 2020-08-19 14:19:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Database, DynamoDB]
 original_url: "https://blog.naver.com/kkforgg/222064815260"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "web socket"
 date: 2016-03-22 13:44:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발노트, 참고자료]
 original_url: "https://blog.naver.com/kkforgg/220662005281"
 ---
 

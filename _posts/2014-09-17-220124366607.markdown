@@ -1,7 +1,7 @@
 ---
 title: "Mybatis 빈값 비교시 잘안될때 이유는 이것 때문이다."
 date: 2014-09-17 09:46:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, MyBatis]
 tags: [IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/220124366607"
 ---

@@ -1,7 +1,7 @@
 ---
 title: "java 현재 호출한 클래스, 메서드명 알아내기"
 date: 2015-12-29 14:39:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 original_url: "https://blog.naver.com/kkforgg/220581816192"
 ---
 

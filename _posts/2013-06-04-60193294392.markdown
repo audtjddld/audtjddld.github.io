@@ -1,7 +1,7 @@
 ---
 title: "jsp Session 객체"
 date: 2013-06-04 10:50:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, JSP]
 tags: [IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/60193294392"
 ---

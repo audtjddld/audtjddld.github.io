@@ -1,7 +1,7 @@
 ---
 title: "구글 지도 (gogle map ) API 연동 2"
 date: 2013-09-23 14:26:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, JavaScript]
 original_url: "https://blog.naver.com/kkforgg/60200392857"
 ---
 

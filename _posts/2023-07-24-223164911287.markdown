@@ -1,7 +1,7 @@
 ---
 title: "spring boot 3.0 querydsl 설정 (gradle kotlin)"
 date: 2023-07-24 18:32:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, JPA]
 original_url: "https://blog.naver.com/kkforgg/223164911287"
 ---
 

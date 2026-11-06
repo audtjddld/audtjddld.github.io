@@ -1,7 +1,7 @@
 ---
 title: "kafka option 정리"
 date: 2021-12-28 10:30:00 +0900
-categories: [경험 및 정보 공유]
+categories: [메시징, Kafka]
 original_url: "https://blog.naver.com/kkforgg/222605578222"
 ---
 

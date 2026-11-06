@@ -1,8 +1,9 @@
 ---
 title: "제우스 설정 관련 파일"
 date: 2014-11-13 17:30:00 +0900
-categories: [경험 및 정보 공유]
+categories: [인프라, JEUS]
 original_url: "https://blog.naver.com/kkforgg/220180314290"
+published: false
 ---
 
 일ㅁㄴㅇㄹㅁㄴㅇㄹ

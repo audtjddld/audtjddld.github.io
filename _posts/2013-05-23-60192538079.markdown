@@ -1,7 +1,7 @@
 ---
 title: "asp jQuery ajax serialize 사용시 한글 깨짐 처리"
 date: 2013-05-23 17:44:00 +0900
-categories: [경험 및 정보 공유]
+categories: [언어, ASP]
 tags: [IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/60192538079"
 ---

@@ -1,7 +1,7 @@
 ---
 title: "redis value compression"
 date: 2022-01-19 11:36:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Database, Redis]
 original_url: "https://blog.naver.com/kkforgg/222625648273"
 ---
 

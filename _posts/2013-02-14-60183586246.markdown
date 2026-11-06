@@ -1,7 +1,7 @@
 ---
 title: "셀렉트 박스 만들어 보기 01"
 date: 2013-02-14 17:37:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드]
 original_url: "https://blog.naver.com/kkforgg/60183586246"
 ---
 

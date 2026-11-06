@@ -1,7 +1,7 @@
 ---
 title: "gradle multi module & integration test"
 date: 2019-07-08 16:45:00 +0900
-categories: [경험 및 정보 공유]
+categories: [빌드, Gradle]
 original_url: "https://blog.naver.com/kkforgg/221580610893"
 ---
 

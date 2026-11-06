@@ -1,7 +1,7 @@
 ---
 title: "jstl 날짜 변환"
 date: 2014-10-27 10:54:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, JSP]
 tags: [IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/220162900619"
 ---

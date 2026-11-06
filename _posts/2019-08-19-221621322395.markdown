@@ -1,7 +1,7 @@
 ---
 title: "스케일 업(Scale Up)과 스케일 아웃(Scale Out)"
 date: 2019-08-19 15:17:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Database, Redis]
 original_url: "https://blog.naver.com/kkforgg/221621322395"
 ---
 

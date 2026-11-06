@@ -1,7 +1,7 @@
 ---
 title: "[2023 마이 블로그 리포트] 데이터로 알아보는 블로그 속 숨은 직업 찾기!"
 date: 2023-12-06 14:40:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발]
 tags: [2023마이블로그리포트]
 original_url: "https://blog.naver.com/kkforgg/223284591332"
 ---

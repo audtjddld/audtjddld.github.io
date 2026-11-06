@@ -1,7 +1,7 @@
 ---
 title: "Spring framework 중복로그인 체크 관련"
 date: 2014-12-31 18:27:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring]
 original_url: "https://blog.naver.com/kkforgg/220225940532"
 ---
 

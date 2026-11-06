@@ -1,7 +1,7 @@
 ---
 title: "Servlet 에서 Forward 새로고침 문제. (저의 해결 법)"
 date: 2012-07-24 11:56:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, JSP]
 tags: [Servlet새로고침, IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/60167371094"
 ---

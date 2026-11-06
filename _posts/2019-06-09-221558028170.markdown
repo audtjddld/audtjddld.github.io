@@ -1,7 +1,7 @@
 ---
 title: "Java user thread와 daemon Thread 차이"
 date: 2019-06-09 19:22:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 original_url: "https://blog.naver.com/kkforgg/221558028170"
 ---
 

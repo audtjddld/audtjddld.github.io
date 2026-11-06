@@ -1,7 +1,7 @@
 ---
 title: "curl option 관련"
 date: 2023-01-04 17:41:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발노트, 경험공유]
 original_url: "https://blog.naver.com/kkforgg/222974863971"
 ---
 

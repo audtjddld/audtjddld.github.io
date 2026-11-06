@@ -1,7 +1,7 @@
 ---
 title: "Sparrow 시큐어 코딩 점검 관련."
 date: 2015-01-12 10:26:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring]
 tags: [sparrow, codeinspaction]
 original_url: "https://blog.naver.com/kkforgg/220237341964"
 ---

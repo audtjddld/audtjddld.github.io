@@ -1,7 +1,7 @@
 ---
 title: "String dateFormat 변환 관련. Jackson Deserialize"
 date: 2017-01-30 20:41:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring]
 original_url: "https://blog.naver.com/kkforgg/220923101571"
 ---
 

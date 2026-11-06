@@ -1,7 +1,7 @@
 ---
 title: "브라우져벌 한글 깨짐 해결 하는 방법 ㅡㅡ;"
 date: 2014-01-02 14:42:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, JSP]
 tags: [IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/60206491001"
 ---

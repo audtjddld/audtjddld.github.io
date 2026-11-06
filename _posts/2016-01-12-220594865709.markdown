@@ -1,7 +1,7 @@
 ---
 title: "Java APNS Push 구현"
 date: 2016-01-12 11:09:00 +0900
-categories: [경험 및 정보 공유]
+categories: [모바일]
 tags: [JAVA, APNS]
 original_url: "https://blog.naver.com/kkforgg/220594865709"
 ---

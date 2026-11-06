@@ -1,7 +1,7 @@
 ---
 title: "Jmeter 작성 예제"
 date: 2022-08-10 16:36:00 +0900
-categories: [경험 및 정보 공유]
+categories: [테스트, JMeter]
 original_url: "https://blog.naver.com/kkforgg/222844889754"
 ---
 

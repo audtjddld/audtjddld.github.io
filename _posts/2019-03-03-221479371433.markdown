@@ -1,7 +1,7 @@
 ---
 title: "도메인주도 설계 구현"
 date: 2019-03-03 21:53:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, DDD]
 original_url: "https://blog.naver.com/kkforgg/221479371433"
 ---
 

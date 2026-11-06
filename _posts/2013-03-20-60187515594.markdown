@@ -1,7 +1,7 @@
 ---
 title: "두개의 다른 라이브러리간 충돌 발생시 해결 방법 (jQuery cookbook 예제)"
 date: 2013-03-20 16:21:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, JavaScript]
 original_url: "https://blog.naver.com/kkforgg/60187515594"
 ---
 

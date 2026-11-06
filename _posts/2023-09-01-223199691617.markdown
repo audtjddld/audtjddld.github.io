@@ -1,7 +1,7 @@
 ---
 title: "소프트웨어 엔지니어가 알아야 할 로그에 대한 모든 것 | Apache Kafka 탄생 배경"
 date: 2023-09-01 15:44:00 +0900
-categories: [경험 및 정보 공유]
+categories: [메시징, Kafka]
 original_url: "https://blog.naver.com/kkforgg/223199691617"
 ---
 

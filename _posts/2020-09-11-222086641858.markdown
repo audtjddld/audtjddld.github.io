@@ -1,7 +1,7 @@
 ---
 title: "Private Method를 테스트하라"
 date: 2020-09-11 14:32:00 +0900
-categories: [경험 및 정보 공유]
+categories: [테스트, TDD]
 original_url: "https://blog.naver.com/kkforgg/222086641858"
 ---
 

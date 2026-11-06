@@ -1,7 +1,7 @@
 ---
 title: "Java Reactive Streams"
 date: 2019-06-11 15:42:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, Reactive]
 original_url: "https://blog.naver.com/kkforgg/221559524785"
 ---
 

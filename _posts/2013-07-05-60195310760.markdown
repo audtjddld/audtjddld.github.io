@@ -1,7 +1,7 @@
 ---
 title: "안드로이드 단말기와 이클립스 연결 [펌]"
 date: 2013-07-05 10:01:00 +0900
-categories: [경험 및 정보 공유]
+categories: [모바일, Android]
 original_url: "https://blog.naver.com/kkforgg/60195310760"
 ---
 

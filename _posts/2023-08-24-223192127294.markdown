@@ -1,7 +1,7 @@
 ---
 title: "java ee에서 jakarta ee로 전환"
 date: 2023-08-24 11:44:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java]
 original_url: "https://blog.naver.com/kkforgg/223192127294"
 ---
 

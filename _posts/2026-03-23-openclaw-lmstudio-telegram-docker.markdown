@@ -1,7 +1,7 @@
 ---
 title: "OpenClaw + LM Studio + Telegram Docker 로컬 AI 챗봇 구축기"
 date: 2026-03-23 15:00:00 +0900
-categories: [경험 및 정보 공유]
+categories: [AI]
 tags: [OpenClaw, LM Studio, Docker, Telegram, 로컬LLM, Rancher Desktop, qwen3]
 ---
 

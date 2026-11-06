@@ -1,7 +1,7 @@
 ---
 title: "python xlsx to tsv"
 date: 2023-04-09 23:32:00 +0900
-categories: [경험 및 정보 공유]
+categories: [언어, Python]
 original_url: "https://blog.naver.com/kkforgg/223069652846"
 ---
 

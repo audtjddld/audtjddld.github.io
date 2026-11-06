@@ -1,7 +1,7 @@
 ---
 title: "7가지 보고의 원칙"
 date: 2013-05-15 13:47:00 +0900
-categories: [경험 및 정보 공유]
+categories: [개발노트, 경험공유]
 original_url: "https://blog.naver.com/kkforgg/60191995215"
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "각 db 별 ibatis like문"
 date: 2014-05-26 15:26:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Database]
 tags: [IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/220011163643"
 ---

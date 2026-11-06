@@ -1,7 +1,7 @@
 ---
 title: "객체 지향 원칙"
 date: 2016-03-14 09:00:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, 디자인패턴]
 original_url: "https://blog.naver.com/kkforgg/220654218776"
 ---
 

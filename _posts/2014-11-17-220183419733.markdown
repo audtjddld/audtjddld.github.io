@@ -1,7 +1,7 @@
 ---
 title: "mssql 테이블 복사"
 date: 2014-11-17 10:01:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Database, MSSQL]
 original_url: "https://blog.naver.com/kkforgg/220183419733"
 ---
 

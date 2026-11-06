@@ -1,7 +1,7 @@
 ---
 title: "레디스란 무엇인가 (레디스 정의)"
 date: 2019-08-19 15:27:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Database, Redis]
 original_url: "https://blog.naver.com/kkforgg/221621334236"
 ---
 

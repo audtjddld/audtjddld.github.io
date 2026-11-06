@@ -1,7 +1,7 @@
 ---
 title: "웹 개발자를 위한 Jquery 기본 이해 [펌]"
 date: 2013-02-15 09:52:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, JavaScript]
 original_url: "https://blog.naver.com/kkforgg/60183646306"
 ---
 

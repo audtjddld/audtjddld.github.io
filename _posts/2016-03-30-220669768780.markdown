@@ -1,7 +1,7 @@
 ---
 title: "webjars 라이브러리 사용시 기존 script에러 발생되는 이유"
 date: 2016-03-30 19:33:00 +0900
-categories: [경험 및 정보 공유]
+categories: [빌드, Maven]
 original_url: "https://blog.naver.com/kkforgg/220669768780"
 ---
 

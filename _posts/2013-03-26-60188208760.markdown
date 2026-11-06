@@ -1,7 +1,7 @@
 ---
 title: "병목현상 파악을 위한 속도 체크 방법"
 date: 2013-03-26 09:46:00 +0900
-categories: [경험 및 정보 공유]
+categories: [프론트엔드, JavaScript]
 original_url: "https://blog.naver.com/kkforgg/60188208760"
 ---
 

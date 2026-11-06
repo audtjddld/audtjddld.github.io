@@ -1,8 +1,9 @@
 ---
 title: "검수 관리 사이트 초창기 모델링"
 date: 2016-05-18 11:13:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, 설계]
 original_url: "https://blog.naver.com/kkforgg/220712746451"
+published: false
 ---
 
 2015.06.02

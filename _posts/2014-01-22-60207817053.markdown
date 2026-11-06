@@ -1,7 +1,7 @@
 ---
 title: "파일쪽 Exception 처리 마지막!"
 date: 2014-01-22 17:12:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, 전자정부프레임워크]
 original_url: "https://blog.naver.com/kkforgg/60207817053"
 ---
 

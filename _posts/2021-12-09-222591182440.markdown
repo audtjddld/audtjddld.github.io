@@ -1,7 +1,7 @@
 ---
 title: "feign client, feign configuration"
 date: 2021-12-09 17:28:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring, "Spring Cloud"]
 original_url: "https://blog.naver.com/kkforgg/222591182440"
 ---
 

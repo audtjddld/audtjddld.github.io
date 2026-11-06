@@ -1,7 +1,7 @@
 ---
 title: "Domain Driven Design (DDD), history of architecture, OOP and Hexagonal Architecture"
 date: 2022-11-25 10:55:00 +0900
-categories: [경험 및 정보 공유]
+categories: [아키텍처, DDD]
 original_url: "https://blog.naver.com/kkforgg/222937748031"
 ---
 

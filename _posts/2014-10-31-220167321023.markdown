@@ -1,7 +1,7 @@
 ---
 title: "컨텐츠 내 파일 링크 관리하기 관련 내용 정리"
 date: 2014-10-31 13:34:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Spring]
 tags: [IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/220167321023"
 ---

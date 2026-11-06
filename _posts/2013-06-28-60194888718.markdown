@@ -1,7 +1,7 @@
 ---
 title: "Spring 3.0  BindingResult를 이용한 경고창 띄우기"
 date: 2013-06-28 18:41:00 +0900
-categories: [경험 및 정보 공유]
+categories: [Java, 전자정부프레임워크]
 tags: [IT·컴퓨터]
 original_url: "https://blog.naver.com/kkforgg/60194888718"
 ---

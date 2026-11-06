@@ -1,7 +1,7 @@
 ---
 title: "AI Agent 정의부터 구성까지 — MCP, A2A, 그리고 실제로 붙일 때 걸리는 것들"
 date: 2026-09-04 21:00:00 +0900
-categories: [경험 및 정보 공유]
+categories: [AI]
 tags: [AI Agent, MCP, A2A, Agent2Agent, LLM, Spring AI, 아키텍처]
 ---
 
