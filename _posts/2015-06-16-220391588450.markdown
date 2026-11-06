@@ -11,7 +11,7 @@ original_url: "https://blog.naver.com/kkforgg/220391588450"
 
 ﻿
 
-**인터넷에서 자료 전달의 핵심 - TCP/IP****
+**인터넷에서 자료 전달의 핵심 - TCP/IP
 **　**순서
 
 1. 들어가기 전에
@@ -1277,7 +1277,6 @@ Stephen A. Thomas, "IPng and the TCP/IP Protocols", Addison-Wesley, 1996
 
 **3.기타참고 사이트**
 
-****
 
 <http://www.iflu.net/study/lecture05/5_04.html>
 

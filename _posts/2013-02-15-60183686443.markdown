@@ -574,7 +574,7 @@ public class dbConnection {
 
 
 
-   conn = DriverManager.getConnection("odbc:oracle:thin:@***.***.***.**:1521:****","***","****");
+   conn = DriverManager.getConnection("odbc:oracle:thin:@***.***.***.**:1521:","***","");
 
 
 
@@ -680,7 +680,7 @@ public class dbConnection {
 
  public static int insertData(HashMap map) throws Exception{
 
-  conn = DriverManager.getConnection("odbc:oracle:thin:@***.***.***.**:1521:****","***","****");
+  conn = DriverManager.getConnection("odbc:oracle:thin:@***.***.***.**:1521:","***","");
 
   int result=0;
 

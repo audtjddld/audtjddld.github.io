@@ -26,7 +26,6 @@ Github Pull Request나 Issue등에 image 첨부파일을 넣는 것은 보안상
 
 
 
-                            **
 
 
 개요**
@@ -69,8 +68,6 @@ private repository라도 접근이 가능한 것 같으니 주의해서 작성�
 
 ​
 
--
-<https://tech.coincheck.blog/entry/2022/10/21/113906>
+- <https://tech.coincheck.blog/entry/2022/10/21/113906>
 
--
-<https://qiita.com/naka_kyon/items/a67947a0ca3f631475e7>
+- <https://qiita.com/naka_kyon/items/a67947a0ca3f631475e7>

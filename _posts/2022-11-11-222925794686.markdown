@@ -16,18 +16,15 @@ original_url: "https://blog.naver.com/kkforgg/222925794686"
 ​
 
 Route
--
-gateway의 기본 골격이다. id로 정의되고 목적지 URI, 단정문(predicate)의 묶음, 그리고 filter의 묶음이다. Route는 true조건의 경우 연결 시켜준다.
+- gateway의 기본 골격이다. id로 정의되고 목적지 URI, 단정문(predicate)의 묶음, 그리고 filter의 묶음이다. Route는 true조건의 경우 연결 시켜준다.
 
 Predicate
 
--
-이것은 java 8의 predicate이다. input type은 spring framework ServerWebExchange이다. Predicate는 Http Request나 header, parameter의 어떤 것으로 매칭시킵니다.
+- 이것은 java 8의 predicate이다. input type은 spring framework ServerWebExchange이다. Predicate는 Http Request나 header, parameter의 어떤 것으로 매칭시킵니다.
 
 Filter
 
--
-GatewayFilter의 인스턴스들은 특정한 factory와 함께 생성 됩니다. 여기에는 down stream request를 보내기 전과 후로 request와 response를 갱신할 수 있습니다.
+- GatewayFilter의 인스턴스들은 특정한 factory와 함께 생성 됩니다. 여기에는 down stream request를 보내기 전과 후로 request와 response를 갱신할 수 있습니다.
 
 ​
 
@@ -820,32 +817,23 @@ HttpHeaderFilter들은 downstream에 보내기전에 NettyRoutingFilter를 이�
 1. Forwarded Header Filtter
 
 2. RemoveHopByHop Header filter
--
-**The default removed headers are:**
+- **The default removed headers are:**
 
--
-Connection
+- Connection
 
--
-Keep-Alive
+- Keep-Alive
 
--
-Proxy-Authenticate
+- Proxy-Authenticate
 
--
-Proxy-Authorization
+- Proxy-Authorization
 
--
-TE
+- TE
 
--
-Trailer
+- Trailer
 
--
-Transfer-Encoding
+- Transfer-Encoding
 
--
-Upgrade
+- Upgrade
 
 ​
 

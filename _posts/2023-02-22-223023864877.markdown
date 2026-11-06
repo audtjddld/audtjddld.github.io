@@ -19,18 +19,6 @@ using abstractGatewayFilterFactory  how to get body data
 
 ```
 implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
-```
-
-
-
-
-
-
-
-
-
-
-```
 @Component
 class LoginFilter() : AbstractGatewayFilterFactory() {
     private val objectMapper = jacksonObjectMapper()

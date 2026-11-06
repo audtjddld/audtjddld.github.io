@@ -10,11 +10,9 @@ jUnit이란? 출처 : <http://jamesku.tistory.com/entry/ITJUnit%EC%9D%B4%EB%9E%8
 
 독립된 단위 테스트를 도와주는 framework이다.
 
-****
 
 *기대값과 결과값을 비교한다.***
 
-****
 
 컴퓨터 프로그래밍에서 유닛 테스트란 소스 코드의 특정 모듈이
 

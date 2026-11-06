@@ -147,9 +147,6 @@ java.lang.NullPointerException: null
  at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [na:1.8.0_65]
  at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.0.32.jar:8.0.32]
  at java.lang.Thread.run(Thread.java:745) [na:1.8.0_65]
-```
-
-```
 @Override
  @SuppressWarnings("unchecked")
  protected void doReadPage() {

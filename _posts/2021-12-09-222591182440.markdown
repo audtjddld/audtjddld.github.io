@@ -127,18 +127,6 @@ public class CouponErrorDecoder implements ErrorDecoder {
   }
 
 }
-```
-
-
-
-
-
-
-
-
-
-
-```
 /**
  * 쿠폰 Feign Configuration.
  */
@@ -168,18 +156,6 @@ public class CouponFeignConfiguration {
   }
 
 }
-```
-
-
-
-
-
-
-
-
-
-
-```
 /**
  * 쿠폰 feign Client.
  */

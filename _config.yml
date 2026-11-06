@@ -9,11 +9,8 @@ baseurl: ""
 lang: ko
 timezone: Asia/Seoul
 
-# Polyglot multi-language
-languages: ["ko", "en"]
-default_lang: "ko"
-exclude_from_localization: ["assets", "javascript", "images", "css"]
-parallel_localization: false
+# Site language. Page translation is offered via the top-bar control,
+# which sends the current URL through Google Translate.
 
 github_username: audtjddld
 
@@ -36,7 +33,6 @@ plugins:
   - jekyll-paginate
   - jekyll-include-cache
   - jekyll-archives
-  - jekyll-polyglot
 
 paginate: 15
 paginate_path: "/page/:num/"

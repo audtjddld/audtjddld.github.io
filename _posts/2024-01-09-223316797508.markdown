@@ -7,22 +7,17 @@ original_url: "https://blog.naver.com/kkforgg/223316797508"
 
 namespace
 
--
-namespace를 사용하면 같은 물리적 클러스터 안에서 가상 클러스터를 생성할 수 있다.
+- namespace를 사용하면 같은 물리적 클러스터 안에서 가상 클러스터를 생성할 수 있다.
 
--
-namespace는 논리적으로 클러스터에서 분리할 수 있다.
+- namespace는 논리적으로 클러스터에서 분리할 수 있다.
 
--
-표준 namespace를 기본값이라고 하고 리소스가 기본적으로 시작되는 곳이다.
+- 표준 namespace를 기본값이라고 하고 리소스가 기본적으로 시작되는 곳이다.
 
  따라서, 네임스페이스를 지정하지 않을 때마다 실제로 기본 네임스페이스 내에서 파드, 배포 등등 시작하는데 큐브시스템이라 불리는 쿠버네티스 특정 리소스의 네임스페이스도 존재한다.
 
--
-예를 들어, 대부분의 모니터링은 kube-system에서 시작하고 DNS 애드온 또한 kube-system에서 시작한다. 대시보드 또한 kube-system 네임스페이스에 있는 예시이다.
+- 예를 들어, 대부분의 모니터링은 kube-system에서 시작하고 DNS 애드온 또한 kube-system에서 시작한다. 대시보드 또한 kube-system 네임스페이스에 있는 예시이다.
 
--
-namespace는 kubernetest cluster를 사용하는 여러 팀/프로젝트가 있는 경우 사용된다.
+- namespace는 kubernetest cluster를 사용하는 여러 팀/프로젝트가 있는 경우 사용된다.
 
 ​
 

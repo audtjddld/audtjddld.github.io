@@ -24,7 +24,6 @@ original_url: "https://blog.naver.com/kkforgg/60210837584"
 
 [처리내용]**
 
-****
 
 **처리 1)** 아파이 웹서버 SSL 캐싱 설정
 

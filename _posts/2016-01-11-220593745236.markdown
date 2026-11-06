@@ -55,7 +55,7 @@ original_url: "https://blog.naver.com/kkforgg/220593745236"
 
 ** **
 
-**What is a Callback or Higher-order Function?(****콜백함수 또는 Higher-order Function이라는게 무슨말일까요?****)**
+**What is a Callback or Higher-order Function?(**콜백함수 또는 Higher-order Function이라는게 무슨말일까요?**)**
 
 콜백함수 higher-order function 이라고 알려진 이녀석은 파라메터로 함수를 전달하는 녀석입니다. 그리고 전달받은 그 함수를 함수의 내부에서 실행시킵니다. 콜백함수를 사용한다는 말은 곧 콜백패턴을 안다는 말이기도 합니다.
 
@@ -91,9 +91,8 @@ forEach라는 함수안에 익명의 함수를 넣어서 forEach 구문이 동
 
 ** **
 
-**How Callback Functions Work?(****콜백함수는 어떻게 동작하는가?****)**
+**How Callback Functions Work?(**콜백함수는 어떻게 동작하는가?**)**
 
-****
 
 자바스크립트에서의 함수는 일급객체이기 때문에 우리는 이를 객체로 다루면 됩니다. 이 말은 함수를 변수로 그리고 다른 함수의 리턴값으로 사용이 가능하다는 말입니다. 함수를 콜백으로 다른 함수의 인자처럼 사용할경우에는 오직 합수의 정의만을 넘겨주면 됩니다. 즉, 함수의 이름만을 넘겨주면 됩니다. 굳이 함수라고 하여 끝에 () 같은 것을 붙여줄필요가 없습니다.
 
@@ -117,7 +116,7 @@ $("#btn_1").click(function() {
 
 
 
-**Callback Functions Are Closures(****콜백함수는 클로저다****.)****
+**Callback Functions Are Closures(**콜백함수는 클로저다**.)
 
 우리가 다른 함수의 인자로 콜백함수를 전달할 때, 전달받은 함수의 특정시점에 그 함수는 동작을 할것입니다. 마치 전달받은 함수가 이미 콜백으로 받은 함수를 함수내부에서 정의를 한 것처럼 말이지요. 결국 이 말은 콜백은 클로저다 이말입니다. 클로저에 대한 자세한 내용은http://javascriptissexy.com/understand-javascript-closures-with-ease/ **에서 확인이 가능합니다.
 
@@ -131,11 +130,12 @@ $("#btn_1").click(function() {
 
 콜백함수는 복잡하지 않지만 적용하기 위한 몇가지 원칙이 있습니다.
 
- ****Use Named OR Anonymous Functions as Callbacks(****이름이나 익명의 함수를 사용하라****)**
+ **Use Named OR Anonymous Functions as Callbacks(**이름이나 익명의 함수를 사용하라)**
 
 위에서 본 jquery나 foreach함수의 예제에서 보았듯이 우리는 익명의 함수를 파라메터로 사용을 합니다. 이러한 방식이 가장 일반적인 패턴입니다. 또 다른 보편적인 방법으로는 함수를 정의해 해당 함수의 이름을 파라메터로 넘기는 방식입니다.
 
- // 전역변수
+
+// 전역변수
 
 var allUserData = [];
 
@@ -199,7 +199,7 @@ getInput ({name:"Rich", speciality:"JavaScript"}, logStuff);
 
  **
 
-**콜백함수로 파라매터 전달(****Pass Parameters to Callback Functions)**
+**콜백함수로 파라매터 전달(Pass Parameters to Callback Functions)**
 
 콜백함수가 실행이 될 때는 그냥 일반 함수와 동일하게 동작을 합니다. 그래서 우리는 콜백함수에 파라메터를 전달할 수가 있습니다. 우리는 파라메터로 콜백함수를 감싸고있는 함수 내부의 어떠한 프로퍼티라도 파라메터로 전달할 수가 있습니다. 아래의 예제를 실행하면 options 파라메터를 콜백함수에 전달할수 있습니다. 전역변수와 지역변수를 파라메터로 전달할 수 있습니다.
 
@@ -221,7 +221,7 @@ function getInput (options, callback) {
 
 ** **
 
-**콜백함수가 실행 되기 전에 함수임을 명확하게 하기(****Make Sure Callback is a Function Before Executing It)**
+**콜백함수가 실행 되기 전에 함수임을 명확하게 하기(Make Sure Callback is a Function Before Executing It)**
 
 콜백함수가 인자로 전달되어 함수의 내부에서 실행이 될 때 전달받은 인자가 함수인지를 명확하게 정의 하고 실행하는 것이 좋은 습관이다.
 
@@ -247,7 +247,7 @@ function getInput(options, callback) {
 
 만약에 이러한 확인 작업이 없다면 callback파라메터를 넘기지 않거나 혹은 함수가 아닌 값을 넘기게 되는 경우에는 실행중에 에러가 발생하는 문제가 일어납니다.
 
-Problem When Using Methods With The *this* Object as Callbacks (this****를 사용한 메서드를 콜백으로 사용시 문제 )****
+Problem When Using Methods With The *this* Object as Callbacks (this**를 사용한 메서드를 콜백으로 사용시 문제 )**
 콜백함수가 this객체를 사용하는 메서드인 경우에는 우리는 반드시 this객체의 컨택스트를 보호할 수 있도록 콜백함수를 수정해야 합니다.
 
 예를들면 전역함수에 인자로 콜백함수가 전달된 경우에는 this객체가 window객체를 가리키게 만들거나 또는 콜백함수를 감싸고 있는 메서드를 가리키게 해야합니다.
@@ -316,7 +316,7 @@ console.log (window.fullName); // Barack Obama
 
 ** **
 
-**Use the Call or Apply Function To Preserve *this* (****Call ****과 Apply를 통한 this 보호****)**** **
+**Use the Call or Apply Function To Preserve *this* (**Call **과 Apply를 통한 this 보호**)** **
 
 **우리는 Call과 Apply 함수를 통해 이러한 문제를 해결할 수 있습니다. 일단 모든 자바스크립트의 함수에는 Call 과 Apply라는 메서드를 가지고 있습니다. 그리고 이 함수들은 함수 내부에서 this객체를 유지하게 하고 인자들은 함수로 전달하는 역할을 합니다.
 
@@ -344,7 +344,8 @@ function getUserInput(firstName, lastName, callback, callbackObj)  {
 
  Apply함수를 통해 this 객체를 제대로 정의 할 것입니다. 우리는 이제 실제 getUserInput을 실행을 하면 제대로 clientData의 값을 세팅하는 것을 확인할수 있습니다.
 
-// 우리는 clientData.setUserName 메서드와 clientData 객체를 파라메터로 전달합니다. clientData객체는 Apply함수에의해 this 객체로 정의가 될 것입니다.  getUserInput ("Barack", "Obama", clientData.setUserName, clientData);
+// 우리는 clientData.setUserName 메서드와 clientData 객체를 파라메터로 전달합니다. clientData객체는 Apply함수에의해 this 객체로 정의가 될 것입니다. 
+getUserInput ("Barack", "Obama", clientData.setUserName, clientData);
 
 
 
@@ -408,9 +409,9 @@ $.ajax({
 
 ** **
 
-** **** **
+**  **
 
-**“Callback Hell” Problem And Solution(****콜백 지옥의 문제와 해결책****)**
+**“Callback Hell” Problem And Solution(**콜백 지옥의 문제와 해결책**)**
 
 간단한 실행을 위한 비동기적인 코드는 가끔 수많은 콜백함수의 연속으로 이어지는 경우가 있습니다.아래의 코드를 보시다시피 매우 지저분합니다. 이른바 콜백지옥입니다. 이러한 코드는 매우 가독성이 떨어집니다.
 

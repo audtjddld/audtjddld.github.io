@@ -31,7 +31,7 @@ dependencies {
         implementation "com.querydsl:querydsl-sql:${querydslVersion}"
    }
 
-/**** QueryDSL Class Generate Script ****/
+/** QueryDSL Class Generate Script **/
 def queryDslOutput = file("src/main/generated")
 sourceSets {
 	main {
@@ -47,7 +47,7 @@ task generateQueryDSL(type: JavaCompile, group: 'build') {
 	destinationDir = queryDslOutput
 	options.compilerArgs = [
 			"-proc:only",
-			/********************* 핵심 포인트! *********************/
+			/*** 핵심 포인트! ***/
 			"-processor", 'com.querydsl.apt.jpa.JPAAnnotationProcessor,lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
 	]
 }

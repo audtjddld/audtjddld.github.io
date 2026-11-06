@@ -143,7 +143,6 @@ zeromq 에서의 Pull/Push 방법이 Round Robin 방식으로 돌아가는 것�
 
 
 
-                            **
 
 
 빅데이터 시대에서 도전 과제는
@@ -458,7 +457,6 @@ public class DefaultPartitioner implements Partitioner {
 
     /**
      * Compute the partition for the given record.
-     *
      * @param topic The topic name
      * @param key The key to partition on (or null if no key)
      * @param keyBytes serialized key to partition on (or null if no key)

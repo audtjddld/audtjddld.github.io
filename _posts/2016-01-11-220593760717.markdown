@@ -153,9 +153,6 @@ book 정보를 불러올 수 없게 된 것이다.
 
 ```
 app.factory('Book', ['$http', function($http) {
-```
-
-```
     function Book(bookData) {
         if (bookData) {
             this.setData(bookData):
@@ -208,9 +205,6 @@ app.factory('Book', ['$http', function($http) {
 
 ```
 app.controller('BookController', ['$scope', 'Book', function($scope, Book) {
-```
-
-```
     $scope.book = new Book();
     $scope.book.load(1);
     // book 저장

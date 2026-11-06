@@ -21,7 +21,7 @@ SELECT YYMM**           , SUM(TOT_PRICE)OVER(ORDER BY YYMM DESC) AS PRICE
 
 
 
-﻿****★ 전통 SQL 사용**
+﻿★ 전통 SQL 사용**
 
 SELECT YYMM, PRICE**   FROM ( SELECT YYMM, SUM(TOT_PRICE) AS PRICE
                   FROM TABLE1
@@ -30,7 +30,7 @@ SELECT YYMM, PRICE**   FROM ( SELECT YYMM, SUM(TOT_PRICE) AS PRICE
 
 
 
-﻿****★** COUNT(*)OVER() 사용
+﻿★** COUNT(*)OVER() 사용
 
 실제 데이터와 함께 해당 테이블의 전체 로우 컬럼을 쉽고 편리하게 추출할 수 있다.
 
@@ -50,7 +50,7 @@ ORA-00937: not a single-group group function
 
 
 
-﻿****★** OVER() 함수
+﻿★** OVER() 함수
 
 COUNT(*)OVER() : 전체행 카운트**COUNT(*)OVER(PARTITION BY 컬럼) : 그룹단위로 나누어 카운트
 

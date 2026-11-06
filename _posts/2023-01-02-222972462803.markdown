@@ -110,7 +110,6 @@ original_url: "https://blog.naver.com/kkforgg/222972462803"
 
 
 
-                                        *
 
 
 
@@ -444,18 +443,6 @@ RollingUpdate 업데이트 전략은 스테이트풀셋을 보장하면서 스�
 
 ```
 kubectl patch statefulset web -p '{"spec":{"updateStrategy":{"type":"RollingUpdate"}}}'
-```
-
-
-
-
-
-
-
-
-
-
-```
 statefulset.apps/web patched
 ```
 
@@ -488,18 +475,6 @@ statefulset.apps/web patched
 
 ```
 kubectl patch statefulset web --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"gcr.io/google_containers/nginx-slim:0.8"}]'
-```
-
-
-
-
-
-
-
-
-
-
-```
 statefulset.apps/web patched
 ```
 
@@ -635,18 +610,6 @@ web-0     1/1       Running   0         10s
 
 ```
 for p in 0 1 2; do kubectl get pod "web-$p" --template '{{range $i, $c := .spec.containers}}{{$c.image}}{{end}}'; echo; done
-```
-
-
-
-
-
-
-
-
-
-
-```
 k8s.gcr.io/nginx-slim:0.8
 k8s.gcr.io/nginx-slim:0.8
 k8s.gcr.io/nginx-slim:0.8
@@ -697,18 +660,6 @@ web의 updateStrategy 필드에 partition을 추가하자.
 
 ```
 kubectl patch statefulset web -p '{"spec":{"updateStrategy":{"type":"RollingUpdate","rollingUpdate":{"partition":3}}}}'
-```
-
-
-
-
-
-
-
-
-
-
-```
 statefulset.apps/web patched
 ```
 
@@ -741,18 +692,6 @@ statefulset.apps/web patched
 
 ```
 kubectl patch statefulset web --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"k8s.gcr.io/nginx-slim:0.7"}]'
-```
-
-
-
-
-
-
-
-
-
-
-```
 statefulset.apps/web patched
 ```
 
@@ -785,18 +724,6 @@ statefulset.apps/web patched
 
 ```
 kubectl delete pod web-2
-```
-
-
-
-
-
-
-
-
-
-
-```
 pod "web-2" deleted
 ```
 

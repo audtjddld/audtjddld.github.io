@@ -35,7 +35,7 @@ mysql > delete from user where user = '사용자ID';      // 사용자 �
 
 계정이 생성되었다면, 그 계정이 접근할 수 있는 데이터베이스를 생성하고 권한을 부여해야 한다
 
-데이터베이스 생성****
+데이터베이스 생성
 
 mysql > show databases;     // DB 목록 확인
 
@@ -101,11 +101,11 @@ mysql > flush privileges;     // 변경된 내용을 메모리에 반영(�
 
 mysql > SHOW GRANTS FOR test@localhost;  -- userid 와 host명까지 붙여서 검색해야 함**
 
-mysql > SHOW GRANTS FOR test@'%';****
+mysql > SHOW GRANTS FOR test@'%';
 
 mysql > SHOW GRANTS FOR test@'200.100.100.50';
 
-사용자에게 데이터베이스 사용권한 제거****
+사용자에게 데이터베이스 사용권한 제거
 
 revoke all on DB명.테이블명 from 사용자ID;     // 모든 권한을 삭제
 

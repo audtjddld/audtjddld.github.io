@@ -96,16 +96,13 @@ YSlow가 브라우저 없이 실행될 수 있도록 먼저 PhantomJS를 설치�
 
 - <http://phantomjs.org/download.html> 에서 자신의 운영체제에 맞는 PhantomJS 버전을 다운로드한다.
 - 다운로드한 파일의 압축을 해제하면 PhantomJS 실행 파일을 확인할 수 있다.
--
-먼저 버전 확인 명령으로 이상이 없는지 확인한다. 아무런 의존성이 없기 때문에 다음과 같이 바로 명령어를 실행하면 된다.
+- 먼저 버전 확인 명령으로 이상이 없는지 확인한다. 아무런 의존성이 없기 때문에 다음과 같이 바로 명령어를 실행하면 된다.
 
 ![](/assets/images/posts/220585766012/b292f2e2d3f0.png)
 
--
-<http://yslow.org/phantomjs/> 에서 YSlow for PhantomJS를 다운로드한 다음 압축을 해제한다.
+- <http://yslow.org/phantomjs/> 에서 YSlow for PhantomJS를 다운로드한 다음 압축을 해제한다.
 
--
-다음과 같이 **phantomjs** 명령어로 **yslow.js**를 실행시켜서 본다.
+- 다음과 같이 **phantomjs** 명령어로 **yslow.js**를 실행시켜서 본다.
 
 ![](/assets/images/posts/220585766012/e0761651eef4.png)
 
@@ -159,33 +156,27 @@ phantomjs yslow.js -i grade -f tap -t 85 <http://yslow.org>
 
 - 먼저 <http://java.com/download> 에서 Java를 다운로드해 설치한다.
 - jenkins.war를 <http://jenkins-ci.org/> 에서 다운로드한다.
--
-Windows의 명령 프롬프트에서 다음과 같이 Jenkins 서버를 실행한다.
+- Windows의 명령 프롬프트에서 다음과 같이 Jenkins 서버를 실행한다.
 
 ![](/assets/images/posts/220585766012/ffdbca1ae534.png)
 
--
-브라우저에서 [http://localhost:8080](http://localhost:8080/) 으로 접속해 서버가 정상적으로 실행되는지 확인한다. 다음과 같은 화면을 볼 수 있으면 정상적으로 실행된 것이다.
+- 브라우저에서 [http://localhost:8080](http://localhost:8080/) 으로 접속해 서버가 정상적으로 실행되는지 확인한다. 다음과 같은 화면을 볼 수 있으면 정상적으로 실행된 것이다.
 
 ![](/assets/images/posts/220585766012/2bea9d9c6b11.png)
 
 YSlow for PhantomJS는 TAP(Test Anything Protocol) 타입과 JUnit 타입의 출력 포맷을 제공하고 있기 때문에 Jenkins의 TAP 플러그인이나 JUnit 플러그인으로 분석 결과를 보기 좋게 만들어낼 수 있다. Jenkins 서버에 해당 플러그인이 있는지 확인하고, 없다면 다음과 같이 플러그인을 설치한다.
 
--
-**Jenkins 관리 > 플러그인 관리** 항목을 클릭한다.
+- **Jenkins 관리 > 플러그인 관리** 항목을 클릭한다.
 
 ![](/assets/images/posts/220585766012/359b364865f9.png)
 
--
-**설치된 플러그인** 탭에서 플러그인 설치 여부를 확인한다.
+- **설치된 플러그인** 탭에서 플러그인 설치 여부를 확인한다.
 
--
-플러그인이 없다면 **설치 가능** 탭에서 해당 플러그인을 찾아서 설치한다(JUnit 플러그인은 기본으로 설치돼 있어 별도로 설치하지 않아도 된다).
+- 플러그인이 없다면 **설치 가능** 탭에서 해당 플러그인을 찾아서 설치한다(JUnit 플러그인은 기본으로 설치돼 있어 별도로 설치하지 않아도 된다).
 
 ![](/assets/images/posts/220585766012/9bba017a4daf.png)
 
--
-플러그인 다운로드 및 설치가 완료되면 자동으로 다시 시작한다. Windows에서는 자동으로 다시 시작하지 않으므로 서버가 실행되고 있는 명령 창에서 **Ctrl+C** 키를 눌러 중단했다가 다시 실행하면 된다.
+- 플러그인 다운로드 및 설치가 완료되면 자동으로 다시 시작한다. Windows에서는 자동으로 다시 시작하지 않으므로 서버가 실행되고 있는 명령 창에서 **Ctrl+C** 키를 눌러 중단했다가 다시 실행하면 된다.
 
 이제 모든 준비가 완료됐다. Jenkins에서 YSlow를 실행하고 보고서가 출력되도록 연동해 보자.
 
@@ -195,16 +186,13 @@ YSlow for PhantomJS는 TAP(Test Anything Protocol) 타입과 JUnit 타입의 출
 
 Jenkins에 프로젝트를 추가하고 다음과 같이 설정한다.
 
--
-**새로운 Job**을 클릭해 프로젝트를 추가한다.
+- **새로운 Job**을 클릭해 프로젝트를 추가한다.
 
 ![](/assets/images/posts/220585766012/3e481c55e6cf.png)
 
--
-**OK**를 클릭하면 설정 화면이 나온다.
+- **OK**를 클릭하면 설정 화면이 나온다.
 
--
-**Build** 항목에서 **Add build step > Execute shell**을 선택하고 커맨드라인 명령을 입력한다(Windows에서는 **Execute Windows batch command**를 이용한다).
+- **Build** 항목에서 **Add build step > Execute shell**을 선택하고 커맨드라인 명령을 입력한다(Windows에서는 **Execute Windows batch command**를 이용한다).
 
 ![](/assets/images/posts/220585766012/ad069edd1cb1.png)
 참고: 커맨드라인 명령 입력 값**
@@ -218,22 +206,18 @@ phantomjs yslow.js -i grade -threshold "B" -f tap <http://www.naver.com> > yslow
 [http://www.naver.com](http://www.naver.com/) : 테스트할 페이지 URL
 yslow.tap : 저장할 TAP 결과 파일 이름
 
--
-Post-build Actions** 항목에서 **Add build step > Publish TAP Results**를 선택하고 **Test results**에 **yslow.tap**을 입력한다.
+- Post-build Actions** 항목에서 **Add build step > Publish TAP Results**를 선택하고 **Test results**에 **yslow.tap**을 입력한다.
 
 ![](/assets/images/posts/220585766012/b2c00dba1a89.png)
 
--
-설정한 내용을 저장한다.
+- 설정한 내용을 저장한다.
 
 - 왼쪽 메뉴에서 **Build Now**를 클릭해서 실행한다.
--
-빌드가 완료되면 왼쪽 메뉴에서 **TAP**을 클릭해 최근 빌드의 결과를 확인할 수 있다.
+- 빌드가 완료되면 왼쪽 메뉴에서 **TAP**을 클릭해 최근 빌드의 결과를 확인할 수 있다.
 
 ![](/assets/images/posts/220585766012/7bb3df6c5cae.png)
 
--
-**TAP Test Result**를 클릭하면 검사 항목별 내용을 확인할 수 있다.
+- **TAP Test Result**를 클릭하면 검사 항목별 내용을 확인할 수 있다.
 
 ![](/assets/images/posts/220585766012/5369ee0df129.png)
 
@@ -241,8 +225,7 @@ Post-build Actions** 항목에서 **Add build step > Publish TAP Results**를 
 
 JUnit 보고서를 출력하려면 다음과 같이 설정하고 실행하면 된다.
 
--
-**Build** 항목에서 **Add build step > Execute shell**을 추가하고 커맨드라인 명령을 입력한다.
+- **Build** 항목에서 **Add build step > Execute shell**을 추가하고 커맨드라인 명령을 입력한다.
 
 ![](/assets/images/posts/220585766012/75d1dc00c92d.png)
 참고: 커맨드라인 명령 입력 값**
@@ -256,18 +239,15 @@ phantomjs yslow.js -i grade -threshold "B" -f junit <http://www.naver.com> > ysl
 [http://www.naver.com](http://www.naver.com/) : 테스트할 페이지 URL
 yslow.tap : 저장할 JUnit 결과파일 이름
 
--
-Post-build Actions** 항목에서 **Add build step > Publish JUnit test result report**를 선택하고 **Test report XMLs**에 **yslow.xml**을 입력한다.
+- Post-build Actions** 항목에서 **Add build step > Publish JUnit test result report**를 선택하고 **Test report XMLs**에 **yslow.xml**을 입력한다.
 
 ![](/assets/images/posts/220585766012/41288f20ee69.png)
 
--
-설정 내용을 저장하고 빌드를 수행하면 결과를 확인할 수 있다.
+- 설정 내용을 저장하고 빌드를 수행하면 결과를 확인할 수 있다.
 
 ![](/assets/images/posts/220585766012/94166d222b83.png)
 
--
-**Test Result**를 클릭하면 상세 결과를 확인할 수 있다.
+- **Test Result**를 클릭하면 상세 결과를 확인할 수 있다.
 
 ![](/assets/images/posts/220585766012/4be1949d0598.png)
 

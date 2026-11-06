@@ -74,7 +74,7 @@ $> isainfo -kv
 [root] /home/jdk6/32bit > gunzip jdk-6u33-solaris-sparc.tar.Z**
 
 [root] /home/jdk6/32bit > **tar xvf jdk-6u33-solaris-sparc.tar
-**[root] /home/jdk6/32bit > **pkgadd -d . SUNWj6rt SUNWj6dev SUNWj6cfg SUNWj6man SUNWj6jmp**** **
+**[root] /home/jdk6/32bit > **pkgadd -d . SUNWj6rt SUNWj6dev SUNWj6cfg SUNWj6man SUNWj6jmp **
 
 
 
@@ -106,11 +106,10 @@ export CLASSPATH=$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib:$CLASSPATH
 솔라리스 이전 java 파일 변경
 [root] / > mv /usr/bin/javac /usr/bin/javac.old
 **[root] / > **mv /usr/bin/java /usr/bin/java.old
-****심볼릭 링크 생성
+심볼릭 링크 생성
 [root] / > ln -s /usr/jdk/jdk1.6.0_33/bin/java /usr/bin/java
 **[root] / > **ln -s /usr/jdk/jdk1.6.0_33/bin/javac /usr/bin/javac**
 
-****
 
 ※ 위와 같이 설정되고 재로그인 해도 버전이 변경되지 않는 경우는 이전버전이 설치된 경로가 path 에 지정되 있는 경우이므로 찾아서 수정해 주어야 합니다.**
 

@@ -19,7 +19,7 @@ original_url: "https://blog.naver.com/kkforgg/60209409646"
 
 
 
-**1. 권한****  DB Link를 생성하기 위해서는 DBA 권한이 있어야 함
+**1. 권한  DB Link를 생성하기 위해서는 DBA 권한이 있어야 함
 
 2.생성 방법
   1) tnsnames.ora의 Alias 활용 방법
@@ -54,9 +54,6 @@ CONNECT TO <연결하고자 하는 user> **IDENTIFIED BY <연결하고자 하
 
 ```
 Database Link사용법
-```
-
-```
 원격지에 있는 데이터베이스를 link하는 법은 다음과 같다.
 
 원격지의 Database의 Service Name이 remote_db.example.com이다.
@@ -153,7 +150,6 @@ SQL> delete from test@remote_db.example.com where age=31;
 데이터베이스링크에서 DDL문장은 적용되지 않는다.
 SQL> drop table test@remote_db.example.com;
 drop table test@remote_db.example.com
-                *
 1행에 오류:
 ORA-02021: 원격 데이터베이스에 DDL 조작들이 허용되지 않습니다
 
@@ -249,7 +245,7 @@ open_links_per_instance              integer 4
 원래 초기화패러미터 gloabl_names가 true일 경우에만, 이것을 강제하게 되어 있으나,
 이상한 것은 false일 경우에도 발생했다. 예제를 보면 쉽게 알 수 있을 것이다.
 
-[문제**********]
+[문제**]
 DB링크는 에러없이 생성되나, 실제 질의가 실패함.
 SQL> conn myuser/xxxxxx
 연결되었습니다.
@@ -261,7 +257,6 @@ SQL> create database link linuxdb_link
 
 SQL> select * from tab@linuxdb_link;
 select * from tab@linuxdb_link;
-                  *
 1행에 오류:
 ORA-02085: 데이터베이스 링크 LINUXDB_LINK.WORLD가 DB.WORLD에 연결됩니다
 
@@ -269,7 +264,7 @@ SQL> drop database link linuxdb_link;
 
 데이타베이스 링크가 삭제되었습니다.
 
-[해결책********]
+[해결책]
 원격DB서버의 global_name값을 확인
 SQL> connect system/xxxxxx@linuxdb
 SQL> show parameter global_names
@@ -322,36 +317,12 @@ V_EMP                          VIEW
 SQL>
 
 This article comes from dbakorea.pe.kr (Leave this line as is)
-```
 
-```
 
-```
 
-```
-
-```
-
-```
-
-```
-
-```
 ------------------------- 2015.09.07 ---------------------------------
-```
-
-```
  CREATE SYNONYM 시노님명  FOR  계정명.테이블명  CREATE SYNONYM 시노님명  FOR  계정명.함수명       a. alex 계정으로 접속 [sqlplus alex/비번]      b. CREATE SYNONYM EMP FOR SCOTT.EMP; ===========================> 여기 까지 처리한 경우, alex계정에서 select * from EMP;와 같이 접근이 가능하다.
-```
 
-```
 
-```
-
-```
-
-```
-
-```
 
 ```

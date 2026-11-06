@@ -19,14 +19,11 @@ Batch 구조
 
 ​
 
--
-ItemReader
+- ItemReader
 
--
-ItemProcessor
+- ItemProcessor
 
--
-ItemWriter
+- ItemWriter
 
 ​
 

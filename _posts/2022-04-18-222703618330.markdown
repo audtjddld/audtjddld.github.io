@@ -279,7 +279,7 @@ github 액션이나 build script에서 nginx config 파일을 교체해서 배�
 
 ​
 
-**​****1. user**
+**​1. user**
 
 
 

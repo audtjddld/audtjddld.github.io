@@ -101,7 +101,7 @@ There are **experimental extensions to JUnit 5 **to allow easier ways to write p
 
 The latest version can be found on [Maven Central](https://search.maven.org/classic/#search%7Cga%7C1%7Cg%3A%22org.junit.jupiter%22%20AND%20a%3A%22junit-jupiter-params%22).
 
-The *@MethodSource* annotation allows us to **produce test parameters by calling a static function** that resides in the same class as the test. This is possible but **not obvious in Kotlin**. We have to **use the *****@JvmStatic***** annotation inside a *****companion object:***
+The *@MethodSource* annotation allows us to **produce test parameters by calling a static function** that resides in the same class as the test. This is possible but **not obvious in Kotlin**. We have to **use the ***@JvmStatic*** annotation inside a *companion object:***
 
 
 
@@ -144,7 +144,7 @@ The *@MethodSource* annotation allows us to **produce test parameters by calling
 
 
 
-This also means that the methods used to produce parameters must all be together since **we can only have a single *****companion object***** per class**.
+This also means that the methods used to produce parameters must all be together since **we can only have a single ***companion object*** per class**.
 
 All of the other ways of using parameterized tests work exactly the same in Kotlin as they do in Java. *@CsvSource* is of special note here, since we can use that instead of *@MethodSource* for simple test data most of the time to make our tests more readable:
 

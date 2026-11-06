@@ -163,17 +163,13 @@ public class ProductCompositeServiceApplication {
 
 
 
--
-Swagger v2 문서를 생성하고자 Docket Bean을 초기화 한다.
+- Swagger v2 문서를 생성하고자 Docket Bean을 초기화 한다.
 
--
-apis(), paths() method로 spring fox가 api 정보를 찾을 위치를 지정한다.
+- apis(), paths() method로 spring fox가 api 정보를 찾을 위치를 지정한다.
 
--
-globalREsponseMessage() method를 사용해 spring fox가 기본 http 응답 코드(예: 401, 403)을 추가하지 않게 한다.(예제에서는 응답코드가 불필요해서 빠져있다.)
+- globalREsponseMessage() method를 사용해 spring fox가 기본 http 응답 코드(예: 401, 403)을 추가하지 않게 한다.(예제에서는 응답코드가 불필요해서 빠져있다.)
 
--
-api* 변수로 Docket bean을 구성한다. 구성에 들어가는 API 정보를 spring의 @Value annotation을 사용해 속성 파일에서 초기화된다. @Value annotation은 다음과 같다.
+- api* 변수로 Docket bean을 구성한다. 구성에 들어가는 API 정보를 spring의 @Value annotation을 사용해 속성 파일에서 초기화된다. @Value annotation은 다음과 같다.
 
 
 
@@ -429,14 +425,11 @@ public interface ProductCompositeService {
 
 
 
--
-Spring fox Docket Bean에 지정한 일반 정보, 실제 스웨거 문서의 링크 (http://localhost:8080/v2/api-docs)
+- Spring fox Docket Bean에 지정한 일반 정보, 실제 스웨거 문서의 링크 (http://localhost:8080/v2/api-docs)
 
--
-API 리소스 목록: 지금은 product-composite-service api만 있다.
+- API 리소스 목록: 지금은 product-composite-service api만 있다.
 
--
-page 하단에는 API엣 사용하는 모델을 검사하는 항목이 있다.
+- page 하단에는 API엣 사용하는 모델을 검사하는 항목이 있다.
 
 ​
 
@@ -475,11 +468,9 @@ page 하단에는 API엣 사용하는 모델을 검사하는 항목이 있다.
 
 
 
--
-오퍼레이션에 대한 한 줄 설명
+- 오퍼레이션에 대한 한 줄 설명
 
--
-지원하는 입력 매개 변수 등 오퍼레이션을 자세히 설명하는 항목. @ApiOperation annotation에 markdown 문법으로 입력한 내용이 랜더링 된다.
+- 지원하는 입력 매개 변수 등 오퍼레이션을 자세히 설명하는 항목. @ApiOperation annotation에 markdown 문법으로 입력한 내용이 랜더링 된다.
 
 ​
 

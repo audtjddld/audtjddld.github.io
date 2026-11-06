@@ -13,17 +13,13 @@ original_url: "https://blog.naver.com/kkforgg/223140971275"
 
 Enabling Team이 무엇인가 봤더니 Team Topologies 라는 곳에서 어느정도 구조화가 되어 있는 모습으로 보인다.
 
--
-Stream-aligned team
+- Stream-aligned team
 
--
-Enabling team
+- Enabling team
 
--
-Complicated Subsystem team
+- Complicated Subsystem team
 
--
-Platform team
+- Platform team
 
 BAU(Business as usual) 란 단어가 자주 등장하는데, 대충 찾아보니 일상적인 업무 인거 같다.
 

@@ -204,17 +204,13 @@ OAuth2AuthorizationEndpointFilter 아래의 기본설정이다.
 
 ​
 
--
-**AuthenticationConverter** — OAuth2AuthorizationCodeRequestAuthenticationConverter와 OAuth2AuthorizationConsentAuthenticationConverter 가 조합된 DelegatingAuthenticationConverter
+- **AuthenticationConverter** — OAuth2AuthorizationCodeRequestAuthenticationConverter와 OAuth2AuthorizationConsentAuthenticationConverter 가 조합된 DelegatingAuthenticationConverter
 
--
-**AuthenticationManager** — OAuth2AuthorizationCodeRequestAuthenticationProvider and OAuth2AuthorizationConsentAuthenticationProvider가 조합된 AuthenticationManager
+- **AuthenticationManager** — OAuth2AuthorizationCodeRequestAuthenticationProvider and OAuth2AuthorizationConsentAuthenticationProvider가 조합된 AuthenticationManager
 
--
-**AuthenticationSuccessHandler** — 내부적으로 "인증된" OAuth2AuthorizationCodeRequestAuthenticationToken을 처리하고, OAuth2AuthorizationResponse 반환 합니다.
+- **AuthenticationSuccessHandler** — 내부적으로 "인증된" OAuth2AuthorizationCodeRequestAuthenticationToken을 처리하고, OAuth2AuthorizationResponse 반환 합니다.
 
--
-**AuthenticationFailureHandler** — OAuth2Error와 연관이 있는 OAuth2AuthorizationCodeRequestAuthenticationException 다루는 것을 구현하거나OAuth2Error response를 반환합니다.
+- **AuthenticationFailureHandler** — OAuth2Error와 연관이 있는 OAuth2AuthorizationCodeRequestAuthenticationException 다루는 것을 구현하거나OAuth2Error response를 반환합니다.
 
 ​
 
@@ -431,17 +427,13 @@ authorization grant type들은 authorization_code로 refersh_token, authorizatio
 
 OAuth2TokenEndpointFilter는 아래 기본 설정을 참고
 
--
-**AuthenticationConverter** — A DelegatingAuthenticationConverter composed of OAuth2AuthorizationCodeAuthenticationConverter, OAuth2RefreshTokenAuthenticationConverter, and OAuth2ClientCredentialsAuthenticationConverter.
+- **AuthenticationConverter** — A DelegatingAuthenticationConverter composed of OAuth2AuthorizationCodeAuthenticationConverter, OAuth2RefreshTokenAuthenticationConverter, and OAuth2ClientCredentialsAuthenticationConverter.
 
--
-**AuthenticationManager** — An AuthenticationManager composed of OAuth2AuthorizationCodeAuthenticationProvider, OAuth2RefreshTokenAuthenticationProvider, and OAuth2ClientCredentialsAuthenticationProvider.
+- **AuthenticationManager** — An AuthenticationManager composed of OAuth2AuthorizationCodeAuthenticationProvider, OAuth2RefreshTokenAuthenticationProvider, and OAuth2ClientCredentialsAuthenticationProvider.
 
--
-**AuthenticationSuccessHandler** — An internal implementation that handles an OAuth2AccessTokenAuthenticationToken and returns the OAuth2AccessTokenResponse.
+- **AuthenticationSuccessHandler** — An internal implementation that handles an OAuth2AccessTokenAuthenticationToken and returns the OAuth2AccessTokenResponse.
 
--
-**AuthenticationFailureHandler** — An internal implementation that uses the OAuth2Error associated with the OAuth2AuthenticationException and returns the OAuth2Error response.
+- **AuthenticationFailureHandler** — An internal implementation that uses the OAuth2Error associated with the OAuth2AuthenticationException and returns the OAuth2Error response.
 
 ​
 
@@ -528,23 +520,17 @@ public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity h
 
 ​
 
--
-introspectionRequestConverter(): HttpServletRequest를 OAuth2TokenIntrospectionAuthenticationToken으로 부터 OAuth2 검증 요청을 추출하는 것을 시도하는 AuthenticationConverter(pre-processor)를 추가할 수 있다.
+- introspectionRequestConverter(): HttpServletRequest를 OAuth2TokenIntrospectionAuthenticationToken으로 부터 OAuth2 검증 요청을 추출하는 것을 시도하는 AuthenticationConverter(pre-processor)를 추가할 수 있다.
 
--
- introspectionRequestConverters(): 본 및 (선택적으로) 추가된 AuthenticationConverter. 목록에 대한 엑세스 기능을 제공하는 소비자를 설정하여 특정 AuthenticationConverter. 추가, 제거 또는 사용자 지정하는 기능을 허용합니다.
+- introspectionRequestConverters(): 본 및 (선택적으로) 추가된 AuthenticationConverter. 목록에 대한 엑세스 기능을 제공하는 소비자를 설정하여 특정 AuthenticationConverter. 추가, 제거 또는 사용자 지정하는 기능을 허용합니다.
 
--
-authenticationProvider(): 추가하는 AuthenticationProvider(main-processor)는 OAuth2TokenIntrospectionAuthenticationToken의 검증하는 것을 위해 사용됩니다.
+- authenticationProvider(): 추가하는 AuthenticationProvider(main-processor)는 OAuth2TokenIntrospectionAuthenticationToken의 검증하는 것을 위해 사용됩니다.
 
--
-authenticationProviders() :  본 및 (선택적으로) 추가된 AuthenticationProvider  목록에 대한 엑세스 기능을 제공하는 소비자를 설정하여 특정 AuthenticationProvider 추가, 제거 또는 사용자 지정하는 기능을 허용합니다.
+- authenticationProviders() :  본 및 (선택적으로) 추가된 AuthenticationProvider  목록에 대한 엑세스 기능을 제공하는 소비자를 설정하여 특정 AuthenticationProvider 추가, 제거 또는 사용자 지정하는 기능을 허용합니다.
 
--
-introspectionResponseHandler(): The AuthenticationSuccessHandler (post-processor)는 "인증된" OAuth2TokenIntrospectionAuthenticationToken and returning the OAuth2TokenIntrospection response를 위해 사용 됩니다.
+- introspectionResponseHandler(): The AuthenticationSuccessHandler (post-processor)는 "인증된" OAuth2TokenIntrospectionAuthenticationToken and returning the OAuth2TokenIntrospection response를 위해 사용 됩니다.
 
--
-errorResponseHandler(): The AuthenticationFailureHandler (post-processor)는 OAuth2AuthenticationException 과 OAuth2Error response을 다루기 위해 사용됩니다.
+- errorResponseHandler(): The AuthenticationFailureHandler (post-processor)는 OAuth2AuthenticationException 과 OAuth2Error response을 다루기 위해 사용됩니다.
 
 ​
 
@@ -554,17 +540,13 @@ OAuth2TokenIntrospectionEndpointFilter는OAuth2 검증 요청 filter 입니다.
 
 ​
 
--
-**AuthenticationConverter** — An OAuth2TokenIntrospectionAuthenticationConverter.
+- **AuthenticationConverter** — An OAuth2TokenIntrospectionAuthenticationConverter.
 
--
-**AuthenticationManager** — An AuthenticationManager composed of OAuth2TokenIntrospectionAuthenticationProvider.
+- **AuthenticationManager** — An AuthenticationManager composed of OAuth2TokenIntrospectionAuthenticationProvider.
 
--
-**AuthenticationSuccessHandler** — An internal implementation that handles an “authenticated” OAuth2TokenIntrospectionAuthenticationToken and returns the OAuth2TokenIntrospection response.
+- **AuthenticationSuccessHandler** — An internal implementation that handles an “authenticated” OAuth2TokenIntrospectionAuthenticationToken and returns the OAuth2TokenIntrospection response.
 
--
-**AuthenticationFailureHandler** — An internal implementation that uses the OAuth2Error associated with the OAuth2AuthenticationException and returns the OAuth2Error response.
+- **AuthenticationFailureHandler** — An internal implementation that uses the OAuth2Error associated with the OAuth2AuthenticationException and returns the OAuth2Error response.
 
 ​
 
@@ -644,11 +626,9 @@ public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity h
 
 
 
--
-  revocationRequestConverter(): AuthenticationConverter (pre-processor) 추가하는 것은  HttpServletRequest 로부터 인스턴스화 된 OAuth2TokenRevocationAuthenticationToken 에서 OAuth2 폐지 요청에서 추출하는 것에 사용됩니다.
+- revocationRequestConverter(): AuthenticationConverter (pre-processor) 추가하는 것은  HttpServletRequest 로부터 인스턴스화 된 OAuth2TokenRevocationAuthenticationToken 에서 OAuth2 폐지 요청에서 추출하는 것에 사용됩니다.
 
--
-revocationRequestConverters(): Consumer들에게 접근할 수 있는 기본적인 것과 (선택적인) 특별한AuthenticationConverter 추가, 제거, 변경 할 수 있도록 허용합니다.
+- revocationRequestConverters(): Consumer들에게 접근할 수 있는 기본적인 것과 (선택적인) 특별한AuthenticationConverter 추가, 제거, 변경 할 수 있도록 허용합니다.
 
 3. authenticationProvider() : AuthenticationProvider (main-processor) 는OAuth2TokenRevocationAuthenticationToken을 인증하기 위해 사용 됩니다.
 
@@ -668,17 +648,13 @@ OAuth2TokenRevocationEndpointFilter는 OAuth2 해지 요청 처리의 Filter 이
 
 Auth2TokenRevocationEndpointFilter is configured with the following defaults:
 
--
-**AuthenticationConverter** — An OAuth2TokenRevocationAuthenticationConverter.
+- **AuthenticationConverter** — An OAuth2TokenRevocationAuthenticationConverter.
 
--
-**AuthenticationManager** — An AuthenticationManager composed of OAuth2TokenRevocationAuthenticationProvider.
+- **AuthenticationManager** — An AuthenticationManager composed of OAuth2TokenRevocationAuthenticationProvider.
 
--
-**AuthenticationSuccessHandler** — An internal implementation that handles an “authenticated” OAuth2TokenRevocationAuthenticationToken and returns the OAuth2 revocation response.
+- **AuthenticationSuccessHandler** — An internal implementation that handles an “authenticated” OAuth2TokenRevocationAuthenticationToken and returns the OAuth2 revocation response.
 
--
-**AuthenticationFailureHandler** — An internal implementation that uses the OAuth2Error associated with the OAuth2AuthenticationException and returns the OAuth2Error response.
+- **AuthenticationFailureHandler** — An internal implementation that uses the OAuth2Error associated with the OAuth2AuthenticationException and returns the OAuth2Error response.
 
 ​
 

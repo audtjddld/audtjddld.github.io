@@ -46,7 +46,7 @@ original_url: "https://blog.naver.com/kkforgg/220612330517"
 
 항상 Xms, Xmx 값만 설정하다가 자세히 알아보니 더 옵션이 많네요.
 
--Xverify:none ****-XX:+UseParallelGC
+-Xverify:none -XX:+UseParallelGC
 -XX:-UseConcMarkSweepGC
 -XX:PermSize=64M
 -XX:MaxPermSize=512M

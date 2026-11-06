@@ -97,7 +97,7 @@ Elixir https://ko.wikipedia.org/wiki/Elixir**
 
 
 
-****[얼랭](https://ko.wikipedia.org/wiki/%EC%96%BC%EB%9E%AD)(Erlang) [가상 머신](https://ko.wikipedia.org/wiki/%EA%B0%80%EC%83%81_%EB%A8%B8%EC%8B%A0)(BEAM) 위에서 동작하는 [함수형](https://ko.wikipedia.org/wiki/%ED%95%A8%EC%88%98%ED%98%95_%EC%96%B8%EC%96%B4), [동시성](https://ko.wikipedia.org/wiki/%EB%B3%91%ED%96%89%EC%84%B1) 프로그래밍 언어이다. 엘릭서는 얼랭이 보유하고 있는 분산 처리, 장애 내구성, 실시간, 무정지 애플리케이션 등의 특징을 공유한다. 그에 더해서 프로토콜[[1]](https://ko.wikipedia.org/wiki/Elixir#cite_note-1)을 이용해 [다형성](https://ko.wikipedia.org/wiki/%EB%8B%A4%ED%98%95%EC%84%B1)을 지원하고, Quote[[2]](https://ko.wikipedia.org/wiki/Elixir#cite_note-elixir_quote_and_unqote-2)과 Unquote[[2]](https://ko.wikipedia.org/wiki/Elixir#cite_note-elixir_quote_and_unqote-2) 그리고 [Macro](https://ko.wikipedia.org/wiki/%EB%A7%A4%ED%81%AC%EB%A1%9C)[[3]](https://ko.wikipedia.org/wiki/Elixir#cite_note-3)를 통한 [DSL](https://ko.wikipedia.org/wiki/%EB%8F%84%EB%A9%94%EC%9D%B8_%ED%8A%B9%ED%99%94_%EC%96%B8%EC%96%B4) 구현 등의 [메타 프로그래밍](https://ko.wikipedia.org/wiki/%EB%A9%94%ED%83%80_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D)이 가능하다.
+[얼랭](https://ko.wikipedia.org/wiki/%EC%96%BC%EB%9E%AD)(Erlang) [가상 머신](https://ko.wikipedia.org/wiki/%EA%B0%80%EC%83%81_%EB%A8%B8%EC%8B%A0)(BEAM) 위에서 동작하는 [함수형](https://ko.wikipedia.org/wiki/%ED%95%A8%EC%88%98%ED%98%95_%EC%96%B8%EC%96%B4), [동시성](https://ko.wikipedia.org/wiki/%EB%B3%91%ED%96%89%EC%84%B1) 프로그래밍 언어이다. 엘릭서는 얼랭이 보유하고 있는 분산 처리, 장애 내구성, 실시간, 무정지 애플리케이션 등의 특징을 공유한다. 그에 더해서 프로토콜[[1]](https://ko.wikipedia.org/wiki/Elixir#cite_note-1)을 이용해 [다형성](https://ko.wikipedia.org/wiki/%EB%8B%A4%ED%98%95%EC%84%B1)을 지원하고, Quote[[2]](https://ko.wikipedia.org/wiki/Elixir#cite_note-elixir_quote_and_unqote-2)과 Unquote[[2]](https://ko.wikipedia.org/wiki/Elixir#cite_note-elixir_quote_and_unqote-2) 그리고 [Macro](https://ko.wikipedia.org/wiki/%EB%A7%A4%ED%81%AC%EB%A1%9C)[[3]](https://ko.wikipedia.org/wiki/Elixir#cite_note-3)를 통한 [DSL](https://ko.wikipedia.org/wiki/%EB%8F%84%EB%A9%94%EC%9D%B8_%ED%8A%B9%ED%99%94_%EC%96%B8%EC%96%B4) 구현 등의 [메타 프로그래밍](https://ko.wikipedia.org/wiki/%EB%A9%94%ED%83%80_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D)이 가능하다.
 
 
 
@@ -181,7 +181,7 @@ Erlang  https://ko.wikipedia.org/wiki/%EC%96%BC%EB%9E%AD**
 
 
 
-******얼랭**(Erlang, [영어](https://ko.wikipedia.org/wiki/%EC%98%81%EC%96%B4): [IPA](https://ko.wikipedia.org/wiki/%EC%9C%84%ED%82%A4%EB%B0%B1%EA%B3%BC:IPA): [ˈɜrlæŋ])은 범용 [병렬](https://ko.wikipedia.org/wiki/%EB%B3%91%EB%A0%AC_%EC%BB%B4%ED%93%A8%ED%8C%85) [프로그래밍 언어](https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D_%EC%96%B8%EC%96%B4)이다. [함수형 언어](https://ko.wikipedia.org/wiki/%ED%95%A8%EC%88%98%ED%98%95_%EC%96%B8%EC%96%B4)가 효율적으로 산업 현장등에서 사용되는 유명한 사례이다.**원래는 [에릭슨](https://ko.wikipedia.org/wiki/%EC%97%90%EB%A6%AD%EC%8A%A8)(Ericsson)사에서 스위칭 소프트웨어에서 사용하기 위해 개발했지만, [1998년](https://ko.wikipedia.org/wiki/1998%EB%85%84)에 [오픈 소스](https://ko.wikipedia.org/wiki/%EC%98%A4%ED%94%88_%EC%86%8C%EC%8A%A4)로 공개되었다.
+**얼랭**(Erlang, [영어](https://ko.wikipedia.org/wiki/%EC%98%81%EC%96%B4): [IPA](https://ko.wikipedia.org/wiki/%EC%9C%84%ED%82%A4%EB%B0%B1%EA%B3%BC:IPA): [ˈɜrlæŋ])은 범용 [병렬](https://ko.wikipedia.org/wiki/%EB%B3%91%EB%A0%AC_%EC%BB%B4%ED%93%A8%ED%8C%85) [프로그래밍 언어](https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D_%EC%96%B8%EC%96%B4)이다. [함수형 언어](https://ko.wikipedia.org/wiki/%ED%95%A8%EC%88%98%ED%98%95_%EC%96%B8%EC%96%B4)가 효율적으로 산업 현장등에서 사용되는 유명한 사례이다.**원래는 [에릭슨](https://ko.wikipedia.org/wiki/%EC%97%90%EB%A6%AD%EC%8A%A8)(Ericsson)사에서 스위칭 소프트웨어에서 사용하기 위해 개발했지만, [1998년](https://ko.wikipedia.org/wiki/1998%EB%85%84)에 [오픈 소스](https://ko.wikipedia.org/wiki/%EC%98%A4%ED%94%88_%EC%86%8C%EC%8A%A4)로 공개되었다.
 흔히 Erlang이라는 이름이 Er**icsson **Lang**uage에서 따온 것이라고 생각하지만, 실제로는 [통신이론](https://ko.wikipedia.org/wiki/%ED%86%B5%EC%8B%A0%EC%9D%B4%EB%A1%A0)을 연구한 [덴마크](https://ko.wikipedia.org/wiki/%EB%8D%B4%EB%A7%88%ED%81%AC)의 [수학자](https://ko.wikipedia.org/wiki/%EC%88%98%ED%95%99%EC%9E%90) Agner Krarup Erlang의 이름에서 따온 것이다.
 
 
@@ -259,7 +259,7 @@ Beam, erlang/otp 위에서 돌기 때문에 erlang에 대한 것 보다 beam, er
 switch문을 가장 먼저 개발해낸 언어임.
 분산 처리등에 적합한 형태로 구현이 가능했었지만 자바만큼 유행해지지 않음.
 
-Beam(erlang vm)****내부에 scheduler가 porcess 갯수만큼 생기고, scheduler마다 queue를 가지고 있다.
+Beam(erlang vm)내부에 scheduler가 porcess 갯수만큼 생기고, scheduler마다 queue를 가지고 있다.
 
 큐는 우선순위 큐로 구현되어 있다.
 
@@ -308,7 +308,6 @@ O**pen **T**elecom **P**latform https://www.ibm.com/developerworks/community/bl
 
 
 
-**
 erlang의 라이브러리다.
 
 OTP HEBAVIOR
@@ -317,7 +316,7 @@ OTP HEBAVIOR
 > gen_fsm
 ...
 
-gen_server****는 client와 server와 요청을 주고 받는 기능을 구현해 놓은 것.
+gen_server는 client와 server와 요청을 주고 받는 기능을 구현해 놓은 것.
 
 supervisor는 worker를 관리하는 역할을 하고 있음.
 
@@ -354,7 +353,7 @@ erlang cluster
 100개 이하로 묶으라고 한다고 함.
 네트워크 부하가 커져서 문제라고 함.
 
-Distributed System.****1. load balancing
+Distributed System.1. load balancing
 2. high availablilry
 3. reliabilty
 
@@ -371,11 +370,11 @@ supervisor -> worker 사이에는 전략이 있다고 함.
 actor가 죽을 때 mailBox를 복사해서 관리하는 부분을 관리하도록 한다.
 (stash 라는 것이 있었다. 기억나니?)
 
-Timout****동기 처리.
+Timout동기 처리.
 외부 api 호출 시.
 erlang otp 에서는 actor의 모니터링을 할 수 있도록 보여준다.
 
-hotswapping****위에서 이야기한, Actor의 형태는 Code, Data, Process, MailBox 로 나뉘어져 있는데
+hotswapping위에서 이야기한, Actor의 형태는 Code, Data, Process, MailBox 로 나뉘어져 있는데
 굳이 재시작하지 않고 구현된 Code를 변경이 가능하다.
 이것을 erlang에서는 hotwapping이라고 한다고 함.
 (좀 신기하네 이건)
@@ -383,27 +382,27 @@ hotswapping****위에서 이야기한, Actor의 형태는 Code, Data, Process, M
 간단한 bug fix등에는 가장 적합하다.
 erlang에서는 tree가 변경될 때에도 이 메시지 처리 방식을 변경할 수 있도록 가능하지만, 매우 어렵다고 함. (나같아도 그냥 새로 내렷다 올릴 듯...)
 
-Hot upgrading****Actor의 데이터를 바꿀 수 있다.
+Hot upgradingActor의 데이터를 바꿀 수 있다.
 
-CAP THEOREM****지금은 C냐 A냐 라고 나뉜다고 함.
+CAP THEOREM지금은 C냐 A냐 라고 나뉜다고 함.
 많은 이야기를 한다고 함.
 
 DB 레플레카 replication
 
 분산처리 시스템에서 발생되는 문제 3개
 
-CONSENSUS PROBLEM****데드락과 같은 개념 같음.
+CONSENSUS PROBLEM데드락과 같은 개념 같음.
 쓰레드 레이싱와 같은 개념인데, Cluster를 걸었을 때 이러한 문제를 어떻게 해결 할지 보장해주는 라이브러리 인듯.
 
 개념은 요청마다 버전(version)을 먹인 뒤 version 으로 판단하여 어느 것이 최신데이터 인지 확인 하고 버릴지 사용할지 확인한다는 것. JPA에서 @Version 이라는 것으로 이러한 문제를 해결한다는 내용이 있었다.
 
-Determine Order of Events****
-Vector Clock****
+Determine Order of Events
+Vector Clock
 이벤트에 버전 이나 순서를 둬서 동기화는 시키는 것을 하는 것.
 
 concurrent problem 이 발생했을 때 어떻게 처리 할지 정의도 가능하다.
 
-RIACK_CORE - DVVS (Dotted version vectors)****는 concurrent problem이 발생되면 client에게 문제가 발생한 n개의 이벤트를 다 보내서 client에서 처리 하도록 한다.
+RIACK_CORE - DVVS (Dotted version vectors)는 concurrent problem이 발생되면 client에게 문제가 발생한 n개의 이벤트를 다 보내서 client에서 처리 하도록 한다.
 
 SHARE DATA Consistently**
 

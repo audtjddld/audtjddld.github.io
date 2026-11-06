@@ -115,7 +115,7 @@ Category: [Technical Support](http://www.liquidweb.com/kb/category/technical-su
 
 SNMP 101: The Basics
 
-I. How To Install and Configure SNMP on CentOS****II. [How To Change the SNMP Port on CentOS](http://www.liquidweb.com/kb/how-to-change-the-snmp-port-on-centos/)
+I. How To Install and Configure SNMP on CentOSII. [How To Change the SNMP Port on CentOS](http://www.liquidweb.com/kb/how-to-change-the-snmp-port-on-centos/)
 
 ## Introduction
 

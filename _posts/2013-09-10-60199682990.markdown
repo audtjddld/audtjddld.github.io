@@ -67,7 +67,6 @@ WAS로 서비스 요청이 넘어가지 않게 한다.
 
 **Extended Description**
 
-****
 
 **- 웹서버 기능**
 

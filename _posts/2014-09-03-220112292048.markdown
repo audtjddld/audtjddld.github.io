@@ -14,7 +14,7 @@ original_url: "https://blog.naver.com/kkforgg/220112292048"
 
 # java.lang.NumberFormatException: For input string: “y” 에러 해결방법
 
-**### Error querying database. Cause: java.lang.NumberFormatException: For input string: “y”****### Cause: java.lang.NumberFormatException: For input string: “y”**
+**### Error querying database. Cause: java.lang.NumberFormatException: For input string: “y”### Cause: java.lang.NumberFormatException: For input string: “y”**
 
 myBatis 사용시 위와 같은 에러가 발생하는 경우가 있다.
 

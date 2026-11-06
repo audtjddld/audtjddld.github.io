@@ -93,18 +93,6 @@ kotlin.code.style=official
 
 ```
 disabled_rules=no-wildcard-imports
-```
-
-
-
-
-
-
-
-
-
-
-```
 ## Coding conventions
 
 ### Kotlin Coding convention
@@ -145,8 +133,6 @@ You can batch convert code styles
 
 ```shell
 ./gradlew ktlintFormat
-```
-```
 
 
 

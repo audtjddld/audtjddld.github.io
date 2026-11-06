@@ -147,26 +147,26 @@ response.addCookie(cookies[i]);      //쿠키저장
       2) 쿠키에 속성을 부여.
       3) 쿠키를 전송.
     ■ 생성자
-      ○ Cookie(String name, String value)****        - 이름이 name이고 값이 value인 쿠키를 생성.
+      ○ Cookie(String name, String value)        - 이름이 name이고 값이 value인 쿠키를 생성.
     ■ 속성을 부여할 수 있는 메소드
-      ○ void setComment(String purpose)****        - 쿠키에 관련된 정보를 주석 형식으로 기술.
-      ○ void setDomain(String pattern)****        - 쿠키가 사용될 도메인을 설정.
+      ○ void setComment(String purpose)        - 쿠키에 관련된 정보를 주석 형식으로 기술.
+      ○ void setDomain(String pattern)        - 쿠키가 사용될 도메인을 설정.
         - 해당 도메인에 속해 있는 컴퓨터를 방문하면 웹 브라우저는 자동적으로 쿠키를 그 웹서버에 전송.
-      ○ void setMaxAge(int expiry)****        - 쿠키가 유효한 기간을 설정. (단위: 초)
+      ○ void setMaxAge(int expiry)        - 쿠키가 유효한 기간을 설정. (단위: 초)
         - 기간이 초과되면 쿠키는 삭제.
         - 이 속성을 기술하지 않으면 쿠키는 클라이언트 컴퓨터에 저장되지 않고, 현재 웹 브라우저가 실행되는 동안에만 유효.
-      ○ void setPath(String url)****        - 쿠키가 적용될 패스 정보를 설정.
+      ○ void setPath(String url)        - 쿠키가 적용될 패스 정보를 설정.
         - 패스가 설정되면 해당되는 패스에 방문하는 경우에만 웹 브라우저가 웹 서버에 쿠키를 전송.
-      ○ void setSecure(boolean flag)****        - 보안을 설정.
+      ○ void setSecure(boolean flag)        - 보안을 설정.
         - flag가 true이면 보안성이 있는 채널(예:SSL)을 사용하는 경우에만 쿠키를 전송.
-      ○ void setValue(String newValue)****        - 쿠키 값을 설정.
+      ○ void setValue(String newValue)        - 쿠키 값을 설정.
     ■ 속성을 읽는 메소드
-      ○ String getComment()****        - 쿠키의 목적 등을 기술하는 주석을 읽어 옴.
-      ○ String getDomain()****        - 쿠키의 도메인 이름을 얻어 옴.
-      ○ int getMaxAge()****        - 쿠키의 유효 기간을 얻어 옴. (단위: 초)
-      ○ String getName()****        - 쿠키의 이름을 얻어 옴.
+      ○ String getComment()        - 쿠키의 목적 등을 기술하는 주석을 읽어 옴.
+      ○ String getDomain()        - 쿠키의 도메인 이름을 얻어 옴.
+      ○ int getMaxAge()        - 쿠키의 유효 기간을 얻어 옴. (단위: 초)
+      ○ String getName()        - 쿠키의 이름을 얻어 옴.
       ○ String getPath()
-**        - 패스 정보(URI)를 얻어 옴.**      ○ boolean getSecure()****        - 쿠키가 보안이 설정된 프로토콜에서만 보내지면 true, 아니면 false를 리턴.
-      ○ String getValue()****        - 쿠키 값을 얻어 옴.
+**        - 패스 정보(URI)를 얻어 옴.**      ○ boolean getSecure()        - 쿠키가 보안이 설정된 프로토콜에서만 보내지면 true, 아니면 false를 리턴.
+      ○ String getValue()        - 쿠키 값을 얻어 옴.
 
 [출처]** [8. 쿠키, 세션, 필터 (쿠키)](http://blog.naver.com/chocolleto/30083786336)|**작성자** [외계인셩](http://blog.naver.com/chocolleto)

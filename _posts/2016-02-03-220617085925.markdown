@@ -20,9 +20,6 @@ class GlobalControllerExceptionHandler {
         // Nothing to do
     }
 }
-```
-
-```
 @ControllerAdvice
 class GlobalDefaultExceptionHandler {
     public static final String DEFAULT_ERROR_VIEW = "error";

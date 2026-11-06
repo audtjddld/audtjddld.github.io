@@ -80,7 +80,7 @@ module Kernel    private        def this_method_name            call
 
 <http://decoder.tistory.com/596>
 
-***********************************************************************************
+***
 
 ==현재 메소드와 현재 클래스를 출력하는 소스**
 

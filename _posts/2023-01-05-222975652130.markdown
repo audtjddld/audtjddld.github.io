@@ -66,17 +66,13 @@ ENTRYPOINT ["java","-jar","/app.jar"]
 
 ​
 
--
-Java SE 17.0.2를 사용하여 OpenJDK의 공식 Docker Image 기반이다.
+- Java SE 17.0.2를 사용하여 OpenJDK의 공식 Docker Image 기반이다.
 
--
-다른 Docker Container에 8080 Port를 공개한다.
+- 다른 Docker Container에 8080 Port를 공개한다.
 
--
-Gradle build folder(build/libs)에 있는 fat jar 파일을 Docker Image에 추가한다.
+- Gradle build folder(build/libs)에 있는 fat jar 파일을 Docker Image에 추가한다.
 
--
-Docker Image로 Container를 시작할 때 Docker에서 사용할 Command(java -jar /app.jar)를 지정한다.
+- Docker Image로 Container를 시작할 때 Docker에서 사용할 Command(java -jar /app.jar)를 지정한다.
 
 ​
 
@@ -183,20 +179,15 @@ docker rum --rm -p8080:8080 -e "SPRING_PROFIES_ACTIVE=docker" image명
 
 
 
--
-docker run : container를 시작하고 terminal에 log를 출력한다. container를 실행하는 중에는 terminal이 잠긴다.
+- docker run : container를 시작하고 terminal에 log를 출력한다. container를 실행하는 중에는 terminal이 잠긴다.
 
--
---rm : 이 옵션은 Ctrl + C를 입력하면 container를 중지하고, docker가 container를 제거한다.
+- --rm : 이 옵션은 Ctrl + C를 입력하면 container를 중지하고, docker가 container를 제거한다.
 
--
--p8080:8080: 이 옵션은 container의 8080 port를 docker host의 8080 port에 매핑해 외부에서 호출할 수 있게 한다. 로컬 리눅스 가상머신에서 docker를 실행하는 Docker for macOS의 경우 localhost로 접근할 수  있도록 macOS로 port forwarding된다.
+- -p8080:8080: 이 옵션은 container의 8080 port를 docker host의 8080 port에 매핑해 외부에서 호출할 수 있게 한다. 로컬 리눅스 가상머신에서 docker를 실행하는 Docker for macOS의 경우 localhost로 접근할 수  있도록 macOS로 port forwarding된다.
 
--
--e : 이 옵션으로 Container의 environment variable를 지정할 수 있다. 앞의 command에선 SPRING_PROFILES_ACTIVE=docker 라는 environment variable 사용해 Spring Profile을 docker로 지정했다.
+- -e : 이 옵션으로 Container의 environment variable를 지정할 수 있다. 앞의 command에선 SPRING_PROFILES_ACTIVE=docker 라는 environment variable 사용해 Spring Profile을 docker로 지정했다.
 
--
-image명 : docker가 container를 시작할 때 사용할 docker image의 이름이다.
+- image명 : docker가 container를 시작할 때 사용할 docker image의 이름이다.
 
 ​
 
@@ -414,17 +405,13 @@ services:
 
 
 
--
-마이크로서비스의 이름. docker 내부 network에서 사용하는 container host이름이기도 하다.
+- 마이크로서비스의 이름. docker 내부 network에서 사용하는 container host이름이기도 하다.
 
--
-docker image build에 사용할 Dockerfile의 위치를 지정하는 build 지시문이다.
+- docker image build에 사용할 Dockerfile의 위치를 지정하는 build 지시문이다.
 
--
-memory를 350MB로 제한한다.
+- memory를 350MB로 제한한다.
 
--
-container에서 사용할 environment variable 이다. 여기에서는 Spring Profile을 docker로 지정하는 것을 설정했다.
+- container에서 사용할 environment variable 이다. 여기에서는 Spring Profile을 docker로 지정하는 것을 설정했다.
 
 ​
 
@@ -647,18 +634,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
-```
-
-
-
-
-
-
-
-
-
-
-```
 recommendation:
     build: microservices/recommendation-service
     mem_limit: 350m

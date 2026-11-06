@@ -13,13 +13,11 @@ RESTful
 
 "Near Real-Time" Search Engine
 
--
-인덱싱한 데이터에 대한 검색이 실시간으로 가능하지는 않지만, 정해진 시간 안에 인덱싱이 완료되고 검색이 가능하다. ex)refresh_interval: 10s -> 인덱싱 후 10초 이내에 검색이 가능해짐
+- 인덱싱한 데이터에 대한 검색이 실시간으로 가능하지는 않지만, 정해진 시간 안에 인덱싱이 완료되고 검색이 가능하다. ex)refresh_interval: 10s -> 인덱싱 후 10초 이내에 검색이 가능해짐
 
 분산형 저장소
 
--
-데이터의 분산 저장, 검색, 백업이 가능하다. 분산 저장과 노드 간 데이터 조정, 백업 복구 등은 자동으로 수행된다.
+- 데이터의 분산 저장, 검색, 백업이 가능하다. 분산 저장과 노드 간 데이터 조정, 백업 복구 등은 자동으로 수행된다.
 
 ​
 
@@ -271,14 +269,11 @@ ES 클러스터를 구성할 때 메모리와 디스크가 클러스터 비용�
 
 1개의 Data Node Resource Limit
 
--
-CPU : unlimited
+- CPU : unlimited
 
--
-Memory : 64GB
+- Memory : 64GB
 
--
-Disk: 1920GB
+- Disk: 1920GB
 
 > Memory는 JVM Heap을 32GB 까지 설정할 수 있지만 32GB로 설정하면 성능이 감소하는 문제가 있다. 이 때문에 Elastic Cloud를 비롯한 클라우드형 Elasticsearch와 VES에서도 힙 메모리는 31GB 이하로 설정하고 있다.
 

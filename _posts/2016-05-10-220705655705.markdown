@@ -93,13 +93,6 @@ app.controller('SiblingOneCtrl',
 
 To demonstrate how `$scope` works when firing the events, here’s a simple hierarchy:
 
-```
-
-
-
-
-
-```
 
 If `SiblingTwoCtrl` fired `$scope.$broadcast`, then `SiblingOneCtrl` would *never* know it happened. This can be an annoyance, but a (slightly hacky-feely) remedy can be done:
 

@@ -22,36 +22,6 @@ dependencies {
   …
   compile fileTree(dir: 'src/main/resources/libs', include: ['*.jar'])
 }
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-​
-
-
-
-
-
-
-
-
-
-```
 sourceSets {
     main {
         resources {

@@ -36,7 +36,7 @@ uploadDirResource는 File Upload시 다중접속으로 인해 용량이 한꺼�
 
 ﻿
 
-﻿fileUpload.jsp****
+﻿fileUpload.jsp
 
 <script>function formSubmit(oForm){ oForm.submit();}</script><form action="fileUpload.do?mode=fileUpload" method="post" enctype="multipart/form-data"><p> <label for="subject">제목</label> <input type="text" id="subject" name="subject"></p><p> <label for="reportFile">리포트 파일</label> <input type="file" id="multipartFile" name="multipartFile"></p><p> <input type="button" value="확인" onclick="formSubmit(this.form)"></p></form>
 

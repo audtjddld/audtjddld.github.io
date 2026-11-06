@@ -421,7 +421,6 @@ public class UnsuitableServiceImpl extends CommonService implements Unsuit
 
 **2. 컨트롤러 -> 서비스 간 고민**
 
-****
 
 기존 프로젝트 진행중 Controller 와 ServiceImpl 간 경계가 좀 모호했었습니다.
 

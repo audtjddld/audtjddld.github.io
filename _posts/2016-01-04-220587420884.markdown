@@ -21,7 +21,6 @@ original_url: "https://blog.naver.com/kkforgg/220587420884"
 
 그리고 밑을 보면 pom.xml에도 빨간색 마름모가 있는데 바로 이 파일에서 충돌이 발생했다는 의미이다.
 
-*
 
 일단 충돌이 발생하면 pull이든 commit이든 다음과 같은 오류가 뜨면서 아무 작업도 수행할 수가 없다.
 

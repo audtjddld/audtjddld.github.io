@@ -25,8 +25,6 @@ Spring framework를 사용하면 복잡한 기능을 간단하게 모듈로 구�
 
 메일 제목, 내용, 보내는사람, 받는사람, 수진자들을 파라미터를 받아서 메일을 전송하는 sendMail 메소드를 인터페이스에 정의한다.
 
-```
-```
 
 MailService 인터페이스를 MailServiceImpl 클래스에서 구현한다.
 
@@ -60,16 +58,7 @@ import javax.mail.internet.MimeMessage;
 
 ```
 이 클래스는 @Service 어노테이션을 사용하여 이 클래스가 서비스 객체임을 스트레오 어노테이션으로 지시한다. 다음은 JavaMailSender를 Injection 시키고 properties 파일에 있는 내용들을 읽어오기 위해서 MessageSource도 함께 @Autowired로 지시한다. 헬퍼클래스의 생성자에는 여러가지 파리미터가 들어갈수 있는데 여기서는 MimeMessageHelper(MimeMessage mimeMessage, boolean multipart, String encoding)를 사용했다.MessageHelper는 여러가지를 설정할 수 있는데, setSubject는 제목을, setTo는 수신자를, setFrom은 발신자를, setCc는 공동수진자를 그리고 setText는 내용을 넣을수 있는데 HTML 여부 설정을 할 수 있다. 그리고 send 메소드를 사용해서 message를 발송한다.
-```
-
-```
-```
-
-```
 다음은 Spring bean에 mailSender를 등록한다. 호스트명과 smtp 계정과 비밀번호, 포트번호 인증설정등 property로 설정한다. property 파일에서 관리하기 위해서 설정은 외부 property 파일로 따로 관리했다. property 파일을 따로 관리하지 않으려면 그냥 String 값을 value에 넣어도 상관없다.
-```
-
-```
 
 
 
@@ -108,8 +97,6 @@ mail.toCC=공동 수진자 메일 주소들 (","로 구분)
 
 ﻿
 
-```
-```
 
 
 

@@ -91,27 +91,21 @@ spec:
 
 **이 측정항목의 이점**
 
--
-실행기를 서버 측 지정된 저장소 세트로 제한할 수 있도록 명명된 저장소를 지원합니다.
+- 실행기를 서버 측 지정된 저장소 세트로 제한할 수 있도록 명명된 저장소를 지원합니다.
 
--
-작업 큐의 깊이에 따라 실행자 수를 조정합니다. 즉, 대기 중인 작업에 대한 실행자의 1:1 크기 조정을 의미합니다.
+- 작업 큐의 깊이에 따라 실행자 수를 조정합니다. 즉, 대기 중인 작업에 대한 실행자의 1:1 크기 조정을 의미합니다.
 
--
-[모든 확장 지표와 마찬가지로 GitHub 레이블을](https://github.com/actions/actions-runner-controller/blob/master/docs/automatically-scaling-runners.md#runner-labels) 사용하여 RunnerDeployment에 대한 워크플로 할당을 관리할 수 있습니다 .
+- [모든 확장 지표와 마찬가지로 GitHub 레이블을](https://github.com/actions/actions-runner-controller/blob/master/docs/automatically-scaling-runners.md#runner-labels) 사용하여 RunnerDeployment에 대한 워크플로 할당을 관리할 수 있습니다 .
 
 ​
 
 **이 측정항목의 단점**
 
--
-크기 조정 지표에는 저장소 목록이 포함되어야 합니다. 대규모 환경이나 셀프 서비스 환경에서는 리포지토리 목록을 유지 관리하는 것이 불가능할 수 있습니다.
+- 크기 조정 지표에는 저장소 목록이 포함되어야 합니다. 대규모 환경이나 셀프 서비스 환경에서는 리포지토리 목록을 유지 관리하는 것이 불가능할 수 있습니다.
 
--
-일부 사용자의 요구에 맞게 빠르게 확장되지 않을 수 있습니다. 이 지표는 가져오기 기반이므로 대기열 깊이는 동기화 기간에 의해 구성된 대로 폴링됩니다. 결과적으로 조정 성능은 이 동기화 기간에 의해 제한됩니다. 즉 조정 활동에 지연이 있음을 의미합니다.
+- 일부 사용자의 요구에 맞게 빠르게 확장되지 않을 수 있습니다. 이 지표는 가져오기 기반이므로 대기열 깊이는 동기화 기간에 의해 구성된 대로 폴링됩니다. 결과적으로 조정 성능은 이 동기화 기간에 의해 제한됩니다. 즉 조정 활동에 지연이 있음을 의미합니다.
 
--
-이 지표를 유지하려면 상대적으로 많은 양의 API 요청이 필요합니다. 환경 규모와 동기화 기간 구성의 강도에 따라 API 속도 제한 문제가 발생할 수 있습니다.
+- 이 지표를 유지하려면 상대적으로 많은 양의 API 요청이 필요합니다. 환경 규모와 동기화 기간 구성의 강도에 따라 API 속도 제한 문제가 발생할 수 있습니다.
 
 ​
 
@@ -123,25 +117,19 @@ HorizontalRunnerAutoscalerRunnerDeployment의 네임스페이스에 있는 해�
 
 **이 측정항목의 이점**
 
--
-TotalNumberOfQueuedAndInProgressWorkflowRuns측정항목 [#313](https://github.com/actions/actions-runner-controller/pull/313) 과 동일하게 서버측에서 명명된 저장소를 지원합니다.
+- TotalNumberOfQueuedAndInProgressWorkflowRuns측정항목 [#313](https://github.com/actions/actions-runner-controller/pull/313) 과 동일하게 서버측에서 명명된 저장소를 지원합니다.
 
--
-명시적인 리포지토리 목록을 유지하지 않고도 GitHub 조직 전체의 확장을 지원합니다. 이는 특히 대규모로 작업하는 사람들에게 유용합니다. [#223](https://github.com/actions/actions-runner-controller/pull/223)
+- 명시적인 리포지토리 목록을 유지하지 않고도 GitHub 조직 전체의 확장을 지원합니다. 이는 특히 대규모로 작업하는 사람들에게 유용합니다. [#223](https://github.com/actions/actions-runner-controller/pull/223)
 
--
-[모든 확장 지표와 마찬가지로 GitHub 레이블을](https://github.com/actions/actions-runner-controller/blob/master/docs/using-arc-runners-in-a-workflow.md#runner-labels) 사용하여 RunnerDeployment에 대한 워크플로 할당을 관리할 수 있습니다.
+- [모든 확장 지표와 마찬가지로 GitHub 레이블을](https://github.com/actions/actions-runner-controller/blob/master/docs/using-arc-runners-in-a-workflow.md#runner-labels) 사용하여 RunnerDeployment에 대한 워크플로 할당을 관리할 수 있습니다.
 
--
-백분율 증가/감소 기준뿐만 아니라 고정된 증가/감소 카운트 기준으로 원하는 실행자 수 조정 지원 [#223](https://github.com/actions/actions-runner-controller/pull/223)[#315](https://github.com/actions/actions-runner-controller/pull/315)
+- 백분율 증가/감소 기준뿐만 아니라 고정된 증가/감소 카운트 기준으로 원하는 실행자 수 조정 지원 [#223](https://github.com/actions/actions-runner-controller/pull/223)[#315](https://github.com/actions/actions-runner-controller/pull/315)
 
 **이 측정항목의 단점**
 
--
-일부 사용자의 요구에 맞게 빠르게 확장되지 않을 수 있습니다. 이 지표는 가져오기 기반이므로 바쁜 실행자 수는 동기화 기간에 따라 구성된 대로 폴링됩니다. 결과적으로 조정 성능은 이 동기화 기간에 의해 제한됩니다. 즉 조정 활동에 지연이 있음을 의미합니다.
+- 일부 사용자의 요구에 맞게 빠르게 확장되지 않을 수 있습니다. 이 지표는 가져오기 기반이므로 바쁜 실행자 수는 동기화 기간에 따라 구성된 대로 폴링됩니다. 결과적으로 조정 성능은 이 동기화 기간에 의해 제한됩니다. 즉 조정 활동에 지연이 있음을 의미합니다.
 
--
-우리는 대기 중인 작업의 실제 개수가 아닌 표시 정보를 기반으로 확장 및 축소하므로 원하는 실행자 수는 새 실행자를 과소 프로비저닝하거나 실제 작업 대기열 깊이에 비해 초과 프로비저닝할 가능성이 높습니다. 이는 그럴 수도 있고 아닐 수도 있습니다. 당신에게 문제가 있습니다.
+- 우리는 대기 중인 작업의 실제 개수가 아닌 표시 정보를 기반으로 확장 및 축소하므로 원하는 실행자 수는 새 실행자를 과소 프로비저닝하거나 실제 작업 대기열 깊이에 비해 초과 프로비저닝할 가능성이 높습니다. 이는 그럴 수도 있고 아닐 수도 있습니다. 당신에게 문제가 있습니다.
 
 
 
@@ -171,19 +159,6 @@ spec:
     scaleDownThreshold: '0.3'   # The percentage of busy runners at which the number of desired runners are re-evaluated to scale down
     scaleUpFactor: '1.4'        # The scale up multiplier factor applied to desired count
     scaleDownFactor: '0.7'      # The scale down multiplier factor applied to desired count
-```
-
-
-
-
-
-
-
-
-
-
-
-```
 ---
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: HorizontalRunnerAutoscaler

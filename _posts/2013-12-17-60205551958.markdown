@@ -60,9 +60,6 @@ SELECT  LEVEL, LPAD(' ', 4 * (LEVEL-1)) || EMPNO 사원,
 FROM    EMP
 START   WITH MGR IS NULL
 CONNECT BY PRIOR EMPNO = MGR;
-```
-
-```
 LEVEL     EMP            MGR      ISLEAF
 ------    -------------- -------  ---------
 1         7839                    0
@@ -86,9 +83,6 @@ SELECT LEVEL, LPAD(' ', 4 * (LEVEL-1)) || EMPNO사원,
 FROM   EMP
 START WITH EMPNO = '7876'
 CONNECT BY PRIOR MGR = EMPNO;
-```
-
-```
 LEVEL     EMP            MGR      ISLEAF
 ------    -------------- -------  ---------
 1         7876           7788     0
@@ -107,9 +101,6 @@ SELECT CONNECT_BY_ROOT(EMPNO) 루트사원, SYS_CONNECT_BY_PATH(EMPNO, '/') 경�
 FROM   EMP
 START WITH MGR IS NULL
 CONNECT BY PRIOR EMPNO = MGR;
-```
-
-```
 루트사원      경로                 사원       관리자
 --------    -------------------  ------     ----------
     7839    /7839                7839
@@ -131,7 +122,7 @@ WITH EMPLOYEES_ANCHOR AS
 SELECT LEVEL, EMPLOYEEID, LASTNAME, FIRSTNAME, REPORTSTO
 FROM EMPLOYEES_ANCHOR
 GO
-**************************************************************************
+**
 Level EmployeeID LastName   FirstName ReportsTo
 ---- --------    -------    -----     --------
 0    2           Fuller     Andrew    NULL
@@ -171,7 +162,7 @@ WITH T_EMP_ANCHOR AS (
 SELECT LEVEL, REPLICATE(' ', LEVEL) + EMPLOYEEID AS EMPLOYEEID, MANAGERID
 FROM T_EMP_ANCHOR
 GO
-**************************************************************************
+**
 Level EmployeeID ManagerID
 ---   -------    ---------
 0     1000       NULL
@@ -189,9 +180,6 @@ Level EmployeeID ManagerID
 3     1121       1120
 3     1122       1120
 (14개 행 적용됨)
-```
-
-```
 WITH T_EMP_ANCHOR AS (
      SELECT EMPLOYEEID, MANAGERID, 0 AS LEVEL, CONVERT(VARCHAR(1000), EMPLOYEEID) AS SORT
      FROM T_EMP
@@ -204,9 +192,6 @@ SELECT LEVEL, REPLICATE(' ', LEVEL) + EMPLOYEEID AS EMPLOYEEID, MANAGERID, SORT
 FROM T_EMP_ANCHOR
 ORDER BY SORT
 GO
-```
-
-```
 Level EmployeeID ManagerID Sort
 ----  --------   --------  -------------
 0     1000       NULL      1000
@@ -238,9 +223,6 @@ SELECT E1.EMPNO 사원, E1.MGR 관리자, E2.MGR 차상위_관리자
 FROM EMP E1, EMP E2
 WHERE E1.MGR = E2.EMPNO
 ORDER BY E2.MGR DESC, E1.MGR, E1.EMPNO;
-```
-
-```
 사원    관리자    차상위_관리자
 -----  -------  ---------------
 7566   7839

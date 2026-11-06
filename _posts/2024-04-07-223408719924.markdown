@@ -35,8 +35,7 @@ original_url: "https://blog.naver.com/kkforgg/223408719924"
 
 암시적으로 선언된 클래스 및 인스턴스 Main 메서드
 
--
-Spring에서는 불가
+- Spring에서는 불가
 
 super class 호출 방식 변경
 

@@ -11,9 +11,6 @@ original_url: "https://blog.naver.com/kkforgg/220627258015"
 
 ```
 cat /etc/passwd | grep 계정명
-```
-
-```
 [root@zetawiki ~]# cat /etc/passwd | grep testuser
 ```
 

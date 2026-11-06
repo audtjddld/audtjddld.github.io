@@ -135,53 +135,9 @@ package com.mvmlabs.springboot;
 
 - Create the tiles configuration file: WEB-INF/tiles/tiles.xml
 
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```
 
 - Create the tiles themselves basic.jsp:
 
-```
-
-
-
-
-
-
-
-
-
-
-
-```
 
 - header.jsp:
 

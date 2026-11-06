@@ -45,7 +45,6 @@ original_url: "https://blog.naver.com/kkforgg/60201255174"
 
 *                                                                                                   -* Dennis DeBruler
 
-****
 
 **Indirection** 책에선 간접적인 방법에 의한 참조를 **indirection**이라고 표현하고 있다.
 

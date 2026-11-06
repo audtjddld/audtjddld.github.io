@@ -44,7 +44,7 @@ original_url: "https://blog.naver.com/kkforgg/222079454367"
 
 
 
-**4. Answering a Call to ****Void***
+**4. Answering a Call to Void***
 
 A method may perform more complex behavior than merely adding or setting value. For these situations we can use Mockito’s *Answer* to add the behavior we need:
 

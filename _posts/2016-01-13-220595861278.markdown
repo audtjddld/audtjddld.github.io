@@ -20,7 +20,6 @@ original_url: "https://blog.naver.com/kkforgg/220595861278"
 *RedShapeDecorator을* 구현하는 구체적인 클래스입니다 *ShapeDecorator을* .
 
 *DecoratorPatternDemo* , 우리의 데모 클래스는 사용 *RedShapeDecorator을* 장식하는*모양* 객체를.
-*
 ## 1 단계
 
 인터페이스를 만듭니다.

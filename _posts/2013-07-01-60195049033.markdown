@@ -938,8 +938,6 @@ MultipartFilter를 사용하겠다는 것이고요.
 
 빈 등록은 다음과 같습니다.
 
-```
-```
 
 근데 에러메세지를 보면 CommonsMultipartResolver가 아닌 StandardServletMultipartResolver를 쓰고 있네요.
 

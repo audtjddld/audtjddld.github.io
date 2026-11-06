@@ -84,11 +84,9 @@ public class SpringBeansVsJavaBean {
 
 **Pojo**
 
--
-어떤 제약이 없다.
+- 어떤 제약이 없다.
 
--
-어떤 자바 오브젝트이건 POJO이다.
+- 어떤 자바 오브젝트이건 POJO이다.
 
 ​
 

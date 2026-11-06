@@ -47,18 +47,6 @@ curl의 document 는 아래 경로이다.
 
 ```
 curl <http://localhost:8080/product-composite/213> -s -w "%{http_code}"
-```
-
-
-
-
-
-
-
-
-
-
-```
 {"productId":213,"name":"name-213","weight":123,"recommendations":[{"recommendationId":1,"author":"Author 1","rate":1},{"recommendationId":2,"author":"Author 2","rate":2},{"recommendationId":3,"author":"Author 3","rate":3}],"reviews":[],"serviceAddresses":{"cmp":"f7fe7abdc755/172.28.0.5:8080","pro":"8f6d4c653c73/172.28.0.4:8080","rev":"","rec":"81ebd258fc2e/172.28.0.3:8080"}}200
 ```
 

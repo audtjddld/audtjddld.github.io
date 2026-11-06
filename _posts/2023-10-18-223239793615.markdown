@@ -40,18 +40,6 @@ Spring Boot에서도 기본 내장 WAS는 Tomcat이구요.
 	org.springframework.boot
 	spring-boot-starter-web
 
-```
-
-
-
-
-
-
-
-
-
-
-```
 implementation('org.springframework.boot:spring-boot-starter-web')
 ```
 
@@ -115,18 +103,6 @@ implementation('org.springframework.boot:spring-boot-starter-web')
 	org.springframework.boot
 	spring-boot-starter-jetty
 
-```
-
-
-
-
-
-
-
-
-
-
-```
 implementation('org.springframework.boot:spring-boot-starter-web') {
 	exclude module: 'spring-boot-starter-tomcat'
 }
@@ -188,18 +164,6 @@ Spring에서 공식적으로 내장 WAS를 지원하구요.
 	org.springframework.boot
 	spring-boot-starter-undertow
 
-```
-
-
-
-
-
-
-
-
-
-
-```
 implementation('org.springframework.boot:spring-boot-starter-web') {
 	exclude module: 'spring-boot-starter-tomcat'
 }
@@ -252,36 +216,6 @@ Spring Boot 2 부터 Webflux Framework를 사용해서 Reactive Programming을 �
 	org.springframework.boot
 	spring-boot-starter-webflux
 
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```
 implementation('org.springframework.boot:spring-boot-starter-webflux')
 ```
 

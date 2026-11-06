@@ -78,18 +78,6 @@ public class RedisConfig {
   }
 
 }
-```
-
-
-
-
-
-
-
-
-
-
-```
 /**
  * redis value compressiong Gzip 클래스.
  */

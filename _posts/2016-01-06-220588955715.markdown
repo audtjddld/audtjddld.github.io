@@ -16,7 +16,6 @@ original_url: "https://blog.naver.com/kkforgg/220588955715"
 우리는 만들려고하고 *전략* 액션과 구현 구체적인 전략 클래스를 정의하는 인터페이스 *전략* 인터페이스를 제공합니다. *상황에 맞는 것은* 전략을 사용하는 클래스입니다.
 
 *StrategyPatternDemo* , 우리의 데모 클래스는 사용 *문맥* 이 배포 또는 사용하는 전략을 기반으로 상황에 맞는 행동의 변화를 설명하고 전략 개체를.
-*
 ## 1 단계
 
 인터페이스를 만듭니다.
@@ -115,8 +114,5 @@ public class StrategyPatternDemo {
 10 + 5 = 15
 10 - 5 = 5
 10 * 5 = 50
-```
-
-```
 출처 : <http://www.tutorialspoint.com/design_pattern/strategy_pattern.htm>
 ```

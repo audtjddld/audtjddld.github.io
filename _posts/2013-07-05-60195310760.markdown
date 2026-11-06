@@ -31,7 +31,7 @@ original_url: "https://blog.naver.com/kkforgg/60195310760"
 
 
 
-**(1) ****폰에서의 설정 **
+**(1) 폰에서의 설정 **
 
 
 
@@ -45,7 +45,7 @@ original_url: "https://blog.naver.com/kkforgg/60195310760"
 
 
 
-**(2) 컴퓨터에 폰과 연결을 위한 드라이버 설치******
+**(2) 컴퓨터에 폰과 연결을 위한 드라이버 설치**
 
 
 

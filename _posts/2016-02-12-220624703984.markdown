@@ -105,17 +105,8 @@ public class Callbacks {
         caller2.go();
     }
 }
-```
 
-```
-
-```
-
-```
 /* 출력 결과
-```
-
-```
 Other operation
 1
 1
@@ -124,8 +115,5 @@ Other operation
 2
 Other operation
 3
-```
-
-```
 */
 ```

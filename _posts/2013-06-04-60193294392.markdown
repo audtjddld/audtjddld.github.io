@@ -65,7 +65,6 @@ session.invalidate()    --  세션을 무효화 시킨다.(로그아웃 처리)
 
 
 
-****
 
 HttpSession session = request.getSession();  //세션 생성--
 

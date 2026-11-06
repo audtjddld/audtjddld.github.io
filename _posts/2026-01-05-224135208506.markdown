@@ -43,8 +43,7 @@ Agentic AI와 Agent AI가 뭔데 이럴 수 있는데, Agentic AI는 에이전�
 
 ​
 
--
-<https://docs.spring.io/spring-ai/reference/api/tools.html>
+- <https://docs.spring.io/spring-ai/reference/api/tools.html>
 
 ​
 
@@ -56,8 +55,7 @@ Agentic AI와 Agent AI가 뭔데 이럴 수 있는데, Agentic AI는 에이전�
 
 ​
 
--
-<https://github.com/audtjddld/spring-ai-mcp-demo>
+- <https://github.com/audtjddld/spring-ai-mcp-demo>
 
 ​
 
@@ -224,118 +222,23 @@ API 요청 -> API 서버 -> llm(원하는 동작을 할 수 있는 prompt 입력
 
 그래서 알아본 결과 아래와 같다. (gpt 5.2)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            **
-
-
-LangChain이 제시한 ‘Agent + Tool’ 개념을 **
-
-**Spring AI는 ‘엔터프라이즈 아키텍처’로 재구성한 것이 MCP다.**
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+LangChain이 제시한 ‘Agent + Tool’ 개념을 **Spring AI는 ‘엔터프라이즈 아키텍처’로 재구성한 것이 MCP다.**
 
 **MCP 구조에 대한 이해**
 
--
-**MCP Server**
+- **MCP Server**
+  - 실제 동작을 수행하는 “도구(tool)”의 집합
+  - 각 도구는 아주 **원자적인 기능 단위**
+  - 스스로 판단하지 않음
+  - 무엇을 할 수 있는지만 명확히 정의
+- **MCP Client**
+  - LLM이 등록되어 있음
+  - 자연어 프롬프트를 입력받음
+  - 어떤 도구를 사용할지 **LLM이 판단**
+  - 도구의 파라미터 스펙에 맞게 입력값을 가공
+  - 도구를 호출하고 결과를 취합
 
--
-**실제 동작을 수행하는 “도구(tool)”의 집합**
-
--
-**각 도구는 아주 ****원자적인 기능 단위**
-
--
-**스스로 판단하지 않음**
-
--
-***무엇을 할 수 있는지만 명확히 정의***
-
--
-**MCP Client**
-
--
-**LLM이 등록되어 있음**
-
--
-**자연어 프롬프트를 입력받음**
-
--
-**어떤 도구를 사용할지 ****LLM이 판단**
-
--
-**도구의 파라미터 스펙에 맞게 입력값을 가공**
-
--
-**도구를 호출하고 결과를 취합**
-
-**​**
-
-**즉,**
-
-**​**
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            **
-
-
-판단과 추론은 LLM(MCP Client)이 하고, 실제 행위는 MCP Server(도구)가 수행한다.**
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+즉, 판단과 추론은 LLM(MCP Client)이 하고, 실제 행위는 MCP Server(도구)가 수행한다.
 
 나는 앞서 spring ai를 이용해서 동작하는 방식을 이해했고 이어서 랭체인의 개념을 익혔는데 spring ai에서는 해당 개념을 이미 해석해서 적용하고 있었다는 점에 매우 놀랐다.
 

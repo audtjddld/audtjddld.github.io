@@ -27,18 +27,6 @@ spring 6 에서 feign과 유사한 http interface가 추가된 것으로 확인�
 
 ```
 class org.springframework.http.ResponseEntity cannot be cast to class reactor.core.publisher.Mono (org.springframework.http.ResponseEntity and reactor.core.publisher.Mono are in unnamed module of loader 'app')
-```
-
-
-
-
-
-
-
-
-
-
-```
 class httpClient {
  @GetExchange("path")
  suspend fun call() : ResponseEntity

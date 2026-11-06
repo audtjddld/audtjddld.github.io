@@ -7,7 +7,6 @@ original_url: "https://blog.naver.com/kkforgg/60201252536"
 
 ## 리팩토링 코드 품질을 개선하는 객체지향 사고법
 
-*
 
 <http://book.naver.com/bookdb/review.nhn?bid=7047630>
 [별점](http://book.naver.com/bookdb/review.nhn?bid=7047630)

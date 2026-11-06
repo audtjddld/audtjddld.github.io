@@ -132,56 +132,11 @@ public String testContoller(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd"
 		binder.registerCustomEditor(Date.class, "testDate", new CustomDateEditor(dateFormat, true));
 	}
 }
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-​
-
-​
-
-
-
-
-
-
-
-
-
-
-```
 @Date
 public Class testModel {
  @JsonDeserialize(using = CustomJsonDateDeserializer.class)
  private testDate;
 }
-```
-
-
-
-
-
-
-
-
-
-
-```
 public class CustomJsonDateDeserializer extends JsonDeserializer {
 
 	@Override
@@ -243,18 +198,6 @@ class UnixTimestampDeserializer : JsonDeserializer() {
         )
     }
 }
-```
-
-
-
-
-
-
-
-
-
-
-```
 data class Model (
 ...
 @JsonDeserialize(using = UnixTimestampDeserializer::class)

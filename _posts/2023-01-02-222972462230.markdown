@@ -61,7 +61,6 @@ Kustomize는 kustomization 파일을 통해 쿠버네티스 오브젝트를 사�
 
 
 
-                                        *
 
 
 

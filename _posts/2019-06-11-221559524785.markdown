@@ -588,7 +588,7 @@ Reactive Streams 명세서의 어디에도 operator에 대한 명세는 존재�
 
 ​
 
-**Nothing Happens Until You ****subscribe()**
+**Nothing Happens Until You subscribe()**
 
 ​
 
@@ -897,7 +897,6 @@ subscribe(Consumer consumer,
 
 
 
-                            **
 
 
 이 메서드들의 변형들은 Subscription에 대한 레퍼런스를 리턴하는데 이 레퍼런스로 더 데이터가 필요 없을 때 구독을 취소할 수 있다오. 취소가 이뤄지면, 데이터를 제공하는 측은 값의 생산을 멈추고 초기화했던 자원들을 해제하는 작업을 수행한다오. 이 취소와 클리닝 작업을 위한 다목적 인터페이스인 Disposable 가 존재한다네.

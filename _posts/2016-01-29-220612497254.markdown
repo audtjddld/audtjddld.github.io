@@ -99,14 +99,6 @@ public class TestClassA{
 
 우선, 테스트에서 공통으로 사용할 다음과 같은 빈 설정 파일이 있다고 가정하자. 파일 이름은 "ApplicationContextSetupTests-context.xml"이다.
 
-```
-
-
-
-
-
-
-```
 
 mvc 네임스페이스를 기본 네임스페이스로 사용해서 애노테이션 기반 Spring MVC에 필요한 빈을 등록하고, 컨트롤러 클래스를 하나 등록했다. 테스트 코드와 테스트용 컨트롤러 코드는 다음과 같다.
 

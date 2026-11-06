@@ -21,8 +21,8 @@ wha 이번해 초부터 시작된 too many connection 문제가 하루에 한�
 
 **- datasource 설정
     // db connection 을 재 사용하겠다고 선언 (default는 false 이다)
-    admin.datasource.master.jdbc.removeAbandoned=true****    //버려진 connection 으로 간주하는 시간은 1분으로 설정
-    admin.datasource.master.jdbc.removeAbandonedTimeout = 60****    // 재사용하는 커넥션에 대한 로그를 남기겠다고 선언(defaul는 false 이다)
+    admin.datasource.master.jdbc.removeAbandoned=true    //버려진 connection 으로 간주하는 시간은 1분으로 설정
+    admin.datasource.master.jdbc.removeAbandonedTimeout = 60    // 재사용하는 커넥션에 대한 로그를 남기겠다고 선언(defaul는 false 이다)
     admin.datasource.master.jdbc.logAbandoned = true**
 **- wait-timeout 설정
   #mysql server 설정
@@ -46,7 +46,7 @@ max_connection 수를 증가 시켜 connection 개수를 확보한다.
 **- jdbc pool-max 설정
    //최소 connection pool 개수
    admin.datasource.master.jdbc.pool-min=3 아래 문제 발생! 참고하세요 .
-**   //최대 connection pool 개수**   admin.datasource.master.jdbc.pool-max=100**  //max_connections 와 비례해서 증감시켜야 한다.****
+**   //최대 connection pool 개수**   admin.datasource.master.jdbc.pool-max=100**  //max_connections 와 비례해서 증감시켜야 한다.
 **=> 문제: 하루에 보통 사용하는 connection 수는 기본 4~50 이었다. 그런데 이 연결이 어느 한 순간 150~180 이렇게 치솟게 된다. 이때 에러가 발생하는 것... 기본적으로 connection 수가 많다면 max connection 을 증가 시키는 것이 맞지만 어느 순간 치솟는 커넥션이라면 max를 증가한다고 해결되지는 않는다.
 해결방법 3.
 
@@ -131,7 +131,7 @@ MySQL서버는 외부로부터 접속 요청을 받을 경우 인증을 위해 I
 아직은...조금 더 지켜봐야겠지만 예전에 비해 연결 정도가 안정적인것 같다. 이것으로 더이상 500 Too many connection 이란 글자를 안 봤으면 한다.. ㅠㅠ 시달린다 정말....
 ======================================================
 
-!!! 해결 한 줄 알았던 문제 또 발생!!****
+!!! 해결 한 줄 알았던 문제 또 발생!!
 이번엔...oraqle 이다...어휴 이건 DB 설정 못 건들이는데....
 자꾸 요청이 올 때 마다 치솟는 connection 수.. 외부서 배치로 2만개의 쿼리가 날라오는 것 땜에 리스너가 맛이 갈 정도였다..
 
@@ -140,14 +140,14 @@ jdbc 설정 고치기..
 커넥션 풀 의 속성 은 아래와 같다.
 
 
-속성****설명**maxActive커넥션 풀이 제공할 최대 커넥션 개수whenExhaustedAction커넥션 풀에서 가져올 수 있는 커넥션이 없을 때 어떻게 동작할지를 지정한다. 1일 경우 maxWait 속성에서 지정한 시간만큼 커넥션을 구할 때 까지 기다리며, 0일 경우 에러를 발생시킨다. 2일 경우에는 일시적으로 커넥션을 생성해서 사용한다.maxWaitwhenExhaustedAction 속성의 값이 1일 때 사용되는 대기 시간. 단위는 1/1000초이며, 0 보다 작을 경우 무한히 대기한다.maxIdle사용되지 않고 풀에 저장될 수 있는 최대 커넥션 개수. 음수일 경우 제한이 없다.minIdle사용되지 않고 풀에 저장될 수 있는 최소 커넥션 개수.testOnBorrowtrue일 경우 커넥션 풀에서 커넥션을 가져올 때 커넥션이 유효한지의 여부를 검사한다.testOnReturntrue일 경우 커넥션 풀에 커넥션을 반환할 때 커넥션이 유효한지의 여부를 검사한다.timeBetweenEvctionRunsMillis사용되지 않은 커넥션을 추출하는 쓰레드의 실행 주기를 지정한다. 양수가 아닐 경우 실행되지 않는다. 단위는 1/1000 초이다.numTestsPerEvictionRun사용되지 않는 커넥션을 몇 개 검사할지 지정한다.minEvictableIdleTimeMillis사용되지 않는 커넥션을 추출할 때 이 속성에서 지정한 시간 이상 비활성화 상태인 커넥션만 추출한다. 양수가 아닌 경우 비활성화된 시간으로는 풀에서 제거되지 않는다. 시간 단위는 1/1000초이다.testWhileIdletrue일 경우 비활성화 커넥션을 추출할 때 커넥션이 유효한지의 여부를 검사해서 유효하지 않은 커넥션은 풀에서 제거한다.
+속성설명**maxActive커넥션 풀이 제공할 최대 커넥션 개수whenExhaustedAction커넥션 풀에서 가져올 수 있는 커넥션이 없을 때 어떻게 동작할지를 지정한다. 1일 경우 maxWait 속성에서 지정한 시간만큼 커넥션을 구할 때 까지 기다리며, 0일 경우 에러를 발생시킨다. 2일 경우에는 일시적으로 커넥션을 생성해서 사용한다.maxWaitwhenExhaustedAction 속성의 값이 1일 때 사용되는 대기 시간. 단위는 1/1000초이며, 0 보다 작을 경우 무한히 대기한다.maxIdle사용되지 않고 풀에 저장될 수 있는 최대 커넥션 개수. 음수일 경우 제한이 없다.minIdle사용되지 않고 풀에 저장될 수 있는 최소 커넥션 개수.testOnBorrowtrue일 경우 커넥션 풀에서 커넥션을 가져올 때 커넥션이 유효한지의 여부를 검사한다.testOnReturntrue일 경우 커넥션 풀에 커넥션을 반환할 때 커넥션이 유효한지의 여부를 검사한다.timeBetweenEvctionRunsMillis사용되지 않은 커넥션을 추출하는 쓰레드의 실행 주기를 지정한다. 양수가 아닐 경우 실행되지 않는다. 단위는 1/1000 초이다.numTestsPerEvictionRun사용되지 않는 커넥션을 몇 개 검사할지 지정한다.minEvictableIdleTimeMillis사용되지 않는 커넥션을 추출할 때 이 속성에서 지정한 시간 이상 비활성화 상태인 커넥션만 추출한다. 양수가 아닌 경우 비활성화된 시간으로는 풀에서 제거되지 않는다. 시간 단위는 1/1000초이다.testWhileIdletrue일 경우 비활성화 커넥션을 추출할 때 커넥션이 유효한지의 여부를 검사해서 유효하지 않은 커넥션은 풀에서 제거한다.
 **이 중..minIdle 은 사용되지 않고 풀에 저장될 수 있는 최소 커넥션이란다..그래 최소니까 최소한으로 끊지 않고 연결해두면 나중에 커넥션 요청 시 다시 맺지 않고 있는 걸 쓸테니 효율적이겠지...라고 생각했다만!! 이게 커넥션을 줄어들지 않게 만든 원인이 되고 있었다. 왜그럴까 의구심은 증폭.. 혹시 pool 자체가 하나가 아니고 여러개가 생성이 되나 하는 의심을 하게 된다.
 각 pool 마다 최소 커넥션을 유지하다보니 커넥션이 줄지 않는 게 아닐까... 근데 그럼 이게 있는 의미가 없잖아...ㅠㅠ
 
 헤고..일단 minIdle을 0으로 과감히 세팅해버렸다..무식하지만...일단 효율보다 DB가 죽어나게 생겼다...
 - jdbc pool-max 설정을 아래와 같이 바꿔보자
    //최소 connection pool 개수
-   admin.datasource.master.jdbc.pool-min=0**   // 커넥션 풀 에 남아있지 않게 바꿈..**   admin.datasource.master.jdbc.pool-max=20**  //max_connections 와 비례해서 증감시켜야 한다.****
+   admin.datasource.master.jdbc.pool-min=0**   // 커넥션 풀 에 남아있지 않게 바꿈..**   admin.datasource.master.jdbc.pool-max=20**  //max_connections 와 비례해서 증감시켜야 한다.
 **참고! 위에서 말한 DB 설정 해결방법은 DB 에서 강제로 커넥션을 끊어주는 것에 반하여 아래는 DB 접속하는 측에서 connection 을 그때 그때 끊어주면서 접근하니까 아래 방법이 일단 더 낫다고 본다..
 
 자료 출처 : <http://netholic.tistory.com/116**>

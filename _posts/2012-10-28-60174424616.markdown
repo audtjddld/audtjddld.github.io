@@ -195,7 +195,7 @@ $xml 부터 시작하면 되고
                 lessonNum = '0'+lessonNum;
             }
 
-            fileNames = "http://cms.****.com/xml/data/***/****.xml";
+            fileNames = "http://cms..com/xml/data/***/.xml";
 
             /**/
              $.ajax({

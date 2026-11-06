@@ -13,10 +13,10 @@ original_url: "https://blog.naver.com/kkforgg/60199471599"
       - 데이터베이스 연동을 처리할 때 사용되는 SqlMapClient는 try-catch 블록을 사용해서 예외를 처리.
       - 에러 원인에 따라 알맞은 예외를 발생시키기보다는 SQLException을 발생 시킴.
 
-  □ SqlMapClient를 위한 스프링 설정****    ■ SqlMapClientTemplate 클래스****      - SqlMapClient를 사용할 때 발생하는 코드 중복을 없앰.
+  □ SqlMapClient를 위한 스프링 설정**    ■ SqlMapClientTemplate 클래스**      - SqlMapClient를 사용할 때 발생하는 코드 중복을 없앰.
       - SQLException을 스프링이 제공하는 예외 클래스로 변환.
       - 내부적으로는 iBATIS의 SqlMapClient를 사용.
-    ■ SqlMapClientFactoryBean 클래스****      - SqlMapClient를 스프링 설정 파일에서 쉽게 설정할 수 있도록 도움.
+    ■ SqlMapClientFactoryBean 클래스      - SqlMapClient를 스프링 설정 파일에서 쉽게 설정할 수 있도록 도움.
       - 이 클래스를 사용하면 SqlMapClient를 스프링 빈으로 설정 가능.
     ■ 설정**
 
@@ -25,8 +25,8 @@ original_url: "https://blog.naver.com/kkforgg/60199471599"
     p:configLocation="WEB-INF/sqlMap/sqlMapConfig.xml">
  </bean>
 
-      ○ dataSource 프로퍼티****        - DaotaSource를 전달.
-      ○ configLocation 프로퍼티****        - iBATIS 설정 파일을 명시.
+      ○ dataSource 프로퍼티        - DaotaSource를 전달.
+      ○ configLocation 프로퍼티        - iBATIS 설정 파일을 명시.
     ■ iBATIS 설정 파일 예
 
  <?xml version="1.0" encoding="UTF-8" ?>
@@ -38,7 +38,7 @@ original_url: "https://blog.naver.com/kkforgg/60199471599"
     <sqlMap resource="GuestBook.xml" />
  </sqlMapConfig>
 
-    ■ iBATIS 매핑 설정 파일****      - <sqlMap> 태그 : 매핑 설정 파일을 명시.
+    ■ iBATIS 매핑 설정 파일      - <sqlMap> 태그 : 매핑 설정 파일을 명시.
 
  <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -59,7 +59,7 @@ original_url: "https://blog.naver.com/kkforgg/60199471599"
     </resultMap>
  </splMap>
 
-  □ SqlMapClientTemplate을 이용한 DAO 구현****    ■ 설정****      - SqlMapClient를 위한 빈을 설정하면 SqlMapClientTemplate을 이용해서 iBATIS를 연동 가능.
+  □ SqlMapClientTemplate을 이용한 DAO 구현**    ■ 설정**      - SqlMapClient를 위한 빈을 설정하면 SqlMapClientTemplate을 이용해서 iBATIS를 연동 가능.
       - sqlMapClient 프로퍼티를 통해서 SqlMapClient를 설정.
 
  <bean id="sqlMapClient"
@@ -102,9 +102,9 @@ original_url: "https://blog.naver.com/kkforgg/60199471599"
     }
  }
 
-    ■ SqlMapClientTemplate 클래스****      - iBATIS의 SqlMapClient 클래스가 제공하는 대부분의 메서드와 동일한 이름과 파라미터 타입, 리턴 타입을 갖는 메서드를 정의.
+    ■ SqlMapClientTemplate 클래스      - iBATIS의 SqlMapClient 클래스가 제공하는 대부분의 메서드와 동일한 이름과 파라미터 타입, 리턴 타입을 갖는 메서드를 정의.
       - SQLException을 발생하는 대신 스프링이 제공하는 예외를 발생 시킴.
-    ■ iBATIS의 SqlMapException을 직접 사용****      - SqlMapClientCallback 인터페이스의 구현 객체를 전달받는 execute() 메서드를 사용.
+    ■ iBATIS의 SqlMapException을 직접 사용      - SqlMapClientCallback 인터페이스의 구현 객체를 전달받는 execute() 메서드를 사용.
 
  sqlMapClientTemplate.execute(new SqlMapClientCallback() {
     @Override
@@ -118,8 +118,8 @@ original_url: "https://blog.naver.com/kkforgg/60199471599"
 
          SqlMapExecutor를 사용해서 데이터베이스 연동을 구현.
 
-  □ SqlMapClientDaoSupport 클래스를 이용한 DAO 구현****    ■ SqlMapClientDaoSupport 클래스****      - SqlMapClientTemplate 클래스를 DAO 클래스에서 좀 더 쉽게 사용할 수 있도록 함.
-    ■ 설정****      - SqlMapClientTemplate 클래스를 상속받은 클래스는 sqlMapClientTemplate 프로퍼티를 통해 SqlMapClientTemplate을 전달
+  □ SqlMapClientDaoSupport 클래스를 이용한 DAO 구현**    ■ SqlMapClientDaoSupport 클래스**      - SqlMapClientTemplate 클래스를 DAO 클래스에서 좀 더 쉽게 사용할 수 있도록 함.
+    ■ 설정      - SqlMapClientTemplate 클래스를 상속받은 클래스는 sqlMapClientTemplate 프로퍼티를 통해 SqlMapClientTemplate을 전달
 
          받음.
 
@@ -136,7 +136,7 @@ original_url: "https://blog.naver.com/kkforgg/60199471599"
     class="kame.spring.guestbook.dao.ibatis.IBatisMessageDao"
     p:sqlMapClientTemplate-ref="sqlMapClientTemplate" />
 
-    ■ 좀 더 간결한 설정파일****      - sqlMapClient 프로퍼티에 직접 SqlMapClient 빈을 전달함으로써 SqlMapClientTemplate을 위한 설정을 줄임.
+    ■ 좀 더 간결한 설정파일      - sqlMapClient 프로퍼티에 직접 SqlMapClient 빈을 전달함으로써 SqlMapClientTemplate을 위한 설정을 줄임.
 
  <bean id="sqlMapClient"
     class="org.springframework.orm.ibatis.SqlMapClientFactoryBean"
@@ -147,7 +147,7 @@ original_url: "https://blog.naver.com/kkforgg/60199471599"
     class="kame.spring.guestbook.dao.ibatis.IBatisMessageDao"
     p:sqlMapClient-ref="sqlMapClient" />
 
-    ■ 상속받은 클래스****      - getSqlMapClientTemplate() 메서드를 사용해서 SqlMapClientTemplate을 구할 수 있음.
+    ■ 상속받은 클래스      - getSqlMapClientTemplate() 메서드를 사용해서 SqlMapClientTemplate을 구할 수 있음.
       ○ 구현 예
 
  public class IBatisMessageDao extends SqlMapClientDaoSupport implements MessageDao {

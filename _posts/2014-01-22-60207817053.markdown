@@ -325,7 +325,7 @@ org.springframework.web.multipart.MaxUploadSizeExceededException
 
                 Map data = new HashMap();
 
-                data.put("subject", " **** 부조리신고 답변 안내 메일 입니다.");
+                data.put("subject", "  부조리신고 답변 안내 메일 입니다.");
 
                 data.put("userMail", info.getEMAIL());
 

@@ -21,7 +21,7 @@ Spring context loading을 축소하기 위한 방법으로 매우 유용한 것 
 
 ​
 
-**7. *****@DataJpaTest를 이용한 *****통합테스트  **
+**7. ***@DataJpaTest를 이용한 ***통합테스트  **
 
 ​
 

@@ -12,9 +12,8 @@ original_url: "https://blog.naver.com/kkforgg/220352212439"
 
 [[AngularJS] Service 종류 이해하기AngularJS의 서비스 종류는 여러가지가 있습니다. Factory만 알았다면 Costant, Value, Provider 그리고 서비스의 확장 방법등에 대해 알아...mobicon.tistory.com](http://mobicon.tistory.com/329)
 
-AngularJS의 서비스 종류는 여러가지가 있습니다. Factory만 알았다면 Costant, Value, Provider 그리고 서비스의 확장 방법등에 대해 알아보자. "A****ngularJS Service is an Application Brain*"**
+AngularJS의 서비스 종류는 여러가지가 있습니다. Factory만 알았다면 Costant, Value, Provider 그리고 서비스의 확장 방법등에 대해 알아보자. "AngularJS Service is an Application Brain*"**
 
-*
 
 1. 개념**
 
@@ -590,7 +589,7 @@ app.factory('personService', function() {
 
 });
 
-// html ****
+// html 
 
 <!DOCTYPE html>
 
