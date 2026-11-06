@@ -1,4 +1,4 @@
-<!-- Translate the current page with Google Translate -->
+<!-- Translate the current page without Google's region-blocked website proxy -->
 <label class="page-translate-wrap" title="이 글을 다른 언어로 번역합니다">
   <select id="page-translate" class="page-translate" aria-label="이 글을 다른 언어로 번역">
     <option value="" selected>번역</option>
@@ -25,20 +25,177 @@
   }
   .page-translate:hover,
   .page-translate:focus { opacity: 1; outline: none; }
+  .page-translate:disabled { cursor: wait; opacity: 0.55; }
 </style>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var sel = document.getElementById('page-translate');
     if (!sel) return;
+
+    var pageUrl = {{ page.url | absolute_url | jsonify }};
+    var originals = null;
+    var defaultLabel = '번역';
+
+    var yandexLang = {
+      en: 'en',
+      ja: 'ja',
+      'zh-CN': 'zh',
+      'zh-TW': 'zh',
+      vi: 'vi',
+      es: 'es'
+    };
+
+    var apiLang = {
+      en: 'en',
+      ja: 'ja',
+      'zh-CN': 'zh-Hans',
+      'zh-TW': 'zh-Hant',
+      vi: 'vi',
+      es: 'es'
+    };
+
+    function contentRoot() {
+      return (
+        document.querySelector('#post-content') ||
+        document.querySelector('article .content') ||
+        document.querySelector('article') ||
+        document.querySelector('main') ||
+        document.body
+      );
+    }
+
+    function shouldSkip(el) {
+      return !!(
+        el &&
+        el.closest &&
+        el.closest(
+          'pre, code, kbd, samp, script, style, noscript, textarea, .highlight, .code-header, .page-translate-wrap, .language-plaintext'
+        )
+      );
+    }
+
+    function collectNodes() {
+      var root = contentRoot();
+      var nodes = [];
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode: function (node) {
+          if (!node.nodeValue || !String(node.nodeValue).trim()) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          if (shouldSkip(node.parentElement)) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      return nodes;
+    }
+
+    function rememberOriginals() {
+      if (originals) return;
+      originals = collectNodes().map(function (node) {
+        return { node: node, text: node.nodeValue };
+      });
+    }
+
+    function restoreOriginals() {
+      if (!originals) return;
+      originals.forEach(function (item) {
+        if (item.node && item.node.parentNode) {
+          item.node.nodeValue = item.text;
+        }
+      });
+      document.documentElement.lang = 'ko';
+    }
+
+    function fallbackTranslate(tl) {
+      var target = yandexLang[tl] || tl;
+      location.href =
+        'https://translate.yandex.com/translate?lang=ko-' +
+        encodeURIComponent(target) +
+        '&url=' +
+        encodeURIComponent(pageUrl);
+    }
+
+    function translatorApi() {
+      if (window.Translator && typeof window.Translator.create === 'function') {
+        return window.Translator;
+      }
+      return null;
+    }
+
+    function setBusy(busy) {
+      sel.disabled = busy;
+      if (busy) {
+        sel.options[0].textContent = '번역 중…';
+      } else {
+        sel.options[0].textContent = defaultLabel;
+      }
+    }
+
+    function translateInPage(tl) {
+      var Api = translatorApi();
+      var target = apiLang[tl] || tl;
+
+      if (!Api) {
+        fallbackTranslate(tl);
+        return;
+      }
+
+      rememberOriginals();
+      restoreOriginals();
+      setBusy(true);
+
+      var ready = Promise.resolve('available');
+      if (typeof Api.availability === 'function') {
+        ready = Promise.resolve(Api.availability({
+          sourceLanguage: 'ko',
+          targetLanguage: target
+        }));
+      }
+
+      ready
+        .then(function (status) {
+          if (status === 'unavailable') {
+            throw new Error('unavailable');
+          }
+          return Api.create({
+            sourceLanguage: 'ko',
+            targetLanguage: target
+          });
+        })
+        .then(function (translator) {
+          var chain = Promise.resolve();
+          originals.forEach(function (item) {
+            chain = chain.then(function () {
+              return translator.translate(item.text).then(function (translated) {
+                if (item.node && item.node.parentNode) {
+                  item.node.nodeValue = translated;
+                }
+              });
+            });
+          });
+          return chain;
+        })
+        .then(function () {
+          document.documentElement.lang = target;
+        })
+        .catch(function () {
+          fallbackTranslate(tl);
+        })
+        .then(function () {
+          setBusy(false);
+        });
+    }
+
     sel.addEventListener('change', function () {
       var tl = sel.value;
-      if (!tl) return;
-      var pageUrl = {{ page.url | absolute_url | jsonify }};
-      location.href =
-        'https://translate.google.com/translate?sl=ko&tl=' +
-        encodeURIComponent(tl) +
-        '&u=' +
-        encodeURIComponent(pageUrl);
+      if (!tl) {
+        restoreOriginals();
+        return;
+      }
+      translateInPage(tl);
     });
   });
 </script>
