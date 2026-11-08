@@ -1,0 +1,39 @@
+/* Keep Chirpy's sidebar width, responsive drawer, navigation and color tokens. */
+#sidebar #avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1rem !important; /* Override Bootstrap's rounded-circle utility. */
+  box-shadow: none;
+}
+
+#sidebar #avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: none;
+}
+
+#sidebar #avatar img:hover {
+  transform: none;
+}
+
+#sidebar .site-title {
+  margin-top: 1rem;
+  color: var(--sidebar-active-color);
+  letter-spacing: -0.025em;
+}
+
+#sidebar .site-subtitle {
+  max-width: 19ch;
+  color: var(--sidebar-active-color);
+  font-size: 0.875rem;
+  font-style: normal !important; /* Override Bootstrap's fst-italic utility. */
+  line-height: 1.75;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+#sidebar a:focus-visible {
+  outline: 2px solid var(--sidebar-active-color);
+  outline-offset: 4px;
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" role="img" aria-labelledby="title">
+  <title id="title">404 dev</title>
+  <rect width="80" height="80" rx="20" fill="#182b3a"/>
+  <text x="40" y="46" text-anchor="middle" fill="#f2f6fa" font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="29" font-weight="700" letter-spacing="-1">404</text>
+  <path d="M23 58h25" stroke="#77d7c5" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="56" cy="58" r="2" fill="#77d7c5"/>
+</svg>

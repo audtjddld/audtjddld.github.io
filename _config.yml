@@ -1,8 +1,9 @@
 # Site settings
 title: "404 dev"
-tagline: "개발 블로그"
+tagline: "AI와 JVM 생태계, 백엔드 개발의 변화와 실무 기록"
 description: >-
-  개발 블로그
+  AI·Java·Kotlin 생태계의 변화와 백엔드 개발을 다룹니다.
+  기술 뉴스의 의미와 실무에 미치는 영향을 짚고, 개발 과정에서 얻은 지식을 기록합니다.
 url: "https://404.is-a.dev"
 baseurl: ""
 
@@ -17,8 +18,8 @@ github_username: audtjddld
 # Theme
 theme: jekyll-theme-chirpy
 
-# Avatar (사이드바 프로필 이미지 — 필요시 경로 변경)
-# avatar: /assets/img/avatar.png
+# Sidebar brand mark (not a personal photo)
+avatar: /assets/img/404-brand.svg
 
 # Social links (사이드바 하단)
 social:
